@@ -12,7 +12,7 @@ export function NavBar() {
   return (
     <aside
       className={cn(
-        'fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-[90%] md:left-12 md:top-1/2 md:-translate-y-1/2 md:w-auto'
+        'fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-[90%] md:left-15 md:top-1/2 md:-translate-y-1/2 md:w-auto'
       )}
     >
       <nav
@@ -46,9 +46,9 @@ export function NavBar() {
             </Link>
           );
         })}
-        <div className="mt-2 border-t pt-4 w-full justify-center md:justify-start md:block hidden">
+         {/* <div className="mt-2 border-t pt-4 w-full justify-center md:justify-start md:block hidden">
           <ThemeToggle />
-        </div>
+        </div> */}
       </nav>
     </aside>
   );
