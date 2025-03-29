@@ -3,13 +3,14 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ProjectSubmissionSchema } from "@/data/schemas/Project";
+import { AnimatePresence, motion } from 'framer-motion';
 import { Upload, X } from "lucide-react";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import Markdown from 'markdown-to-jsx';
-import { motion, AnimatePresence } from 'framer-motion';
 
 const FormStep2 = () => {
   const { control, setValue, watch } = useFormContext<ProjectSubmissionSchema>();
@@ -115,7 +116,7 @@ const FormStep2 = () => {
                         className="flex flex-col items-center justify-center border-2 border-dashed border-zinc-300 rounded-lg p-6 cursor-pointer dark:border-zinc-600"
                       >
                         <Upload className="h-10 w-10 text-zinc-400 mb-2" />
-                        <input
+                        <Input
                           type="file"
                           accept="image/*"
                           onChange={(e) => handleImageUpload(e, "coverImage")}
@@ -163,16 +164,28 @@ const FormStep2 = () => {
                   <Textarea
                     placeholder="Use Markdown: 
 # Heading
-- Bullet Point
-1. Numbered List"
+- Bullet Point"
                     className="min-h-[300px] font-mono"
                     {...field}
                   />
                 </FormControl>
               </div>
               <div className="border rounded-md p-4 min-h-[300px] prose prose-zinc dark:prose-invert bg-zinc-50 dark:bg-zinc-900 overflow-auto">
-                <Markdown>{features || "*Your markdown preview will appear here...*"}</Markdown>
-              </div>
+              <Markdown options={{
+    overrides: {
+      h1: { props: { className: 'text-2xl font-bold mb-4' } },
+      h2: { props: { className: 'text-xl font-bold mb-3' } },
+      h3: { props: { className: 'text-lg font-bold mb-2' } },
+      p: { props: { className: 'mb-4' } },
+      ul: { props: { className: 'list-disc pl-6 mb-4' } },
+      ol: { props: { className: 'list-decimal pl-6 mb-4' } },
+      li: { props: { className: 'mb-1' } }
+      
+    }
+  }}>
+    {features || "*Your markdown preview will appear here...*"}
+  </Markdown>
+</div>
             </div>
             <FormDescription>Describe your project's key features using Markdown</FormDescription>
             <FormMessage />
