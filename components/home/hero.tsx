@@ -51,7 +51,7 @@ export default function Hero() {
           </p>
           <div className="flex flex-wrap gap-4">
             <Button size="lg" asChild>
-              <Link href="/projects">Browse Projects</Link>
+              <Link href="/project">Browse Projects</Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
               <Link href="/submit">Submit Your Project</Link>
