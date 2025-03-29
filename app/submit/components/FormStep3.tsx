@@ -1,18 +1,28 @@
-
+'use client'
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { techStackOptions,projectDomainOptions, projectStatusOptions, projectTypeOptions, sdgGoals, techCategories  } from "@/data/Project";
+import { projectDomainOptions, projectStatusOptions, projectTypeOptions, sdgGoals, techCategories  } from "@/data/Project";
 import { ProjectSubmissionSchema} from "@/data/schemas/Project";
+import { techStackOptions } from "@/data/techStack";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 const FormStep3 = () => {
   const { control, watch } = useFormContext<ProjectSubmissionSchema>();
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Grouping tech stack options by their `type`
+  const groupedTechStackOptions = techStackOptions.reduce((groups, option) => {
+    if (!groups[option.type]) groups[option.type] = [];
+    groups[option.type].push(option);
+    return groups;
+  }, {});
 
 
   return (
@@ -24,77 +34,63 @@ const FormStep3 = () => {
         Help us categorize your project to increase its visibility.
       </p>
 
+      <div className="space-y-8">
+      <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+        Project Classification
+      </h2>
+      <p className="text-slate-600 dark:text-slate-400">
+        Help us categorize your project to increase its visibility.
+      </p>
+
       <FormField
-        control={control}
-        name="techStack"
-        render={() => (
-          <FormItem>
-            <FormLabel>Tech Stack</FormLabel>
-            <div className="mt-2">
-              <Tabs defaultValue="frontend" className="w-full">
-                <TabsList className="w-full justify-start mb-4 flex-wrap h-auto p-1">
-                  <TabsTrigger value="frontend">Frontend</TabsTrigger>
-                  <TabsTrigger value="backend">Backend</TabsTrigger>
-                  <TabsTrigger value="mobile">Mobile</TabsTrigger>
-                  <TabsTrigger value="cloud">Cloud</TabsTrigger>
-                  <TabsTrigger value="database">Database</TabsTrigger>
-                  <TabsTrigger value="ai">AI / ML</TabsTrigger>
-                  <TabsTrigger value="hardware">Hardware</TabsTrigger>
-                </TabsList>
-                
-                {Object.entries(techCategories).map(([category, keys]) => (
-                  <TabsContent value={category} key={category} className="mt-0">
-                    <Card>
-                      <CardContent className="p-4 pt-4">
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                          {techStackOptions
-                            .filter(option => keys.includes(option.value))
-                            .map((option) => (
-                              <FormField
-                                key={option.value}
-                                control={control}
-                                name="techStack"
-                                render={({ field }) => {
-                                  const isSelected = field.value?.includes(option.value);
-                                  return (
-                                    <div
-                                      className={cn(
-                                        "flex items-center p-3 rounded-lg border cursor-pointer transition-colors space-x-2",
-                                        isSelected
-                                          ? "border-primary bg-primary/10"
-                                          : "border-gray-200 hover:border-primary/50 dark:border-gray-700 dark:hover:border-primary/50"
-                                      )}
-                                      onClick={() => {
-                                        const updatedValue = isSelected
-                                          ? field.value?.filter((val) => val !== option.value) || []
-                                          : [...(field.value || []), option.value];
-                                        field.onChange(updatedValue);
-                                      }}
-                                    >
-                                      <Checkbox
-                                        checked={isSelected}
-                                        className="pointer-events-none"
-                                      />
-                                      <span className="text-sm">{option.label}</span>
-                                    </div>
-                                  )
-                                }}
-                              />
-                            ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </TabsContent>
-                ))}
-              </Tabs>
-            </div>
-            <FormDescription>
-              Select all technologies used in your project
-            </FormDescription>
-            <FormMessage />
-          </FormItem>
+  control={control}
+  name="techStack"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Tech Stack</FormLabel>
+      <div className="relative mt-2">
+        <button
+          type="button"
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-full border border-gray-300 rounded-lg p-2 text-left bg-white dark:bg-background"
+        >
+          Select Tech Stack
+        </button>
+
+        {isOpen && (
+          <div className="absolute z-10 mt-2 w-full bg-white border border-slate-200 rounded-lg shadow-lg dark:bg-background max-h-64 overflow-y-auto">
+            {Object.keys(groupedTechStackOptions).map((group) => (
+              <div key={group} className="border-b border-slate-200 p-2">
+                <div className="font-semibold text-gray-700 dark:text-white mb-1">{group.toUpperCase()}</div>
+                {groupedTechStackOptions[group].map(option => {
+                  const isSelected = field.value?.includes(option.value) || false;
+                  return (
+                    <div key={option.value} className="flex items-center space-x-2 mb-2 pl-4">
+                      <Checkbox
+                        checked={isSelected}
+                        onCheckedChange={(checked) => {
+                          const updatedValue = checked
+                            ? [...(field.value || []), option.value]
+                            : (field.value || []).filter((val) => val !== option.value);
+                          field.onChange(updatedValue); // Update form state correctly
+                        }}
+                      />
+                      <option.icon size={20} className="mr-2" />
+                      <label className="text-sm text-gray-700 dark:text-white">{option.label}</label>
+                    </div>
+                  )
+                })}
+              </div>
+            ))}
+          </div>
         )}
-      />
+      </div>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
+    </div>
 
       <FormField
         control={control}
