@@ -15,6 +15,7 @@ const teamMemberSchema = z.object({
 });
 
 export const projectSubmissionSchema = z.object({
+ teamNumber: z.string().min(1, "Team number is required"),
   title: z.string().min(1, "Title is required").max(100),
   subtitle: z.string().min(1, "Subtitle is required").max(200),
   problemStatement: z.string().min(1, "Problem statement is required"),
