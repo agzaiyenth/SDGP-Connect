@@ -13,35 +13,7 @@ export const projectTypeOptions = [
     { value: "deployed", label: "Deployed" },
     { value: "startup", label: "Startup" },
   ];
-  
-  export const techStackOptions = [
-    { value: "react", label: "React" },
-    { value: "angular", label: "Angular" },
-    { value: "vue", label: "Vue.js" },
-    { value: "node", label: "Node.js" },
-    { value: "python", label: "Python" },
-    { value: "django", label: "Django" },
-    { value: "flask", label: "Flask" },
-    { value: "java", label: "Java" },
-    { value: "spring", label: "Spring" },
-    { value: "dotnet", label: ".NET" },
-    { value: "php", label: "PHP" },
-    { value: "laravel", label: "Laravel" },
-    { value: "android", label: "Android" },
-    { value: "ios", label: "iOS" },
-    { value: "flutter", label: "Flutter" },
-    { value: "react-native", label: "React Native" },
-    { value: "firebase", label: "Firebase" },
-    { value: "aws", label: "AWS" },
-    { value: "azure", label: "Azure" },
-    { value: "mongodb", label: "MongoDB" },
-    { value: "mysql", label: "MySQL" },
-    { value: "postgresql", label: "PostgreSQL" },
-    { value: "tensorflow", label: "TensorFlow" },
-    { value: "pytorch", label: "PyTorch" },
-    { value: "arduino", label: "Arduino" },
-    { value: "raspberry-pi", label: "Raspberry Pi" },
-  ];
+
   
   export const projectDomainOptions = [
     { value: "ai", label: "Artificial Intelligence" },
@@ -81,13 +53,4 @@ export const projectTypeOptions = [
     { id: 16, title: "Peace, Justice and Strong Institutions", icon: "⚖️" },
     { id: 17, title: "Partnerships for the Goals", icon: "🤲" },
   ];
-  
-  export const techCategories = {
-    frontend: ['react', 'angular', 'vue'],
-    backend: ['node', 'python', 'django', 'flask', 'java', 'spring', 'dotnet', 'php', 'laravel'],
-    mobile: ['android', 'ios', 'flutter', 'react-native'],
-    cloud: ['firebase', 'aws', 'azure'],
-    database: ['mongodb', 'mysql', 'postgresql'],
-    ai: ['tensorflow', 'pytorch'],
-    hardware: ['arduino', 'raspberry-pi'],
-  };
+ 

@@ -25,6 +25,7 @@ const ProjectSubmissionForm = () => {
   const methods = useForm<ProjectSubmissionSchema>({
     resolver: zodResolver(projectSubmissionSchema),
     defaultValues: {
+        teamNumber: "",
       title: "",
       subtitle: "",
       problemStatement: "",
@@ -56,7 +57,7 @@ const ProjectSubmissionForm = () => {
 
   const handleNext = async () => {
     const stepFieldsMap = {
-      1: ["title", "subtitle", "problemStatement", "solution"],
+      1: ["teamNumber","title", "subtitle", "problemStatement", "solution"],
       2: ["coverImage", "demoVideo", "features"],
       3: ["techStack", "projectType", "projectStatus", "sdgGoals", "projectDomains"],
       4: ["externalLinks", "teamContact", "teamEmail", "teamPhone"],
