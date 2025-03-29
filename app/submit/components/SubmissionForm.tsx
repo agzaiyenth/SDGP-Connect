@@ -68,7 +68,7 @@ const ProjectSubmissionForm = () => {
     const isValid = await methods.trigger(fieldsToValidate as any);
     
     if (!isValid) {
-        toast("Check your inputs", {
+        toast.error("Check your inputs", {
             description: "Please ensure all required fields are filled out correctly.",
           })
       return;
