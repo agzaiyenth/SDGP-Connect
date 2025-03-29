@@ -25,7 +25,7 @@ const stats = [
 
 export default function ImpactStats() {
   return (
-    <section className="py-12 px-4 bg-card">
+    <section className="py-12 px-4 bg-dark text-white">
       <div className="container mx-auto">
         <h2 className="text-3xl font-bold text-center mb-12">Our Impact</h2>
 
@@ -36,7 +36,7 @@ export default function ImpactStats() {
                 <stat.icon className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-3xl font-bold mb-2">{stat.title}</h3>
-              <p className="text-muted-foreground">{stat.description}</p>
+              <p className="text-gray-300">{stat.description}</p>
             </div>
           ))}
         </div>
@@ -44,4 +44,6 @@ export default function ImpactStats() {
     </section>
   )
 }
+
+
 

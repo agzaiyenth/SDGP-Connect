@@ -1,3 +1,9 @@
+import lexi from "../public/LEXi/1.jpg"
+import lexi1 from "../public/LEXi/4.jpg"
+import lexi2 from "../public/LEXi/3.jpg"
+import lexi3 from "../public/LEXi/5.jpg"
+import lexi4 from "../public/LEXi/6.jpg"
+
 export const projects = [
     {
         id: "lexi",
@@ -14,16 +20,16 @@ export const projects = [
             "Voice & text-based interaction",
             "Integration with learning platforms",
         ],
-        techStack: ["React", "OpenAI API", "Node.js", "PostgreSQL", "TensorFlow"],
-        status: "In Development",
+        techStack: ["React", "OpenAI API", "Spring Boot", "MySQL"],
+        status: "MVP",
         domains: ["Education", "AI/ML"],
         sdgGoals: ["Quality Education", "Innovation"],
-        coverImage: "/placeholder.svg?height=600&width=800",
+        coverImage: lexi,
         gallery: [
-            "/placeholder.svg?height=600&width=800",
-            "/placeholder.svg?height=600&width=800",
-            "/placeholder.svg?height=600&width=800",
-            "/placeholder.svg?height=600&width=800",
+            lexi1,
+            lexi2,
+            lexi3, 
+            lexi4,
             "/placeholder.svg?height=600&width=800",
         ],
         featured: true,
