@@ -17,7 +17,7 @@ const FormStepper = ({ currentStep, totalSteps }: FormStepperProps) => {
   ];
 
   return (
-    <div className="mb-8">
+    <div className="mb-8 ">
       <div className="hidden md:flex justify-between">
         {steps.map((step, index) => {
           const stepNumber = index + 1;
@@ -25,7 +25,7 @@ const FormStepper = ({ currentStep, totalSteps }: FormStepperProps) => {
           const isCompleted = currentStep > stepNumber;
 
           return (
-            <div key={index} className="flex flex-col items-center w-1/5">
+            <div key={index} className="flex flex-col items-center w-1/5 ">
               <div
                 className={cn(
                   "relative flex h-10 w-10 items-center justify-center rounded-full border-2 font-semibold",

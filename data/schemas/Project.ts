@@ -31,7 +31,6 @@ export const projectSubmissionSchema = z.object({
   projectDomains: z.array(z.string()).min(1, "Select at least one domain"),
   externalLinks: externalLinksSchema,
   teamMembers: z.array(teamMemberSchema).min(1, "Add at least one team member"),
-  teamContact: z.string().min(1, "Team contact is required"),
   teamEmail: z.string().email("Must be a valid email").optional(),
   teamPhone: z.string().optional(),
   slideImages: z.array(z.any()).optional(),

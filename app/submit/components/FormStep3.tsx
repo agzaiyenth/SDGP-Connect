@@ -52,7 +52,7 @@ const FormStep3 = () => {
                 {/* Two Dropdowns in One Row */}
 
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                     {/* Tech Stack Dropdown */}
                     <FormField

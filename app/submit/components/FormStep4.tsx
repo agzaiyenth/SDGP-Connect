@@ -1,4 +1,3 @@
-
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useFormContext } from "react-hook-form";
@@ -40,46 +39,47 @@ const FormStep4 = () => {
           )}
         />
         
-        <FormField
-          control={control}
-          name="externalLinks.instagram"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="flex items-center gap-2">
-                <Instagram className="h-4 w-4" />
-                Instagram
-              </FormLabel>
-              <FormControl>
-                <Input 
-                  placeholder="https://instagram.com/yourproject" 
-                  {...field} 
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        <FormField
-          control={control}
-          name="externalLinks.facebook"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="flex items-center gap-2">
-                <Facebook className="h-4 w-4" />
-                Facebook
-              </FormLabel>
-              <FormControl>
-                <Input 
-                  placeholder="https://facebook.com/yourproject" 
-                  {...field} 
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField
+            control={control}
+            name="externalLinks.instagram"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="flex items-center gap-2">
+                  <Instagram className="h-4 w-4" />
+                  Instagram
+                </FormLabel>
+                <FormControl>
+                  <Input 
+                    placeholder="https://instagram.com/yourproject" 
+                    {...field} 
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="externalLinks.facebook"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="flex items-center gap-2">
+                  <Facebook className="h-4 w-4" />
+                  Facebook
+                </FormLabel>
+                <FormControl>
+                  <Input 
+                    placeholder="https://facebook.com/yourproject" 
+                    {...field} 
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField
           control={control}
           name="externalLinks.youtube"
@@ -119,6 +119,7 @@ const FormStep4 = () => {
             </FormItem>
           )}
         />
+        </div>
       </div>
       
       <div className="space-y-4 mt-8">
@@ -158,7 +159,7 @@ const FormStep4 = () => {
                 <FormControl>
                   <Input 
                     type="tel"
-                    placeholder="+1 (555) 123-4567" 
+                    placeholder="+94 77 123 4567" 
                     {...field} 
                   />
                 </FormControl>
@@ -169,7 +170,7 @@ const FormStep4 = () => {
         </div>
         
         <FormDescription>
-          This information will be used to contact your team about your project.
+          Team Email or a Personal Email.
         </FormDescription>
       </div>
     </div>
