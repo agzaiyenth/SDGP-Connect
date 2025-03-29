@@ -1,0 +1,18 @@
+export const projectDomainOptions = [
+    { value: "ai", label: "Artificial Intelligence" },
+    { value: "ml", label: "Machine Learning" },
+    { value: "ar-vr", label: "AR/VR" },
+    { value: "blockchain", label: "Blockchain" },
+    { value: "iot", label: "Internet of Things" },
+    { value: "healthtech", label: "HealthTech" },
+    { value: "fintech", label: "FinTech" },
+    { value: "edtech", label: "EdTech" },
+    { value: "agritech", label: "AgriTech" },
+    { value: "ecommerce", label: "E-Commerce" },
+    { value: "social", label: "Social Media" },
+    { value: "gaming", label: "Gaming" },
+    { value: "security", label: "Cybersecurity" },
+    { value: "data-analytics", label: "Data Analytics" },
+    { value: "entertainment", label: "Entertainment" },
+    { value: "sustainability", label: "Sustainability" },
+  ];

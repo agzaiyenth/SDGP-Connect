@@ -4,10 +4,11 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { projectDomainOptions, projectStatusOptions, sdgGoals } from "@/data/Project";
+import { projectDomainOptions } from "@/data/ProjectDomains";
+import { projectStatusOptions } from "@/data/ProjectStatus";
 import { projectTypeOptions } from "@/data/projectTypeOptions";
 import { ProjectSubmissionSchema } from "@/data/schemas/Project";
+import { sdgGoals } from "@/data/SDGoals";
 import { techStackOptions } from "@/data/techStack";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -16,15 +17,15 @@ import { useFormContext } from "react-hook-form";
 const FormStep3 = () => {
     const { control, watch } = useFormContext<ProjectSubmissionSchema>();
 
-    const [isTechStackOpen, setIsTechStackOpen] = useState(false);  
-  const [isProjectTypeOpen, setIsProjectTypeOpen] = useState(false);  
+    const [isTechStackOpen, setIsTechStackOpen] = useState(false);
+    const [isProjectTypeOpen, setIsProjectTypeOpen] = useState(false);
 
-  // Grouping tech stack options by their `type`
-  const groupedTechStackOptions = techStackOptions.reduce((groups, option) => {
-    if (!groups[option.type]) groups[option.type] = [];
-    groups[option.type].push(option);
-    return groups;
-  }, {});
+    // Grouping tech stack options by their `type`
+    const groupedTechStackOptions = techStackOptions.reduce((groups, option) => {
+        if (!groups[option.type]) groups[option.type] = [];
+        groups[option.type].push(option);
+        return groups;
+    }, {});
 
 
     return (
@@ -179,90 +180,90 @@ const FormStep3 = () => {
                 <FormField
                     control={control}
                     name="sdgGoals"
-                    render={() => (
+                    render={({ field }) => (
                         <FormItem>
                             <FormLabel>UN Sustainable Development Goals</FormLabel>
                             <FormDescription className="mb-2">
                                 Which SDGs does your project address? (Optional)
                             </FormDescription>
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                                {sdgGoals.map((goal) => (
-                                    <FormField
-                                        key={goal.id}
-                                        control={control}
-                                        name="sdgGoals"
-                                        render={({ field }) => {
-                                            const isSelected = field.value?.includes(goal.id);
-                                            return (
-                                                <div
-                                                    className={cn(
-                                                        "flex flex-col items-center p-3 rounded-lg border cursor-pointer transition-colors",
-                                                        isSelected
-                                                            ? "border-primary bg-primary/10"
-                                                            : "border-gray-200 hover:border-primary/50 dark:border-gray-700 dark:hover:border-primary/50"
-                                                    )}
-                                                    onClick={() => {
-                                                        const updatedValue = isSelected
-                                                            ? field.value?.filter((id) => id !== goal.id) || []
-                                                            : [...(field.value || []), goal.id];
-                                                        field.onChange(updatedValue);
-                                                    }}
-                                                >
-                                                    <div className="text-2xl mb-2">{goal.icon}</div>
-                                                    <div className="text-xs text-center font-medium">{goal.title}</div>
-                                                </div>
-                                            )
-                                        }}
-                                    />
-                                ))}
+                                {sdgGoals.map((goal) => {
+                                    const isSelected = field.value?.includes(goal.id);
+
+                                    return (
+                                        <div
+                                            key={goal.id}
+                                            className={cn(
+                                                "flex flex-col items-center p-3 rounded-lg border cursor-pointer transition-colors",
+                                                isSelected
+                                                    ? "border-primary bg-primary/10"
+                                                    : "border-gray-200 hover:border-primary/50 dark:border-gray-700 dark:hover:border-primary/50"
+                                            )}
+                                            onClick={() => {
+                                                const updatedValue = isSelected
+                                                    ? field.value?.filter((id) => id !== goal.id) || []
+                                                    : [...(field.value || []), goal.id];
+                                                field.onChange(updatedValue);
+                                            }}
+                                        >
+                                            <img
+                                                src={goal.icon}
+                                                alt={goal.name}
+                                                className="w-12 h-12 mb-2"
+                                            />
+                                            <div className="text-xs text-center font-medium">{goal.name}</div>
+                                            <p className="text-xs text-center text-gray-600 mt-1">
+                                                {goal.description.length > 50
+                                                    ? `${goal.description.substring(0, 50)}...`
+                                                    : goal.description}
+                                            </p>
+                                        </div>
+                                    );
+                                })}
                             </div>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
 
+
                 <FormField
                     control={control}
                     name="projectDomains"
-                    render={() => (
+                    render={({ field }) => (
                         <FormItem>
                             <FormLabel>Project Domains</FormLabel>
-                            <div className="mt-2">
+                            <div className="mt-2 relative">
                                 <Card>
                                     <CardContent className="p-4 pt-4">
                                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                                            {projectDomainOptions.map((option) => (
-                                                <FormField
-                                                    key={option.value}
-                                                    control={control}
-                                                    name="projectDomains"
-                                                    render={({ field }) => {
-                                                        const isSelected = field.value?.includes(option.value);
-                                                        return (
-                                                            <div
-                                                                className={cn(
-                                                                    "flex items-center p-3 rounded-lg border cursor-pointer transition-colors space-x-2",
-                                                                    isSelected
-                                                                        ? "border-primary bg-primary/10"
-                                                                        : "border-gray-200 hover:border-primary/50 dark:border-gray-700 dark:hover:border-primary/50"
-                                                                )}
-                                                                onClick={() => {
-                                                                    const updatedValue = isSelected
-                                                                        ? field.value?.filter((val) => val !== option.value) || []
-                                                                        : [...(field.value || []), option.value];
-                                                                    field.onChange(updatedValue);
-                                                                }}
-                                                            >
-                                                                <Checkbox
-                                                                    checked={isSelected}
-                                                                    className="pointer-events-none"
-                                                                />
-                                                                <span className="text-sm">{option.label}</span>
-                                                            </div>
-                                                        )
-                                                    }}
-                                                />
-                                            ))}
+                                            {projectDomainOptions.map((option) => {
+                                                const isSelected = field.value?.includes(option.value) || false;
+
+                                                return (
+                                                    <div
+                                                        key={option.value}
+                                                        className={cn(
+                                                            "flex items-center p-3 rounded-lg border cursor-pointer transition-colors space-x-2",
+                                                            isSelected
+                                                                ? "border-primary bg-primary/10"
+                                                                : "border-gray-200 hover:border-primary/50 dark:border-gray-700 dark:hover:border-primary/50"
+                                                        )}
+                                                    >
+                                                        <Checkbox
+                                                            checked={isSelected}
+                                                            onCheckedChange={(checked) => {
+                                                                const updatedValue = checked
+                                                                    ? [...(field.value || []), option.value]
+                                                                    : (field.value || []).filter((val) => val !== option.value);
+
+                                                                field.onChange(updatedValue);
+                                                            }}
+                                                        />
+                                                        <span className="text-sm">{option.label}</span>
+                                                    </div>
+                                                );
+                                            })}
                                         </div>
                                     </CardContent>
                                 </Card>
@@ -274,6 +275,7 @@ const FormStep3 = () => {
                         </FormItem>
                     )}
                 />
+
             </div>
         </div>
     );

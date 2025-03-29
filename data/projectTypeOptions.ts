@@ -1,6 +1,7 @@
-import { FaMobileAlt, FaDesktop, FaServer, FaTools, FaGlobe } from "react-icons/fa"; 
+import { ProjectType } from "@/types/Project";
+import { FaDesktop, FaGlobe, FaMobileAlt, FaTools } from "react-icons/fa";
 
-export const projectTypeOptions = [
+export const projectTypeOptions:ProjectType[] = [
   { value: "mobile", label: "Mobile App", icon: FaMobileAlt },
   { value: "web", label: "Web Application", icon: FaGlobe },
   { value: "hardware", label: "Hardware", icon: FaTools },

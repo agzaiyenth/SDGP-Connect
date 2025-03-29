@@ -6,7 +6,9 @@ import {
   } from "react-icons/si";
   import { FaAws } from "react-icons/fa";
   import { DiJava, DiReact } from "react-icons/di";
-  export const techStackOptions = [
+import { TechStackItem } from "@/types/Project";
+
+export const techStackOptions: TechStackItem[] = [
     { value: "react", label: "React", type: "frontend", icon: SiReact },
     { value: "angular", label: "Angular", type: "frontend", icon: SiAngular },
     { value: "vue", label: "Vue.js", type: "frontend", icon: SiVuedotjs },
@@ -19,7 +21,7 @@ import {
     { value: "dotnet", label: ".NET", type: "backend", icon: SiDotnet },
     { value: "php", label: "PHP", type: "backend", icon: SiPhp },
     { value: "laravel", label: "Laravel", type: "backend", icon: SiLaravel },
-    { value: "android", label: "Android", type: "mobile", icon: SiAndroid },
+    { value: "android", label: "Android", type: "frontend", icon: SiAndroid },
     { value: "ios", label: "iOS", type: "mobile", icon: SiIos },
     { value: "flutter", label: "Flutter", type: "mobile", icon: SiFlutter },
     { value: "react-native", label: "React Native", type: "mobile", icon: DiReact },
