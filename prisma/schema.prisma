@@ -1,0 +1,183 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ===================== Database Versioning Model =====================
+
+/// Tracks the versions of the database for major migrations or updates.
+model DatabaseVersion {
+  id            String   @id @default(uuid())
+  version       String   @unique   
+  description   String?           
+  applied_at    DateTime @default(now())
+  successful    Boolean  @default(true)  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+
+// ===================== Enums =====================
+
+// Defines the roles users can have within the platform.
+enum Role {
+  ADMIN
+  MODERATOR
+  REVIEWER
+}
+
+// Defines the association types that can be linked to projects.
+enum AssociationType {
+  PROJECT_TYPE
+  PROJECT_DOMAIN
+  PROJECT_SDG
+  PROJECT_TECH
+}
+
+// Defines the different status states a project can be in.
+enum ProjectStatusEnum {
+  IDEA
+  MVP
+  DEPLOYED
+  STARTUP
+}
+
+// ===================== Models =====================
+
+// Represents users of the platform with specific roles.
+model User {
+  user_id           String            @id @default(uuid())
+  role              Role
+  password          String
+  name              String
+  approvedProjects  ProjectStatus[]   @relation("ApprovedBy")
+  featuredProjects  ProjectMetadata[] @relation("FeaturedBy")
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  @@index([user_id], name: "user_id_index")
+}
+
+// Stores the basic metadata of projects. Used for quick loading of project information without details.
+model ProjectMetadata {
+  project_id         String           @id @default(uuid())
+  sdgp_year          String
+  group_num          String
+  title              String
+  subtitle           String?
+  cover_image        String?
+  logo               String?
+  featured           Boolean          @default(false)
+  featured_by_userId String?
+  featured_by        User?            @relation("FeaturedBy", fields: [featured_by_userId], references: [user_id], onDelete: SetNull)
+  // One-to-one relation with extended content, using explicit relation name
+  projectContent     ProjectContent?  @relation("ProjectMetadataContent")
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  @@index([project_id], name: "project_id_index")
+  @@index([featured_by_userId], name: "featured_by_index")
+}
+
+// Stores the detailed content of projects. This is separated from metadata for efficient fetching.
+model ProjectContent {
+  content_id     String               @id @default(uuid())
+  project_id     String @unique      // Must be unique for the one-to-one relation with ProjectMetadata
+  projectDetails ProjectDetails?     // Contains problem statement, solution, etc.
+  status         ProjectStatus?      @relation("ProjectStatusToContent") // Stores approval status and approval user reference
+  associations   ProjectAssociation[]  // Types, domains, SDGs, technologies
+  slides         ProjectSlide[]      // Slide contents for the project
+  team           ProjectTeam[]       // Team members working on the project
+  socialLinks    ProjectSocialLink[] // Links to social profiles or external resources
+  project        ProjectMetadata     @relation("ProjectMetadataContent", fields: [project_id], references: [project_id], onDelete: Restrict)
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  @@index([project_id], name: "project_content_index")
+}
+
+// Tracks the status of a project and which user approved it.
+model ProjectStatus {
+  content_id          String          @id // Matches ProjectContent's primary key
+  status              ProjectStatusEnum
+  approved            Boolean         @default(false)
+  approved_by_userId  String?
+  approved_by         User?           @relation("ApprovedBy", fields: [approved_by_userId], references: [user_id], onDelete: SetNull)
+  project             ProjectContent  @relation("ProjectStatusToContent", fields: [content_id], references: [content_id], onDelete: Restrict)
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+
+  @@index([approved_by_userId], name: "approved_by_index")
+}
+
+// Allows linking projects to various categories (type, domain, SDG, tech).
+model ProjectAssociation {
+  id          String           @id @default(uuid())
+  project_id  String
+  type        AssociationType  // Specifies the type of association
+  value       String           // The actual value (e.g., name of tech, domain, etc.)
+  project     ProjectContent   @relation(fields: [project_id], references: [content_id], onDelete: Restrict)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([project_id], name: "project_association_index")
+}
+
+// Stores individual slides related to a project.
+model ProjectSlide {
+  id             String           @id @default(uuid())
+  project_id     String
+  slides_content String            // Slide content as plain text or markdown
+  project        ProjectContent    @relation(fields: [project_id], references: [content_id], onDelete: Restrict)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  @@index([project_id], name: "project_slide_index")
+}
+
+// Represents team members working on a project.
+model ProjectTeam {
+  member_id     String           @id @default(uuid())
+  project_id    String
+  name          String
+  linkedin_url  String?
+  profile_image String?
+  project       ProjectContent   @relation(fields: [project_id], references: [content_id], onDelete: Restrict)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@index([project_id], name: "project_team_index")
+}
+
+// Links to external resources or social profiles for projects.
+model ProjectSocialLink {
+  id          String           @id @default(uuid())
+  project_id  String
+  link_name   String           // Name of the social link (e.g., "GitHub", "Website")
+  url         String           // URL to the external resource
+  project     ProjectContent    @relation(fields: [project_id], references: [content_id], onDelete: Restrict)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([project_id], name: "project_social_index")
+}
+
+// Contains detailed project descriptions such as problem statement, solution, etc.
+model ProjectDetails {
+  id                String           @id @default(uuid())
+  project_id        String           @unique // Ensures one-to-one relationship with ProjectContent
+  problem_statement String
+  solution          String
+  features          String
+  team_email        String
+  team_phone        String
+  project           ProjectContent   @relation(fields: [project_id], references: [content_id], onDelete: Restrict)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  @@index([project_id], name: "project_details_index")
+}
