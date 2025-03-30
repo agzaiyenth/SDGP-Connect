@@ -30,7 +30,7 @@ const FormStep4 = () => {
               </FormLabel>
               <FormControl>
                 <Input 
-                  placeholder="https://yourproject.com" 
+                  placeholder="https://www.lexi.lk" 
                   {...field} 
                 />
               </FormControl>
@@ -51,7 +51,7 @@ const FormStep4 = () => {
                 </FormLabel>
                 <FormControl>
                   <Input 
-                    placeholder="https://instagram.com/yourproject" 
+                    placeholder="https://instagram.com/lexi" 
                     {...field} 
                   />
                 </FormControl>
@@ -70,7 +70,7 @@ const FormStep4 = () => {
                 </FormLabel>
                 <FormControl>
                   <Input 
-                    placeholder="https://facebook.com/yourproject" 
+                    placeholder="https://facebook.com/lexi" 
                     {...field} 
                   />
                 </FormControl>
@@ -91,7 +91,7 @@ const FormStep4 = () => {
               </FormLabel>
               <FormControl>
                 <Input 
-                  placeholder="https://youtube.com/channel/yourproject" 
+                  placeholder="https://youtube.com/channel/lexi" 
                   {...field} 
                 />
               </FormControl>
@@ -111,7 +111,7 @@ const FormStep4 = () => {
               </FormLabel>
               <FormControl>
                 <Input 
-                  placeholder="https://linkedin.com/company/yourproject" 
+                  placeholder="https://linkedin.com/company/lexi" 
                   {...field} 
                 />
               </FormControl>
@@ -138,7 +138,7 @@ const FormStep4 = () => {
                 <FormControl>
                   <Input 
                     type="email"
-                    placeholder="team@yourproject.com" 
+                    placeholder="team@lexi.lk" 
                     {...field} 
                   />
                 </FormControl>
@@ -159,7 +159,7 @@ const FormStep4 = () => {
                 <FormControl>
                   <Input 
                     type="tel"
-                    placeholder="+94 77 123 4567" 
+                    placeholder="+94 76 686 7362" 
                     {...field} 
                   />
                 </FormControl>
