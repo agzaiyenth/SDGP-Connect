@@ -11,7 +11,7 @@ import { ProjectSubmissionSchema } from "@/data/schemas/Project";
 import { sdgGoals } from "@/data/SDGoals";
 import { techStackOptions } from "@/data/techStack";
 import { cn } from "@/lib/utils";
-import { StackType, TechStackItem } from "@/types/ss";
+import { StackType, TechStackItem } from "@/types/project";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 
