@@ -1,4 +1,4 @@
-// To be deleted after conecting DB
+// To be deleted after connecting DB
 export const projectStatusOptions = [
     { value: "idea", label: "Idea" },
     { value: "mvp", label: "MVP" },
