@@ -1,4 +1,4 @@
-import { ProjectType } from "@/types/Project";
+import { ProjectType } from "@/types/project";
 import { FaDesktop, FaGlobe, FaMobileAlt, FaTools } from "react-icons/fa";
 
 export const projectTypeOptions:ProjectType[] = [

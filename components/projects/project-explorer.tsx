@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { projects } from "../../lib/data"
+import { projects } from "../../data/sampleProjects"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 
