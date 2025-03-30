@@ -2,6 +2,26 @@
 
 SDGP Connect is a full-stack web application built with Next.js 14, using the App Router, Tailwind CSS, and TypeScript. It provides a platform to explore and showcase SDGP (Software Development Group Project) initiatives, following a Netflix-style UI.
 
+---
+# Coding Standards
+
+## Branch Naming Convention
+When creating a new branch, follow this pattern:
+```
+type/location/name
+
+Types:
+- feature    (new additions)
+- fix        (fixing issues)
+- improvement (enhancing existing features)
+
+
+Example:
+feature/product-showcase
+bug/login-form
+improvement/home-page
+```
+
 ## Features
 
 ### Core Pages
