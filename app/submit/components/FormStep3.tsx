@@ -9,7 +9,7 @@ import { projectStatusOptions } from "@/data/delete_after_db/ProjectStatus";
 import { projectTypeOptions } from "@/data/delete_after_db/projectTypeOptions";
 import { ProjectSubmissionSchema } from "@/data/schemas/Project";
 import { sdgGoals } from "@/data/delete_after_db/SDGoals";
-import { techStackOptions } from "@/data/techStack";
+import { techStackOptions } from "@/data/delete_after_db/techStack";
 import { cn } from "@/lib/utils";
 import { StackType, TechStackItem } from "@/types/project";
 import { useState } from "react";
