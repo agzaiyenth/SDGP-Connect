@@ -1,4 +1,4 @@
-import { SDGGoal } from "@/types/project";
+import { SDGGoal } from "@/types/ss";
 
 
 export const sdgGoals: SDGGoal[] = [
