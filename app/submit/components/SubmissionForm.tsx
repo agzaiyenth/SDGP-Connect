@@ -6,7 +6,7 @@ import FormStepper from "./FormStepper";
 import { Button } from "@/components/ui/button";
 import { FormProvider, useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { projectSubmissionSchema, ProjectSubmissionSchema } from "@/data/schemas/Project";
+import { projectSubmissionSchema, ProjectSubmissionSchema } from "@/validations/submit_project";
 import SuccessPage from "./SuccessPage";
 import FormStep1 from "./FormStep1";
 import FormStep2 from "./FormStep2";

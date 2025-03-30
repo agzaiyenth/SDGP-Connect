@@ -7,7 +7,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { projectDomainOptions } from "@/data/delete_after_db/ProjectDomains";
 import { projectStatusOptions } from "@/data/delete_after_db/ProjectStatus";
 import { projectTypeOptions } from "@/data/delete_after_db/projectTypeOptions";
-import { ProjectSubmissionSchema } from "@/data/schemas/Project";
+import { ProjectSubmissionSchema } from "@/validations/submit_project";
 import { sdgGoals } from "@/data/delete_after_db/SDGoals";
 import { techStackOptions } from "@/data/delete_after_db/techStack";
 import { cn } from "@/lib/utils";
