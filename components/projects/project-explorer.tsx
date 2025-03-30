@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { projects } from "../../data/sampleProjects"
+import { projects } from "../../data/delete_after_db/sampleProjects"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 
