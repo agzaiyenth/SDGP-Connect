@@ -113,43 +113,7 @@ const FormStep1 = () => {
         )}
       />
       
-      {/* Problem Statement */}
-      <FormField
-        control={control}
-        name="projectDetails.problem_statement"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Problem Statement</FormLabel>
-            <FormControl>
-              <Textarea
-                placeholder="Describe the problem your project aims to solve..."
-                className="resize-none min-h-[100px]"
-                {...field}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      
-      {/* Solution */}
-      <FormField
-        control={control}
-        name="projectDetails.solution"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Solution</FormLabel>
-            <FormControl>
-              <Textarea
-                placeholder="Describe your proposed solution..."
-                className="resize-none min-h-[100px]"
-                {...field}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+   
 
       {/* Row 4: Logo & Cover Image */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
