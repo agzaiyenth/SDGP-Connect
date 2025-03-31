@@ -9,9 +9,9 @@ interface FormStepperProps {
 
 const FormStepper = ({ currentStep, totalSteps }: FormStepperProps) => {
   const steps = [
-    { label: "Project Meta Data", description: "What’s it called?" },
-    { label: "Project Details", description: "What’s it about?" },
-    { label: "Project Media", description: "Where does it fit?" },
+    { label: "Meta Data", description: "What’s it called?" },
+    { label: "Details", description: "What’s it about?" },
+    { label: "Classification", description: "Where does it fit?" },
     { label: "Team", description: "Who built it?" },
     { label: "Contact", description: "Where to find it?" },
     
