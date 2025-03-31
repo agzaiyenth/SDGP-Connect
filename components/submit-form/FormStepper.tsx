@@ -12,8 +12,8 @@ const FormStepper = ({ currentStep, totalSteps }: FormStepperProps) => {
     { label: "Meta Data", description: "What’s it called?" },
     { label: "Details", description: "What’s it about?" },
     { label: "Classification", description: "Where does it fit?" },
-    { label: "Team", description: "Who built it?" },
     { label: "Contact", description: "Where to find it?" },
+    { label: "Team", description: "Who built it?" },
     
   ];
 

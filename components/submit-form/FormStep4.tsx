@@ -35,7 +35,7 @@ const FormStep4 = () => {
             <FormControl>
               <Input
                 type="email"
-                placeholder="team@example.com"
+                placeholder="info@lexi.lk"
                 {...field}
               />
             </FormControl>
@@ -50,12 +50,13 @@ const FormStep4 = () => {
         name="projectDetails.team_phone"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Team Phone (optional)</FormLabel>
+            <FormLabel>Team Phone (or primary Contact)</FormLabel>
             <FormControl>
               <Input
                 type="tel"
                 placeholder="+94XXXXXXXXX"
                 {...field}
+                value={field.value || ""} // Ensure value is a string
               />
             </FormControl>
             <FormMessage />
@@ -90,7 +91,7 @@ const FormStep4 = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="Name (e.g., GitHub)" {...field} />
+                      <Input placeholder="Name (e.g., linkedin)" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -102,7 +103,7 @@ const FormStep4 = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="URL (e.g., https://github.com/...)" {...field} />
+                      <Input placeholder="URL (e.g., https://linkedin.com/...)" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
