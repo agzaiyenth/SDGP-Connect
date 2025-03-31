@@ -106,7 +106,7 @@ const FormStep1 = () => {
           <FormItem>
             <FormLabel>Subtitle</FormLabel>
             <FormControl>
-              <Input placeholder="Subtitle (e.g., An AI-powered platform for Dyslexic Students)" {...field} />
+              <Input placeholder="Subtitle (e.g., An AI-powered platform for Dyslexic Students)" {...field} value={field.value || ""} />
             </FormControl>
             <FormMessage />
           </FormItem>

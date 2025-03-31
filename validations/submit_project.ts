@@ -25,7 +25,7 @@ export const projectSubmissionSchema = z.object({
     sdgp_year: z.string().min(1, "Year is required"),
     group_num: z.string().min(1, "Team number is required"),
     title: z.string().min(1, "Title is required").max(100),
-    subtitle: z.string().min(1, "Subtitle is required").max(200),
+    subtitle: z.string().optional().nullable(),
     cover_image: z.any().optional().nullable(),
     logo: z.any().optional().nullable(),
   }),
