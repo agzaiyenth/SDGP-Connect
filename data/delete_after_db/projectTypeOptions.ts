@@ -1,4 +1,3 @@
-import { ProjectType } from "@/types/project";
 import { FaDesktop, FaGlobe, FaMobileAlt, FaTools } from "react-icons/fa";
 // Delete after connecting DB
 

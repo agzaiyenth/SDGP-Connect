@@ -65,7 +65,7 @@ const FormStep2 = () => {
                         className="flex flex-col items-center justify-center border-2 border-dashed border-zinc-300 rounded-full h-36 w-36 mx-auto cursor-pointer dark:border-zinc-600"
                       >
                         <Upload className="h-10 w-10 text-zinc-400 mb-2" />
-                        <input
+                        <Input
                           type="file"
                           accept="image/*"
                           onChange={(e) => handleImageUpload(e, "appLogo")}

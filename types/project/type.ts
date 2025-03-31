@@ -1,4 +1,5 @@
 import { AssociationType, ProjectDomainEnum, ProjectStatusEnum, ProjectTypeEnum, SDGGoalEnum, TechStackEnum } from "@prisma/client";
+import { IconType } from "react-icons/lib";
 
 export interface IProject {
     metadata: IProjectMetadata;
@@ -93,3 +94,10 @@ export interface IProject {
   }
   
   export type StackType = "frontend" | "backend" | "mobile" | "cloud" | "database" | "ai" | "hardware" ;
+
+  export type TechStackItem = {
+    value: string;
+    label: string;
+    type: StackType;
+    icon?: IconType;
+  };

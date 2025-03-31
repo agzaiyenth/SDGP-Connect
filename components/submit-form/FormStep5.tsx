@@ -162,7 +162,7 @@ const FormStep5 = () => {
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Drag and drop your slides here or click to browse</p>
                   <p className="text-xs text-gray-500 dark:text-gray-500">PNG, JPG, GIF - Up to {MAX_SLIDES} files</p>
                 </div>
-                <input type="file" accept="image/*" multiple onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                <Input type="file" accept="image/*" multiple onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
               </div>
             )}
 

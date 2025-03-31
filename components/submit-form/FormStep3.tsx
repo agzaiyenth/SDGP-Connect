@@ -11,9 +11,9 @@ import { ProjectSubmissionSchema } from "@/validations/submit_project";
 import { sdgGoals } from "@/data/delete_after_db/SDGoals";
 import { techStackOptions } from "@/data/delete_after_db/techStack";
 import { cn } from "@/lib/utils";
-import { StackType, TechStackItem } from "@/types/project";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
+import { StackType, TechStackItem } from "@/types/project/type";
 
 const FormStep3 = () => {
   const { control, watch } = useFormContext<ProjectSubmissionSchema>();
@@ -26,8 +26,9 @@ const FormStep3 = () => {
     [key in StackType]?: TechStackItem[];
   };
   const groupedTechStackOptions: GroupedTechStackOptions = techStackOptions.reduce<GroupedTechStackOptions>((groups, option) => {
-    if (!groups[option.type]) groups[option.type] = [];
-    groups[option.type]?.push(option);
+    const groupKey = option.type as StackType; 
+    if (!groups[groupKey]) groups[groupKey] = [];
+    groups[groupKey]?.push(option);
     return groups;
   }, {});
 
@@ -70,29 +71,32 @@ const FormStep3 = () => {
 
                 {isTechStackOpen && (
                   <div className="absolute z-10 mt-2 w-full bg-white border border-gray-700 rounded-lg shadow-lg dark:bg-background max-h-64 overflow-y-auto">
-                    {Object.keys(groupedTechStackOptions).map((group) => (
-                      <div key={group} className="border-b border-gray-700 p-2">
-                        <div className="font-semibold text-gray-700 dark:text-white mb-1">{group.toUpperCase()}</div>
-                        {groupedTechStackOptions[group].map(option => {
-                          const isSelected = field.value?.includes(option.value) || false;
-                          return (
-                            <div key={option.value} className="flex items-center space-x-2 mb-2 pl-4">
-                              <Checkbox
-                                checked={isSelected}
-                                onCheckedChange={(checked) => {
-                                  const updatedValue = checked
-                                    ? [...(field.value || []), option.value]
-                                    : (field.value || []).filter((val) => val !== option.value);
-                                  field.onChange(updatedValue);
-                                }}
-                              />
-                              <option.icon size={20} className="mr-2" />
-                              <label className="text-sm text-gray-700 dark:text-white">{option.label}</label>
-                            </div>
-                          )
-                        })}
-                      </div>
-                    ))}
+                    {Object.keys(groupedTechStackOptions).map((group) => {
+                      const groupKey = group as StackType; // Cast group to StackType
+                      return (
+                        <div key={groupKey} className="border-b border-gray-700 p-2">
+                          <div className="font-semibold text-gray-700 dark:text-white mb-1">{groupKey.toUpperCase()}</div>
+                          {groupedTechStackOptions[groupKey]?.map(option => {
+                            const isSelected = field.value?.includes(option.value) || false;
+                            return (
+                              <div key={option.value} className="flex items-center space-x-2 mb-2 pl-4">
+                                <Checkbox
+                                  checked={isSelected}
+                                  onCheckedChange={(checked) => {
+                                    const updatedValue = checked
+                                      ? [...(field.value || []), option.value]
+                                      : (field.value || []).filter((val) => val !== option.value);
+                                    field.onChange(updatedValue);
+                                  }}
+                                />
+                                {option.icon && <option.icon size={20} className="mr-2" />}
+                                <label className="text-sm text-gray-700 dark:text-white">{option.label}</label>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>
@@ -135,7 +139,7 @@ const FormStep3 = () => {
                               field.onChange(updatedValue);
                             }}
                           />
-                          <option.icon size={20} className="mr-2" />
+                          {option.icon && <option.icon size={20} className="mr-2" />}
                           <label className="text-sm text-gray-700 dark:text-white">{option.label}</label>
                         </div>
                       )
