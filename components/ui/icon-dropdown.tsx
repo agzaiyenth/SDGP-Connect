@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { IconType } from "react-icons/lib";
@@ -32,10 +32,14 @@ export const IconDropdown: React.FC<IconDropdownProps> = ({
   className,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleDropdownBlur = () => {
-    // Use a timeout to prevent race conditions with click events
-    setTimeout(() => setIsOpen(false), 150);
+  const handleDropdownBlur = (e: React.FocusEvent) => {
+    // Only close if the focus is moving outside the dropdown container
+    if (!dropdownRef.current?.contains(e.relatedTarget as Node)) {
+      // Use a timeout to prevent race conditions with click events
+      setTimeout(() => setIsOpen(false), 150);
+    }
   };
 
   const handleOptionClick = (e: React.MouseEvent, value: string) => {
@@ -82,7 +86,12 @@ export const IconDropdown: React.FC<IconDropdownProps> = ({
   };
 
   return (
-    <div className={cn("relative mt-2", className)}>
+    <div 
+      ref={dropdownRef}
+      className={cn("relative mt-2", className)} 
+      onBlur={handleDropdownBlur}
+      tabIndex={-1} // Makes the div focusable
+    >
       <button
         type="button"
         onClick={(e) => {
@@ -90,7 +99,6 @@ export const IconDropdown: React.FC<IconDropdownProps> = ({
           e.stopPropagation();
           setIsOpen(!isOpen);
         }}
-        onBlur={handleDropdownBlur}
         className="w-full border border-gray-700 rounded-lg p-2 text-left bg-white dark:bg-background"
       >
         {selectedValues?.length > 0

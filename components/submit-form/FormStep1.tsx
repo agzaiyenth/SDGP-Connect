@@ -91,7 +91,7 @@ const FormStep1 = () => {
           <FormItem>
             <FormLabel>Title</FormLabel>
             <FormControl>
-              <Input placeholder="Project Title" {...field} />
+              <Input placeholder="Ex: LEXi" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
