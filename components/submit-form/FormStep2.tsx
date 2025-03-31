@@ -156,11 +156,11 @@ const FormStep2 = () => {
         name="slides"
         render={() => (
           <FormItem>
-            <FormLabel>Slide Deck</FormLabel>
+            <FormLabel>Featured Images</FormLabel>
             <div className="relative mt-4 p-6 border-2 border-dashed border-gray-300 rounded-xl w-full cursor-pointer hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800 transition-all duration-200">
               <div className="flex flex-col items-center justify-center space-y-2 text-center">
                 <Upload className="h-10 w-10 text-primary mb-2" />
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Drag and drop your slides here or click to browse</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Drag and drop your Featured Images here or click to browse</p>
                 <p className="text-xs text-gray-500 dark:text-gray-500">PNG, JPG, GIF - Up to {MAX_SLIDES} files</p>
                 <Input type="file" accept="image/*" multiple onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
               </div>
