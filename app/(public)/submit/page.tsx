@@ -1,5 +1,5 @@
 import React from 'react'
-import ProjectSubmissionForm from './components/SubmissionForm'
+import ProjectSubmissionForm from '../../../components/submit-form/SubmissionForm'
 
 interface Props {
     

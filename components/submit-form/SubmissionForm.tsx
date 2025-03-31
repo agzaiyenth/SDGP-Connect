@@ -1,4 +1,3 @@
-
 'use client'
 import { useState } from "react";
 
@@ -25,53 +24,57 @@ const ProjectSubmissionForm = () => {
   const methods = useForm<ProjectSubmissionSchema>({
     resolver: zodResolver(projectSubmissionSchema),
     defaultValues: {
-        teamNumber: "",
-      title: "",
-      subtitle: "",
-      problemStatement: "",
-      solution: "",
-      features: "",
-      projectType: [],
-      projectStatus: "idea",
-      sdgGoals: [],
-      projectDomains: [],
-      externalLinks: {
-        website: "",
-        instagram: "",
-        facebook: "",
-        youtube: "",
-        linkedin: "",
+      metadata: {
+        sdgp_year: "",
+        group_num: "",
+        title: "",
+        subtitle: "",
+        cover_image: null,
+        logo: null,
       },
-      teamMembers: [{ name: "", linkedinUrl: "", profileImage: null }],
-      teamContact: "",
-      teamEmail: "",
-      teamPhone: "",
-      coverImage: null,
-      appLogo: null,
-      demoVideo: "",
+      projectDetails: {
+        problem_statement: "",
+        solution: "",
+        features: "",
+        team_email: "",
+        team_phone: "",
+      },
+      status: {
+        status: "IDEA", // Default status
+      },
+      domains: [],
+      projectTypes: [],
+      sdgGoals: [],
       techStack: [],
-      slideImages: [],
+      team: [{ name: "", linkedin_url: "", profile_image: null }],
+      socialLinks: [],
+      slides: []
     },
-    mode: "onChange",
+    mode: "onBlur",
   });
 
   const handleNext = async () => {
     const stepFieldsMap = {
-      1: ["teamNumber","title", "subtitle", "problemStatement", "solution"],
-      2: ["coverImage", "demoVideo", "features"],
-      3: ["techStack", "projectType", "projectStatus", "sdgGoals", "projectDomains"],
-      4: ["externalLinks", "teamContact", "teamEmail", "teamPhone"],
-      5: ["teamMembers", "slideImages"],
+      1: ["metadata.group_num", "metadata.sdgp_year", "metadata.title", "metadata.subtitle"],
+      2: ["projectDetails.problem_statement", "projectDetails.solution", "projectDetails.features", "slides"],
+      3: ["techStack", "projectTypes", "status.status", "sdgGoals", "domains"],
+      4: ["socialLinks", "projectDetails.team_email", "projectDetails.team_phone"],
+      5: ["team"],
     };
 
     const fieldsToValidate = stepFieldsMap[currentStep as keyof typeof stepFieldsMap];
     
-    const isValid = await methods.trigger(fieldsToValidate as any);
+    // Trigger validation for all fields in the current step
+    const results = await Promise.all(
+      fieldsToValidate.map(field => methods.trigger(field as any))
+    );
+    
+    const isValid = results.every(result => result === true);
     
     if (!isValid) {
-        toast.error("Check your inputs", {
-            description: "Please ensure all required fields are filled out correctly.",
-          })
+      toast.error("Check your inputs", {
+        description: "Please ensure all required fields are filled out correctly.",
+      });
       return;
     }
 

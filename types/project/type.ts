@@ -1,4 +1,5 @@
 import { AssociationType, ProjectDomainEnum, ProjectStatusEnum, ProjectTypeEnum, SDGGoalEnum, TechStackEnum } from "@prisma/client";
+import { IconType } from "react-icons/lib";
 
 export interface IProject {
     metadata: IProjectMetadata;
@@ -14,8 +15,8 @@ export interface IProject {
     logo?: string;
     featured: boolean;
     featured_by_userId?: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
   }
   
   export interface IProjectContent {
@@ -27,8 +28,8 @@ export interface IProject {
     slides: IProjectSlide[];
     team: IProjectTeam[];
     socialLinks: IProjectSocialLink[];
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
   }
   
   export interface IProjectDetails {
@@ -39,8 +40,8 @@ export interface IProject {
     features: string;
     team_email: string;
     team_phone: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
   }
   
   export interface IProjectStatus {
@@ -48,8 +49,8 @@ export interface IProject {
     status: ProjectStatusEnum;
     approved: boolean;
     approved_by_userId?: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
   }
   
   export interface IProjectAssociation {
@@ -61,16 +62,16 @@ export interface IProject {
     projectType?: ProjectTypeEnum,  
     sdgGoal?:    SDGGoalEnum,
     techStack?:  TechStackEnum,
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
   }
   
   export interface IProjectSlide {
     id: string;
     project_id: string;
     slides_content: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
   }
   
   export interface IProjectTeam {
@@ -79,8 +80,8 @@ export interface IProject {
     name: string;
     linkedin_url?: string;
     profile_image?: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
   }
   
   export interface IProjectSocialLink {
@@ -88,8 +89,15 @@ export interface IProject {
     project_id: string;
     link_name: string;
     url: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
   }
   
   export type StackType = "frontend" | "backend" | "mobile" | "cloud" | "database" | "ai" | "hardware" ;
+
+  export type TechStackItem = {
+    value: string;
+    label: string;
+    type: StackType;
+    icon?: IconType;
+  };

@@ -1,9 +1,9 @@
 import React from 'react'
 import { Suspense } from "react"
-import ProjectExplorer from "../../components/projects/project-explorer"
-import FilterSidebar from "../../components/projects/filter-sidebar"
-import SearchHeader from "../../components/projects/search-header"
-import { Skeleton } from "../../components/ui/skeleton"
+import ProjectExplorer from "../../../components/projects/project-explorer"
+import FilterSidebar from "../../../components/projects/filter-sidebar"
+import SearchHeader from "../../../components/projects/search-header"
+import { Skeleton } from "../../../components/ui/skeleton"
 interface Props {
     // right now we are not taking any props,but after connecting prisma we have to pass the data from the server to the client
 }
