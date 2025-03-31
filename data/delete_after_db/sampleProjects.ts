@@ -1,9 +1,9 @@
 // To be deleted after connecting DB
-import lexi from "../public/LEXi/1.jpg"
-import lexi1 from "../public/LEXi/4.jpg"
-import lexi2 from "../public/LEXi/3.jpg"
-import lexi3 from "../public/LEXi/5.jpg"
-import lexi4 from "../public/LEXi/6.jpg"
+import lexi from "../../public/LEXi/1.jpg"
+import lexi1 from "../../public/LEXi/4.jpg"
+import lexi2 from "../../public/LEXi/3.jpg"
+import lexi3 from "../../public/LEXi/5.jpg"
+import lexi4 from "../../public/LEXi/6.jpg"
 
 export const projects = [
     {
