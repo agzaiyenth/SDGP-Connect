@@ -6,7 +6,7 @@ import { useFormContext, useFieldArray } from "react-hook-form";
 import { PlusCircle, Upload, UserCircle, X } from "lucide-react";
 import { useState } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { ProjectSubmissionSchema } from "@/validations/submit_project";
+import { ProjectSubmissionSchema } from "@/validations/formvalidations";
 import { toast } from "sonner";
 
 const MAX_SLIDES = 10;

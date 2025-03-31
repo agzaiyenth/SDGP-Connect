@@ -2,7 +2,7 @@ import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessa
 import { Input } from "@/components/ui/input";
 import { useFormContext } from "react-hook-form";
 import { Facebook, Instagram, Linkedin, Smartphone, Youtube, Globe, Mail } from "lucide-react";
-import { ProjectSubmissionSchema } from "@/validations/submit_project";
+import { ProjectSubmissionSchema } from "@/validations/formvalidations";
 
 const FormStep4 = () => {
   const { control } = useFormContext<ProjectSubmissionSchema>();
