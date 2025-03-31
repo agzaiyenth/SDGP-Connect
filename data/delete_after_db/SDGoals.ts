@@ -1,7 +1,6 @@
-import { SDGGoal } from "@/types/Project";
 
 
-export const sdgGoals: SDGGoal[] = [
+export const sdgGoals = [
   {
     id: 1,
     name: "No Poverty",

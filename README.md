@@ -1,8 +1,81 @@
-# SDGP Connect
+# SDGP Connect - Project Setup Guide
 
-SDGP Connect is a full-stack web application built with Next.js 14, using the App Router, Tailwind CSS, and TypeScript. It provides a platform to explore and showcase SDGP (Software Development Group Project) initiatives, following a Netflix-style UI.
+Welcome to the SDGP Connect project! Follow these instructions to set up the project on your local machine. This guide is intended to help newcomers get started quickly.
+
+## Cloning the Project
+
+1. Clone the project repository using:
+2. Navigate into the project directory:
 
 ---
+
+## Installing Dependencies
+
+We use **Yarn** instead of npm. Install all the required packages with:
+```bash
+    yarn install
+```
+
+> **Note:** Do not use npm. Stick to Yarn for dependency management.
+
+---
+
+## Setting Up Environment Variables
+
+1. Create a `.env` file at the root of the project.
+2. Add environment variables. (Ask @zionashirwada for the `.env` file).
+
+---
+
+## Running MySQL Server
+
+You will need to have a MySQL server running. (You can use **XAMPP**).
+- If using XAMPP, make sure MySQL is running.
+- Make sure your `.env` file matches your MySQL credentials.
+
+---
+
+## Generating Prisma Client
+
+Generate the Prisma Client so that it can be used within the project:
+```bash
+    yarn prisma generate
+```
+
+---
+
+## Running the Project
+
+To start the development server:
+```bash
+    yarn run dev
+```
+
+This will launch your application on the local server.
+
+---
+
+## Migrating & Generating Client After Schema Changes
+
+Whenever you update the `schema.prisma` file, you need to apply migrations and regenerate the client:
+
+1. Apply Migrations:
+```bash
+    npx prisma migrate dev --name <your-migration-name>
+```
+
+2. Generate Prisma Client:
+```bash
+    yarn prisma generate
+```
+
+---
+
+## Additional Tips
+- Always pull the latest changes from the repository before starting work
+- Always run migrations and generate the Prisma client if you see database-related errors.
+
+
 # Coding Standards
 
 ## Branch Naming Convention
@@ -22,9 +95,9 @@ bug/login-form
 improvement/home-page
 ```
 
-## Features
+# Features
 
-### Core Pages
+## Core Pages
 
 - **Home Page (`/`)**
   - Hero banner with tagline and CTA buttons: “Browse Projects”, “Become an Investor”
@@ -61,71 +134,3 @@ improvement/home-page
 - Dark theme with smooth transitions
 - Responsive design for mobile, tablet, and desktop
 - UI components powered by `@shadcn/ui`
-
-## Tech Stack
-
-- **Framework**: Next.js 14 with App Router
-- **Styling**: Tailwind CSS
-- **Language**: TypeScript
-- **Database**: Prisma ORM
-- **Authentication & Storage**: Supabase (boilerplate setup)
-- **Package Manager**: Yarn
-
-## Folder Structure
-
-```
-├── app/          # App Router structure
-├── components/   # Reusable UI components
-├── lib/          # Utility functions and hooks
-├── types/        # TypeScript types
-├── prisma/       # Prisma schema and database management
-├── supabase/     # Supabase integration setup
-├── public/       # Static assets
-├── styles/       # Global styles
-├── pages/        # Static and dynamic pages
-├── README.md     # Project documentation
-```
-
-## Setup & Installation
-
-### Prerequisites
-- Install [Node.js](https://nodejs.org/)
-- Install [Yarn](https://yarnpkg.com/)
-- Install PostgreSQL (for Prisma database)
-- Set up a Supabase project
-
-### Steps to Run Locally
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/agzaiyenth/sdgp-connect.git
-   cd sdgp-connect
-   ```
-2. Install dependencies:
-   ```sh
-   yarn install
-   ```
-3. Set up environment variables:
-   - Copy `.env.example` to `.env`
-   - Add Supabase credentials and database connection string
-4. Run database migrations:
-   ```sh
-   yarn prisma migrate dev
-   ```
-5. Start the development server:
-   ```sh
-   yarn dev
-   ```
-
-## Mock Data
-To simulate real data, we have included dummy JSON data for 3–5 projects in the `lib/mockData.ts` file.
-
-## Future Enhancements
-- AI-powered smart search
-- Investor dashboard
-- Real-time project updates using Supabase subscriptions
-
-## Contributions
-Contributions are welcome! Please open an issue or submit a pull request.
-
-## License
-This project is open-source and available under the [MIT License](LICENSE).
