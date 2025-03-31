@@ -1,7 +1,7 @@
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ProjectSubmissionSchema } from "@/data/schemas/Project";
+import { ProjectSubmissionSchema } from "@/validations/submit_project";
 import { useFormContext } from "react-hook-form";
 
 const FormStep1 = () => {

@@ -1,3 +1,5 @@
+// These types should be removed 
+
 import { IconType } from "react-icons/lib";
 
 export type SDGGoal = {

@@ -6,7 +6,7 @@ import {
   } from "react-icons/si";
   import { FaAws } from "react-icons/fa";
   import { DiJava, DiReact } from "react-icons/di";
-import { TechStackItem } from "@/types/Project";
+import { TechStackItem } from "@/types/project";
 
 export const techStackOptions: TechStackItem[] = [
     { value: "react", label: "React", type: "frontend", icon: SiReact },

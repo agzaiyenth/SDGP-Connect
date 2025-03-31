@@ -1,3 +1,4 @@
+// To be deleted after connecting DB
 export const projectDomainOptions = [
     { value: "ai", label: "Artificial Intelligence" },
     { value: "ml", label: "Machine Learning" },
