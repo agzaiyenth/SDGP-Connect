@@ -1,4 +1,4 @@
-import { ProjectTypeEnum, SDGGoalEnum, TechStackEnum } from "@prisma/client";
+import { ProjectStatusEnum, ProjectTypeEnum, SDGGoalEnum, TechStackEnum } from "@prisma/client";
 import { DiJava, DiReact } from "react-icons/di";
 import { FaAws, FaDesktop, FaGlobe, FaMobileAlt, FaTools } from "react-icons/fa";
 import {
@@ -165,4 +165,25 @@ export const sdgGoals = [
         { value :TechStackEnum.ARDUINO ,label :"Arduino" ,type :"hardware" ,icon :SiArduino},
         { value :TechStackEnum.RASPBERRY_PI ,label :"Raspberry Pi" ,type :"hardware" ,icon :SiRaspberrypi},
          ];
-    
+   export const projectStatusOptions = [
+      { 
+        value: ProjectStatusEnum.IDEA, 
+        label: "Idea", 
+        description: "Initial concept or proposal" 
+      },
+      { 
+        value: ProjectStatusEnum.MVP, 
+        label: "MVP", 
+        description: "Minimum viable product" 
+      },
+      { 
+        value: ProjectStatusEnum.DEPLOYED, 
+        label: "Deployed", 
+        description: "Live and operational" 
+      },
+      { 
+        value: ProjectStatusEnum.STARTUP, 
+        label: "Startup", 
+        description: "Growing business solution" 
+      },
+    ];
