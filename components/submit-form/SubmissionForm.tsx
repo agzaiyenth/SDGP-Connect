@@ -55,8 +55,8 @@ const ProjectSubmissionForm = () => {
 
   const handleNext = async () => {
     const stepFieldsMap = {
-      1: ["metadata.group_num", "metadata.sdgp_year", "metadata.title", "metadata.subtitle"], // Ensure subtitle is included
-      2: ["metadata.cover_image", "metadata.logo", "projectDetails.features"],
+      1: ["metadata.group_num", "metadata.sdgp_year", "metadata.title", "metadata.subtitle"],
+      2: ["projectDetails.problem_statement", "projectDetails.solution", "projectDetails.features", "slides"], // Added slides validation
       3: ["techStack", "projectTypes", "status.status", "sdgGoals", "domains"],
       4: ["socialLinks", "projectDetails.team_email", "projectDetails.team_phone"],
       5: ["team", "slides"],
