@@ -13,25 +13,15 @@ import { Textarea } from "@/components/ui/textarea";
 const FormStep5 = () => {
   const { control, setValue } = useFormContext<ProjectSubmissionSchema>();
   const [profilePreviews, setProfilePreviews] = useState<Record<number, string>>({});
-  
+
   const { fields: teamFields, append: appendTeam, remove: removeTeam } = useFieldArray({
     control,
-    name: "team",
-  });
-
-  const { fields: slideFields, append: appendSlide, remove: removeSlide } = useFieldArray({
-    control, 
-    name: "slides"
+    name: "team", 
   });
 
   // Add a new team member
   const addTeamMember = () => {
     appendTeam({ name: "", linkedin_url: "", profile_image: null });
-  };
-
-  // Add a new slide
-  const addSlide = () => {
-    appendSlide({ slides_content: "" });
   };
 
   // Handle profile image upload
@@ -187,60 +177,6 @@ const FormStep5 = () => {
 
         {teamFields.length === 0 && (
           <p className="text-sm text-muted-foreground">No team members added yet.</p>
-        )}
-      </div>
-
-      {/* Slides */}
-      <div className="space-y-4">
-        <div className="flex justify-between items-center">
-          <FormLabel className="text-base">Project Slides</FormLabel>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={addSlide}
-            className="flex items-center gap-1"
-          >
-            <Plus className="h-4 w-4" />
-            Add Slide
-          </Button>
-        </div>
-
-        {slideFields.map((field, index) => (
-          <div key={field.id} className="p-4 border rounded-lg space-y-4">
-            <div className="flex justify-between items-start">
-              <h3 className="font-medium">Slide {index + 1}</h3>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                onClick={() => removeSlide(index)}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
-
-            <FormField
-              control={control}
-              name={`slides.${index}.slides_content`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Enter your slide content..."
-                      className="min-h-[150px] resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        ))}
-
-        {slideFields.length === 0 && (
-          <p className="text-sm text-muted-foreground">No slides added yet.</p>
         )}
       </div>
     </div>

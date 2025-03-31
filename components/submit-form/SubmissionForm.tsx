@@ -59,7 +59,7 @@ const ProjectSubmissionForm = () => {
       2: ["projectDetails.problem_statement", "projectDetails.solution", "projectDetails.features", "slides"],
       3: ["techStack", "projectTypes", "status.status", "sdgGoals", "domains"],
       4: ["socialLinks", "projectDetails.team_email", "projectDetails.team_phone"],
-      5: ["team", "slides"],
+      5: ["team"],
     };
 
     const fieldsToValidate = stepFieldsMap[currentStep as keyof typeof stepFieldsMap];
