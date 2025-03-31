@@ -1,177 +1,125 @@
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useFormContext, useFieldArray } from "react-hook-form";
+import { ProjectSubmissionSchema } from "@/validations/submit_project";
 import { Input } from "@/components/ui/input";
-import { useFormContext } from "react-hook-form";
-import { Facebook, Instagram, Linkedin, Smartphone, Youtube, Globe, Mail } from "lucide-react";
-import { ProjectSubmissionSchema } from "@/validations/formvalidations";
+import { Button } from "@/components/ui/button";
+import { Plus, Trash2 } from "lucide-react";
 
 const FormStep4 = () => {
   const { control } = useFormContext<ProjectSubmissionSchema>();
+  
+  // Use useFieldArray for handling the socialLinks array
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "socialLinks",
+  });
+
+  // Add a new empty social link
+  const addSocialLink = () => {
+    append({ link_name: "", url: "" });
+  };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
         Contact Information
       </h2>
-      <p className="text-slate-600 dark:text-slate-400">
-        Add links to your project's website and social media accounts.
-      </p>
 
+      {/* Team Email */}
+      <FormField
+        control={control}
+        name="projectDetails.team_email"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Team Email</FormLabel>
+            <FormControl>
+              <Input
+                type="email"
+                placeholder="team@example.com"
+                {...field}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      {/* Team Phone */}
+      <FormField
+        control={control}
+        name="projectDetails.team_phone"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Team Phone (optional)</FormLabel>
+            <FormControl>
+              <Input
+                type="tel"
+                placeholder="+94XXXXXXXXX"
+                {...field}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      {/* Social Links */}
       <div className="space-y-4">
-        <h3 className="text-lg font-medium">External Links</h3>
-        
-        <FormField
-          control={control}
-          name="externalLinks.website"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="flex items-center gap-2">
-                <Globe className="h-4 w-4" />
-                Website
-              </FormLabel>
-              <FormControl>
-                <Input 
-                  placeholder="https://www.lexi.lk" 
-                  {...field} 
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormField
-            control={control}
-            name="externalLinks.instagram"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="flex items-center gap-2">
-                  <Instagram className="h-4 w-4" />
-                  Instagram
-                </FormLabel>
-                <FormControl>
-                  <Input 
-                    placeholder="https://instagram.com/lexi" 
-                    {...field} 
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={control}
-            name="externalLinks.facebook"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="flex items-center gap-2">
-                  <Facebook className="h-4 w-4" />
-                  Facebook
-                </FormLabel>
-                <FormControl>
-                  <Input 
-                    placeholder="https://facebook.com/lexi" 
-                    {...field} 
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <div className="flex justify-between items-center">
+          <FormLabel className="text-base">Social Links</FormLabel>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={addSocialLink}
+            className="flex items-center gap-1"
+          >
+            <Plus className="h-4 w-4" />
+            Add Link
+          </Button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <FormField
-          control={control}
-          name="externalLinks.youtube"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="flex items-center gap-2">
-                <Youtube className="h-4 w-4" />
-                YouTube
-              </FormLabel>
-              <FormControl>
-                <Input 
-                  placeholder="https://youtube.com/channel/lexi" 
-                  {...field} 
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        <FormField
-          control={control}
-          name="externalLinks.linkedin"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="flex items-center gap-2">
-                <Linkedin className="h-4 w-4" />
-                LinkedIn
-              </FormLabel>
-              <FormControl>
-                <Input 
-                  placeholder="https://linkedin.com/company/lexi" 
-                  {...field} 
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        </div>
-      </div>
-      
-      <div className="space-y-4 mt-8">
-        <h3 className="text-lg font-medium">Team Contact</h3>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormField
-            control={control}
-            name="teamEmail"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="flex items-center gap-2">
-                  <Mail className="h-4 w-4" />
-                  Email Address
-                </FormLabel>
-                <FormControl>
-                  <Input 
-                    type="email"
-                    placeholder="team@lexi.lk" 
-                    {...field} 
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-          <FormField
-            control={control}
-            name="teamPhone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="flex items-center gap-2">
-                  <Smartphone className="h-4 w-4" />
-                  Phone Number
-                </FormLabel>
-                <FormControl>
-                  <Input 
-                    type="tel"
-                    placeholder="+94 76 686 7362" 
-                    {...field} 
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        
-        <FormDescription>
-          Team Email or a Personal Email.
-        </FormDescription>
+
+        {fields.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No social links added yet.</p>
+        ) : (
+          fields.map((field, index) => (
+            <div key={field.id} className="grid grid-cols-[1fr_2fr_auto] gap-4">
+              <FormField
+                control={control}
+                name={`socialLinks.${index}.link_name`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="Name (e.g., GitHub)" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={control}
+                name={`socialLinks.${index}.url`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input placeholder="URL (e.g., https://github.com/...)" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => remove(index)}
+                className="self-center"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

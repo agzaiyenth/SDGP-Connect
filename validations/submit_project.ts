@@ -34,8 +34,6 @@ export const projectSubmissionSchema = z.object({
     problem_statement: z.string().min(1, "Problem statement is required"),
     solution: z.string().min(1, "Solution is required"),
     features: z.string().min(1, "Features are required"),
-    team_email: z.string().email("Must be a valid email"),
-    team_phone: z.string().optional(),
   }),
   
   status: z.object({

@@ -1,160 +1,115 @@
-'use client'
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card } from "@/components/ui/card";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ProjectSubmissionSchema } from "@/validations/formvalidations";
-import { AnimatePresence, motion } from 'framer-motion';
-import { Upload, X } from "lucide-react";
-import { useState } from "react";
 import { useFormContext } from "react-hook-form";
+import { ProjectSubmissionSchema } from "@/validations/submit_project";
+import { Upload, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import Markdown from 'markdown-to-jsx';
+import { toast } from "sonner";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Button } from "@/components/ui/button";
+import { Input } from "../ui/input";
+
+const MAX_SLIDES = 10;
 
 const FormStep2 = () => {
   const { control, setValue, watch } = useFormContext<ProjectSubmissionSchema>();
-  const features = watch("features") || "";
-  
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
+  const features = watch("projectDetails.features") || "";
+  const [slideImagePreviews, setSlideImagePreviews] = useState<string[]>([]);
+  const [isPlaceholderVisible, setIsPlaceholderVisible] = useState(true);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, type: "coverImage" | "appLogo") => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    
-    setValue(type, file, { shouldValidate: true });
-    
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (type === "coverImage") setPreviewUrl(reader.result as string);
-      if (type === "appLogo") setLogoPreviewUrl(reader.result as string);
-    };
-    reader.readAsDataURL(file);
+  useEffect(() => {
+    // Initialize slides array if it doesn't exist
+    if (!watch("slides")) {
+      setValue("slides", []);
+    }
+  }, [setValue, watch]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const fileArray = Array.from(files);
+
+    if (slideImagePreviews.length + fileArray.length > MAX_SLIDES) {
+      toast.error(`You can only upload a maximum of ${MAX_SLIDES} slides.`);
+      return;
+    }
+
+    setIsPlaceholderVisible(false);
+
+    fileArray.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        setSlideImagePreviews(prev => [...prev, result]);
+        
+        // Update slides in form data
+        setValue("slides", [
+          ...(watch("slides") || []),
+          { slides_content: result }
+        ]);
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
-  const clearImage = () => {
-    setValue("coverImage", null, { shouldValidate: true });
-    setPreviewUrl(null);
-  };
-
-  const clearLogo = () => {
-    setValue("appLogo", null, { shouldValidate: true });
-    setLogoPreviewUrl(null);
+  const removeSlideImage = (index: number) => {
+    setSlideImagePreviews(prev => prev.filter((_, i) => i !== index));
+    
+    // Update slides in form data
+    const currentSlides = [...(watch("slides") || [])];
+    currentSlides.splice(index, 1);
+    setValue("slides", currentSlides);
   };
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">Media & Features</h2>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <FormField
-          control={control}
-          name="appLogo"
-          render={() => (
-            <FormItem>
-              <FormLabel>App Logo</FormLabel>
-              <FormControl>
-                <div className="space-y-4">
-                  <AnimatePresence>
-                    {!logoPreviewUrl ? (
-                      <motion.label 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="flex flex-col items-center justify-center border-2 border-dashed border-zinc-300 rounded-full h-36 w-36 mx-auto cursor-pointer dark:border-zinc-600"
-                      >
-                        <Upload className="h-10 w-10 text-zinc-400 mb-2" />
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => handleImageUpload(e, "appLogo")}
-                          className="hidden"
-                        />
-                      </motion.label>
-                    ) : (
-                      <motion.div 
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
-                        onClick={clearLogo}
-                        className="relative flex justify-center cursor-pointer group"
-                      >
-                        <Avatar className="h-36 w-36 border-2 border-primary rounded-full">
-                          <AvatarImage src={logoPreviewUrl} alt="App logo" />
-                          <AvatarFallback>LOGO</AvatarFallback>
-                        </Avatar>
-                        <div className="absolute inset-0 bg-black/30 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                          <X className="h-8 w-8 text-white" />
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </FormControl>
-              <FormDescription>Upload a square logo for your app/project</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Cover Image Upload */}
-        <FormField
-          control={control}
-          name="coverImage"
-          render={() => (
-            <FormItem>
-              <FormLabel>Cover Image</FormLabel>
-              <FormControl>
-                <div className="space-y-4">
-                  <AnimatePresence>
-                    {!previewUrl ? (
-                      <motion.label
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="flex flex-col items-center justify-center border-2 border-dashed border-zinc-300 rounded-lg p-6 cursor-pointer dark:border-zinc-600"
-                      >
-                        <Upload className="h-10 w-10 text-zinc-400 mb-2" />
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => handleImageUpload(e, "coverImage")}
-                          className="hidden"
-                        />
-                      </motion.label>
-                    ) : (
-                      <motion.div 
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
-                        onClick={clearImage}
-                        className="relative cursor-pointer group"
-                      >
-                        <Card className="overflow-hidden relative">
-                          <AspectRatio ratio={16 / 9}>
-                            <img src={previewUrl} alt="Cover preview" className="object-cover w-full h-full" />
-                          </AspectRatio>
-                          <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                            <X className="h-8 w-8 text-white" />
-                          </div>
-                        </Card>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </FormControl>
-              <FormDescription>This image will be displayed as the main visual for your project</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
-
-      {/* Markdown Features Section */}
+      <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Project Details</h2>
+      
+      {/* Problem Statement */}
       <FormField
         control={control}
-        name="features"
+        name="projectDetails.problem_statement"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Problem Statement</FormLabel>
+            <FormControl>
+              <Textarea 
+                placeholder="What problem does your project solve?" 
+                className="min-h-[120px]" 
+                {...field} 
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      {/* Solution */}
+      <FormField
+        control={control}
+        name="projectDetails.solution"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Solution</FormLabel>
+            <FormControl>
+              <Textarea 
+                placeholder="How does your project solve the problem?" 
+                className="min-h-[120px]" 
+                {...field} 
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      {/* Features with Markdown */}
+      <FormField
+        control={control}
+        name="projectDetails.features"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Features</FormLabel>
@@ -188,6 +143,45 @@ const FormStep2 = () => {
 </div>
             </div>
             <FormDescription>Describe your project's key features using Markdown</FormDescription>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+     
+
+      {/* Slide Upload Section */}
+      <FormField
+        control={control}
+        name="slides"
+        render={() => (
+          <FormItem>
+            <FormLabel>Slide Deck</FormLabel>
+            <div className="relative mt-4 p-6 border-2 border-dashed border-gray-300 rounded-xl w-full cursor-pointer hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800 transition-all duration-200">
+              <div className="flex flex-col items-center justify-center space-y-2 text-center">
+                <Upload className="h-10 w-10 text-primary mb-2" />
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Drag and drop your slides here or click to browse</p>
+                <p className="text-xs text-gray-500 dark:text-gray-500">PNG, JPG, GIF - Up to {MAX_SLIDES} files</p>
+                <Input type="file" accept="image/*" multiple onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-6">
+              {slideImagePreviews.map((previewUrl, index) => (
+                <div key={index} className="relative group overflow-hidden rounded-lg shadow-md border dark:border-gray-700 transition-all hover:shadow-xl">
+                  <AspectRatio ratio={16 / 9}>
+                    <img src={previewUrl} alt={`Slide ${index + 1}`} className="object-cover w-full h-full rounded-lg" />
+                  </AspectRatio>
+                  <Button
+                    type="button"
+                    onClick={() => removeSlideImage(index)}
+                    className="absolute top-1 right-1 p-1 bg-red-600 rounded-full text-white hover:bg-red-700 transition-opacity opacity-0 group-hover:opacity-100"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
             <FormMessage />
           </FormItem>
         )}
