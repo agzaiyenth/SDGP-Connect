@@ -1,5 +1,6 @@
 'use client'
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import FormStepper from "./FormStepper";
 import { Button } from "@/components/ui/button";
@@ -13,12 +14,19 @@ import FormStep3 from "./FormStep3";
 import FormStep4 from "./FormStep4";
 import FormStep5 from "./FormStep5";
 import { toast } from "sonner";
+import { useSubmitProject } from "@/hooks/project/useSubmitProject";
+import { Loader2 } from "lucide-react";
 
 const TOTAL_STEPS = 5;
 
 const ProjectSubmissionForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedProjectId, setSubmittedProjectId] = useState<string | null>(null);
+  const router = useRouter();
+  
+  // Use our custom submission hook
+  const { submitProject, isSubmitting, error } = useSubmitProject();
 
 
   const methods = useForm<ProjectSubmissionSchema>({
@@ -91,16 +99,41 @@ const ProjectSubmissionForm = () => {
     }
   };
 
-  const onSubmit: SubmitHandler<ProjectSubmissionSchema> = (data) => {
-    console.log("Form submitted:", data);
-    toast("Project Submitted!",{
-      description: "Your project has been successfully submitted.",
-    });
-    setIsSubmitted(true);
+  const onSubmit: SubmitHandler<ProjectSubmissionSchema> = async (data) => {
+    try {
+      // Submit the project using our hook
+      const result = await submitProject(data);
+      
+      if (result.success && result.data?.projectId) {
+        // Show success message
+        toast.success("Project Submitted!", {
+          description: "Your project has been successfully submitted.",
+        });
+        
+        // Store the project ID for use in the success page
+        setSubmittedProjectId(result.data.projectId);
+        setIsSubmitted(true);
+        
+        // redirect to the project page after a delay
+        setTimeout(() => {
+          router.push(`/project/${result?.data?.projectId}`);
+        }, 3000);
+      } else {
+        // Show error message
+        toast.error("Submission Failed", {
+          description: result.message || "There was an error submitting your project. Please try again.",
+        });
+      }
+    } catch (err) {
+      console.error("Error during submission:", err);
+      toast.error("Submission Error", {
+        description: "An unexpected error occurred. Please try again later.",
+      });
+    }
   };
 
   if (isSubmitted) {
-    return <SuccessPage />;
+    return <SuccessPage projectId={submittedProjectId} />;
   }
 
   const renderStep = () => {
@@ -133,18 +166,32 @@ const ProjectSubmissionForm = () => {
               type="button" 
               variant="outline"
               onClick={handlePrevious}
-              disabled={currentStep === 1}
+              disabled={currentStep === 1 || isSubmitting}
             >
               Previous
             </Button>
             
             {currentStep < TOTAL_STEPS ? (
-              <Button type="button" onClick={handleNext}>
+              <Button 
+                type="button" 
+                onClick={handleNext}
+                disabled={isSubmitting}
+              >
                 Next
               </Button>
             ) : (
-              <Button type="submit">
-                Submit Project
+              <Button 
+                type="submit"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  "Submit Project"
+                )}
               </Button>
             )}
           </div>
