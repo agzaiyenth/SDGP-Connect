@@ -1,6 +1,6 @@
 import Image from "next/image"
-import { Mail, Phone } from 'lucide-react'
-import type { Lecturer } from "@/types"
+import { Mail, Phone } from "lucide-react"
+import type { Lecturer } from "../../types"
 
 interface TeamLeaderCardProps {
   teamLeader: Lecturer
@@ -12,12 +12,7 @@ export default function TeamLeaderCard({ teamLeader }: TeamLeaderCardProps) {
       <h2 className="text-xl font-bold mb-4">Team Leader</h2>
       <div className="flex items-center gap-4 mb-4">
         <div className="relative w-16 h-16 rounded-full overflow-hidden">
-          <Image 
-            src={teamLeader.image || "/placeholder.svg"} 
-            alt={teamLeader.name} 
-            fill 
-            className="object-cover" 
-          />
+          <Image src={teamLeader.image || "/placeholder.svg"} alt={teamLeader.name} fill className="object-cover" />
         </div>
         <div>
           <h3 className="font-bold">{teamLeader.name}</h3>
