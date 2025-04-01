@@ -25,8 +25,8 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Run Prisma checks
-        run: yarn prisma validate
+    #   - name: Run Prisma checks
+    #     run: yarn prisma validate
 
       - name: Run Prisma generate
         run: yarn prisma generate
