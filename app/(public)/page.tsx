@@ -1,4 +1,5 @@
-import About from "@/components/home/about-section";
+
+import { About } from "@/components/home/about-section";
 import AllProjects from "@/components/home/all-projects";
 import ExploreByDomain from "@/components/home/explore-by-domain";
 import FeaturedProjects from "@/components/home/featured-projects";
