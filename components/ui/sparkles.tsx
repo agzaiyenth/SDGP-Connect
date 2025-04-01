@@ -4,6 +4,21 @@ import { useEffect, useId, useState } from "react"
 import Particles, { initParticlesEngine } from "@tsparticles/react"
 import { loadSlim } from "@tsparticles/slim"
 
+interface SparklesProps {
+  className?: string;
+  size?: number;
+  minSize?: number | null;
+  density?: number;
+  speed?: number;
+  minSpeed?: number | null;
+  opacity?: number;
+  opacitySpeed?: number;
+  minOpacity?: number | null;
+  color?: string;
+  background?: string;
+  options?: object;
+}
+
 export function Sparkles({
   className,
   size = 1,
@@ -17,7 +32,7 @@ export function Sparkles({
   color = "#FFFFFF",
   background = "transparent",
   options = {},
-}) {
+}: SparklesProps) {
   const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
@@ -47,7 +62,7 @@ export function Sparkles({
       },
       move: {
         enable: true,
-        direction: "none",
+        direction: "none" as const,
         speed: {
           min: minSpeed || speed / 10,
           max: speed,
