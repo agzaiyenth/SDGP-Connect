@@ -8,9 +8,9 @@ interface Props {
     // right now we are not taking any props,but after connecting prisma we have to pass the data from the server to the client
 }
 
-const page = (props: Props) => {
-    return (
-       < div className="container mx-auto py-8 px-4">
+export default function ProjectsPage() {
+  return (
+    <div className="container mx-auto py-8 px-4">
       <SearchHeader />
 
       <div className="flex flex-col md:flex-row gap-6 mt-8">
@@ -35,7 +35,6 @@ const page = (props: Props) => {
         </div>
       </div>
     </div>
-    )
+  )
 }
 
-export default page

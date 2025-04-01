@@ -10,7 +10,7 @@ export default function ProjectExplorer() {
       {projects.map((project) => (
         <Link
           key={project.id}
-          href={`/projects/${project.id}`}
+          href={`/project/${project.id}`}
           className="project-card group block rounded-xl overflow-hidden border bg-card shadow-sm hover:shadow-lg transition-all"
         >
           <div className="relative aspect-video">
