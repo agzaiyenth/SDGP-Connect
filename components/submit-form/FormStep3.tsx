@@ -1,11 +1,10 @@
 import { FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { projectStatusOptions, projectTypeOptions, sdgGoals, techStackOptions } from "@/types/project/mapping";
-import { StackType, TechStackItem } from "@/types/project/type";
 import { ProjectSubmissionSchema } from "@/validations/submit_project";
 import { ProjectDomainEnum } from "@prisma/client";
 import { useFormContext } from "react-hook-form";
-import { IconDropdown } from "../ui/icon-dropdown";
+import { MultiSelect } from "../ui/Multi-Select";
 
 
 // Create domain options directly from the enum
@@ -21,13 +20,6 @@ const projectDomainOptions = Object.values(ProjectDomainEnum).map(domain => {
 
 const FormStep3 = () => {
   const { control } = useFormContext<ProjectSubmissionSchema>();
-
-  const groupedTechStackOptions = techStackOptions.reduce((groups, option) => {
-    const groupKey = option.type as StackType;
-    if (!groups[groupKey]) groups[groupKey] = [];
-    groups[groupKey]?.push({ ...option, type: option.type as StackType });
-    return groups;
-  }, {} as Record<StackType, TechStackItem[]>);
 
   return (
     <div className="space-y-8">
@@ -48,13 +40,13 @@ const FormStep3 = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Project Type</FormLabel>
-              <IconDropdown 
-                options={projectTypeOptions}
-                selectedValues={field.value || []}
-                placeholder="Select Project Type"
-                onChange={(values) => field.onChange(values)}
-                isGrouped={false}
-              />
+              <MultiSelect
+        options={projectTypeOptions}
+        onValueChange={(values) => field.onChange(values)}
+        placeholder='Select Project Type'
+        popoverClass='w-96'
+        maxCount={3}
+      />
               <FormMessage />
             </FormItem>
           )}
@@ -67,13 +59,13 @@ const FormStep3 = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Tech Stack</FormLabel>
-              <IconDropdown 
-                options={groupedTechStackOptions}
-                selectedValues={field.value || []}
-                placeholder="Select Tech Stack"
-                onChange={(values) => field.onChange(values)}
-                isGrouped={true}
-              />
+              <MultiSelect
+        options={techStackOptions}
+        onValueChange={(values) => field.onChange(values)}
+        placeholder='Select Tech Stack'
+        popoverClass='w-96'
+        maxCount={3}
+      />
               <FormMessage />
             </FormItem>
           )}

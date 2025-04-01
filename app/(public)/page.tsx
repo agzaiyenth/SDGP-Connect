@@ -1,5 +1,7 @@
-import About from "@/components/home/about-section";
+
+import { About } from "@/components/home/about-section";
 import AllProjects from "@/components/home/all-projects";
+import { Brands } from "@/components/home/brands";
 import ExploreByDomain from "@/components/home/explore-by-domain";
 import FeaturedProjects from "@/components/home/featured-projects";
 import Hero from "@/components/home/hero";
@@ -11,10 +13,11 @@ export default function Home() {
     <div className="flex flex-col gap-12 pb-12">
       <Hero />
       <About />
-      <ImpactStats />
       <FeaturedProjects />
+      <ImpactStats />
       <ExploreByDomain />
       <AllProjects />
+      <Brands/>
     </div>
   )
 }
