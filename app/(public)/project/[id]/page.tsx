@@ -15,7 +15,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   const teamLeader = lecturers[Math.floor(Math.random() * lecturers.length)]
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white ml-24">
       {/* Hero Banner Section */}
       <ProjectHero project={project} />
 
