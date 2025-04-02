@@ -10,7 +10,7 @@ interface Props {
 
 export default function ProjectsPage() {
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="container mx-auto py-8 px-4 ml-24">
       <SearchHeader />
 
       <div className="flex flex-col md:flex-row gap-6 mt-8">
