@@ -1,19 +1,22 @@
 
+'use client'
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 
-interface StatusChartProps {
-  data: {
-    name: string;
-    value: number;
-    color: string;
-  }[];
+interface Props {
+    
 }
 
-const StatusPieChart: React.FC<StatusChartProps> = ({ data }) => {
-  return (
-    <Card className="neo-card overflow-hidden w-full h-[350px]">
+const StatusPieChart = (props: Props) => {
+    // Sample data for pie chart
+  const statusData = [
+    { name: 'Approved', value: 785, color: '#16a34a' },
+    { name: 'Pending', value: 245, color: '#054afc' },
+    { name: 'Rejected', value: 228, color: '#dc2626' },
+  ];
+    return (
+        <Card className="neo-card overflow-hidden w-full h-[350px]">
       <CardHeader>
         <CardTitle className="text-lg font-medium">Projects by Status</CardTitle>
       </CardHeader>
@@ -21,7 +24,7 @@ const StatusPieChart: React.FC<StatusChartProps> = ({ data }) => {
         <ResponsiveContainer width="100%" height={250}>
           <PieChart>
             <Pie
-              data={data}
+              data={statusData}
               cx="50%"
               cy="50%"
               labelLine={false}
@@ -33,7 +36,7 @@ const StatusPieChart: React.FC<StatusChartProps> = ({ data }) => {
               animationDuration={1500}
               className="animate-fade-in"
             >
-              {data.map((entry, index) => (
+              {statusData.map((entry, index) => (
                 <Cell 
                   key={`cell-${index}`} 
                   fill={entry.color}
@@ -62,7 +65,7 @@ const StatusPieChart: React.FC<StatusChartProps> = ({ data }) => {
         </ResponsiveContainer>
       </CardContent>
     </Card>
-  );
-};
+    )
+}
 
-export default StatusPieChart;
+export default StatusPieChart

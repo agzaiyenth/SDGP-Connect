@@ -1,14 +1,16 @@
-
-import React from 'react';
+import React, { Suspense } from 'react';
 import StatCard from '@/components/dashboard/StatCard';
 import StatusPieChart from '@/components/dashboard/StatusPieChart';
 import SubmissionsLineChart from '@/components/dashboard/SubmissionsLineChart';
 import RecentActivityTable from '@/components/dashboard/RecentActivityTable';
 import { Folder, Clock, Star } from 'lucide-react';
 
+import { DashboardHeader } from '@/components/dashboard/header';
+import { DashboardStats } from '@/components/dashboard/stats';
+import { RecentActivity } from '@/components/dashboard/recent-activity';
+import { AnalyticsCharts } from '@/components/dashboard/analytics';
 
-//TODO : ADD LOADING SUSPANCE FALLBACK TO handle loading states of charts and data
-const Index = () => {
+export default function DashboardPage() {
   // Sample data for statistics
   const stats = [
     {
@@ -118,14 +120,15 @@ const Index = () => {
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <StatusPieChart data={statusData} />
+        <StatusPieChart/>
         <SubmissionsLineChart data={submissionsData} />
       </div>
+
       
       {/* Recent Activity Table */}
       <RecentActivityTable activities={recentActivities} />
+
+      
     </>
   );
-};
-
-export default Index;
+}
