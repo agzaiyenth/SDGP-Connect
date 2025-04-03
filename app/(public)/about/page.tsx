@@ -1,16 +1,13 @@
-import React from 'react'
-
-interface Props {
-    
-}
+import React from "react";
+import ModuleTeam from "@/components/about/moduleTeam";
+interface Props {}
 
 const page = (props: Props) => {
-    return (
-        <div>
-            
-            <h1>About Us</h1>
-        </div>
-    )
-}
+  return (
+    <div>
+      <ModuleTeam />
+    </div>
+  );
+};
 
-export default page
+export default page;
