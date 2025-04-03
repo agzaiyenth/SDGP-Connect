@@ -288,7 +288,7 @@ const ModuleTeam: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black to-zinc-950 p-6 md:p-10">
+    <div className="min-h-screen bg-gradient-to-r from-background via-background/80 to-background/20 p-6 md:p-10 ml-24">
       <motion.h1
         className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-300 to-gray-400 tracking-wider"
         initial={{ opacity: 0, y: -20 }}
