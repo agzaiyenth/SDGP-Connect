@@ -1,4 +1,5 @@
 "use client"
+import { useParams } from "next/navigation";
 import { Project } from "../../../../types/index";
 import { projects, lecturers } from "../../../../data/delete_after_db/sampleProjects"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../components/ui/tabs"
@@ -7,9 +8,10 @@ import ProjectOverview from "../../../../components/projects/project-overview"
 import ProjectGallery from "../../../../components/projects/project-gallery"
 import ProjectDetails from "../../../../components/projects/project-details"
 
-export default function ProjectPage({ params }: { params: { id: string } }) {
-  // Get project data from the data.ts file
+export default function ProjectPage() {
+  const params = useParams();
   const project = (projects.find((p) => p.id === params.id) || projects[0]) as unknown as Project;
+ 
 
   const teamLeader = lecturers[0];
 
