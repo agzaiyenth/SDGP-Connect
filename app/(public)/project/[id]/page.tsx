@@ -11,8 +11,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
   // Get project data from the data.ts file
   const project = (projects.find((p) => p.id === params.id) || projects[0]) as unknown as Project;
 
-  // Get a random lecturer as the team leader (in a real app, this would be properly associated)
-  const teamLeader = lecturers[Math.floor(Math.random() * lecturers.length)]
+  const teamLeader = lecturers[0];
 
   return (
     <div className="min-h-screen bg-black text-white ml-24">
