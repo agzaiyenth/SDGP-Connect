@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { PendingProjectsTable } from '@/components/dashboard/PendingProjectsTable';
-import { ApprovedProjectsTable } from '@/components/dashboard/ApprovedProjectsTable';
-import { RejectedProjectsTable } from '@/components/dashboard/RejectedProjectsTable';
+import { PendingProjectsTable } from '@/components/tables/PendingProjectsTable';
+import { ApprovedProjectsTable } from '@/components/tables/ApprovedProjectsTable';
+import { RejectedProjectsTable } from '@/components/tables/RejectedProjectsTable';
 import ProjectDetails from '@/components/ProjectDetails';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
