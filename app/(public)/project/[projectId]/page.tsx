@@ -1,3 +1,4 @@
+import ProjectDetails from '@/components/ProjectDetails'
 import React from 'react'
 
 interface Props {
@@ -7,8 +8,7 @@ interface Props {
 const page = (props: Props) => {
     return (
         <div>
-            <h1>Project Details</h1>
-            <p>Here you can find the details of the project.</p>
+           <ProjectDetails projectID="55773d0c-d2d8-46e1-ac2a-f5fa4dd7253e" />
             
         </div>
     )
