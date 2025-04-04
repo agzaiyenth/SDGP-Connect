@@ -1,6 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
+import { Pagination, PaginationPrevious, PaginationNext } from '@/components/ui/pagination';
 import { ApprovedProject } from '@/types/project/response';
 
 interface ApprovedProjectsTableProps {
@@ -57,23 +58,11 @@ export function ApprovedProjectsTable({
           ))}
         </TableBody>
       </Table>
-      <div className="flex justify-between items-center mt-4">
-        <Button
-          onClick={onPreviousPage}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </Button>
-        <span>
-          Page {currentPage} of {totalPages}
-        </span>
-        <Button
-          onClick={onNextPage}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </Button>
-      </div>
+      <Pagination className="mt-4">
+        {currentPage > 1 && <PaginationPrevious onClick={onPreviousPage} />}
+        <span className="mx-2">Page {currentPage} of {totalPages}</span>
+        {currentPage < totalPages && <PaginationNext onClick={onNextPage} />}
+      </Pagination>
     </div>
   );
 }
