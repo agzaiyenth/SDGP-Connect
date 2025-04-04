@@ -229,16 +229,7 @@ export default function ProjectManagement() {
             className="max-w-xs"
           />
       
-          {selectedProjects.length > 0 && (
-            <div className="flex gap-2">
-              <Button onClick={() => setApproveDialog(true)}>
-                Approve Selected ({selectedProjects.length})
-              </Button>
-              <Button variant="destructive" onClick={() => setRejectDialog(true)}>
-                Reject Selected ({selectedProjects.length})
-              </Button>
-            </div>
-          )}
+         
         </div>
 
         {renderContent()}
