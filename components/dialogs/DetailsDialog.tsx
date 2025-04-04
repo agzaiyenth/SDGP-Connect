@@ -2,13 +2,13 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Button } from '@/components/ui/button';
 import ProjectDetails from '../ProjectDetails';
 
-const DetailsDialog = ({ open, onOpenChange, project }: { open: boolean; onOpenChange: (open: boolean) => void; project: any }) => (
+const DetailsDialog = ({ open, onOpenChange, projectID }: { open: boolean; onOpenChange: (open: boolean) => void; projectID: any }) => (
   <Dialog open={open} onOpenChange={onOpenChange}>
     <DialogContent className="max-w-3xl">
       <DialogHeader>
         <DialogTitle>Project Details</DialogTitle>
       </DialogHeader>
-      {project && <ProjectDetails project={project} />}
+      {projectID && <ProjectDetails projectID={projectID} />}
       <DialogFooter>
         <Button variant="outline" onClick={() => onOpenChange(false)}>
           Close

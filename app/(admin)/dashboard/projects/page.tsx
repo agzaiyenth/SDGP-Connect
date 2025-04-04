@@ -257,7 +257,7 @@ export default function ProjectManagement() {
         <DetailsDialog
           open={detailsDialog}
           onOpenChange={setDetailsDialog}
-          project={currentProject}
+          projectID={currentProject.id}
         />
       )}
 
