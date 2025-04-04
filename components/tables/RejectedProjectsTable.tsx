@@ -1,18 +1,12 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
+import { RejectedProject } from '@/types/project/response';
 
-interface Project {
-  id: number;
-  title: string;
-  groupNumber: string;
-  rejectedBy: string;
-  rejectedAt: string;
-  rejectionReason: string;
-}
+
 
 interface RejectedProjectsTableProps {
-  projects: Project[];
-  onViewDetails: (project: Project) => void;
+  projects: RejectedProject[];
+  onViewDetails: (project: RejectedProject) => void;
 }
 
 export function RejectedProjectsTable({

@@ -1,20 +1,13 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
+import { ApprovedProject } from '@/types/project/response';
 
-interface Project {
-  id: number;
-  title: string;
-  groupNumber: string;
-  featured: boolean;
-  approvedBy: string;
-  approvedAt: string;
-}
 
 interface ApprovedProjectsTableProps {
-  projects: Project[];
-  onViewDetails: (project: Project) => void;
-  onToggleFeature: (project: Project, featured: boolean) => void;
+  projects: ApprovedProject[];
+  onViewDetails: (project: ApprovedProject) => void;
+  onToggleFeature: (project: ApprovedProject, featured: boolean) => void;
 }
 
 export function ApprovedProjectsTable({

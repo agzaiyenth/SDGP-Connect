@@ -6,3 +6,29 @@ export interface SubmitProjectResponse {
   };
   errors?: any;
 }
+
+export interface PendingProject {
+  id: number;
+  title: string;
+  groupNumber: string;
+  submissionDate: string;
+  status: string;
+}
+
+export interface RejectedProject {
+  id: number;
+  title: string;
+  groupNumber: string;
+  rejectedBy: string;
+  rejectedAt: string;
+  rejectionReason: string;
+}
+
+export interface ApprovedProject {
+  id: number;
+  title: string;
+  groupNumber: string;
+  featured: boolean;
+  approvedBy: string;
+  approvedAt: string;
+}

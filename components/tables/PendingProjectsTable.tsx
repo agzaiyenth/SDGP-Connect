@@ -2,23 +2,18 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
+import { PendingProject } from '@/types/project/response';
 
-interface Project {
-  id: number;
-  title: string;
-  groupNumber: string;
-  submissionDate: string;
-  status: string;
-}
+
 
 interface PendingProjectsTableProps {
-  projects: Project[];
+  projects: PendingProject[];
   selectedProjects: number[];
   onSelectProject: (projectId: number) => void;
   onSelectAll: (checked: boolean) => void;
-  onViewDetails: (project: Project) => void;
-  onApprove: (project: Project) => void;
-  onReject: (project: Project) => void;
+  onViewDetails: (project: PendingProject) => void;
+  onApprove: (project: PendingProject) => void;
+  onReject: (project: PendingProject) => void;
 }
 
 export function PendingProjectsTable({

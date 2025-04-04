@@ -1,10 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PendingProjectsTable } from '@/components/tables/PendingProjectsTable';
 import { ApprovedProjectsTable } from '@/components/tables/ApprovedProjectsTable';
 import { RejectedProjectsTable } from '@/components/tables/RejectedProjectsTable';
-import ProjectDetails from '@/components/ProjectDetails';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -12,68 +11,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ApproveDialog from '@/components/dialogs/ApproveDialog';
 import RejectDialog from '@/components/dialogs/RejectDialog';
 import DetailsDialog from '@/components/dialogs/DetailsDialog';
+import { useGetProjectsByApprovalStatus } from '@/hooks/project/useGetProjectsByApprovalStatus';
+import { ProjectApprovalStatus } from '@prisma/client';
+import { PendingProject, ApprovedProject, RejectedProject } from '@/types/project/response';
+
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { EmptyState } from '@/components/ui/empty-state';
+import { FileX2, AlertCircle, Inbox } from 'lucide-react';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 const projectStatuses = ['IDEA', 'MVP', 'DEPLOYED', 'STARTUP'];
-
-// Using the same mock data as before
-const mockProjects = [
-  {
-    id: 1,
-    title: 'Project Alpha',
-    groupNumber: 'G01',
-    submissionDate: '2024-03-20',
-    status: 'IDEA',
-    type: 'Web',
-    domain: 'Healthcare',
-    tech: 'React',
-    sdg: 'Quality Education',
-    featured: false,
-    description: 'A healthcare platform that connects patients with doctors remotely.',
-    teamMembers: ['John Doe', 'Jane Smith', 'Bob Johnson'],
-    githubUrl: 'https://github.com/project-alpha',
-    demoUrl: 'https://project-alpha.demo',
-  },
-];
-
-const approvedProjects = [
-  {
-    id: 2,
-    title: 'Project Beta',
-    groupNumber: 'G02',
-    status: 'DEPLOYED',
-    featured: true,
-    approvedBy: 'Alice Admin',
-    approvedAt: '2024-03-15',
-    type: 'Mobile',
-    domain: 'Education',
-    tech: 'React Native',
-    sdg: 'Quality Education',
-    description: 'A mobile app for personalized learning experiences.',
-    teamMembers: ['Sarah Wilson', 'Mike Brown'],
-    githubUrl: 'https://github.com/project-beta',
-    demoUrl: 'https://project-beta.demo',
-  },
-];
-
-const rejectedProjects = [
-  {
-    id: 3,
-    title: 'Project Gamma',
-    groupNumber: 'G03',
-    status: 'MVP',
-    rejectedBy: 'Bob Reviewer',
-    rejectedAt: '2024-03-18',
-    rejectionReason: 'Project scope needs refinement and technical documentation is incomplete.',
-    type: 'AI/ML',
-    domain: 'Finance',
-    tech: 'Python',
-    sdg: 'No Poverty',
-    description: 'An AI-powered financial advisory system.',
-    teamMembers: ['Tom Clark', 'Emma Davis'],
-    githubUrl: 'https://github.com/project-gamma',
-    demoUrl: 'https://project-gamma.demo',
-  },
-];
 
 export default function ProjectManagement() {
   const [selectedProjects, setSelectedProjects] = useState<number[]>([]);
@@ -81,25 +28,58 @@ export default function ProjectManagement() {
   const [rejectDialog, setRejectDialog] = useState(false);
   const [detailsDialog, setDetailsDialog] = useState(false);
   const [currentProject, setCurrentProject] = useState<any>(null);
+  const [currentTab, setCurrentTab] = useState<'pending' | 'approved' | 'rejected'>('pending');
+
+  const {
+    projects: pendingProjects,
+    isLoading: isPendingLoading,
+    error: pendingError,
+    isEmpty: isPendingEmpty,
+    refresh: refreshPending,
+  } = useGetProjectsByApprovalStatus<PendingProject>(ProjectApprovalStatus.PENDING);
+
+  const {
+    projects: approvedProjects,
+    isLoading: isApprovedLoading,
+    error: approvedError,
+    isEmpty: isApprovedEmpty,
+  } = useGetProjectsByApprovalStatus<ApprovedProject>(ProjectApprovalStatus.APPROVED);
+
+  const {
+    projects: rejectedProjects,
+    isLoading: isRejectedLoading,
+    error: rejectedError,
+    isEmpty: isRejectedEmpty,
+  } = useGetProjectsByApprovalStatus<RejectedProject>(ProjectApprovalStatus.REJECTED);
+
+  // Reset selected projects when changing tabs
+  useEffect(() => {
+    setSelectedProjects([]);
+  }, [currentTab]);
 
   const handleSelectProject = (projectId: number) => {
-    setSelectedProjects(prev => 
-      prev.includes(projectId) 
-        ? prev.filter(id => id !== projectId)
-        : [...prev, projectId]
-    );
+    setSelectedProjects(prev => {
+      if (prev.includes(projectId)) {
+        return prev.filter(id => id !== projectId);
+      }
+      return [...prev, projectId];
+    });
   };
 
   const handleSelectAll = (checked: boolean) => {
-    setSelectedProjects(checked ? mockProjects.map(p => p.id) : []);
+    if (checked) {
+      setSelectedProjects(pendingProjects.map(project => project.id));
+    } else {
+      setSelectedProjects([]);
+    }
   };
 
-  const handleApprove = (project: any) => {
+  const handleApprove = (project: PendingProject) => {
     setCurrentProject(project);
     setApproveDialog(true);
   };
 
-  const handleReject = (project: any) => {
+  const handleReject = (project: PendingProject) => {
     setCurrentProject(project);
     setRejectDialog(true);
   };
@@ -109,9 +89,98 @@ export default function ProjectManagement() {
     setDetailsDialog(true);
   };
 
-  const handleToggleFeature = (project: any, featured: boolean) => {
-    // Handle toggling feature state
+  const handleToggleFeature = async (project: ApprovedProject, featured: boolean) => {
+    // Feature toggle logic will be implemented later
     console.log('Toggle feature for project:', project.id, featured);
+  };
+
+  const handleTabChange = (value: string) => {
+    setCurrentTab(value as 'pending' | 'approved' | 'rejected');
+  };
+
+  const renderError = (error: Error | null) => {
+    if (!error) return null;
+    return (
+      <Alert variant="destructive" className="mb-4">
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>{error.message}</AlertDescription>
+      </Alert>
+    );
+  };
+
+  const renderEmptyState = (type: 'pending' | 'approved' | 'rejected') => {
+    const config = {
+      pending: {
+        title: 'No Pending Projects',
+        description: 'There are no projects waiting for review.',
+        icon: Inbox,
+      },
+      approved: {
+        title: 'No Approved Projects',
+        description: 'No projects have been approved yet.',
+        icon: FileX2,
+      },
+      rejected: {
+        title: 'No Rejected Projects',
+        description: 'No projects have been rejected.',
+        icon: FileX2,
+      },
+    }[type];
+
+    return (
+      <div className="flex justify-center items-center p-8">
+        <EmptyState
+          title={config.title}
+          description={config.description}
+          icons={[config.icon]}
+        />
+      </div>
+    );
+  };
+
+  const renderContent = () => {
+    if (currentTab === 'pending') {
+      if (isPendingLoading) return <LoadingSpinner />;
+      if (pendingError) return renderError(pendingError);
+      if (isPendingEmpty) return renderEmptyState('pending');
+      return (
+        <PendingProjectsTable
+          projects={pendingProjects}
+          selectedProjects={selectedProjects}
+          onSelectProject={handleSelectProject}
+          onSelectAll={handleSelectAll}
+          onViewDetails={handleViewDetails}
+          onApprove={handleApprove}
+          onReject={handleReject}
+        />
+      );
+    }
+
+    if (currentTab === 'approved') {
+      if (isApprovedLoading) return <LoadingSpinner />;
+      if (approvedError) return renderError(approvedError);
+      if (isApprovedEmpty) return renderEmptyState('approved');
+      return (
+        <ApprovedProjectsTable
+          projects={approvedProjects}
+          onViewDetails={handleViewDetails}
+          onToggleFeature={handleToggleFeature}
+        />
+      );
+    }
+
+    if (currentTab === 'rejected') {
+      if (isRejectedLoading) return <LoadingSpinner />;
+      if (rejectedError) return renderError(rejectedError);
+      if (isRejectedEmpty) return renderEmptyState('rejected');
+      return (
+        <RejectedProjectsTable
+          projects={rejectedProjects}
+          onViewDetails={handleViewDetails}
+        />
+      );
+    }
   };
 
   return (
@@ -121,7 +190,7 @@ export default function ProjectManagement() {
         <p className="text-muted-foreground">Review and manage project submissions</p>
       </div>
 
-      <Tabs defaultValue="pending">
+      <Tabs defaultValue="pending" onValueChange={handleTabChange}>
         <TabsList>
           <TabsTrigger value="pending">Pending</TabsTrigger>
           <TabsTrigger value="approved">Approved</TabsTrigger>
@@ -146,61 +215,43 @@ export default function ProjectManagement() {
           {selectedProjects.length > 0 && (
             <div className="flex gap-2">
               <Button onClick={() => setApproveDialog(true)}>
-                Approve Selected
+                Approve Selected ({selectedProjects.length})
               </Button>
               <Button variant="destructive" onClick={() => setRejectDialog(true)}>
-                Reject Selected
+                Reject Selected ({selectedProjects.length})
               </Button>
             </div>
           )}
         </div>
 
-        <TabsContent value="pending">
-          <PendingProjectsTable
-            projects={mockProjects}
-            selectedProjects={selectedProjects}
-            onSelectProject={handleSelectProject}
-            onSelectAll={handleSelectAll}
-            onViewDetails={handleViewDetails}
-            onApprove={handleApprove}
-            onReject={handleReject}
-          />
-        </TabsContent>
-
-        <TabsContent value="approved">
-          <ApprovedProjectsTable
-            projects={approvedProjects}
-            onViewDetails={handleViewDetails}
-            onToggleFeature={handleToggleFeature}
-          />
-        </TabsContent>
-
-        <TabsContent value="rejected">
-          <RejectedProjectsTable
-            projects={rejectedProjects}
-            onViewDetails={handleViewDetails}
-          />
-        </TabsContent>
+        {renderContent()}
       </Tabs>
 
-{/* Details Popup */}
-      <DetailsDialog 
-        open={detailsDialog} 
-        onClose={() => setDetailsDialog(false)} 
-        project={currentProject} 
-      />
+      {detailsDialog && currentProject && (
+        <DetailsDialog
+          open={detailsDialog}
+          onOpenChange={setDetailsDialog}
+          project={currentProject}
+        />
+      )}
 
-{/* Aprove & feature popup */}
-      <ApproveDialog 
-        open={approveDialog} 
-        onClose={() => setApproveDialog(false)} 
-      />
+      {approveDialog && currentProject && (
+        <ApproveDialog
+          open={approveDialog}
+          onOpenChange={setApproveDialog}
+          project={currentProject}
+          onApproved={refreshPending}
+        />
+      )}
 
-{/* Reject with reason popup */}
-      <RejectDialog 
-        open={rejectDialog} 
-        onClose={() => setRejectDialog(false)} 
-      />
+      {rejectDialog && currentProject && (
+        <RejectDialog
+          open={rejectDialog}
+          onOpenChange={setRejectDialog}
+          project={currentProject}
+          onRejected={refreshPending}
+        />
+      )}
     </div>
   );
 }
