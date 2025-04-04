@@ -1,5 +1,6 @@
-import { AssociationType, ProjectDomainEnum, ProjectStatusEnum, ProjectTypeEnum, SDGGoalEnum, TechStackEnum } from "@prisma/client";
+import { AssociationType, ProjectApprovalStatus, ProjectDomainEnum, ProjectStatusEnum, ProjectTypeEnum, SDGGoalEnum, TechStackEnum } from "@prisma/client";
 import { IconType } from "react-icons/lib";
+import { User } from "../user/type";
 
 export interface IProject {
     metadata: IProjectMetadata;
@@ -47,8 +48,9 @@ export interface IProject {
   export interface IProjectStatus {
     content_id: string;
     status: ProjectStatusEnum;
-    approved: boolean;
-    approved_by_userId?: string;
+    approved_status: ProjectApprovalStatus;
+    approved_at?: Date;
+    approved_by?: User;
     createdAt?: Date;
     updatedAt?: Date;
   }
