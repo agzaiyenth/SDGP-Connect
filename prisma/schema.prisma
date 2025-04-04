@@ -173,6 +173,7 @@ model ProjectStatus {
   content_id         String                @id // Matches ProjectContent's primary key
   status             ProjectStatusEnum
   approved_status    ProjectApprovalStatus @default(PENDING)
+  rejected_reason    String?
   approved_at        DateTime?
   approved_by_userId String?
   approved_by        User?                 @relation("ApprovedBy", fields: [approved_by_userId], references: [user_id], onDelete: SetNull)
