@@ -1,40 +1,21 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
+import { useState } from 'react';
+import { PendingProjectsTable } from '@/components/dashboard/PendingProjectsTable';
+import { ApprovedProjectsTable } from '@/components/dashboard/ApprovedProjectsTable';
+import { RejectedProjectsTable } from '@/components/dashboard/RejectedProjectsTable';
+import ProjectDetails from '@/components/ProjectDetails';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
-import { useState } from 'react';
 
 const projectStatuses = ['IDEA', 'MVP', 'DEPLOYED', 'STARTUP'];
 
+// Using the same mock data as before
 const mockProjects = [
   {
     id: 1,
@@ -102,6 +83,18 @@ export default function ProjectManagement() {
   const [feedback, setFeedback] = useState('');
   const [currentProject, setCurrentProject] = useState<any>(null);
 
+  const handleSelectProject = (projectId: number) => {
+    setSelectedProjects(prev => 
+      prev.includes(projectId) 
+        ? prev.filter(id => id !== projectId)
+        : [...prev, projectId]
+    );
+  };
+
+  const handleSelectAll = (checked: boolean) => {
+    setSelectedProjects(checked ? mockProjects.map(p => p.id) : []);
+  };
+
   const handleApprove = (project: any) => {
     setCurrentProject(project);
     setApproveDialog(true);
@@ -117,86 +110,10 @@ export default function ProjectManagement() {
     setDetailsDialog(true);
   };
 
-  const ProjectDetails = ({ project }: { project: any }) => (
-    <ScrollArea className="h-[60vh]">
-      <div className="space-y-6">
-        <div>
-          <h3 className="text-lg font-semibold">{project.title}</h3>
-          <p className="text-sm text-muted-foreground">Group {project.groupNumber}</p>
-        </div>
-
-        <div className="grid gap-4">
-          <div>
-            <h4 className="font-medium mb-2">Project Status</h4>
-            <Badge>{project.status}</Badge>
-          </div>
-
-          <div>
-            <h4 className="font-medium mb-2">Description</h4>
-            <p className="text-sm">{project.description}</p>
-          </div>
-
-          <div>
-            <h4 className="font-medium mb-2">Team Members</h4>
-            <ul className="list-disc list-inside text-sm">
-              {project.teamMembers.map((member: string) => (
-                <li key={member}>{member}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <h4 className="font-medium mb-2">Type</h4>
-              <p className="text-sm">{project.type}</p>
-            </div>
-            <div>
-              <h4 className="font-medium mb-2">Domain</h4>
-              <p className="text-sm">{project.domain}</p>
-            </div>
-            <div>
-              <h4 className="font-medium mb-2">Technology</h4>
-              <p className="text-sm">{project.tech}</p>
-            </div>
-            <div>
-              <h4 className="font-medium mb-2">SDG</h4>
-              <p className="text-sm">{project.sdg}</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <h4 className="font-medium mb-2">GitHub Repository</h4>
-              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline">
-                View Repository
-              </a>
-            </div>
-            <div>
-              <h4 className="font-medium mb-2">Demo URL</h4>
-              <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline">
-                View Demo
-              </a>
-            </div>
-          </div>
-
-          {project.approvedBy && (
-            <div>
-              <h4 className="font-medium mb-2">Approval Details</h4>
-              <p className="text-sm">Approved by {project.approvedBy} on {project.approvedAt}</p>
-            </div>
-          )}
-
-          {project.rejectedBy && (
-            <div>
-              <h4 className="font-medium mb-2">Rejection Details</h4>
-              <p className="text-sm">Rejected by {project.rejectedBy} on {project.rejectedAt}</p>
-              <p className="text-sm mt-2">Reason: {project.rejectionReason}</p>
-            </div>
-          )}
-        </div>
-      </div>
-    </ScrollArea>
-  );
+  const handleToggleFeature = (project: any, featured: boolean) => {
+    // Handle toggling feature state
+    console.log('Toggle feature for project:', project.id, featured);
+  };
 
   return (
     <div className="space-y-6">
@@ -240,140 +157,30 @@ export default function ProjectManagement() {
         </div>
 
         <TabsContent value="pending">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-12">
-                  <Checkbox
-                    checked={selectedProjects.length === mockProjects.length}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSelectedProjects(mockProjects.map(p => p.id));
-                      } else {
-                        setSelectedProjects([]);
-                      }
-                    }}
-                  />
-                </TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead>Group</TableHead>
-                <TableHead>Submission Date</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {mockProjects.map((project) => (
-                <TableRow key={project.id}>
-                  <TableCell>
-                    <Checkbox
-                      checked={selectedProjects.includes(project.id)}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          setSelectedProjects([...selectedProjects, project.id]);
-                        } else {
-                          setSelectedProjects(selectedProjects.filter(id => id !== project.id));
-                        }
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell>{project.title}</TableCell>
-                  <TableCell>{project.groupNumber}</TableCell>
-                  <TableCell>{project.submissionDate}</TableCell>
-                  <TableCell>
-                    <Badge>{project.status}</Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
-                      <Button size="sm" onClick={() => handleViewDetails(project)}>
-                        View
-                      </Button>
-                      <Button size="sm" onClick={() => handleApprove(project)}>
-                        Approve
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => handleReject(project)}
-                      >
-                        Reject
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <PendingProjectsTable
+            projects={mockProjects}
+            selectedProjects={selectedProjects}
+            onSelectProject={handleSelectProject}
+            onSelectAll={handleSelectAll}
+            onViewDetails={handleViewDetails}
+            onApprove={handleApprove}
+            onReject={handleReject}
+          />
         </TabsContent>
 
         <TabsContent value="approved">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Title</TableHead>
-                <TableHead>Group</TableHead>
-                <TableHead>Featured</TableHead>
-                <TableHead>Approved By</TableHead>
-                <TableHead>Approved At</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {approvedProjects.map((project) => (
-                <TableRow key={project.id}>
-                  <TableCell>{project.title}</TableCell>
-                  <TableCell>{project.groupNumber}</TableCell>
-                  <TableCell>
-                    <Switch
-                      checked={project.featured}
-                      onCheckedChange={(checked) => {
-                        // Handle feature toggle
-                        project.featured = checked;
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell>{project.approvedBy}</TableCell>
-                  <TableCell>{project.approvedAt}</TableCell>
-                  <TableCell>
-                    <Button size="sm" onClick={() => handleViewDetails(project)}>
-                      View Details
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <ApprovedProjectsTable
+            projects={approvedProjects}
+            onViewDetails={handleViewDetails}
+            onToggleFeature={handleToggleFeature}
+          />
         </TabsContent>
 
         <TabsContent value="rejected">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Title</TableHead>
-                <TableHead>Group</TableHead>
-                <TableHead>Rejected By</TableHead>
-                <TableHead>Rejected At</TableHead>
-                <TableHead>Reason</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {rejectedProjects.map((project) => (
-                <TableRow key={project.id}>
-                  <TableCell>{project.title}</TableCell>
-                  <TableCell>{project.groupNumber}</TableCell>
-                  <TableCell>{project.rejectedBy}</TableCell>
-                  <TableCell>{project.rejectedAt}</TableCell>
-                  <TableCell className="max-w-xs truncate">{project.rejectionReason}</TableCell>
-                  <TableCell>
-                    <Button size="sm" onClick={() => handleViewDetails(project)}>
-                      View Details
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <RejectedProjectsTable
+            projects={rejectedProjects}
+            onViewDetails={handleViewDetails}
+          />
         </TabsContent>
       </Tabs>
 
