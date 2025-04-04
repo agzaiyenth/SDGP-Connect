@@ -59,7 +59,7 @@ export function useGetProjectsByApprovalStatus<T extends PendingProject | Approv
       setIsEmpty(data.length === 0);
     } catch (err) {
       const axiosError = err as AxiosError;
-      const errorMessage = axiosError.response?.data?.error || axiosError.message || 'Failed to fetch projects';
+      const errorMessage = (axiosError.response?.data as { error?: string })?.error || axiosError.message || 'Failed to fetch projects';
       setError(new Error(errorMessage));
       setIsEmpty(true);
     } finally {
