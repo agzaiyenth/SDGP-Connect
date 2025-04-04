@@ -60,12 +60,11 @@ const ProjectDetails = ({ projectID }: { projectID: string }) => {
           status={project.content?.status?.status}
         />
         
-        {/* <ProjectOverview
-          problemStatement={mockProject.problemStatement}
-          solution={mockProject.solution}
-          keyFeatures={mockProject.keyFeatures}
-          completionPercentage={mockProject.completionPercentage}
-        /> */}
+        <ProjectOverview
+          problemStatement={project.content?.projectDetails?.problem_statement}
+          solution={project.content?.projectDetails?.solution}
+          keyFeatures={project.content?.projectDetails?.features}
+        />
         
         {/* <SlideDeck slides={mockProject.slides} /> */}
         
