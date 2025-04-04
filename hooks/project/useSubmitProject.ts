@@ -52,6 +52,7 @@ export const useSubmitProject = () => {
           const coverImageUrl = await uploadImage(data.metadata.cover_image);
           submissionData.metadata.cover_image = coverImageUrl;
         } catch (err) {
+          console.error('Error uploading cover image:', err);
           submissionData.metadata.cover_image = null;
         }
       }
@@ -62,6 +63,7 @@ export const useSubmitProject = () => {
           const logoUrl = await uploadImage(data.metadata.logo);
           submissionData.metadata.logo = logoUrl;
         } catch (err) {
+          console.error('Error uploading logo:', err);
           submissionData.metadata.logo = null;
         }
       }
@@ -75,6 +77,7 @@ export const useSubmitProject = () => {
                 const profileImageUrl = await uploadImage(member.profile_image);
                 return { ...member, profile_image: profileImageUrl };
               } catch (err) {
+                console.error('Error uploading profile image:', err);
                 return { ...member, profile_image: null };
               }
             }
@@ -102,34 +105,34 @@ export const useSubmitProject = () => {
       // Final sanitization to ensure data is JSON serializable
       const sanitizedData = sanitizeSubmissionData(submissionData);
       
-      
-      // Submit to API using axios with .then/.catch 
-      return axios.post<SubmitProjectResponse>('/api/projects/submit', sanitizedData)
-        .then(response => {
-          return response.data;
-        })
-        .catch(err => {
-          
-          const errorMessage = err.response?.data?.message || 'Failed to submit project';
-          const errorDetails = err.response?.data?.error || '';
-          
-          
-          const error = new Error(`${errorMessage}${errorDetails ? `: ${errorDetails}` : ''}`);
-          setError(error);
-          
-          return {
-            success: false,
-            message: errorMessage,
-            errors: err.response?.data?.errors
-          };
-        })
-        .finally(() => {
-          setIsSubmitting(false);
-        });
+      try {
+        // Submit to API using axios
+        const response = await axios.post<SubmitProjectResponse>('/api/projects/submit', sanitizedData);
+        setIsSubmitting(false);
+        return response.data;
+      } catch (err: any) {
+        setIsSubmitting(false);
+        
+        const errorMessage = err.response?.data?.message || 'Failed to submit project';
+        const errorDetails = err.response?.data?.error || '';
+        
+        const error = new Error(`${errorMessage}${errorDetails ? `: ${errorDetails}` : ''}`);
+        setError(error);
+        
+        console.error('API Error:', err.response?.data);
+        
+        return {
+          success: false,
+          message: errorMessage,
+          errors: err.response?.data?.errors
+        };
+      }
     } catch (err) {
+      setIsSubmitting(false);
       const error = err instanceof Error ? err : new Error('Unknown error occurred during submission');
       setError(error);
-      setIsSubmitting(false);
+      console.error("Submission error:", error);
+      
       return {
         success: false,
         message: error.message || 'Project submission failed',
