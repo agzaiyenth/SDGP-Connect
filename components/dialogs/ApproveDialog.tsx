@@ -58,7 +58,7 @@ const ApproveDialog = ({ open, onOpenChange, project, onApproved }: ApproveDialo
         )}
         
         {conflictInfo && (
-          <Alert variant="warning">
+          <Alert >
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Already Approved</AlertTitle>
             <AlertDescription>
@@ -85,7 +85,7 @@ const ApproveDialog = ({ open, onOpenChange, project, onApproved }: ApproveDialo
           </Button>
           {!conflictInfo && (
             <Button onClick={handleApprove} disabled={isLoading}>
-              {isLoading ? <LoadingSpinner className="mr-2 h-4 w-4" /> : null}
+              {isLoading ? <LoadingSpinner  /> : null}
               {isLoading ? 'Approving...' : 'Approve'}
             </Button>
           )}
