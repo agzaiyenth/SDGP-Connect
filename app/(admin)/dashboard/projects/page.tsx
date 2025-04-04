@@ -228,16 +228,7 @@ export default function ProjectManagement() {
             placeholder="Search projects..."
             className="max-w-xs"
           />
-          <Select>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              {projectStatuses.map(status => (
-                <SelectItem key={status} value={status}>{status}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+      
           {selectedProjects.length > 0 && (
             <div className="flex gap-2">
               <Button onClick={() => setApproveDialog(true)}>
