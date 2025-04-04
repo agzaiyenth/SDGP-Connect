@@ -45,6 +45,7 @@ export default function ProjectManagement() {
     isLoading: isApprovedLoading,
     error: approvedError,
     isEmpty: isApprovedEmpty,
+    refresh: refreshApproved,
   } = useGetProjectsByApprovalStatus<ApprovedProject>(ProjectApprovalStatus.APPROVED);
 
   const {
@@ -52,6 +53,7 @@ export default function ProjectManagement() {
     isLoading: isRejectedLoading,
     error: rejectedError,
     isEmpty: isRejectedEmpty,
+    refresh: refreshRejected,
   } = useGetProjectsByApprovalStatus<RejectedProject>(ProjectApprovalStatus.REJECTED);
 
   // Reset selected projects when changing tabs
@@ -98,6 +100,9 @@ export default function ProjectManagement() {
 
   const handleTabChange = (value: string) => {
     setCurrentTab(value as 'pending' | 'approved' | 'rejected');
+    if (value === 'pending') refreshPending();
+    if (value === 'approved') refreshApproved();
+    if (value === 'rejected') refreshRejected();
   };
 
   const fetchNextPage = () => {
@@ -216,7 +221,7 @@ export default function ProjectManagement() {
         <p className="text-muted-foreground">Review and manage project submissions</p>
       </div>
 
-      <Tabs defaultValue="pending" onValueChange={handleTabChange}>
+      <Tabs defaultValue="pending" onValueChange={handleTabChange} value={currentTab}>
         <TabsList>
           <TabsTrigger value="pending">Pending</TabsTrigger>
           <TabsTrigger value="approved">Approved</TabsTrigger>
