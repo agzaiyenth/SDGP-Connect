@@ -6,12 +6,12 @@ import { ApprovedProjectsTable } from '@/components/tables/ApprovedProjectsTable
 import { RejectedProjectsTable } from '@/components/tables/RejectedProjectsTable';
 import ProjectDetails from '@/components/ProjectDetails';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
+import ApproveDialog from '@/components/dialogs/ApproveDialog';
+import RejectDialog from '@/components/dialogs/RejectDialog';
+import DetailsDialog from '@/components/dialogs/DetailsDialog';
 
 const projectStatuses = ['IDEA', 'MVP', 'DEPLOYED', 'STARTUP'];
 
@@ -80,7 +80,6 @@ export default function ProjectManagement() {
   const [approveDialog, setApproveDialog] = useState(false);
   const [rejectDialog, setRejectDialog] = useState(false);
   const [detailsDialog, setDetailsDialog] = useState(false);
-  const [feedback, setFeedback] = useState('');
   const [currentProject, setCurrentProject] = useState<any>(null);
 
   const handleSelectProject = (projectId: number) => {
@@ -184,73 +183,24 @@ export default function ProjectManagement() {
         </TabsContent>
       </Tabs>
 
-      {/* Project Details Dialog */}
-      <Dialog open={detailsDialog} onOpenChange={setDetailsDialog}>
-        <DialogContent className="max-w-3xl">
-          <DialogHeader>
-            <DialogTitle>Project Details</DialogTitle>
-          </DialogHeader>
-          {currentProject && <ProjectDetails project={currentProject} />}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setDetailsDialog(false)}>
-              Close
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+{/* Details Popup */}
+      <DetailsDialog 
+        open={detailsDialog} 
+        onClose={() => setDetailsDialog(false)} 
+        project={currentProject} 
+      />
 
-      {/* Approve Dialog */}
-      <Dialog open={approveDialog} onOpenChange={setApproveDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Approve Project</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to approve this project?
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex items-center space-x-2">
-            <Switch id="featured" />
-            <label htmlFor="featured">Feature this project</label>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setApproveDialog(false)}>
-              Cancel
-            </Button>
-            <Button onClick={() => setApproveDialog(false)}>
-              Approve
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+{/* Aprove & feature popup */}
+      <ApproveDialog 
+        open={approveDialog} 
+        onClose={() => setApproveDialog(false)} 
+      />
 
-      {/* Reject Dialog */}
-      <Dialog open={rejectDialog} onOpenChange={setRejectDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Reject Project</DialogTitle>
-            <DialogDescription>
-              Please provide feedback for the rejection.
-            </DialogDescription>
-          </DialogHeader>
-          <Textarea
-            placeholder="Enter rejection feedback..."
-            value={feedback}
-            onChange={(e) => setFeedback(e.target.value)}
-          />
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setRejectDialog(false)}>
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={() => setRejectDialog(false)}
-              disabled={!feedback.trim()}
-            >
-              Reject
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+{/* Reject with reason popup */}
+      <RejectDialog 
+        open={rejectDialog} 
+        onClose={() => setRejectDialog(false)} 
+      />
     </div>
   );
 }
