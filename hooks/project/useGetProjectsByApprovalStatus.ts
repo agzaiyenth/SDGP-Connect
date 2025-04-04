@@ -26,9 +26,6 @@ interface UseGetProjectsByApprovalStatusReturn<T> {
   isEmpty: boolean;
 }
 
-const MAX_RETRIES = 3;
-const RETRY_DELAY = 1000; // 1 second
-
 export function useGetProjectsByApprovalStatus<T extends PendingProject | ApprovedProject | RejectedProject>(
   statusType: ProjectApprovalStatus,
   itemsPerPage: number = 10
@@ -40,11 +37,8 @@ export function useGetProjectsByApprovalStatus<T extends PendingProject | Approv
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [isEmpty, setIsEmpty] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
 
-  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-  const fetchProjects = useCallback(async (page: number, retryAttempt: number = 0) => {
+  const fetchProjects = useCallback(async (page: number) => {
     setIsLoading(true);
     setError(null);
 
@@ -58,42 +52,14 @@ export function useGetProjectsByApprovalStatus<T extends PendingProject | Approv
       });
 
       const { data, metadata } = response.data;
-      
-      // Validate response data
-      if (!Array.isArray(data)) {
-        throw new Error('Invalid response format: data is not an array');
-      }
-
-      // Validate each project has required fields based on status
-      const validatedData = data.filter(project => {
-        if (!project || typeof project !== 'object') return false;
-        if (!('id' in project) || !('title' in project) || !('groupNumber' in project)) return false;
-        return true;
-      });
-
-      setProjects(validatedData);
+      setProjects(data);
       setTotalPages(metadata.totalPages);
       setTotalItems(metadata.totalItems);
       setCurrentPage(page);
-      setIsEmpty(validatedData.length === 0);
-      setRetryCount(0); // Reset retry count on success
+      setIsEmpty(data.length === 0);
     } catch (err) {
-      console.error('Error fetching projects:', err);
       const axiosError = err as AxiosError;
-      
-      // Handle specific error cases
-      if (axiosError.response?.status === 500 && retryAttempt < MAX_RETRIES) {
-        // Retry with exponential backoff
-        const retryDelay = RETRY_DELAY * Math.pow(2, retryAttempt);
-        console.log(`Retrying request (attempt ${retryAttempt + 1}) after ${retryDelay}ms`);
-        await delay(retryDelay);
-        setRetryCount(retryAttempt + 1);
-        return fetchProjects(page, retryAttempt + 1);
-      }
-
-      const errorMessage = axiosError.response?.data?.error || 
-                          axiosError.message || 
-                          'Failed to fetch projects';
+      const errorMessage = axiosError.response?.data?.error || axiosError.message || 'Failed to fetch projects';
       setError(new Error(errorMessage));
       setIsEmpty(true);
     } finally {

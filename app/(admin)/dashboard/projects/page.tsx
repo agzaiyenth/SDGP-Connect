@@ -29,6 +29,8 @@ export default function ProjectManagement() {
   const [detailsDialog, setDetailsDialog] = useState(false);
   const [currentProject, setCurrentProject] = useState<any>(null);
   const [currentTab, setCurrentTab] = useState<'pending' | 'approved' | 'rejected'>('pending');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const {
     projects: pendingProjects,
@@ -98,6 +100,18 @@ export default function ProjectManagement() {
     setCurrentTab(value as 'pending' | 'approved' | 'rejected');
   };
 
+  const fetchNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(prev => prev + 1);
+    }
+  };
+
+  const fetchPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(prev => prev - 1);
+    }
+  };
+
   const renderError = (error: Error | null) => {
     if (!error) return null;
     return (
@@ -153,6 +167,10 @@ export default function ProjectManagement() {
           onViewDetails={handleViewDetails}
           onApprove={handleApprove}
           onReject={handleReject}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onNextPage={fetchNextPage}
+          onPreviousPage={fetchPreviousPage}
         />
       );
     }
@@ -166,6 +184,10 @@ export default function ProjectManagement() {
           projects={approvedProjects}
           onViewDetails={handleViewDetails}
           onToggleFeature={handleToggleFeature}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onNextPage={fetchNextPage}
+          onPreviousPage={fetchPreviousPage}
         />
       );
     }
@@ -178,6 +200,10 @@ export default function ProjectManagement() {
         <RejectedProjectsTable
           projects={rejectedProjects}
           onViewDetails={handleViewDetails}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onNextPage={fetchNextPage}
+          onPreviousPage={fetchPreviousPage}
         />
       );
     }
