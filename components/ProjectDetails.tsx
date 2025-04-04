@@ -10,6 +10,7 @@ import { HeroSection } from './s-project/hero-section';
 import { ProjectHeader } from './s-project/project-header';
 import { IProjectAssociation } from '@/types/project/type';
 import { ProjectDomainEnum } from '@prisma/client';
+import { ProjectOverview } from './s-project/project-overview';
 
 const ProjectDetails = ({ projectID }: { projectID: string }) => {
   const { project, isLoading, error } = useGetProjectDetailsByID(projectID);
