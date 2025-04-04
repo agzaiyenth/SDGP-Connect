@@ -1,3 +1,4 @@
+'use client'
 import { Sparkles } from "@/components/ui/sparkles"
 import { useTheme } from "next-themes"
 import { InfiniteSlider } from '@/components/ui/infinite-slider'
