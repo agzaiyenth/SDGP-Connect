@@ -49,7 +49,7 @@ export async function GET(request: Request) {
 
     const transformedProjects = projects.map((projectStatus) => {
       const baseProject = {
-        id: parseInt(projectStatus.content_id),
+        id: projectStatus.project.project.project_id,
         title: projectStatus.project?.project?.title || 'Untitled Project',
         groupNumber: projectStatus.project?.project?.group_num || 'N/A',
       };

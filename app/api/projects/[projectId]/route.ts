@@ -1,0 +1,73 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/prisma/prismaClient';
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { projectId: string } }
+) {
+  try {
+    const projectId = params.projectId;
+
+    if (!projectId) {
+      return NextResponse.json(
+        { error: 'Project ID is required' },
+        { status: 400 }
+      );
+    }
+
+    // Get the project metadata
+    const projectMetadata = await prisma.projectMetadata.findUnique({
+      where: {
+        project_id: projectId,
+      },
+    });
+
+    if (!projectMetadata) {
+      return NextResponse.json(
+        { error: 'Project not found' },
+        { status: 404 }
+      );
+    }
+
+    // Get the project content with all related data
+    const projectContent = await prisma.projectContent.findUnique({
+      where: {
+        project_id: projectId,
+      },
+      include: {
+        projectDetails: true,
+        status: {
+          include: {
+            approved_by: {
+              select: {
+                user_id: true,
+                name: true,
+              },
+            },
+          },
+        },
+        associations: true,
+        slides: true,
+        team: true,
+        socialLinks: true,
+      },
+    });
+
+    // Construct the full project object
+    const project = {
+      metadata: projectMetadata,
+      content: projectContent,
+    };
+
+    return NextResponse.json(project);
+  } catch (error) {
+    console.error('Error fetching project details:', error);
+    return NextResponse.json(
+      {
+        error: 'Failed to fetch project details',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    );
+  }
+}
