@@ -30,9 +30,9 @@ export async function GET(request: Request) {
       skip,
       take: limit,
       include: {
-        project: {
+        content: {
           include: {
-            project: true,
+            metadata: true,
             projectDetails: true,
           },
         },
@@ -48,10 +48,11 @@ export async function GET(request: Request) {
     });
 
     const transformedProjects = projects.map((projectStatus) => {
+      // Get the base project information from the metadata through content relation
       const baseProject = {
-        id: projectStatus.project.project.project_id,
-        title: projectStatus.project?.project?.title || 'Untitled Project',
-        groupNumber: projectStatus.project?.project?.group_num || 'N/A',
+        id: projectStatus.content.metadata.project_id,
+        title: projectStatus.content.metadata.title || 'Untitled Project',
+        groupNumber: projectStatus.content.metadata.group_num || 'N/A',
       };
 
       switch (status) {
@@ -65,7 +66,7 @@ export async function GET(request: Request) {
         case ProjectApprovalStatus.APPROVED:
           return {
             ...baseProject,
-            featured: projectStatus.project?.project?.featured || false,
+            featured: projectStatus.content.metadata.featured || false,
             approvedBy: projectStatus.approved_by?.name || 'Unknown',
             approvedAt: projectStatus.approved_at?.toISOString() || '',
           };
@@ -75,7 +76,7 @@ export async function GET(request: Request) {
             ...baseProject,
             rejectedBy: projectStatus.approved_by?.name || 'Unknown',
             rejectedAt: projectStatus.approved_at?.toISOString() || '',
-            rejectionReason: projectStatus.project?.projectDetails?.problem_statement || '',
+            rejectionReason: projectStatus.rejected_reason || '', // Use actual rejection reason
           };
 
         default:
@@ -93,6 +94,7 @@ export async function GET(request: Request) {
       },
     });
   } catch (error) {
+    console.error('Error fetching projects:', error);
     return NextResponse.json(
       { error: 'Failed to fetch projects', details: error instanceof Error ? error.message : undefined },
       { status: 500 }

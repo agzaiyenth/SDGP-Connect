@@ -52,14 +52,24 @@ export function useGetProjectsByApprovalStatus<T extends PendingProject | Approv
       });
 
       const { data, metadata } = response.data;
-      setProjects(data);
-      setTotalPages(metadata.totalPages);
-      setTotalItems(metadata.totalItems);
-      setCurrentPage(page);
-      setIsEmpty(data.length === 0);
+      
+      // Check if the response contains data
+      if (data && Array.isArray(data)) {
+        setProjects(data);
+        setTotalPages(metadata.totalPages);
+        setTotalItems(metadata.totalItems);
+        setCurrentPage(metadata.currentPage);
+        setIsEmpty(data.length === 0);
+      } else {
+        throw new Error('Invalid response format from API');
+      }
     } catch (err) {
       const axiosError = err as AxiosError;
-      const errorMessage = (axiosError.response?.data as { error?: string })?.error || axiosError.message || 'Failed to fetch projects';
+      const errorMessage = 
+        (axiosError.response?.data as { error?: string })?.error || 
+        axiosError.message || 
+        'Failed to fetch projects';
+      console.error('Error fetching projects:', errorMessage);
       setError(new Error(errorMessage));
       setIsEmpty(true);
     } finally {

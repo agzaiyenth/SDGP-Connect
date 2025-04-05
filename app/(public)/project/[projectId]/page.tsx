@@ -2,16 +2,18 @@ import ProjectDetails from '@/components/ProjectDetails'
 import React from 'react'
 
 interface Props {
-    
+    params: {
+        projectId: string
+    }
 }
 
-const page = (props: Props) => {
+const ProjectPage = ({ params }: Props) => {
     return (
         <div>
-           <ProjectDetails projectID="57bb19dd-c087-4d37-b353-07c7417aec49" />
+           <ProjectDetails projectID={params.projectId} />
             
         </div>
     )
 }
 
-export default page
+export default ProjectPage
