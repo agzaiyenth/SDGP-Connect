@@ -12,6 +12,7 @@ import { IProjectAssociation } from '@/types/project/type';
 import { ProjectDomainEnum } from '@prisma/client';
 import { ProjectOverview } from './s-project/project-overview';
 import { ProjectAssociation } from './s-project/project-associations';
+import { SlideDeck } from './s-project/slide-deck';
 
 const ProjectDetails = ({ projectID }: { projectID: string }) => {
   const { project, isLoading, error } = useGetProjectDetailsByID(projectID);
@@ -67,14 +68,14 @@ const ProjectDetails = ({ projectID }: { projectID: string }) => {
           solution={project.content?.projectDetails?.solution}
           keyFeatures={project.content?.projectDetails?.features}
         />
-        
-        {/* <SlideDeck slides={mockProject.slides} /> */}
-        
+        {project.content?.slides && (
+        <SlideDeck slides={project.content?.slides} />
+      )}
         <ProjectAssociation
           associations={project.content?.associations || []}
         />
         
-        {/* <SimilarProjects projects={mockProject.similarProjects} /> */}
+       
       </div>
     </div>
   );

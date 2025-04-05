@@ -5,7 +5,7 @@ import { sdgGoals, projectTypeOptions } from "@/types/project/mapping";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { AssociationType } from "@prisma/client";
 import ProjectTypeCard from "../project-type-card";
-import TechCard from "./techcard";
+import TechCard from "../techcard";
 
 interface SDGSectionProps {
     associations: IProjectAssociation[];

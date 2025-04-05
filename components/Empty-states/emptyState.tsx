@@ -62,7 +62,17 @@ function EmptyStateMedia() {
     />
   )
 }
-
+function NoMedia() {
+  return (
+    <EmptyState
+      title="No Images Found"
+      description="This Project does not have any Featured Images"
+      icons={[Image]}
+      className="bg-muted/50"
+      
+    />
+  )
+}
 function EmptyStateSettings() {
   return (
     <EmptyState
@@ -83,4 +93,5 @@ export {
   EmptyStateSearch,
   EmptyStateMedia,
   EmptyStateSettings,
+  NoMedia
 }
