@@ -13,13 +13,13 @@ export function useApproveAndFeatured(options?: UseApproveAndFeaturedOptions) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const approveProject = async (projectId: number, featured: boolean = false) => {
+  const approveProject = async (projectId: string, featured: boolean = false) => {
     setIsLoading(true);
     setError(null);
 
     try {
       const response = await axios.post('/api/projects/approve', {
-        projectId,
+        projectId: String(projectId),
         featured
       });
 

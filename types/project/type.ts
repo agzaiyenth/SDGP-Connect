@@ -5,24 +5,26 @@ import { User } from "../user/type";
 export interface IProject {
     metadata: IProjectMetadata;
     content?: IProjectContent;
-  }
-  export interface IProjectMetadata {
+}
+
+export interface IProjectMetadata {
     project_id: string;
     sdgp_year: string;
     group_num: string;
     title: string;
     subtitle?: string;
+    website?: string;
     cover_image?: string;
     logo?: string;
     featured: boolean;
     featured_by_userId?: string;
     createdAt?: Date;
     updatedAt?: Date;
-  }
-  
-  export interface IProjectContent {
+}
+
+export interface IProjectContent {
     content_id: string;
-    project_id: string;
+    metadata_id: string; // Changed from project_id to metadata_id
     projectDetails?: IProjectDetails;
     status?: IProjectStatus;
     associations: IProjectAssociation[];
@@ -31,11 +33,11 @@ export interface IProject {
     socialLinks: IProjectSocialLink[];
     createdAt?: Date;
     updatedAt?: Date;
-  }
-  
-  export interface IProjectDetails {
+}
+
+export interface IProjectDetails {
     id: string;
-    project_id: string;
+    content_id: string; // Changed from project_id to content_id
     problem_statement: string;
     solution: string;
     features: string;
@@ -43,9 +45,9 @@ export interface IProject {
     team_phone: string;
     createdAt?: Date;
     updatedAt?: Date;
-  }
-  
-  export interface IProjectStatus {
+}
+
+export interface IProjectStatus {
     content_id: string;
     status: ProjectStatusEnum;
     approved_status: ProjectApprovalStatus;
@@ -53,53 +55,53 @@ export interface IProject {
     approved_by?: User;
     createdAt?: Date;
     updatedAt?: Date;
-  }
-  
-  export interface IProjectAssociation {
+}
+
+export interface IProjectAssociation {
     id: string;
-    project_id: string;
+    content_id: string; // Changed from project_id to content_id
     type: AssociationType;
     value: string;
-    domain?:     ProjectDomainEnum,  
-    projectType?: ProjectTypeEnum,  
-    sdgGoal?:    SDGGoalEnum,
-    techStack?:  TechStackEnum,
+    domain?: ProjectDomainEnum;
+    projectType?: ProjectTypeEnum;
+    sdgGoal?: SDGGoalEnum;
+    techStack?: TechStackEnum;
     createdAt?: Date;
     updatedAt?: Date;
-  }
-  
-  export interface IProjectSlide {
+}
+
+export interface IProjectSlide {
     id: string;
-    project_id: string;
+    content_id: string; // Changed from project_id to content_id
     slides_content: string;
     createdAt?: Date;
     updatedAt?: Date;
-  }
-  
-  export interface IProjectTeam {
+}
+
+export interface IProjectTeam {
     member_id: string;
-    project_id: string;
+    content_id: string; // Changed from project_id to content_id
     name: string;
     linkedin_url?: string;
     profile_image?: string;
     createdAt?: Date;
     updatedAt?: Date;
-  }
-  
-  export interface IProjectSocialLink {
+}
+
+export interface IProjectSocialLink {
     id: string;
-    project_id: string;
+    content_id: string; // Changed from project_id to content_id
     link_name: string;
     url: string;
     createdAt?: Date;
     updatedAt?: Date;
-  }
-  
-  export type StackType = "frontend" | "backend" | "mobile" | "cloud" | "database" | "ai" | "hardware" ;
+}
 
-  export type TechStackItem = {
+export type StackType = "frontend" | "backend" | "mobile" | "cloud" | "database" | "ai" | "hardware";
+
+export type TechStackItem = {
     value: string;
     label: string;
     type: StackType;
     icon?: IconType;
-  };
+};

@@ -11,11 +11,11 @@ import { format } from 'date-fns';
 interface ApproveDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  project: any;
+  projectID: string;
   onApproved: () => void;
 }
 
-const ApproveDialog = ({ open, onOpenChange, project, onApproved }: ApproveDialogProps) => {
+const ApproveDialog = ({ open, onOpenChange, projectID, onApproved }: ApproveDialogProps) => {
   const [featured, setFeatured] = useState(false);
   const [conflictInfo, setConflictInfo] = useState<any>(null);
   
@@ -36,7 +36,7 @@ const ApproveDialog = ({ open, onOpenChange, project, onApproved }: ApproveDialo
   });
 
   const handleApprove = async () => {
-    await approveProject(project.id, featured);
+    await approveProject(projectID, featured);
   };
 
   return (
