@@ -5,7 +5,9 @@ import { Brands } from "@/components/home/brands";
 import ExploreByDomain from "@/components/home/explore-by-domain";
 import FeaturedProjects from "@/components/home/featured-projects";
 import Hero from "@/components/home/hero";
-import ImpactStats from "@/components/home/impact-stats";
+// import ImpactStats from "@/components/home/impact-stats";
+import ImpactSection from "@/components/home/impact-section";
+
 
 
 export default function Home() {
@@ -14,7 +16,7 @@ export default function Home() {
       <Hero />
       <About />
       <FeaturedProjects />
-      <ImpactStats />
+      <ImpactSection />
       <ExploreByDomain />
       <AllProjects />
       <Brands/>
