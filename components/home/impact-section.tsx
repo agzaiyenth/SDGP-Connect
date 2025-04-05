@@ -13,7 +13,7 @@ const stats = [
 
 export default function ImpactSection() {
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#101110] via-[#202120] to-[#101110] p-10">
+    <section className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#040404] via-[#181918] to-[#040404] p-10">
       <motion.h2
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -31,8 +31,8 @@ export default function ImpactSection() {
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
               viewport={{ once: true }}
-              className=" rounded-2xl p-10 flex flex-col items-center justify-center shadow-2xl hover:scale-105 transition-transform duration-300"
-              style={{ backgroundColor: '#202120' }}
+              className=" bg-card rounded-2xl p-10 flex flex-col items-center justify-center shadow-2xl hover:scale-105 transition-transform duration-300 shadow-[0_0_8px_#282929]"
+              // style={{ backgroundColor: '#202120' }}
             >
               <div className="text-5xl font-extrabold text-white">
               <CountUp 
