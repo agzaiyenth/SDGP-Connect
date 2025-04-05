@@ -32,7 +32,7 @@ export async function GET(
     // Get the project content with all related data
     const projectContent = await prisma.projectContent.findUnique({
       where: {
-        project_id: projectId,
+        metadata_id: projectId, // Use metadata_id to find the content associated with this project
       },
       include: {
         projectDetails: true,

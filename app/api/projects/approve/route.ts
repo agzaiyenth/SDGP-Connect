@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-
 import { ProjectApprovalStatus } from "@prisma/client";
 // import { getServerSession } from "next-auth/next";
 // import { authOptions } from "@/lib/auth";
@@ -8,30 +7,12 @@ import { ProjectApprovalStatus } from "@prisma/client";
 import { session } from "@/app/(auth)/samplesession";
 import { prisma } from "@/prisma/prismaClient";
 
-
 export async function POST(request: NextRequest) {
   try {
-    // Get the current user session
-    // const session = await getServerSession(authOptions);
-    
-    // if (!session?.user) {
-    //   return NextResponse.json(
-    //     { error: "Unauthorized. You must be logged in to approve projects." },
-    //     { status: 401 }
-    //   );
-    // }
-
-    // Check if the user has the necessary roles (ADMIN or MODERATOR or REVIEWER)
-
-    // if (!["ADMIN", "MODERATOR", "REVIEWER"].includes(session.user.role)) {
-    //   return NextResponse.json(
-    //     { error: "Forbidden. You don't have permission to approve projects." },
-    //     { status: 403 }
-    //   );
-    // }
-
+    console.log("Approve API called");
     // Parse the request body
     const { projectId, featured } = await request.json();
+    console.log("Request body:", { projectId, featured });
 
     if (!projectId) {
       return NextResponse.json(
@@ -40,25 +21,44 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get the project content
-    const projectContent = await prisma.projectContent.findFirst({
+    // First, find the project metadata to make sure it exists
+    const projectMetadata = await prisma.projectMetadata.findUnique({
       where: {
-        project: {
-          project_id: String(projectId)
-        }
-      },
-      include: {
-        project: true,
-        status: true
+        project_id: String(projectId)
       }
     });
 
-    if (!projectContent) {
+    if (!projectMetadata) {
+      console.log(`Project with ID ${projectId} not found in ProjectMetadata`);
       return NextResponse.json(
         { error: "Project not found." },
         { status: 404 }
       );
     }
+
+    // Now find the associated project content
+    const projectContent = await prisma.projectContent.findUnique({
+      where: {
+        metadata_id: String(projectId)
+      },
+      include: {
+        status: true
+      }
+    });
+
+    if (!projectContent) {
+      console.log(`ProjectContent for project ID ${projectId} not found`);
+      return NextResponse.json(
+        { error: "Project content not found." },
+        { status: 404 }
+      );
+    }
+
+    console.log(`Found project content:`, {
+      content_id: projectContent.content_id,
+      metadata_id: projectContent.metadata_id,
+      status: projectContent.status?.approved_status
+    });
 
     // Check if the project is already approved
     if (projectContent.status?.approved_status === ProjectApprovalStatus.APPROVED) {
@@ -85,17 +85,20 @@ export async function POST(request: NextRequest) {
       }
     });
 
+    console.log("Status updated successfully:", updatedStatus);
+
     // If featured is true, update the ProjectMetadata record
     if (featured) {
       await prisma.projectMetadata.update({
         where: {
-          project_id: projectContent.project_id
+          project_id: String(projectId)
         },
         data: {
           featured: true,
           featured_by_userId: session.user.id
         }
       });
+      console.log("Project marked as featured");
     }
 
     return NextResponse.json({
@@ -114,7 +117,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { 
         error: "Failed to approve project", 
-        details: error.message 
+        details: error.message,
+        stack: error.stack
       },
       { status: 500 }
     );

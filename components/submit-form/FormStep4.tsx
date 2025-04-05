@@ -4,6 +4,8 @@ import { ProjectSubmissionSchema } from "@/validations/submit_project";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
+import { SocialTypeEnum } from "@prisma/client";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 const FormStep4 = () => {
   const { control } = useFormContext<ProjectSubmissionSchema>();
@@ -16,7 +18,7 @@ const FormStep4 = () => {
 
   // Add a new empty social link
   const addSocialLink = () => {
-    append({ link_name: "", url: "" });
+    append({ link_name: SocialTypeEnum.LINKEDIN, url: "" });
   };
 
   return (
@@ -91,7 +93,23 @@ const FormStep4 = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="Name (e.g., linkedin)" {...field} />
+                      <Select 
+                        onValueChange={field.onChange} 
+                        defaultValue={field.value}
+                        value={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select platform" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value={SocialTypeEnum.LINKEDIN}>LinkedIn</SelectItem>
+                          <SelectItem value={SocialTypeEnum.TWITTER}>Twitter</SelectItem>
+                          <SelectItem value={SocialTypeEnum.INSTAGRAM}>Instagram</SelectItem>
+                          <SelectItem value={SocialTypeEnum.FACEBOOK}>Facebook</SelectItem>
+                          <SelectItem value={SocialTypeEnum.YOUTUBE}>YouTube</SelectItem>
+                          <SelectItem value={SocialTypeEnum.TIKTOK}>TikTok</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

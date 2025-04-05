@@ -37,6 +37,7 @@ const ProjectSubmissionForm = () => {
         group_num: "",
         title: "",
         subtitle: "",
+        website: "",
         cover_image: null,
         logo: null,
       },

@@ -113,9 +113,27 @@ const FormStep1 = () => {
         )}
       />
       
-   
+      {/* Row 4: Website URL */}
+      <FormField
+        control={control}
+        name="metadata.website"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Project Website</FormLabel>
+            <FormControl>
+              <Input 
+                type="url" 
+                placeholder="https://your-project-website.com" 
+                {...field}
+                value={field.value || ""}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
-      {/* Row 4: Logo & Cover Image */}
+      {/* Row 5: Logo & Cover Image */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* App Logo */}
         <FormField

@@ -1,24 +1,22 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { PendingProjectsTable } from '@/components/tables/PendingProjectsTable';
-import { ApprovedProjectsTable } from '@/components/tables/ApprovedProjectsTable';
-import { RejectedProjectsTable } from '@/components/tables/RejectedProjectsTable';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ApproveDialog from '@/components/dialogs/ApproveDialog';
-import RejectDialog from '@/components/dialogs/RejectDialog';
 import DetailsDialog from '@/components/dialogs/DetailsDialog';
+import RejectDialog from '@/components/dialogs/RejectDialog';
+import { ApprovedProjectsTable } from '@/components/tables/ApprovedProjectsTable';
+import { PendingProjectsTable } from '@/components/tables/PendingProjectsTable';
+import { RejectedProjectsTable } from '@/components/tables/RejectedProjectsTable';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGetProjectsByApprovalStatus } from '@/hooks/project/useGetProjectsByApprovalStatus';
+import { ApprovedProject, PendingProject, RejectedProject } from '@/types/project/response';
 import { ProjectApprovalStatus } from '@prisma/client';
-import { PendingProject, ApprovedProject, RejectedProject } from '@/types/project/response';
+import { useEffect, useState } from 'react';
 
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { EmptyState } from '@/components/ui/empty-state';
-import { FileX2, AlertCircle, Inbox } from 'lucide-react';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { AlertCircle, FileX2, Inbox } from 'lucide-react';
 
 const projectStatuses = ['IDEA', 'MVP', 'DEPLOYED', 'STARTUP'];
 
@@ -252,7 +250,7 @@ export default function ProjectManagement() {
         <ApproveDialog
           open={approveDialog}
           onOpenChange={setApproveDialog}
-          project={currentProject}
+          projectID={currentProject.id}
           onApproved={refreshPending}
         />
       )}
