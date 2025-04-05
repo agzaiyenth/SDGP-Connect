@@ -1,113 +1,89 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
+import { useState, useEffect } from 'react';
+import { PendingProjectsTable } from '@/components/tables/PendingProjectsTable';
+import { ApprovedProjectsTable } from '@/components/tables/ApprovedProjectsTable';
+import { RejectedProjectsTable } from '@/components/tables/RejectedProjectsTable';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
-import { useState } from 'react';
+import ApproveDialog from '@/components/dialogs/ApproveDialog';
+import RejectDialog from '@/components/dialogs/RejectDialog';
+import DetailsDialog from '@/components/dialogs/DetailsDialog';
+import { useGetProjectsByApprovalStatus } from '@/hooks/project/useGetProjectsByApprovalStatus';
+import { ProjectApprovalStatus } from '@prisma/client';
+import { PendingProject, ApprovedProject, RejectedProject } from '@/types/project/response';
+
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { EmptyState } from '@/components/ui/empty-state';
+import { FileX2, AlertCircle, Inbox } from 'lucide-react';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 const projectStatuses = ['IDEA', 'MVP', 'DEPLOYED', 'STARTUP'];
-
-const mockProjects = [
-  {
-    id: 1,
-    title: 'Project Alpha',
-    groupNumber: 'G01',
-    submissionDate: '2024-03-20',
-    status: 'IDEA',
-    type: 'Web',
-    domain: 'Healthcare',
-    tech: 'React',
-    sdg: 'Quality Education',
-    featured: false,
-    description: 'A healthcare platform that connects patients with doctors remotely.',
-    teamMembers: ['John Doe', 'Jane Smith', 'Bob Johnson'],
-    githubUrl: 'https://github.com/project-alpha',
-    demoUrl: 'https://project-alpha.demo',
-  },
-];
-
-const approvedProjects = [
-  {
-    id: 2,
-    title: 'Project Beta',
-    groupNumber: 'G02',
-    status: 'DEPLOYED',
-    featured: true,
-    approvedBy: 'Alice Admin',
-    approvedAt: '2024-03-15',
-    type: 'Mobile',
-    domain: 'Education',
-    tech: 'React Native',
-    sdg: 'Quality Education',
-    description: 'A mobile app for personalized learning experiences.',
-    teamMembers: ['Sarah Wilson', 'Mike Brown'],
-    githubUrl: 'https://github.com/project-beta',
-    demoUrl: 'https://project-beta.demo',
-  },
-];
-
-const rejectedProjects = [
-  {
-    id: 3,
-    title: 'Project Gamma',
-    groupNumber: 'G03',
-    status: 'MVP',
-    rejectedBy: 'Bob Reviewer',
-    rejectedAt: '2024-03-18',
-    rejectionReason: 'Project scope needs refinement and technical documentation is incomplete.',
-    type: 'AI/ML',
-    domain: 'Finance',
-    tech: 'Python',
-    sdg: 'No Poverty',
-    description: 'An AI-powered financial advisory system.',
-    teamMembers: ['Tom Clark', 'Emma Davis'],
-    githubUrl: 'https://github.com/project-gamma',
-    demoUrl: 'https://project-gamma.demo',
-  },
-];
 
 export default function ProjectManagement() {
   const [selectedProjects, setSelectedProjects] = useState<number[]>([]);
   const [approveDialog, setApproveDialog] = useState(false);
   const [rejectDialog, setRejectDialog] = useState(false);
   const [detailsDialog, setDetailsDialog] = useState(false);
-  const [feedback, setFeedback] = useState('');
   const [currentProject, setCurrentProject] = useState<any>(null);
+  const [currentTab, setCurrentTab] = useState<'pending' | 'approved' | 'rejected'>('pending');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const handleApprove = (project: any) => {
+  const {
+    projects: pendingProjects,
+    isLoading: isPendingLoading,
+    error: pendingError,
+    isEmpty: isPendingEmpty,
+    refresh: refreshPending,
+  } = useGetProjectsByApprovalStatus<PendingProject>(ProjectApprovalStatus.PENDING);
+
+  const {
+    projects: approvedProjects,
+    isLoading: isApprovedLoading,
+    error: approvedError,
+    isEmpty: isApprovedEmpty,
+    refresh: refreshApproved,
+  } = useGetProjectsByApprovalStatus<ApprovedProject>(ProjectApprovalStatus.APPROVED);
+
+  const {
+    projects: rejectedProjects,
+    isLoading: isRejectedLoading,
+    error: rejectedError,
+    isEmpty: isRejectedEmpty,
+    refresh: refreshRejected,
+  } = useGetProjectsByApprovalStatus<RejectedProject>(ProjectApprovalStatus.REJECTED);
+
+  // Reset selected projects when changing tabs
+  useEffect(() => {
+    setSelectedProjects([]);
+  }, [currentTab]);
+
+  const handleSelectProject = (projectId: number) => {
+    setSelectedProjects(prev => {
+      if (prev.includes(projectId)) {
+        return prev.filter(id => id !== projectId);
+      }
+      return [...prev, projectId];
+    });
+  };
+
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      setSelectedProjects(pendingProjects.map(project => project.id));
+    } else {
+      setSelectedProjects([]);
+    }
+  };
+
+  const handleApprove = (project: PendingProject) => {
     setCurrentProject(project);
     setApproveDialog(true);
   };
 
-  const handleReject = (project: any) => {
+  const handleReject = (project: PendingProject) => {
     setCurrentProject(project);
     setRejectDialog(true);
   };
@@ -117,86 +93,126 @@ export default function ProjectManagement() {
     setDetailsDialog(true);
   };
 
-  const ProjectDetails = ({ project }: { project: any }) => (
-    <ScrollArea className="h-[60vh]">
-      <div className="space-y-6">
-        <div>
-          <h3 className="text-lg font-semibold">{project.title}</h3>
-          <p className="text-sm text-muted-foreground">Group {project.groupNumber}</p>
-        </div>
+  const handleToggleFeature = async (project: ApprovedProject, featured: boolean) => {
+    // Feature toggle logic will be implemented later
+    console.log('Toggle feature for project:', project.id, featured);
+  };
 
-        <div className="grid gap-4">
-          <div>
-            <h4 className="font-medium mb-2">Project Status</h4>
-            <Badge>{project.status}</Badge>
-          </div>
+  const handleTabChange = (value: string) => {
+    setCurrentTab(value as 'pending' | 'approved' | 'rejected');
+    if (value === 'pending') refreshPending();
+    if (value === 'approved') refreshApproved();
+    if (value === 'rejected') refreshRejected();
+  };
 
-          <div>
-            <h4 className="font-medium mb-2">Description</h4>
-            <p className="text-sm">{project.description}</p>
-          </div>
+  const fetchNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(prev => prev + 1);
+    }
+  };
 
-          <div>
-            <h4 className="font-medium mb-2">Team Members</h4>
-            <ul className="list-disc list-inside text-sm">
-              {project.teamMembers.map((member: string) => (
-                <li key={member}>{member}</li>
-              ))}
-            </ul>
-          </div>
+  const fetchPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(prev => prev - 1);
+    }
+  };
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <h4 className="font-medium mb-2">Type</h4>
-              <p className="text-sm">{project.type}</p>
-            </div>
-            <div>
-              <h4 className="font-medium mb-2">Domain</h4>
-              <p className="text-sm">{project.domain}</p>
-            </div>
-            <div>
-              <h4 className="font-medium mb-2">Technology</h4>
-              <p className="text-sm">{project.tech}</p>
-            </div>
-            <div>
-              <h4 className="font-medium mb-2">SDG</h4>
-              <p className="text-sm">{project.sdg}</p>
-            </div>
-          </div>
+  const renderError = (error: Error | null) => {
+    if (!error) return null;
+    return (
+      <Alert variant="destructive" className="mb-4">
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>{error.message}</AlertDescription>
+      </Alert>
+    );
+  };
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <h4 className="font-medium mb-2">GitHub Repository</h4>
-              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline">
-                View Repository
-              </a>
-            </div>
-            <div>
-              <h4 className="font-medium mb-2">Demo URL</h4>
-              <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline">
-                View Demo
-              </a>
-            </div>
-          </div>
+  const renderEmptyState = (type: 'pending' | 'approved' | 'rejected') => {
+    const config = {
+      pending: {
+        title: 'No Pending Projects',
+        description: 'There are no projects waiting for review.',
+        icon: Inbox,
+      },
+      approved: {
+        title: 'No Approved Projects',
+        description: 'No projects have been approved yet.',
+        icon: FileX2,
+      },
+      rejected: {
+        title: 'No Rejected Projects',
+        description: 'No projects have been rejected.',
+        icon: FileX2,
+      },
+    }[type];
 
-          {project.approvedBy && (
-            <div>
-              <h4 className="font-medium mb-2">Approval Details</h4>
-              <p className="text-sm">Approved by {project.approvedBy} on {project.approvedAt}</p>
-            </div>
-          )}
-
-          {project.rejectedBy && (
-            <div>
-              <h4 className="font-medium mb-2">Rejection Details</h4>
-              <p className="text-sm">Rejected by {project.rejectedBy} on {project.rejectedAt}</p>
-              <p className="text-sm mt-2">Reason: {project.rejectionReason}</p>
-            </div>
-          )}
-        </div>
+    return (
+      <div className="flex justify-center items-center p-8">
+        <EmptyState
+          title={config.title}
+          description={config.description}
+          icons={[config.icon]}
+        />
       </div>
-    </ScrollArea>
-  );
+    );
+  };
+
+  const renderContent = () => {
+    if (currentTab === 'pending') {
+      if (isPendingLoading) return <LoadingSpinner />;
+      if (pendingError) return renderError(pendingError);
+      if (isPendingEmpty) return renderEmptyState('pending');
+      return (
+        <PendingProjectsTable
+          projects={pendingProjects}
+          selectedProjects={selectedProjects}
+          onSelectProject={handleSelectProject}
+          onSelectAll={handleSelectAll}
+          onViewDetails={handleViewDetails}
+          onApprove={handleApprove}
+          onReject={handleReject}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onNextPage={fetchNextPage}
+          onPreviousPage={fetchPreviousPage}
+        />
+      );
+    }
+
+    if (currentTab === 'approved') {
+      if (isApprovedLoading) return <LoadingSpinner />;
+      if (approvedError) return renderError(approvedError);
+      if (isApprovedEmpty) return renderEmptyState('approved');
+      return (
+        <ApprovedProjectsTable
+          projects={approvedProjects}
+          onViewDetails={handleViewDetails}
+          onToggleFeature={handleToggleFeature}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onNextPage={fetchNextPage}
+          onPreviousPage={fetchPreviousPage}
+        />
+      );
+    }
+
+    if (currentTab === 'rejected') {
+      if (isRejectedLoading) return <LoadingSpinner />;
+      if (rejectedError) return renderError(rejectedError);
+      if (isRejectedEmpty) return renderEmptyState('rejected');
+      return (
+        <RejectedProjectsTable
+          projects={rejectedProjects}
+          onViewDetails={handleViewDetails}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onNextPage={fetchNextPage}
+          onPreviousPage={fetchPreviousPage}
+        />
+      );
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -205,7 +221,7 @@ export default function ProjectManagement() {
         <p className="text-muted-foreground">Review and manage project submissions</p>
       </div>
 
-      <Tabs defaultValue="pending">
+      <Tabs defaultValue="pending" onValueChange={handleTabChange} value={currentTab}>
         <TabsList>
           <TabsTrigger value="pending">Pending</TabsTrigger>
           <TabsTrigger value="approved">Approved</TabsTrigger>
@@ -217,233 +233,38 @@ export default function ProjectManagement() {
             placeholder="Search projects..."
             className="max-w-xs"
           />
-          <Select>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              {projectStatuses.map(status => (
-                <SelectItem key={status} value={status}>{status}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {selectedProjects.length > 0 && (
-            <div className="flex gap-2">
-              <Button onClick={() => setApproveDialog(true)}>
-                Approve Selected
-              </Button>
-              <Button variant="destructive" onClick={() => setRejectDialog(true)}>
-                Reject Selected
-              </Button>
-            </div>
-          )}
+      
+         
         </div>
 
-        <TabsContent value="pending">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-12">
-                  <Checkbox
-                    checked={selectedProjects.length === mockProjects.length}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSelectedProjects(mockProjects.map(p => p.id));
-                      } else {
-                        setSelectedProjects([]);
-                      }
-                    }}
-                  />
-                </TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead>Group</TableHead>
-                <TableHead>Submission Date</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {mockProjects.map((project) => (
-                <TableRow key={project.id}>
-                  <TableCell>
-                    <Checkbox
-                      checked={selectedProjects.includes(project.id)}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          setSelectedProjects([...selectedProjects, project.id]);
-                        } else {
-                          setSelectedProjects(selectedProjects.filter(id => id !== project.id));
-                        }
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell>{project.title}</TableCell>
-                  <TableCell>{project.groupNumber}</TableCell>
-                  <TableCell>{project.submissionDate}</TableCell>
-                  <TableCell>
-                    <Badge>{project.status}</Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
-                      <Button size="sm" onClick={() => handleViewDetails(project)}>
-                        View
-                      </Button>
-                      <Button size="sm" onClick={() => handleApprove(project)}>
-                        Approve
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => handleReject(project)}
-                      >
-                        Reject
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TabsContent>
-
-        <TabsContent value="approved">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Title</TableHead>
-                <TableHead>Group</TableHead>
-                <TableHead>Featured</TableHead>
-                <TableHead>Approved By</TableHead>
-                <TableHead>Approved At</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {approvedProjects.map((project) => (
-                <TableRow key={project.id}>
-                  <TableCell>{project.title}</TableCell>
-                  <TableCell>{project.groupNumber}</TableCell>
-                  <TableCell>
-                    <Switch
-                      checked={project.featured}
-                      onCheckedChange={(checked) => {
-                        // Handle feature toggle
-                        project.featured = checked;
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell>{project.approvedBy}</TableCell>
-                  <TableCell>{project.approvedAt}</TableCell>
-                  <TableCell>
-                    <Button size="sm" onClick={() => handleViewDetails(project)}>
-                      View Details
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TabsContent>
-
-        <TabsContent value="rejected">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Title</TableHead>
-                <TableHead>Group</TableHead>
-                <TableHead>Rejected By</TableHead>
-                <TableHead>Rejected At</TableHead>
-                <TableHead>Reason</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {rejectedProjects.map((project) => (
-                <TableRow key={project.id}>
-                  <TableCell>{project.title}</TableCell>
-                  <TableCell>{project.groupNumber}</TableCell>
-                  <TableCell>{project.rejectedBy}</TableCell>
-                  <TableCell>{project.rejectedAt}</TableCell>
-                  <TableCell className="max-w-xs truncate">{project.rejectionReason}</TableCell>
-                  <TableCell>
-                    <Button size="sm" onClick={() => handleViewDetails(project)}>
-                      View Details
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TabsContent>
+        {renderContent()}
       </Tabs>
 
-      {/* Project Details Dialog */}
-      <Dialog open={detailsDialog} onOpenChange={setDetailsDialog}>
-        <DialogContent className="max-w-3xl">
-          <DialogHeader>
-            <DialogTitle>Project Details</DialogTitle>
-          </DialogHeader>
-          {currentProject && <ProjectDetails project={currentProject} />}
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setDetailsDialog(false)}>
-              Close
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {detailsDialog && currentProject && (
+        <DetailsDialog
+          open={detailsDialog}
+          onOpenChange={setDetailsDialog}
+          projectID={currentProject.id}
+        />
+      )}
 
-      {/* Approve Dialog */}
-      <Dialog open={approveDialog} onOpenChange={setApproveDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Approve Project</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to approve this project?
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex items-center space-x-2">
-            <Switch id="featured" />
-            <label htmlFor="featured">Feature this project</label>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setApproveDialog(false)}>
-              Cancel
-            </Button>
-            <Button onClick={() => setApproveDialog(false)}>
-              Approve
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {approveDialog && currentProject && (
+        <ApproveDialog
+          open={approveDialog}
+          onOpenChange={setApproveDialog}
+          project={currentProject}
+          onApproved={refreshPending}
+        />
+      )}
 
-      {/* Reject Dialog */}
-      <Dialog open={rejectDialog} onOpenChange={setRejectDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Reject Project</DialogTitle>
-            <DialogDescription>
-              Please provide feedback for the rejection.
-            </DialogDescription>
-          </DialogHeader>
-          <Textarea
-            placeholder="Enter rejection feedback..."
-            value={feedback}
-            onChange={(e) => setFeedback(e.target.value)}
-          />
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setRejectDialog(false)}>
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={() => setRejectDialog(false)}
-              disabled={!feedback.trim()}
-            >
-              Reject
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {rejectDialog && currentProject && (
+        <RejectDialog
+          open={rejectDialog}
+          onOpenChange={setRejectDialog}
+          project={currentProject}
+          onRejected={refreshPending}
+        />
+      )}
     </div>
   );
 }

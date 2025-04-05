@@ -48,7 +48,7 @@ const ProjectSubmissionForm = () => {
         team_phone: "",
       },
       status: {
-        status: "IDEA", // Default status
+        status: "IDEA",
       },
       domains: [],
       projectTypes: [],
@@ -103,6 +103,7 @@ const ProjectSubmissionForm = () => {
     try {
       // Submit the project using our hook
       const result = await submitProject(data);
+      console.log("Submission result:", result);
       
       if (result.success && result.data?.projectId) {
         // Show success message

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/prisma/prismaClient';
 import { projectSubmissionSchema } from '@/validations/submit_project';
-import { AssociationType } from '@prisma/client';
+import { AssociationType, ProjectApprovalStatus } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
 export async function POST(request: Request) {
@@ -22,12 +22,8 @@ export async function POST(request: Request) {
           group_num: validatedData.metadata.group_num,
           title: validatedData.metadata.title,
           subtitle: validatedData.metadata.subtitle || null,
-          cover_image: validatedData.metadata.cover_image 
-            ? `${validatedData.metadata.title.replace(/\s+/g, '-')}-cover-${Date.now()}` 
-            : null,
-          logo: validatedData.metadata.logo 
-            ? `${validatedData.metadata.title.replace(/\s+/g, '-')}-logo-${Date.now()}` 
-            : null,
+          cover_image: validatedData.metadata.cover_image || null,
+          logo: validatedData.metadata.logo || null,
           featured: false,
         }
       });
@@ -51,12 +47,12 @@ export async function POST(request: Request) {
         }
       });
 
-      // 4. Create ProjectStatus
+      // 4. Create ProjectStatus - Fixed to match schema
       await tx.projectStatus.create({
         data: {
           content_id: projectContent.content_id,
           status: validatedData.status.status,
-          approved: false,
+          approved_status: ProjectApprovalStatus.PENDING,
         }
       });
 
@@ -66,24 +62,28 @@ export async function POST(request: Request) {
         ...validatedData.domains.map(domain => ({
           project_id: projectContent.content_id,
           type: AssociationType.PROJECT_DOMAIN,
+          domain: domain,
           value: domain,
         })),
         // Project type associations
         ...validatedData.projectTypes.map(projectType => ({
           project_id: projectContent.content_id,
           type: AssociationType.PROJECT_TYPE,
+          projectType: projectType,
           value: projectType,
         })),
         // SDG associations
         ...(validatedData.sdgGoals || []).map(sdgGoal => ({
           project_id: projectContent.content_id,
           type: AssociationType.PROJECT_SDG,
+          sdgGoal: sdgGoal,
           value: sdgGoal,
         })),
         // Tech stack associations
         ...validatedData.techStack.map(tech => ({
           project_id: projectContent.content_id,
           type: AssociationType.PROJECT_TECH,
+          techStack: tech,
           value: tech,
         }))
       ];
@@ -100,9 +100,7 @@ export async function POST(request: Request) {
             project_id: projectContent.content_id,
             name: member.name,
             linkedin_url: member.linkedin_url || null,
-            profile_image: member.profile_image 
-              ? `${member.name.replace(/\s+/g, '-')}-${Date.now()}`
-              : null,
+            profile_image: member.profile_image || null,
           })),
         });
       }
