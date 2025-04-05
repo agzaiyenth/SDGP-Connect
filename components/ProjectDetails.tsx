@@ -1,17 +1,14 @@
 'use client';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Badge } from '@/components/ui/badge';
-import { useEffect, useState } from 'react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { useGetProjectDetailsByID } from '@/hooks/project/useGetProjectDetailsByID';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertCircle } from 'lucide-react';
-import { HeroSection } from './s-project/hero-section';
-import { ProjectHeader } from './s-project/project-header';
 import { IProjectAssociation } from '@/types/project/type';
 import { ProjectDomainEnum } from '@prisma/client';
-import { ProjectOverview } from './s-project/project-overview';
+import { AlertCircle } from 'lucide-react';
+import { HeroSection } from './s-project/hero-section';
 import { ProjectAssociation } from './s-project/project-associations';
+import { ProjectHeader } from './s-project/project-header';
+import { ProjectOverview } from './s-project/project-overview';
 import { SlideDeck } from './s-project/slide-deck';
 import Teamandsocial from './s-project/team-social';
 
@@ -70,6 +67,8 @@ const ProjectDetails = ({ projectID }: { projectID: string }) => {
           problemStatement={project.content?.projectDetails?.problem_statement}
           solution={project.content?.projectDetails?.solution}
           keyFeatures={project.content?.projectDetails?.features}
+          teamNumber={project.metadata.group_num}
+          projectYear={project.metadata.sdgp_year}
         />
         {project.content?.slides && (
         <SlideDeck slides={project.content?.slides} />
