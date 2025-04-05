@@ -62,6 +62,8 @@ const ProjectDetails = ({ projectID }: { projectID: string }) => {
               .map((association) => association.domain)
           }
           status={project.content?.status?.status}
+          logo={project.metadata.logo}
+          website={project.metadata.website}
         />
         
         <ProjectOverview
@@ -75,7 +77,14 @@ const ProjectDetails = ({ projectID }: { projectID: string }) => {
         <ProjectAssociation
           associations={project.content?.associations || []}
         />
-        <Teamandsocial/>
+
+        {/* TODO : Add the team details and social */}
+        <Teamandsocial
+        teamMembers={project.content?.team || []}
+        teamSocials={project.content?.socialLinks || []}
+        teamPhone={project.content?.projectDetails?.team_phone}
+        teamEmail={project.content?.projectDetails?.team_email}
+        />
         
        
       </div>

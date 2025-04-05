@@ -3,13 +3,19 @@ import { Card } from '../ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
 import { Linkedin } from 'lucide-react'
 import Link from 'next/link'
+import { IProjectSocialLink, IProjectTeam } from '@/types/project/type'
 
 interface Props {
-
+    teamEmail?: string
+    teamPhone?: string
+    teamMembers: IProjectTeam[]
+    teamSocials: IProjectSocialLink[]
 }
 
-const Teamandsocial = (props: Props) => {
+const Teamandsocial = ({ teamEmail, teamPhone, teamMembers, teamSocials }: Props) => {
     return (
+
+        // TODO : loop the data from the backend
         <Card className="mt-8 p-6">
             <h2 className="text-2xl font-semibold mb-4">Contact & Team Details</h2>
             <Tabs defaultValue="contact" className="w-full" >
