@@ -11,6 +11,7 @@ import { ProjectHeader } from './s-project/project-header';
 import { IProjectAssociation } from '@/types/project/type';
 import { ProjectDomainEnum } from '@prisma/client';
 import { ProjectOverview } from './s-project/project-overview';
+import { ProjectAssociation } from './s-project/project-associations';
 
 const ProjectDetails = ({ projectID }: { projectID: string }) => {
   const { project, isLoading, error } = useGetProjectDetailsByID(projectID);
@@ -69,11 +70,9 @@ const ProjectDetails = ({ projectID }: { projectID: string }) => {
         
         {/* <SlideDeck slides={mockProject.slides} /> */}
         
-        {/* <SDGSection
-          sdgGoals={mockProject.sdgGoals}
-          domains={mockProject.domains}
-          onGoalClick={handleSDGGoalClick}
-        /> */}
+        <ProjectAssociation
+          associations={project.content?.associations || []}
+        />
         
         {/* <SimilarProjects projects={mockProject.similarProjects} /> */}
       </div>
