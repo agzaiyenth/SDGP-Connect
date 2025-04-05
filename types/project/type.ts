@@ -1,4 +1,4 @@
-import { AssociationType, ProjectApprovalStatus, ProjectDomainEnum, ProjectStatusEnum, ProjectTypeEnum, SDGGoalEnum, TechStackEnum } from "@prisma/client";
+import { AssociationType, ProjectApprovalStatus, ProjectDomainEnum, ProjectStatusEnum, ProjectTypeEnum, SDGGoalEnum, SocialTypeEnum, TechStackEnum } from "@prisma/client";
 import { IconType } from "react-icons/lib";
 import { User } from "../user/type";
 
@@ -90,8 +90,8 @@ export interface IProjectTeam {
 
 export interface IProjectSocialLink {
     id: string;
-    content_id: string; // Changed from project_id to content_id
-    link_name: string;
+    content_id: string; 
+    link_name: SocialTypeEnum;
     url: string;
     createdAt?: Date;
     updatedAt?: Date;

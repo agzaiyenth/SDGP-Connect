@@ -146,6 +146,7 @@ model ProjectMetadata {
   group_num          String
   title              String
   subtitle           String?
+  website            String?
   cover_image        String?
   logo               String?
   featured           Boolean         @default(false)

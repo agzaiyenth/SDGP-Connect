@@ -21,6 +21,7 @@ export async function POST(request: Request) {
           group_num: validatedData.metadata.group_num,
           title: validatedData.metadata.title,
           subtitle: validatedData.metadata.subtitle || null,
+          website: validatedData.metadata.website || null,
           cover_image: validatedData.metadata.cover_image || null,
           logo: validatedData.metadata.logo || null,
           featured: false,
@@ -32,21 +33,21 @@ export async function POST(request: Request) {
       // 2. Create ProjectContent - This links to ProjectMetadata via project_id
       const projectContent = await tx.projectContent.create({
         data: {
-          project_id: projectMetadata.project_id // Link to the main project_id
+          metadata_id: projectMetadata.project_id // Link to the main project_id
         }
       });
       
       console.log(`Created ProjectContent with content_id: ${projectContent.content_id}`);
 
-      // 3. Create ProjectDetails - Links to ProjectContent via project_id (content_id)
+      // 3. Create ProjectDetails - Links to ProjectContent via content_id
       await tx.projectDetails.create({
         data: {
+          content: { connect: { content_id: projectContent.content_id } },
           problem_statement: validatedData.projectDetails.problem_statement,
           solution: validatedData.projectDetails.solution,
           features: validatedData.projectDetails.features,
           team_email: validatedData.projectDetails.team_email,
           team_phone: validatedData.projectDetails.team_phone || '',
-          project_id: projectContent.content_id // This is the content_id
         }
       });
 
@@ -59,12 +60,12 @@ export async function POST(request: Request) {
         }
       });
 
-      // 5. Create ProjectAssociations - Link to ProjectContent via project_id (content_id)
+      // 5. Create ProjectAssociations - Link to ProjectContent via content_id
       // Domain associations
       for (const domain of validatedData.domains) {
         await tx.projectAssociation.create({
           data: {
-            project_id: projectContent.content_id, // This is the content_id
+            content: { connect: { content_id: projectContent.content_id } },
             type: AssociationType.PROJECT_DOMAIN,
             domain: domain,
             value: domain
@@ -76,7 +77,7 @@ export async function POST(request: Request) {
       for (const projectType of validatedData.projectTypes) {
         await tx.projectAssociation.create({
           data: {
-            project_id: projectContent.content_id, // This is the content_id
+            content: { connect: { content_id: projectContent.content_id } },
             type: AssociationType.PROJECT_TYPE,
             projectType: projectType,
             value: projectType
@@ -89,7 +90,7 @@ export async function POST(request: Request) {
         for (const sdgGoal of validatedData.sdgGoals) {
           await tx.projectAssociation.create({
             data: {
-              project_id: projectContent.content_id, // This is the content_id
+              content: { connect: { content_id: projectContent.content_id } },
               type: AssociationType.PROJECT_SDG,
               sdgGoal: sdgGoal,
               value: sdgGoal
@@ -102,7 +103,7 @@ export async function POST(request: Request) {
       for (const tech of validatedData.techStack) {
         await tx.projectAssociation.create({
           data: {
-            project_id: projectContent.content_id, // This is the content_id
+            content: { connect: { content_id: projectContent.content_id } },
             type: AssociationType.PROJECT_TECH,
             techStack: tech,
             value: tech
@@ -110,42 +111,42 @@ export async function POST(request: Request) {
         });
       }
 
-      // 6. Create Team Members - Link to ProjectContent via project_id (content_id)
+      // 6. Create Team Members - Link to ProjectContent via content_id
       if (validatedData.team && validatedData.team.length > 0) {
         for (const member of validatedData.team) {
           await tx.projectTeam.create({
             data: {
+              content: { connect: { content_id: projectContent.content_id } },
               name: member.name,
               linkedin_url: member.linkedin_url || null,
               profile_image: member.profile_image || null,
-              project_id: projectContent.content_id // This is the content_id
             }
           });
         }
       }
 
-      // 7. Create Social Links - Link to ProjectContent via project_id (content_id)
+      // 7. Create Social Links - Link to ProjectContent via content_id
       if (validatedData.socialLinks && validatedData.socialLinks.length > 0) {
         for (const link of validatedData.socialLinks) {
           await tx.projectSocialLink.create({
             data: {
+              content: { connect: { content_id: projectContent.content_id } },
               link_name: link.link_name,
               url: link.url,
-              project_id: projectContent.content_id // This is the content_id
             }
           });
         }
       }
 
-      // 8. Create Slides - Link to ProjectContent via project_id (content_id)
+      // 8. Create Slides - Link to ProjectContent via content_id
       if (validatedData.slides && validatedData.slides.length > 0) {
         for (const slide of validatedData.slides) {
           await tx.projectSlide.create({
             data: {
+              content: { connect: { content_id: projectContent.content_id } },
               slides_content: typeof slide.slides_content === 'string' 
                 ? slide.slides_content.substring(0, 65535)
                 : JSON.stringify(slide.slides_content).substring(0, 65535),
-              project_id: projectContent.content_id // This is the content_id
             }
           });
         }

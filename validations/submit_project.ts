@@ -3,7 +3,8 @@ import {
     ProjectStatusEnum,
     ProjectTypeEnum,
     SDGGoalEnum,
-    TechStackEnum
+    TechStackEnum,
+    SocialTypeEnum
 } from "@prisma/client";
 import { z } from "zod";
 
@@ -19,6 +20,7 @@ const projectDomainSchema = z.nativeEnum(ProjectDomainEnum);
 const projectTypeSchema = z.nativeEnum(ProjectTypeEnum);
 const sdgGoalSchema = z.nativeEnum(SDGGoalEnum);
 const techStackSchema = z.nativeEnum(TechStackEnum);
+const socialTypeSchema = z.nativeEnum(SocialTypeEnum);
 
 export const projectSubmissionSchema = z.object({
   metadata: z.object({
@@ -26,6 +28,7 @@ export const projectSubmissionSchema = z.object({
     group_num: z.string().min(1, "Team number is required"),
     title: z.string().min(1, "Title is required").max(100),
     subtitle: z.string().optional().nullable(),
+    website: z.string().url("Must be a valid URL").or(z.string().length(0)).optional().nullable(),
     cover_image: z.any().optional().nullable(),
     logo: z.any().optional().nullable(),
   }),
@@ -54,7 +57,7 @@ export const projectSubmissionSchema = z.object({
   // Social links
   socialLinks: z.array(
     z.object({
-      link_name: z.string().min(1, "Link name is required"),
+      link_name: socialTypeSchema,
       url: z.string().url("Must be a valid URL"),
     })
   ).optional(),

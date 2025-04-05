@@ -18,6 +18,7 @@ CREATE TABLE `ProjectMetadata` (
     `group_num` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
     `subtitle` VARCHAR(191) NULL,
+    `website` VARCHAR(191) NULL,
     `cover_image` VARCHAR(191) NULL,
     `logo` VARCHAR(191) NULL,
     `featured` BOOLEAN NOT NULL DEFAULT false,

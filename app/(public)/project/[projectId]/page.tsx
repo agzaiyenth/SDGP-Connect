@@ -8,7 +8,7 @@ interface Props {
 const page = (props: Props) => {
     return (
         <div>
-           <ProjectDetails projectID="55773d0c-d2d8-46e1-ac2a-f5fa4dd7253e" />
+           <ProjectDetails projectID="57bb19dd-c087-4d37-b353-07c7417aec49" />
             
         </div>
     )
