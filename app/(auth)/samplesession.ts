@@ -1,7 +1,7 @@
 //This was done until the auth context is done and userid is saved in local storage
 export const session = {
     user: {
-        id: "f78adcc3-5ffa-4d6a-8a4c-f7b4996f9743",
+        id: "9cf8fd66-1f52-4345-8ada-43b7ca39702e",
         name: "Sample user",
         email: "sampleuser@example.com",
         role: "ADMIN"

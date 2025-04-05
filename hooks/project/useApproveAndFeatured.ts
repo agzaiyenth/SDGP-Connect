@@ -14,18 +14,22 @@ export function useApproveAndFeatured(options?: UseApproveAndFeaturedOptions) {
   const [error, setError] = useState<Error | null>(null);
 
   const approveProject = async (projectId: string, featured: boolean = false) => {
+    console.log('Approving project:', { projectId, featured });
     setIsLoading(true);
     setError(null);
 
     try {
+      console.log('Sending approval request to API');
       const response = await axios.post('/api/projects/approve', {
         projectId: String(projectId),
         featured
       });
 
+      console.log('API response received:', response);
       setIsLoading(false);
       
       if (response.status === 200) {
+        console.log('Project approved successfully');
         toast.success('Project approved successfully', {
           description: featured ? 'Project has been approved and featured' : 'Project has been approved',
         });
@@ -37,14 +41,26 @@ export function useApproveAndFeatured(options?: UseApproveAndFeaturedOptions) {
         
         return true;
       } else {
-        throw new Error('Failed to approve project');
+        console.error('Non-200 response:', response);
+        throw new Error(`Failed to approve project: Status ${response.status}`);
       }
     } catch (err: any) {
+      console.error('Error in approveProject:', err);
       setIsLoading(false);
+      
+      // Log the full error details
+      console.error('Error details:', {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status,
+        statusText: err.response?.statusText,
+        stack: err.stack
+      });
       
       // Handle conflict case (project already approved)
       if (err.response?.status === 409) {
         const conflictData = err.response.data;
+        console.log('Project already approved:', conflictData);
         const errorMessage = conflictData.error || 'This project has already been approved';
         
         setError(new Error(errorMessage));
@@ -66,8 +82,14 @@ export function useApproveAndFeatured(options?: UseApproveAndFeaturedOptions) {
         return false;
       }
       
+      // Enhanced error details for 500 errors
+      if (err.response?.status === 500) {
+        console.error('Server error details:', err.response.data);
+      }
+      
       // Handle other errors
-      const errorMessage = err.response?.data?.error || err.message || 'Failed to approve project';
+      const errorMessage = err.response?.data?.error || err.response?.data?.details || err.message || 'Failed to approve project';
+      console.error('Final error message:', errorMessage);
       setError(new Error(errorMessage));
       
       toast.error('Error approving project', {
