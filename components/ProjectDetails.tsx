@@ -13,6 +13,7 @@ import { ProjectDomainEnum } from '@prisma/client';
 import { ProjectOverview } from './s-project/project-overview';
 import { ProjectAssociation } from './s-project/project-associations';
 import { SlideDeck } from './s-project/slide-deck';
+import Teamandsocial from './s-project/team-social';
 
 const ProjectDetails = ({ projectID }: { projectID: string }) => {
   const { project, isLoading, error } = useGetProjectDetailsByID(projectID);
@@ -74,6 +75,7 @@ const ProjectDetails = ({ projectID }: { projectID: string }) => {
         <ProjectAssociation
           associations={project.content?.associations || []}
         />
+        <Teamandsocial/>
         
        
       </div>

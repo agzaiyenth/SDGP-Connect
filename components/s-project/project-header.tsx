@@ -3,7 +3,8 @@ import React from "react";
 import { Badge } from "../ui/badge";
 import { ProjectDomainEnum, ProjectStatusEnum } from "@prisma/client";
 import { Button } from "../ui/button";
-import { Share, Share2Icon } from "lucide-react";
+import { Globe2Icon, Share, Share2Icon } from "lucide-react";
+import Link from "next/link";
 
 interface ProjectHeaderProps {
   title: string;
@@ -41,8 +42,11 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
           color="primary"
           className="font-semibold"
         >
-          Save Project
+          <Link href="/projects" className="flex items-center gap-2">
+          Website <Globe2Icon className="ml-2" size={16} />
+          </Link>
         </Button>
+        {/* TODO Add share button from the current project id */}
         <Button
           className="font-semibold"
           variant={"outline"}
