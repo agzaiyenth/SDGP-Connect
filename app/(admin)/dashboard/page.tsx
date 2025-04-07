@@ -1,3 +1,8 @@
+"use client"
+
+import { useSession, signOut } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 import React, { Suspense } from 'react';
 import StatCard from '@/components/dashboard/StatCard';
 import StatusPieChart from '@/components/dashboard/StatusPieChart';
@@ -11,6 +16,22 @@ import { RecentActivity } from '@/components/dashboard/recent-activity';
 import { AnalyticsCharts } from '@/components/dashboard/analytics';
 
 export default function DashboardPage() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/auth/login")
+    }
+  }, [status, router])
+
+  if (status === "loading") {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    )
+  }
   // Sample data for statistics
   const stats = [
     {
