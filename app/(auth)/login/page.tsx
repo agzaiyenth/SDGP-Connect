@@ -1,25 +1,27 @@
 "use client"
 
 import * as React from "react"
-import { ChevronLeft, Github, Twitter } from "lucide-react"
+import { ChevronLeft } from "lucide-react"
 import { motion } from "framer-motion"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 
 const AuthForm: React.FC = () => {
   return (
-    <div className="bg-white dark:bg-zinc-950 py-20 text-zinc-800 dark:text-zinc-200 selection:bg-zinc-300 dark:selection:bg-zinc-600">
+    <div className="grid h-screen place-items-center overflow-hidden bg-black text-zinc-200">
       <BackButton />
       <motion.div
         initial={{ opacity: 0, y: 25 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.25, ease: "easeInOut" }}
-        className="relative z-10 mx-auto w-full max-w-xl p-4 items-center justify-center"
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 w-full max-w-lg px-4 sm:px-0"
       >
-        <Logo />
-        <Header />
-        <LoginForm />
-        <TermsAndConditions />
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-8 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_16px_50px_-12px_rgba(0,0,0,0.5)] sm:p-12">
+          <Logo />
+          <Header />
+          <LoginForm />
+          <TermsAndConditions />
+        </div>
       </motion.div>
       <BackgroundDecoration />
     </div>
@@ -27,7 +29,14 @@ const AuthForm: React.FC = () => {
 }
 
 const BackButton: React.FC = () => (
-  <SocialButton icon={<ChevronLeft size={16} />}>Go back</SocialButton>
+  <motion.div
+    initial={{ opacity: 0, x: -20 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ delay: 0.2 }}
+    className="absolute left-4 top-4 sm:left-8 sm:top-8"
+  >
+    <SocialButton icon={<ChevronLeft size={16} />}>Go back</SocialButton>
+  </motion.div>
 )
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -36,9 +45,10 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button: React.FC<ButtonProps> = ({ children, className, ...props }) => (
   <button
-    className={`rounded-md bg-gradient-to-br from-blue-400 to-blue-700 px-4 py-2 text-lg text-zinc-50 
-    ring-2 ring-blue-500/50 ring-offset-2 ring-offset-white dark:ring-offset-zinc-950 
-    transition-all hover:scale-[1.02] hover:ring-transparent active:scale-[0.98] active:ring-blue-500/70 ${className}`}
+    className={`relative rounded-xl bg-zinc-100 px-6 py-3 text-lg font-medium text-black
+    shadow-[0_0_0_0_rgba(0,0,0,0)] transition-all duration-300 
+    hover:shadow-[0_4px_20px_-4px_rgba(0,0,0,0.3)] 
+    active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed ${className}`}
     {...props}
   >
     {children}
@@ -46,29 +56,29 @@ const Button: React.FC<ButtonProps> = ({ children, className, ...props }) => (
 )
 
 const Logo: React.FC = () => (
-  <div className="mb-6 flex justify-center">
-    <img
-      src="https://svgl.app/library/tailwindcss.svg"
-      alt="Logoipsum"
-      className="h-8 w-8"
-    />
-    <span className="ml-2 text-xl font-bold">SDGP-Connect</span>
-  </div>
+  <motion.div 
+    initial={{ scale: 0.8, opacity: 0 }}
+    animate={{ scale: 1, opacity: 1 }}
+    transition={{ duration: 0.5 }}
+    className="mb-10 flex justify-center items-center"
+  >
+    <div className="relative">
+      <img
+        src="https://svgl.app/library/tailwindcss.svg"
+        alt="Logoipsum"
+        className="h-12 w-12"
+      />
+    </div>
+    <span className="ml-4 text-3xl font-bold text-white">
+      SDGP-Connect
+    </span>
+  </motion.div>
 )
 
 const Header: React.FC = () => (
-  <div className="mb-6 text-center">
-    <h1 className="text-2xl font-semibold">Sign in to your account</h1>
-  </div>
-)
-
-const SocialButtons: React.FC = () => (
-  <div className="mb-6 space-y-3">
-    <div className="grid grid-cols-2 gap-3">
-      <SocialButton icon={<Twitter size={20} />} />
-      <SocialButton icon={<Github size={20} />} />
-      <SocialButton fullWidth>Sign in with SSO</SocialButton>
-    </div>
+  <div className="mb-10 text-center">
+    <h1 className="text-4xl font-bold text-white">Welcome back</h1>
+    <p className="mt-3 text-lg text-zinc-400">Sign in to your account to continue</p>
   </div>
 )
 
@@ -76,17 +86,15 @@ const SocialButton: React.FC<{
   icon?: React.ReactNode
   fullWidth?: boolean
   children?: React.ReactNode
-}> = ({ icon, fullWidth, children }) => (
+  onClick?: () => void
+}> = ({ icon, children, onClick }) => (
   <button
-    className={`relative z-0 flex items-center justify-center gap-2 overflow-hidden rounded-md 
-    border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 
-    px-4 py-2 font-semibold text-zinc-800 dark:text-zinc-200 transition-all duration-500
-    before:absolute before:inset-0 before:-z-10 before:translate-x-[150%] before:translate-y-[150%] before:scale-[2.5]
-    before:rounded-[100%] before:bg-zinc-800 dark:before:bg-zinc-200 before:transition-transform before:duration-1000 before:content-[""]
-    hover:scale-105 hover:text-zinc-100 dark:hover:text-zinc-900 hover:before:translate-x-[0%] hover:before:translate-y-[0%] active:scale-95
-    ${fullWidth ? "col-span-2" : ""}`}
+    onClick={onClick}
+    className="flex items-center justify-center gap-2 rounded-xl 
+    border border-zinc-800 bg-zinc-900 px-4 py-2.5 font-medium text-zinc-200
+    transition-all duration-300 hover:bg-zinc-800 active:scale-95"
   >
-    {icon}
+    {icon && <span className="text-zinc-400">{icon}</span>}
     <span>{children}</span>
   </button>
 )
@@ -97,6 +105,7 @@ const LoginForm: React.FC = () => {
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
+  const [showForgotMessage, setShowForgotMessage] = React.useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -113,7 +122,6 @@ const LoginForm: React.FC = () => {
       if (result?.error) {
         setError("Invalid email or password");
       } else {
-        // Redirect to admin dashboard on successful login
         router.push("/dashboard");
       }
     } catch (err) {
@@ -125,42 +133,62 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="mb-4 rounded-md bg-red-50 p-2 text-red-600 dark:bg-red-900/30 dark:text-red-400">
-          {error}
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="rounded-lg bg-red-500/10 p-4 text-sm text-red-400"
+        >
+          <p className="flex items-center gap-2">
+            <span className="size-1.5 rounded-full bg-red-400" />
+            {error}
+          </p>
+        </motion.div>
       )}
-      <div className="mb-3">
+      {showForgotMessage && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="rounded-lg bg-zinc-800 p-4 text-sm text-zinc-300"
+        >
+          <p>Please contact your administrator to reset your password.</p>
+        </motion.div>
+      )}
+      <div className="space-y-2">
         <label
           htmlFor="email-input"
-          className="mb-1.5 block text-zinc-500 dark:text-zinc-400"
+          className="block text-sm font-medium text-zinc-300"
         >
-          Email
+          Email address
         </label>
         <input
           id="email-input"
           type="email"
-          placeholder="your.email@provider.com"
+          placeholder="info@psycodelabs.lk"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 
-          bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-800 dark:text-zinc-200
-          placeholder-zinc-400 dark:placeholder-zinc-500 
-          ring-1 ring-transparent transition-shadow focus:outline-0 focus:ring-blue-700"
+          className="w-full rounded-lg border border-zinc-800 
+          bg-zinc-800 px-4 py-3 text-zinc-200
+          placeholder-zinc-500 transition-all duration-300 
+          hover:border-zinc-700 focus:border-zinc-600 focus:outline-none"
         />
       </div>
-      <div className="mb-6">
-        <div className="mb-1.5 flex items-end justify-between">
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
           <label
             htmlFor="password-input"
-            className="block text-zinc-500 dark:text-zinc-400"
+            className="block text-sm font-medium text-zinc-300"
           >
             Password
           </label>
-          <a href="#" className="text-sm text-blue-600 dark:text-blue-400">
-            Forgot?
-          </a>
+          <button
+            type="button"
+            onClick={() => setShowForgotMessage(true)}
+            className="text-sm font-medium text-zinc-400 hover:text-zinc-300 transition-colors"
+          >
+            Forgot password?
+          </button>
         </div>
         <input
           id="password-input"
@@ -168,47 +196,43 @@ const LoginForm: React.FC = () => {
           placeholder="••••••••••••"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full rounded-md border border-zinc-300 dark:border-zinc-700 
-          bg-white dark:bg-zinc-900 px-3 py-2 text-zinc-800 dark:text-zinc-200
-          placeholder-zinc-400 dark:placeholder-zinc-500 
-          ring-1 ring-transparent transition-shadow focus:outline-0 focus:ring-blue-700"
+          className="w-full rounded-lg border border-zinc-800 
+          bg-zinc-800 px-4 py-3 text-zinc-200
+          placeholder-zinc-500 transition-all duration-300 
+          hover:border-zinc-700 focus:border-zinc-600 focus:outline-none"
         />
       </div>
       <Button type="submit" className="w-full" disabled={isLoading}>
-        {isLoading ? "Signing in..." : "Sign in"}
+        {isLoading ? (
+          <div className="flex items-center justify-center gap-2">
+            <div className="size-4 animate-spin rounded-full border-2 border-black border-t-transparent" />
+            <span>Signing in...</span>
+          </div>
+        ) : (
+          "Sign in"
+        )}
       </Button>
     </form>
   )
 }
 
 const TermsAndConditions: React.FC = () => (
-  <p className="mt-9 text-xs text-zinc-500 dark:text-zinc-400">
+  <p className="mt-10 text-center text-sm text-zinc-400">
     By signing in, you agree to our{" "}
-    <a href="#" className="text-blue-600 dark:text-blue-400">
+    <a href="#" className="font-medium text-zinc-300 hover:text-white transition-colors">
       Terms & Conditions
     </a>{" "}
     and{" "}
-    <a href="#" className="text-blue-600 dark:text-blue-400">
-      Privacy Policy.
+    <a href="#" className="font-medium text-zinc-300 hover:text-white transition-colors">
+      Privacy Policy
     </a>
+    .
   </p>
 )
 
 const BackgroundDecoration: React.FC = () => {
   return (
-    <div
-      className="absolute right-0 top-0 z-0 size-[50vw]"
-      style={{
-        backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke-width='2' stroke='rgb(30 58 138 / 0.5)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e")`,
-      }}
-    >
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: "radial-gradient(100% 100% at 100% 0%, rgba(9,9,11,0), rgba(9,9,11,1))"
-        }}
-      />
-    </div>
+    <div className="fixed inset-0 bg-[radial-gradient(circle_800px_at_50%_50%,#18181b,transparent)]" />
   )
 }
 
