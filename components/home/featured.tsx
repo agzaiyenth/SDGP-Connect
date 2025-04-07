@@ -10,6 +10,8 @@ import "swiper/css/navigation"
 
 // Import required modules
 import { EffectCoverflow, Pagination, Navigation, Autoplay } from "swiper/modules"
+import { Button } from "../ui/button"
+
 
 export default function Featured() {
   return (
@@ -271,6 +273,11 @@ export default function Featured() {
           {/* <div className="swiper-button-next bg-[#121212]/70 w-[50px] h-[50px] rounded-full flex items-center justify-center transition-all duration-300 ease-in-out backdrop-blur-[10px] hover:bg-primary hover:text-white hover:scale-110"></div>
           <div className="swiper-button-prev bg-[#121212]/70 w-[50px] h-[50px] rounded-full flex items-center justify-center transition-all duration-300 ease-in-out backdrop-blur-[10px] hover:bg-primary hover:text-white hover:scale-110"></div> */}
         </Swiper>
+        <div className="flex justify-center mt-10">
+        <Button >
+        view all projects
+        </Button>
+        </div>
       </div>
     </section>
   )
