@@ -10,8 +10,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        // This is where you would typically validate against a database
-        // For this simple example, we'll use hardcoded credentials
+    
         const validUsers = [
           { id: "1", email: "admin@example.com", password: "password123", name: "Admin User" },
           { id: "2", email: "user@example.com", password: "password123", name: "Regular User" }
