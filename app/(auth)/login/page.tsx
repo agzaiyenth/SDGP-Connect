@@ -114,7 +114,7 @@ const LoginForm: React.FC = () => {
         setError("Invalid email or password");
       } else {
         // Redirect to admin dashboard on successful login
-        router.push("/admin/dashboard");
+        router.push("/dashboard");
       }
     } catch (err) {
       setError("An error occurred during sign in");

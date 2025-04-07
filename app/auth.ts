@@ -1,7 +1,10 @@
+// app/auth.ts
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { NextAuthConfig } from "next-auth";
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+// Create the configuration
+const authConfig: NextAuthConfig = {
   providers: [
     Credentials({
       name: "credentials",
@@ -10,7 +13,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-    
         const validUsers = [
           { id: "1", email: "admin@example.com", password: "password123", name: "Admin User" },
           { id: "2", email: "user@example.com", password: "password123", name: "Regular User" }
@@ -34,8 +36,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     })
   ],
   pages: {
-    signIn: "/auth/login",
-    // You can add other custom pages here if needed
+    signIn: "/login",
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -51,4 +52,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return session;
     }
   }
-});
+};
+
+const { auth, handlers, signIn, signOut } = NextAuth(authConfig);
+
+export { auth, handlers, signIn, signOut };
