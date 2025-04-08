@@ -17,7 +17,7 @@ export default function Hero() {
         transition={{ duration: 0.8 }}
       >
         <motion.div
-          className="inline-block px-6 py-2 mb-8 text-sm font-medium tracking-wider text-primary bg-accent/20 rounded-full border border-primary/30"
+          className="inline-block px-6 py-2 mb-4 text-sm font-medium tracking-wider text-primary bg-accent/20 rounded-full border border-primary/30"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -26,7 +26,7 @@ export default function Hero() {
         </motion.div>
 
         <motion.h1
-          className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary via-white to-primary bg-clip-text text-transparent"
+          className="text-6xl md:text-7xl font-bold mb-3 bg-gradient-to-r from-primary via-white to-primary bg-clip-text text-transparent"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
@@ -44,7 +44,7 @@ export default function Hero() {
         </motion.p>
 
         <motion.div
-          className="flex justify-center gap-5"
+          className="flex justify-center gap-5 -mt-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
@@ -65,10 +65,10 @@ export default function Hero() {
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
         >
-          <div className="w-10 h-12 rounded-full bg-[#6366f1]/20 flex items-center justify-center mb-2 animate-bounce border border-[#6366f1]/30">
-            <Mouse className="w-5 h-5 text-[#6366f1]" />
+          <div className=" w-10 h-12 rounded-full bg-[#27272e]/80 flex items-center justify-center mb-2 animate-bounce border border-[#27272e]/90">
+            <Mouse className="w-5 h-5 text-[#ffffff]" />
           </div>
-          <span className="text-sm text-[#6366f1]/80 tracking-wider">
+          <span className="text-sm text-[#ffffff]/80 tracking-wider">
             Scroll to discover
           </span>
         </motion.div>
