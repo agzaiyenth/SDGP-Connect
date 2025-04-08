@@ -42,7 +42,7 @@ export default function Featured() {
        
       `}</style>
       <div className="max-w-7xl mx-auto px-5">
-        <h2 className="text-[2.5rem] mb-[50px] text-center bg-gradient-to-r from-[#FF6584] to-[#00D9F5] bg-clip-text text-transparent inline-block relative left-1/2 -translate-x-1/2">
+        <h2 className="text-[2.5rem] mb-[50px] text-center bg-gradient-to-r from-[#2a5298] bg-clip-text text-transparent inline-block relative left-1/2 -translate-x-1/2">
           Featured Projects
         </h2>
 
