@@ -15,7 +15,7 @@ import { Button } from "../ui/button"
 
 export default function Featured() {
   return (
-    <section className="py-[100px] bg-[#121212] relative">
+    <section className="py-[100px] bg-[#0c0a09] relative">
       <style jsx global>{`
         @keyframes smoothGlow {
           0% {
