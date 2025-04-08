@@ -17,29 +17,22 @@ export const authOptions: AuthOptions = {
         if (!credentials) return null;
 
         const { name, password } = credentials;
-
-        // Removed logging of raw credentials for security reasons
         try {
           const user = await prisma.user.findFirst({
             where: { name: name }
           });
 
-          console.log("🧐 User fetched from DB:", user); 
-
           if (!user) {
-            console.error("❌ User not found in the database");
             return null;
           }
 
           const isValidPassword = await bcrypt.compare(password, user.password);
-          console.log("🔑 Password is valid:", isValidPassword); 
+
 
           if (!isValidPassword) {
-            console.error("❌ Password mismatch");
             return null;
           }
 
-          console.log("✅ User authenticated successfully. Returning user object.");
 
           return {
             id: user.user_id,
@@ -47,7 +40,6 @@ export const authOptions: AuthOptions = {
             role: user.role,
           };
         } catch (error) {
-          console.error("⚠️ Authorization error:", error);
           return null;
         }
       }
