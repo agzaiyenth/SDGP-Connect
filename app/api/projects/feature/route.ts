@@ -1,17 +1,24 @@
+// app/api/projects/feature/route.ts
+
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/prisma/prismaClient";
 import { ProjectApprovalStatus } from "@prisma/client";
-import { session } from "@/app/(auth)/samplesession";
 
 export async function POST(request: NextRequest) {
-  try {
-    // Get the current user session (using the mock session for now)
-    // When implementing actual auth, replace with:
-    // const session = await getServerSession(authOptions);
-    
-    // Parse the request body
-    const { projectId, featured } = await request.json();
+  // 1) Get the real session
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
 
+  try {
+    // 2) Parse the request
+    const { projectId, featured } = await request.json();
     if (!projectId) {
       return NextResponse.json(
         { error: "Project ID is required." },
@@ -19,17 +26,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // First, find the project content to make sure it exists and is approved
+    // 3) Load the project content + metadata + status
     const projectContent = await prisma.projectContent.findFirst({
-      where: {
-        metadata_id: String(projectId)
-      },
-      include: {
-        metadata: true,
-        status: true
-      }
+      where: { metadata_id: String(projectId) },
+      include: { metadata: true, status: true },
     });
-
     if (!projectContent) {
       return NextResponse.json(
         { error: "Project not found." },
@@ -37,41 +38,45 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if the project is approved
-    if (projectContent.status?.approved_status !== ProjectApprovalStatus.APPROVED) {
+    // 4) Only approved projects can be featured
+    if (
+      projectContent.status?.approved_status !==
+      ProjectApprovalStatus.APPROVED
+    ) {
       return NextResponse.json(
         { error: "Only approved projects can be featured." },
         { status: 400 }
       );
     }
 
-    // Update the ProjectMetadata to set featured status
+    // 5) Update the metadata
     const updatedMetadata = await prisma.projectMetadata.update({
-      where: {
-        project_id: projectContent.metadata_id
-      },
+      where: { project_id: projectContent.metadata_id },
       data: {
-        featured: featured,
-        // Only update the featured_by field if setting to featured=true
-        ...(featured ? { featured_by_userId: session.user.id } : {})
-      }
+        featured: Boolean(featured),
+        ...(featured
+          ? { featured_by_userId: session.user.id }
+          : {}),
+      },
     });
 
+    // 6) Return success
     return NextResponse.json({
       success: true,
-      message: featured ? "Project featured successfully" : "Project unfeatured successfully",
+      message: featured
+        ? "Project featured successfully"
+        : "Project unfeatured successfully",
       data: {
         projectId,
-        featured: updatedMetadata.featured
-      }
+        featured: updatedMetadata.featured,
+      },
     });
   } catch (error: any) {
     console.error("Error toggling project featured status:", error);
-    
     return NextResponse.json(
-      { 
-        error: "Failed to update project featured status", 
-        details: error.message 
+      {
+        error: "Failed to update project featured status",
+        details: error.message,
       },
       { status: 500 }
     );
