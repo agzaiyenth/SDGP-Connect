@@ -18,8 +18,7 @@ export const authOptions: AuthOptions = {
 
         const { name, password } = credentials;
 
-        console.log("🚀 Received credentials:", { name, password });
-
+        // Removed logging of raw credentials for security reasons
         try {
           const user = await prisma.user.findFirst({
             where: { name: name }
