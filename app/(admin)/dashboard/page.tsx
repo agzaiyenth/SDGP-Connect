@@ -1,3 +1,8 @@
+"use client"
+
+import { useSession, signOut } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 import React, { Suspense } from 'react';
 import StatCard from '@/components/dashboard/StatCard';
 import StatusPieChart from '@/components/dashboard/StatusPieChart';
@@ -11,6 +16,22 @@ import { RecentActivity } from '@/components/dashboard/recent-activity';
 import { AnalyticsCharts } from '@/components/dashboard/analytics';
 
 export default function DashboardPage() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login")
+    }
+  }, [status, router])
+
+  if (status === "loading") {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <p>Loading session...</p>
+      </div>
+    )
+  }
   // Sample data for statistics
   const stats = [
     {
@@ -96,39 +117,41 @@ export default function DashboardPage() {
     },
   ];
 
-  return (
-    <>
-      <div className="mb-8 animate-fade-in">
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-        <p className="text-muted-foreground mt-2">Welcome back! Here's an overview of your platform.</p>
-      </div>
-      
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {stats.map((stat, index) => (
-          <StatCard
-            key={index}
-            title={stat.title}
-            value={stat.value}
-            icon={stat.icon}
-            trend={stat.trend}
-            className="animate-fade-in"
-            style={{ animationDelay: `${index * 100}ms` }}
-          />
-        ))}
-      </div>
+  if (status === "authenticated") {
+    return (
+      <>
+        <div className="mb-8 animate-fade-in">
+          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+          <p className="text-muted-foreground mt-2">Welcome back! Here's an overview of your platform.</p>
+        </div>
 
-      {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <StatusPieChart/>
-        <SubmissionsLineChart data={submissionsData} />
-      </div>
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {stats.map((stat, index) => (
+            <StatCard
+              key={index}
+              title={stat.title}
+              value={stat.value}
+              icon={stat.icon}
+              trend={stat.trend}
+              className="animate-fade-in"
+              style={{ animationDelay: `${index * 100}ms` }}
+            />
+          ))}
+        </div>
 
-      
-      {/* Recent Activity Table */}
-      <RecentActivityTable activities={recentActivities} />
+        {/* Charts Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <StatusPieChart />
+          <SubmissionsLineChart data={submissionsData} />
+        </div>
 
-      
-    </>
-  );
+
+        {/* Recent Activity Table */}
+        <RecentActivityTable activities={recentActivities} />
+
+
+      </>
+    );
+  }
 }
