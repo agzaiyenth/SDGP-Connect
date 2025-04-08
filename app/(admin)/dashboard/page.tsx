@@ -1,14 +1,9 @@
-import React, { Suspense } from 'react';
+import RecentActivityTable from '@/components/dashboard/RecentActivityTable';
 import StatCard from '@/components/dashboard/StatCard';
 import StatusPieChart from '@/components/dashboard/StatusPieChart';
 import SubmissionsLineChart from '@/components/dashboard/SubmissionsLineChart';
-import RecentActivityTable from '@/components/dashboard/RecentActivityTable';
-import { Folder, Clock, Star } from 'lucide-react';
+import { Clock, Folder, Star } from 'lucide-react';
 
-import { DashboardHeader } from '@/components/dashboard/header';
-import { DashboardStats } from '@/components/dashboard/stats';
-import { RecentActivity } from '@/components/dashboard/recent-activity';
-import { AnalyticsCharts } from '@/components/dashboard/analytics';
 
 export default function DashboardPage() {
   // Sample data for statistics

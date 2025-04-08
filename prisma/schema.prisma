@@ -129,7 +129,7 @@ model User {
   user_id          String            @id @default(uuid())
   role             Role
   password         String
-  name             String
+  name             String            
   // Relations to projects this user has approved/featured
   approvedProjects ProjectStatus[]   @relation("ApprovedBy")
   featuredProjects ProjectMetadata[] @relation("FeaturedBy")
