@@ -27,7 +27,7 @@ export default function Carousel() {
             <img
               src={image}
               alt={`Carousel image ${index + 1}`}
-              fill
+            
               className="object-cover"
               sizes="(max-width: 400px) 100vw, 400px"
             />
