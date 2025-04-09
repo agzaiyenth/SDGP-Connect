@@ -22,6 +22,11 @@ type FilterSectionProps = {
 
 function FilterSection({ title, options, selection, setSelection }: FilterSectionProps) {
   const [isOpen, setIsOpen] = useState(true)
+  const [showAll, setShowAll] = useState(false)
+  
+  const initialOptionsCount = 5
+  const displayedOptions = showAll ? options : options.slice(0, initialOptionsCount)
+  const hasMore = options.length > initialOptionsCount
 
   const toggleOption = (value: string) => {
     if (selection.includes(value)) {
@@ -41,7 +46,7 @@ function FilterSection({ title, options, selection, setSelection }: FilterSectio
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div className="pt-2 pb-4 space-y-2">
-          {options.map((option) => (
+          {displayedOptions.map((option) => (
             <div
               key={option.value}
               className="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-muted cursor-pointer"
@@ -58,6 +63,17 @@ function FilterSection({ title, options, selection, setSelection }: FilterSectio
               <span className="text-sm">{option.label}</span>
             </div>
           ))}
+          
+          {hasMore && (
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="w-full text-xs text-muted-foreground mt-1"
+              onClick={() => setShowAll(!showAll)}
+            >
+              {showAll ? "Show less" : `Show ${options.length - initialOptionsCount} more`}
+            </Button>
+          )}
         </div>
       </CollapsibleContent>
     </Collapsible>
@@ -66,6 +82,7 @@ function FilterSection({ title, options, selection, setSelection }: FilterSectio
 
 function TechStackSection({ selection, setSelection }: { selection: string[]; setSelection: (selection: string[]) => void }) {
   const [isOpen, setIsOpen] = useState(true)
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({})
 
   const toggleOption = (value: string) => {
     if (selection.includes(value)) {
@@ -73,6 +90,13 @@ function TechStackSection({ selection, setSelection }: { selection: string[]; se
     } else {
       setSelection([...selection, value])
     }
+  }
+
+  const toggleCategoryExpand = (category: string) => {
+    setExpandedCategories({
+      ...expandedCategories,
+      [category]: !expandedCategories[category]
+    })
   }
 
   // Group tech stack by type
@@ -84,6 +108,8 @@ function TechStackSection({ selection, setSelection }: { selection: string[]; se
     return acc
   }, {} as Record<string, typeof techStackOptions>)
 
+  const initialOptionsCount = 5
+
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">
       <CollapsibleTrigger asChild>
@@ -94,30 +120,47 @@ function TechStackSection({ selection, setSelection }: { selection: string[]; se
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div className="pt-2 pb-4 space-y-4">
-          {Object.entries(groupedTechStack).map(([category, options]) => (
-            <div key={category} className="space-y-2">
-              <h4 className="text-xs font-medium text-muted-foreground px-2 uppercase tracking-wider">
-                {category}
-              </h4>
-              {options.map((option) => (
-                <div
-                  key={option.value}
-                  className="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-muted cursor-pointer"
-                  onClick={() => toggleOption(option.value)}
-                >
+          {Object.entries(groupedTechStack).map(([category, options]) => {
+            const isExpanded = expandedCategories[category] || false;
+            const displayedOptions = isExpanded ? options : options.slice(0, initialOptionsCount);
+            const hasMore = options.length > initialOptionsCount;
+            
+            return (
+              <div key={category} className="space-y-2">
+                <h4 className="text-xs font-medium text-muted-foreground px-2 uppercase tracking-wider">
+                  {category}
+                </h4>
+                {displayedOptions.map((option) => (
                   <div
-                    className={cn(
-                      "h-4 w-4 rounded border flex items-center justify-center",
-                      selection.includes(option.value) ? "bg-primary border-primary" : "border-muted-foreground",
-                    )}
+                    key={option.value}
+                    className="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-muted cursor-pointer"
+                    onClick={() => toggleOption(option.value)}
                   >
-                    {selection.includes(option.value) && <Check className="h-3 w-3 text-primary-foreground" />}
+                    <div
+                      className={cn(
+                        "h-4 w-4 rounded border flex items-center justify-center",
+                        selection.includes(option.value) ? "bg-primary border-primary" : "border-muted-foreground",
+                      )}
+                    >
+                      {selection.includes(option.value) && <Check className="h-3 w-3 text-primary-foreground" />}
+                    </div>
+                    <span className="text-sm">{option.label}</span>
                   </div>
-                  <span className="text-sm">{option.label}</span>
-                </div>
-              ))}
-            </div>
-          ))}
+                ))}
+                
+                {hasMore && (
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="w-full text-xs text-muted-foreground mt-1"
+                    onClick={() => toggleCategoryExpand(category)}
+                  >
+                    {isExpanded ? "Show less" : `Show ${options.length - initialOptionsCount} more`}
+                  </Button>
+                )}
+              </div>
+            );
+          })}
         </div>
       </CollapsibleContent>
     </Collapsible>
@@ -126,6 +169,11 @@ function TechStackSection({ selection, setSelection }: { selection: string[]; se
 
 function SDGGoalsSection({ selection, setSelection }: { selection: string[]; setSelection: (selection: string[]) => void }) {
   const [isOpen, setIsOpen] = useState(true)
+  const [showAll, setShowAll] = useState(false)
+  
+  const initialOptionsCount = 5
+  const displayedGoals = showAll ? sdgGoals : sdgGoals.slice(0, initialOptionsCount)
+  const hasMore = sdgGoals.length > initialOptionsCount
 
   const toggleOption = (value: string) => {
     if (selection.includes(value)) {
@@ -145,7 +193,7 @@ function SDGGoalsSection({ selection, setSelection }: { selection: string[]; set
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div className="pt-2 pb-4 space-y-2">
-          {sdgGoals.map((goal) => (
+          {displayedGoals.map((goal) => (
             <div
               key={goal.name}
               className="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-muted cursor-pointer"
@@ -162,6 +210,17 @@ function SDGGoalsSection({ selection, setSelection }: { selection: string[]; set
               <span className="text-sm">{goal.name.replace(/_/g, ' ')}</span>
             </div>
           ))}
+          
+          {hasMore && (
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="w-full text-xs text-muted-foreground mt-1"
+              onClick={() => setShowAll(!showAll)}
+            >
+              {showAll ? "Show less" : `Show ${sdgGoals.length - initialOptionsCount} more`}
+            </Button>
+          )}
         </div>
       </CollapsibleContent>
     </Collapsible>
