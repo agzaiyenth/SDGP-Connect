@@ -18,17 +18,17 @@ export default function Featured() {
       <style jsx global>{`
         @keyframes smoothGlow {
           0% {
-            box-shadow: 0 15px 30px rgba(108, 99, 255, 0.2),
-                        0 0 0 1px rgba(108, 99, 255, 0.1);
+            box-shadow: 0 15px 30px rgba(42, 82, 152, 0.2),
+                        0 0 0 1px rgba(42, 82, 152, 0.1);
           }
           50% {
-            box-shadow: 0 20px 40px rgba(108, 99, 255, 0.4),
-                        0 0 20px rgba(108, 99, 255, 0.2),
-                        0 0 0 1px rgba(108, 99, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(42, 82, 152, 0.4),
+                        0 0 20px rgba(42, 82, 152, 0.2),
+                        0 0 0 1px rgba(42, 82, 152, 0.2);
           }
           100% {
-            box-shadow: 0 15px 30px rgba(108, 99, 255, 0.2),
-                        0 0 0 1px rgba(108, 99, 255, 0.1);
+            box-shadow: 0 15px 30px rgba(42, 82, 152, 0.2),
+                        0 0 0 1px rgba(42, 82, 152, 0.1);
           }
         }
         
@@ -40,7 +40,7 @@ export default function Featured() {
     
       <div className="max-w-7xl mx-auto px-5">
         
-        <h2 className="text-[2.5rem] mb-[50px] text-center bg-gradient-to-r from-[#2a5298] bg-clip-text text-transparent inline-block relative left-1/2 -translate-x-1/2">
+        <h2 className="text-[2.5rem] mb-[50px] text-center bg-gradient-to-r from-[#2a5298] to-[#042764] bg-clip-text text-transparent inline-block relative left-1/2 -translate-x-1/2">
           Featured Projects
         </h2>
 
