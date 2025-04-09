@@ -46,9 +46,7 @@ export async function POST(request: NextRequest) {
     // Get the project content
     const projectContent = await prisma.projectContent.findFirst({
       where: {
-        project: {
-          project_id: String(projectId)
-        }
+        metadata_id: String(projectId)
       },
       include: {
         status: true
