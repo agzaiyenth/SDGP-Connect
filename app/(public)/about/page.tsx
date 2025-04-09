@@ -5,15 +5,7 @@ interface Props {
 }
 
 const Page: React.FC<Props> = (props) => {
-    // Team members data (for Shadow Collective)
-    const teamMembers = [
-        { name: "Lakindu Samarasinghe", role: "Full Stack Developer", desc: "Weaves spells in binary" },
-        { name: "Agzienth Ganaraj", role: "Full Stack Developer", desc: "Conjures visual magic" },
-        { name: "Zion Ashrwardana", role: "Backend Developer", desc: "Steers through the void" },
-        { name: "Zion Ashrwardana", role: "Backend Developer", desc: "Steers through the void" },
-        { name: "Zion Ashrwardana", role: "Backend Developer", desc: "Steers through the void" },
-        { name: "Zion Ashrwardana", role: "Backend Developer", desc: "Steers through the void" },
-    ];
+    
 
     // Contributors data (Module Team) with image paths
     const contributors = [
@@ -170,30 +162,6 @@ const Page: React.FC<Props> = (props) => {
 
                                 {/* Hover Border Effect */}
                                 <div className="absolute inset-0 border-2 border-transparent group-hover:border-white/30 rounded-xl pointer-events-none transition-colors duration-300"></div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Team Section */}
-            <section className="py-20 px-6 bg-black border-t border-b border-gray-900">
-                <div className="max-w-6xl mx-auto">
-                    <h2 className="text-4xl font-extrabold text-center mb-16 tracking-tight animate-slide-up">
-                        The Shadow Collective
-                    </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-                        {teamMembers.map((member, index) => (
-                            <div
-                                key={index}
-                                className="bg-gray-950 rounded-xl p-6 transform hover:scale-105 transition-all duration-500 border border-gray-800 hover:border-white/10 group"
-                            >
-                                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-black border-2 border-gray-800 flex items-center justify-center text-3xl font-bold text-white group-hover:animate-spin-slow">
-                                    {member.name[0]}
-                                </div>
-                                <h3 className="text-2xl font-semibold text-center">{member.name}</h3>
-                                <p className="text-gray-400 text-center mb-2 italic">{member.role}</p>
-                                <p className="text-gray-500 text-center text-sm">{member.desc}</p>
                             </div>
                         ))}
                     </div>
