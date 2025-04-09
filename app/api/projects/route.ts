@@ -4,15 +4,18 @@ import { ProjectDomainEnum, ProjectTypeEnum, ProjectApprovalStatus } from "@pris
 
 export const GET = async (req: NextRequest) => {
   try {
-    const { searchParams } = new URL(req.url);
-
-    // Get query parameters with defaults
+    const { searchParams } = new URL(req.url);    // Get query parameters with defaults
     const page = Math.max(parseInt(searchParams.get("page") || "1"), 1); // Ensure page is at least 1
     const limit = Math.max(parseInt(searchParams.get("limit") || "9"), 1); // Ensure limit is at least 1
     const search = searchParams.get("search") || "";
-    const types = searchParams.getAll("types") as ProjectTypeEnum[];
+    
+    // Get filter parameters using the same keys as frontend
+    const projectTypes = searchParams.getAll("projectTypes") as ProjectTypeEnum[];
     const domains = searchParams.getAll("domains") as ProjectDomainEnum[];
     const statusValues = searchParams.getAll("status") as ProjectApprovalStatus[];
+    const sdgGoals = searchParams.getAll("sdgGoals");
+    const years = searchParams.getAll("years");
+    const techStack = searchParams.getAll("techStack");
 
     // Calculate skip for pagination
     const skip = (page - 1) * limit;    // Build filter conditions
@@ -36,20 +39,55 @@ export const GET = async (req: NextRequest) => {
       ];
     }
 
+    // Initialize association filters array to handle multiple association types
+    const associationFilters = [];
+
     // Add filters for project types
-    if (types.length > 0) {
-      whereClause.projectContent.associations.some = {
+    if (projectTypes.length > 0) {
+      associationFilters.push({
         type: "PROJECT_TYPE",
-        projectType: { in: types },
-      };
+        projectType: { in: projectTypes },
+      });
     }
 
     // Add filters for domains
     if (domains.length > 0) {
-      whereClause.projectContent.associations.some = {
-        ...whereClause.projectContent.associations.some,
+      associationFilters.push({
         type: "PROJECT_DOMAIN",
         domain: { in: domains },
+      });
+    }
+
+    // Add filters for SDG goals
+    if (sdgGoals.length > 0) {
+      associationFilters.push({
+        type: "SDG_GOAL",
+        sdgGoalName: { in: sdgGoals },
+      });
+    }
+
+    // Add filters for tech stack
+    if (techStack.length > 0) {
+      associationFilters.push({
+        type: "TECH_STACK",
+        technologyName: { in: techStack },
+      });
+    }
+
+    // Apply association filters if any exist
+    if (associationFilters.length > 0) {
+      whereClause.projectContent.associations.some = {
+        OR: associationFilters
+      };
+    }
+
+    // Add filter for years if provided
+    if (years.length > 0) {
+      whereClause.createdAt = {
+        OR: years.map(year => ({
+          gte: new Date(`${year}-01-01`),
+          lte: new Date(`${year}-12-31`),
+        }))
       };
     }
 
