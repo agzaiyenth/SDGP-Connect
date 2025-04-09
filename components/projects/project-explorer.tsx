@@ -1,4 +1,3 @@
-// components/projects/project-explorer.tsx
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -9,46 +8,45 @@ import {
     PaginationLink,
     PaginationNext,
     PaginationPrevious
-} from "../ui/pagination"; // Adjust path
-import { Badge } from "../ui/badge"; // Adjust path
-import { Button } from "../ui/button"; // Adjust path
-import { Skeleton } from "../ui/skeleton"; // Adjust path
+} from "../ui/pagination"; 
+import { Badge } from "../ui/badge"; 
+import { Button } from "../ui/button"; 
+import { Skeleton } from "../ui/skeleton"; 
 import { ProjectQueryParams, useProjects } from "@/hooks/project/useGetProjects";
+import { EmptyState } from "../ui/empty-state";
+import { FileX2 } from "lucide-react";
 
-// Define props based on the parent component's provision
+
 interface ProjectExplorerProps {
-    currentParams: ProjectQueryParams; // Receive all relevant params from parent
-    onPageChange: (newPage: number) => void; // Receive page change handler from parent
+    currentParams: ProjectQueryParams; 
+    onPageChange: (newPage: number) => void; 
 }
 
 export default function ProjectExplorer({ currentParams, onPageChange }: ProjectExplorerProps) {
     // Use the hook with the parameters passed down from the page component
-    // Removed goToPage and updateParams as they are no longer returned/needed
     const { projects, isLoading, error, meta } = useProjects(currentParams);
 
-    // Simplified page change handler: just calls the prop passed from the parent
+    if (isLoading) return <Skeleton />;
+    if (error) return <div>Error loading projects</div>;
+
     const handlePageChange = (newPage: number) => {
         if (newPage >= 1 && (!meta || newPage <= meta.totalPages)) {
-             onPageChange(newPage); // Call the function provided by the parent page
+             onPageChange(newPage); 
         }
     };
 
-    // Removed internal URL reading and update logic (updateURL, useEffect)
-
-    // Pagination rendering logic (mostly unchanged, but onClick handlers are simplified)
     const renderPaginationItems = () => {
-        if (!meta || meta.totalPages <= 1) return null; // Don't render if only one page or no meta
+        if (!meta || meta.totalPages <= 1) return null; 
 
         const items = [];
         const { currentPage, totalPages } = meta;
-        const pageRange = 1; // How many pages to show around the current page
-
-        // Always show first page
+        const pageRange = 1; 
+       
         if (totalPages > 1) {
              items.push(
                 <PaginationItem key="page-1">
                     <PaginationLink
-                        href="#" // Use "#" or dynamically generate hrefs if needed, onClick is primary
+                        href="#" 
                         onClick={(e) => {
                             e.preventDefault();
                             handlePageChange(1);
@@ -62,9 +60,7 @@ export default function ProjectExplorer({ currentParams, onPageChange }: Project
             );
         }
 
-
-        // Ellipsis before current page range
-        if (currentPage > pageRange + 2) { // Need space for '1', '...', 'current-1'
+        if (currentPage > pageRange + 2) {
             items.push(
                 <PaginationItem key="ellipsis-start">
                     <PaginationEllipsis />
@@ -96,7 +92,7 @@ export default function ProjectExplorer({ currentParams, onPageChange }: Project
         }
 
         // Ellipsis after current page range
-         if (currentPage < totalPages - (pageRange + 1)) { // Need space for 'current+1', '...', 'totalPages'
+         if (currentPage < totalPages - (pageRange + 1)) { 
             items.push(
                 <PaginationItem key="ellipsis-end">
                     <PaginationEllipsis />
@@ -104,7 +100,7 @@ export default function ProjectExplorer({ currentParams, onPageChange }: Project
             );
         }
 
-        // Always show last page (if different from first page)
+
         if (totalPages > 1) {
              items.push(
                 <PaginationItem key={`page-${totalPages}`}>
@@ -127,31 +123,34 @@ export default function ProjectExplorer({ currentParams, onPageChange }: Project
         return items;
     };
 
-    // --- Rendering Logic ---
 
     if (error) {
         return <div className="text-center py-10 text-red-500">Error loading projects: {error}</div>;
     }
 
-    // Show skeleton loader based on isLoading flag
+   
     if (isLoading) {
         return (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Render skeletons based on limit parameter */}
+              
                 {Array(currentParams.limit || 9)
                     .fill(0)
                     .map((_, i) => (
-                        // Use Skeleton component if available, otherwise fallback
+                       
                         <Skeleton key={i} className="h-[350px] rounded-xl bg-muted" />
-                        // Or: <div key={i} className="animate-pulse h-[350px] rounded-xl bg-muted"></div>
+                       
                     ))}
             </div>
         );
     }
 
-     // Handle case where loading is done but no projects match
+     
     if (!projects || projects.length === 0) {
-        return <div className="text-center py-10 text-muted-foreground">No projects found matching your criteria.</div>;
+        return (
+          <div className="flex  items-center justify-center ">
+            <EmptyState title="No projects found" description="Try adjusting your filters or search criteria." icons={[FileX2]}/>
+            </div>
+        );
     }
 
 

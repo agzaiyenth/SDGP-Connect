@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../prisma/prismaClient";
 import { ProjectDomainEnum, ProjectTypeEnum, ProjectApprovalStatus } from "@prisma/client";
 
-export const GET = async (req: NextRequest) => {
-  try {
+export const GET = async (req: NextRequest) => {  try {
     const { searchParams } = new URL(req.url);    // Get query parameters with defaults
     const page = Math.max(parseInt(searchParams.get("page") || "1"), 1); // Ensure page is at least 1
     const limit = Math.max(parseInt(searchParams.get("limit") || "9"), 1); // Ensure limit is at least 1
@@ -12,24 +11,39 @@ export const GET = async (req: NextRequest) => {
     // Get filter parameters using the same keys as frontend
     const projectTypes = searchParams.getAll("projectTypes") as ProjectTypeEnum[];
     const domains = searchParams.getAll("domains") as ProjectDomainEnum[];
-    const statusValues = searchParams.getAll("status") as ProjectApprovalStatus[];
+    const statusValues = searchParams.getAll("status") as string[];
     const sdgGoals = searchParams.getAll("sdgGoals");
     const years = searchParams.getAll("years");
-    const techStack = searchParams.getAll("techStack");
-
-    // Calculate skip for pagination
+    const techStack = searchParams.getAll("techStack");    // Calculate skip for pagination
     const skip = (page - 1) * limit;    // Build filter conditions
     const whereClause: any = {
       projectContent: {
         associations: {},
         status: {
-          // If no status values are provided, default to showing only APPROVED projects
-          approved_status: statusValues.length > 0 
-            ? { in: statusValues } 
-            : ProjectApprovalStatus.APPROVED
+          // Default to showing only APPROVED projects
+          approved_status: ProjectApprovalStatus.APPROVED
         },
       },
     };
+    
+    // Sort the status values into project status (IDEA, MVP, etc.) and approval status (APPROVED, PENDING, REJECTED)
+    const projectStatusValues = statusValues.filter(status => 
+      ["IDEA", "MVP", "DEPLOYED", "STARTUP"].includes(status)
+    );
+    
+    const approvalStatusValues = statusValues.filter(status => 
+      ["APPROVED", "PENDING", "REJECTED"].includes(status)
+    );
+    
+    // Apply project status filters if provided
+    if (projectStatusValues.length > 0) {
+      whereClause.projectContent.status.status = { in: projectStatusValues };
+    }
+    
+    // Apply approval status filters if provided
+    if (approvalStatusValues.length > 0) {
+      whereClause.projectContent.status.approved_status = { in: approvalStatusValues };
+    }
 
     // Add search filter if provided
     if (search) {
@@ -56,21 +70,19 @@ export const GET = async (req: NextRequest) => {
         type: "PROJECT_DOMAIN",
         domain: { in: domains },
       });
-    }
-
-    // Add filters for SDG goals
+    }    // Add filters for SDG goals
     if (sdgGoals.length > 0) {
       associationFilters.push({
-        type: "SDG_GOAL",
-        sdgGoalName: { in: sdgGoals },
+        type: "PROJECT_SDG",
+        sdgGoal: { in: sdgGoals },
       });
     }
 
     // Add filters for tech stack
     if (techStack.length > 0) {
       associationFilters.push({
-        type: "TECH_STACK",
-        technologyName: { in: techStack },
+        type: "PROJECT_TECH",
+        techStack: { in: techStack },
       });
     }
 
