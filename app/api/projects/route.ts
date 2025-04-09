@@ -15,14 +15,15 @@ export const GET = async (req: NextRequest) => {
     const statusValues = searchParams.getAll("status") as ProjectApprovalStatus[];
 
     // Calculate skip for pagination
-    const skip = (page - 1) * limit;
-
-    // Build filter conditions
+    const skip = (page - 1) * limit;    // Build filter conditions
     const whereClause: any = {
       projectContent: {
         associations: {},
         status: {
-          approved_status: { in: statusValues },
+          // If no status values are provided, default to showing only APPROVED projects
+          approved_status: statusValues.length > 0 
+            ? { in: statusValues } 
+            : ProjectApprovalStatus.APPROVED
         },
       },
     };

@@ -91,7 +91,7 @@ export const GET = async (req: NextRequest) => {
           title: project.metadata.title,
           groupNumber: project.metadata.group_num,
           submissionDate: project.createdAt?.toISOString(),
-          status: project.status.status,
+          status: project?.status?.status,
         };
       }
       
@@ -100,9 +100,9 @@ export const GET = async (req: NextRequest) => {
           id: project.metadata.project_id,
           title: project.metadata.title,
           groupNumber: project.metadata.group_num,
-          rejectedBy: project.status.approved_by?.name || 'System',
-          rejectedAt: project.status.approved_at?.toISOString() || '',
-          rejectionReason: project.status.rejected_reason || '',
+          rejectedBy: project?.status?.approved_by?.name || 'System',
+          rejectedAt: project?.status?.approved_at?.toISOString() || '',
+          rejectionReason: project?.status?.rejected_reason || '',
         };
       }
       
@@ -112,8 +112,8 @@ export const GET = async (req: NextRequest) => {
           title: project.metadata.title,
           groupNumber: project.metadata.group_num,
           featured: project.metadata.featured,
-          approvedBy: project.status.approved_by?.name || 'System',
-          approvedAt: project.status.approved_at?.toISOString() || '',
+          approvedBy: project?.status?.approved_by?.name || 'System',
+          approvedAt: project?.status?.approved_at?.toISOString() || '',
         };
       }
 
@@ -122,7 +122,7 @@ export const GET = async (req: NextRequest) => {
         id: project.metadata.project_id,
         title: project.metadata.title,
         groupNumber: project.metadata.group_num,
-        status: project.status.approved_status,
+        status: project?.status?.approved_status,
       };
     });
 
