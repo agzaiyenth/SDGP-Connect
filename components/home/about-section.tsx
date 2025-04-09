@@ -13,7 +13,7 @@ const demoData = {
     count: 200,
     avatars: [
       {
-        src: "https://www.shadcnblocks.com/images/block/avatar-1.webp",
+        src: "/Lexi/icon.png",
         alt: "Avatar 1",
       },
       {

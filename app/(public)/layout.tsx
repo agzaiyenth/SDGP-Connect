@@ -35,7 +35,9 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
         <Toaster />
         <NavBar/>
+        <div className="mx-24">
         {children}
+        </div>
         </ThemeProvider>
       </body>
     

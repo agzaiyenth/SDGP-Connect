@@ -1,4 +1,5 @@
 import { ProjectStatusEnum, ProjectTypeEnum, SDGGoalEnum, TechStackEnum } from "@prisma/client";
+import { Heart } from "lucide-react";
 import { DiJava, DiReact } from "react-icons/di";
 import { FaAws, FaDesktop, FaGlobe, FaMobileAlt, FaTools } from "react-icons/fa";
 import {
@@ -24,6 +25,24 @@ import {
     SiTensorflow,
     SiVuedotjs
 } from "react-icons/si";
+import {
+  Brain,
+  Cpu,
+  MonitorSmartphone,
+  ShieldCheck,
+  SatelliteDish,
+  HeartPulse,
+  Banknote,
+  BookOpen,
+  Sprout,
+  ShoppingCart,
+  Users,
+  Gamepad2,
+  Shield,
+  BarChart3,
+  Clapperboard,
+  Leaf,
+} from "lucide-react"
 
 export const projectTypeOptions = [
   { value: ProjectTypeEnum.MOBILE, label: "Mobile App", icon: FaMobileAlt },
@@ -187,3 +206,22 @@ export const sdgGoals = [
         description: "Growing business solution" 
       },
     ];
+
+    export const projectDomainsOptions = [
+      { value: "AI", label: "AI", icon: Brain },
+      { value: "ML", label: "ML", icon: Cpu },
+      { value: "AR_VR", label: "AR/VR", icon: MonitorSmartphone },
+      { value: "BLOCKCHAIN", label: "Blockchain", icon: ShieldCheck },
+      { value: "IOT", label: "IoT", icon: SatelliteDish },
+      { value: "HEALTHTECH", label: "HealthTech", icon: HeartPulse },
+      { value: "FINTECH", label: "FinTech", icon: Banknote },
+      { value: "EDTECH", label: "EdTech", icon: BookOpen },
+      { value: "AGRITECH", label: "AgriTech", icon: Sprout },
+      { value: "ECOMMERCE", label: "E-Commerce", icon: ShoppingCart },
+      { value: "SOCIAL", label: "Social", icon: Users },
+      { value: "GAMING", label: "Gaming", icon: Gamepad2 },
+      { value: "SECURITY", label: "Security", icon: Shield },
+      { value: "DATA_ANALYTICS", label: "Data Analytics", icon: BarChart3 },
+      { value: "ENTERTAINMENT", label: "Entertainment", icon: Clapperboard },
+      { value: "SUSTAINABILITY", label: "Sustainability", icon: Leaf },
+    ]

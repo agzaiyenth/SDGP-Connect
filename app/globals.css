@@ -137,9 +137,14 @@
   transition: width 0.3s ease;
 }
 
+
+
+
+
+/* 
 .hover-slide:hover::after {
   width: 100%;
-}
+} */
 
 /* Card hover effects */
 .project-card {

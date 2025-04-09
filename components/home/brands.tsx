@@ -75,7 +75,7 @@ export function Brands() {
     <div className="h-screen w-full overflow-hidden">
       <div className="mx-auto mt-32 w-full max-w-7xl">
         <div className="text-center text-5xl text-foreground">
-          <span className="text-blue-900 dark:text-indigo-200">
+          <span className="text-blue-900 ">
             Making Projects.
           </span>
           <br />
@@ -111,7 +111,7 @@ export function Brands() {
       </div>
 
       <div className="relative -mt-32 h-96 w-full overflow-hidden [mask-image:radial-gradient(50%_50%,white,transparent)]">
-        <div className="absolute inset-0 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_bottom_center,#8350e8,transparent_70%)] before:opacity-40" />
+        <div className="absolute inset-0 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_bottom_center,#2a5298,transparent_70%)] before:opacity-40" />
         <div className="absolute -left-1/2 top-1/2 aspect-[1/0.7] z-10 w-[200%] rounded-[100%] border-t border-zinc-900/20 dark:border-white/20 bg-white dark:bg-zinc-900" />
         <Sparkles
           density={1200}
