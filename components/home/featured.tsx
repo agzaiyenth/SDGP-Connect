@@ -12,7 +12,6 @@ import "swiper/css/navigation"
 import { EffectCoverflow, Pagination, Navigation, Autoplay } from "swiper/modules"
 import { Button } from "../ui/button"
 
-
 export default function Featured() {
   return (
     <section className="py-[100px] bg-[#0c0a09] relative">
@@ -36,12 +35,11 @@ export default function Featured() {
         .swiper-slide-active .project-card {
           animation: smoothGlow 5s infinite cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-    
-    
-       
       `}</style>
+      {/* Added black gradients */}
+    
       <div className="max-w-7xl mx-auto px-5">
+        
         <h2 className="text-[2.5rem] mb-[50px] text-center bg-gradient-to-r from-[#2a5298] bg-clip-text text-transparent inline-block relative left-1/2 -translate-x-1/2">
           Featured Projects
         </h2>
@@ -76,7 +74,8 @@ export default function Featured() {
             },
           }}
           className="w-full py-[50px] pb-[80px] justify-center"
-        >
+        >  <div className="absolute top-0 left-0 h-full z-99 w-22 pointer-events-none bg-gradient-to-r from-background to-transparent" />
+      <div className="absolute top-0 right-0 h-full z-99 w-22 pointer-events-none bg-gradient-to-l from-background to-transparent" />
           {/* Project Card 1 */}
           <SwiperSlide>
             <div className="project-card bg-opacity-40 bg-[#1e1e1e] rounded-[20px] overflow-hidden shadow-lg border border-white/[0.08] h-[450px] scale-90 backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)]">
