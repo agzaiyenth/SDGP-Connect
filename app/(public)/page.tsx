@@ -1,10 +1,8 @@
 
 import { About } from "@/components/home/about-section";
-import AllProjects from "@/components/home/all-projects";
 import { Brands } from "@/components/home/brands";
-import ExploreByDomain from "@/components/home/explore-by-domain";
+import Domains from "@/components/home/domains";
 import Featured from "@/components/home/featured";
-import FeaturedProjects from "@/components/home/featured-projects";
 import Hero from "@/components/home/hero";
 import ImpactStats from "@/components/home/impact-stats";
 
@@ -15,6 +13,7 @@ export default function Home() {
       <Hero />
       <About />
       <Featured/>
+      <Domains />
       <ImpactStats />
       <Brands/>
     </div>
