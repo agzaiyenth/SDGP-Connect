@@ -37,7 +37,7 @@ function useProjects(currentParams: ProjectQueryParams) {
 
         if (currentParams.page) queryParams.append('page', currentParams.page.toString());
         if (currentParams.limit) queryParams.append('limit', currentParams.limit.toString());
-        if (currentParams.search) queryParams.append('search', currentParams.search);
+        if (currentParams.title) queryParams.append('title', currentParams.title);
 
         // Use the correct keys matching the API route and page component
         if (currentParams.projectTypes && currentParams.projectTypes.length > 0) {
@@ -106,7 +106,7 @@ export { useProjects };
 export interface ProjectQueryParams {
   page?: number;
   limit?: number;
-  search?: string;
+  title?: string;
   projectTypes?: string[];
   domains?: string[];
   status?: string[];

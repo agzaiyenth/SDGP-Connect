@@ -5,7 +5,7 @@ import { Check, ChevronDown, X as ClearIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
-import { cn } from "../../lib/utils";
+import { cn } from "@/lib/utils";
 
 
 import {
@@ -14,7 +14,7 @@ import {
   projectDomainsOptions,
   sdgGoals,
   techStackOptions
-} from "../../types/project/mapping";
+} from "@/types/project/mapping";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
 

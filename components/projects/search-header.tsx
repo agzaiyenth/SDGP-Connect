@@ -1,27 +1,51 @@
-"use client"
+"use client";
 
-import { Search, SlidersHorizontal } from "lucide-react"
-import { Button } from "../ui/button"
-import { Input } from "../ui/input"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
+import React, { useState, useEffect } from 'react';
+import { Search, SlidersHorizontal } from "lucide-react";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
 interface SearchHeaderProps {
   toggleFilters?: () => void;
+  defaultTitle?: string;
+  onSearch: (value: string) => void;
 }
 
-export default function SearchHeader({ toggleFilters }: SearchHeaderProps) {
+export default function SearchHeader({
+  toggleFilters,
+  defaultTitle = "",
+  onSearch
+}: SearchHeaderProps) {
+  const [value, setValue] = useState(defaultTitle);
+
+  // keep local state in sync if defaultTitle ever changes
+  useEffect(() => {
+    setValue(defaultTitle);
+  }, [defaultTitle]);
+
+  // debounce: wait 300ms after the user stops typing
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      onSearch(value);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [value, onSearch]);
+
   return (
     <div className="space-y-4">
       <h1 className="text-3xl font-bold">Projects</h1>
-
       <div className="flex items-center gap-2">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Search projects..." className="pl-10" />
+          <Input
+            placeholder="Search projects by title..."
+            className="pl-10"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
         </div>
-        
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           className="md:hidden flex-shrink-0"
           onClick={toggleFilters}
         >
@@ -30,6 +54,5 @@ export default function SearchHeader({ toggleFilters }: SearchHeaderProps) {
         </Button>
       </div>
     </div>
-  )
+  );
 }
-
