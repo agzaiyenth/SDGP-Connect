@@ -4,7 +4,7 @@ import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, Pagi
 
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { useProjects } from "@/hooks/project/useProjects";
+import { useProjects } from "@/hooks/project/useGetProjects";
 
 export default function ProjectExplorer() {
   const { projects, isLoading, error, meta, goToPage } = useProjects();

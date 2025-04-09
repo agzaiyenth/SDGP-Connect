@@ -37,13 +37,13 @@ export function useGetProjectsByApprovalStatus<T extends PendingProject | Approv
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [isEmpty, setIsEmpty] = useState(false);
-
   const fetchProjects = useCallback(async (page: number) => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await axios.get<PaginatedResponse<T>>(`/api/projects`, {
+      // Use the dedicated admin API endpoint for project approval management
+      const response = await axios.get<PaginatedResponse<T>>(`/api/admin/projects`, {
         params: {
           status: statusType,
           page,
