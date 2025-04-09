@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Check, ChevronDown } from "lucide-react"
 import { Button } from "../ui/button"
 import { Badge } from "../ui/badge"
@@ -21,7 +21,7 @@ type GenericSectionProps = {
   title: string
   options: Option[]
   selection: string[]
-  setSelection: (selection: string[]) => void
+  setSelection: React.Dispatch<React.SetStateAction<string[]>>
   showIcons?: boolean
 }
 
@@ -39,13 +39,13 @@ function GenericFilterSection({
   const displayedOptions = showAll ? options : options.slice(0, initialOptionsCount)
   const hasMore = options.length > initialOptionsCount
 
-  const toggleOption = (value: string) => {
-    setSelection(
-      selection.includes(value)
-        ? selection.filter((item) => item !== value)
-        : [...selection, value]
+  const toggleOption = useCallback((value: string) => {
+    setSelection((prev: string[]) => 
+      prev.includes(value)
+        ? prev.filter((item: string) => item !== value)
+        : [...prev, value]
     )
-  }
+  }, [setSelection])
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">
@@ -100,18 +100,18 @@ function TechStackSection({
   setSelection
 }: {
   selection: string[]
-  setSelection: (selection: string[]) => void
+  setSelection: React.Dispatch<React.SetStateAction<string[]>>
 }) {
   const [isOpen, setIsOpen] = useState(true)
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({})
 
-  const toggleOption = (value: string) => {
-    setSelection(
-      selection.includes(value)
-        ? selection.filter((item) => item !== value)
-        : [...selection, value]
+  const toggleOption = useCallback((value: string) => {
+    setSelection((prev: string[]) =>
+      prev.includes(value)
+        ? prev.filter((item: string) => item !== value)
+        : [...prev, value]
     )
-  }
+  }, [setSelection])
 
   const grouped = techStackOptions.reduce((acc, tech) => {
     acc[tech.type] = acc[tech.type] || []
@@ -181,13 +181,58 @@ function TechStackSection({
   )
 }
 
-export default function FilterSidebar() {
-  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([])
-  const [selectedYears, setSelectedYears] = useState<string[]>([])
-  const [selectedProjectTypes, setSelectedProjectTypes] = useState<string[]>([])
-  const [selectedDomains, setSelectedDomains] = useState<string[]>([])
-  const [selectedSDGs, setSelectedSDGs] = useState<string[]>([])
-  const [selectedTechStack, setSelectedTechStack] = useState<string[]>([])
+interface FilterSidebarProps {
+  onFilterChange: (filters: {
+    status: string[];
+    years: string[];
+    projectTypes: string[];
+    domains: string[];
+    sdgGoals: string[];
+    techStack: string[];
+  }) => void;
+  initialFilters?: {
+    status: string[];
+    years: string[];
+    projectTypes: string[];
+    domains: string[];
+    sdgGoals: string[];
+    techStack: string[];
+  };
+}
+
+export default function FilterSidebar({ onFilterChange, initialFilters }: FilterSidebarProps) {
+  const [selectedStatuses, setSelectedStatuses] = useState<string[]>(initialFilters?.status || []);
+  const [selectedYears, setSelectedYears] = useState<string[]>(initialFilters?.years || []);
+  const [selectedProjectTypes, setSelectedProjectTypes] = useState<string[]>(initialFilters?.projectTypes || []);
+  const [selectedDomains, setSelectedDomains] = useState<string[]>(initialFilters?.domains || []);
+  const [selectedSDGs, setSelectedSDGs] = useState<string[]>(initialFilters?.sdgGoals || []);
+  const [selectedTechStack, setSelectedTechStack] = useState<string[]>(initialFilters?.techStack || []);
+
+  const notifyFilterChange = useCallback(() => {
+    onFilterChange({
+      status: selectedStatuses,
+      years: selectedYears,
+      projectTypes: selectedProjectTypes,
+      domains: selectedDomains,
+      sdgGoals: selectedSDGs,
+      techStack: selectedTechStack
+    });
+  }, [selectedStatuses, selectedYears, selectedProjectTypes, selectedDomains, selectedSDGs, selectedTechStack, onFilterChange]);
+
+  useEffect(() => {
+    notifyFilterChange();
+  }, [notifyFilterChange]);
+
+  useEffect(() => {
+    if (initialFilters) {
+      setSelectedStatuses(initialFilters.status);
+      setSelectedYears(initialFilters.years);
+      setSelectedProjectTypes(initialFilters.projectTypes);
+      setSelectedDomains(initialFilters.domains);
+      setSelectedSDGs(initialFilters.sdgGoals);
+      setSelectedTechStack(initialFilters.techStack);
+    }
+  }, [initialFilters]);
 
   const hasActiveFilters = [
     selectedStatuses,
@@ -198,20 +243,29 @@ export default function FilterSidebar() {
     selectedTechStack
   ].some((arr) => arr.length > 0)
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setSelectedStatuses([])
     setSelectedYears([])
     setSelectedProjectTypes([])
     setSelectedDomains([])
     setSelectedSDGs([])
     setSelectedTechStack([])
-  }
+  }, [])
 
   const currentYear = new Date().getFullYear()
   const yearOptions = Array.from({ length: 4 }, (_, i) => {
     const y = (currentYear - i).toString()
     return { value: y, label: y }
   })
+
+  const removeFilter = useCallback((filter: string) => {
+    setSelectedStatuses(prev => prev.filter(f => f !== filter))
+    setSelectedYears(prev => prev.filter(f => f !== filter))
+    setSelectedProjectTypes(prev => prev.filter(f => f !== filter))
+    setSelectedDomains(prev => prev.filter(f => f !== filter))
+    setSelectedSDGs(prev => prev.filter(f => f.replace(/_/g, " ") !== filter))
+    setSelectedTechStack(prev => prev.filter(f => f !== filter))
+  }, [])
 
   return (
     <div className="bg-card p-4 rounded-xl border">
@@ -240,14 +294,7 @@ export default function FilterSidebar() {
                 variant="ghost"
                 size="icon"
                 className="h-4 w-4 p-0 ml-1"
-                onClick={() => {
-                  setSelectedStatuses((prev) => prev.filter((f) => f !== filter))
-                  setSelectedYears((prev) => prev.filter((f) => f !== filter))
-                  setSelectedProjectTypes((prev) => prev.filter((f) => f !== filter))
-                  setSelectedDomains((prev) => prev.filter((f) => f !== filter))
-                  setSelectedSDGs((prev) => prev.filter((f) => f.replace(/_/g, " ") !== filter))
-                  setSelectedTechStack((prev) => prev.filter((f) => f !== filter))
-                }}
+                onClick={() => removeFilter(filter)}
               >
                 &times;
               </Button>
@@ -292,7 +339,6 @@ export default function FilterSidebar() {
         <TechStackSection
           selection={selectedTechStack}
           setSelection={setSelectedTechStack}
-
         />
       </div>
     </div>

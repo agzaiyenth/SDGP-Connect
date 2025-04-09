@@ -6,8 +6,19 @@ import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { useProjects } from "@/hooks/project/useGetProjects";
 
-export default function ProjectExplorer() {
-  const { projects, isLoading, error, meta, goToPage } = useProjects();
+interface ProjectExplorerProps {
+  filters: {
+    status: string[];
+    years: string[];
+    projectTypes: string[];
+    domains: string[];
+    sdgGoals: string[];
+    techStack: string[];
+  };
+}
+
+export default function ProjectExplorer({ filters }: ProjectExplorerProps) {
+  const { projects, isLoading, error, meta, goToPage } = useProjects({ filters });
 
   // Handle rendering pages for pagination
   const renderPaginationItems = () => {
