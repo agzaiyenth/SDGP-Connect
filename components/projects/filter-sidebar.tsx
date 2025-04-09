@@ -1,28 +1,28 @@
 "use client"
 
-import React, { useState, useEffect, useCallback, useMemo } from "react"; // Import useMemo
-import { Check, ChevronDown, X as ClearIcon } from "lucide-react"; // Import X icon
-import { Button } from "../ui/button"; // Adjust path
-import { Badge } from "../ui/badge"; // Adjust path
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"; // Adjust path
-import { cn } from "../../lib/utils"; // Adjust path
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { Check, ChevronDown, X as ClearIcon } from "lucide-react";
+import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
+import { cn } from "../../lib/utils";
 
-// Assuming these imports provide arrays of objects with consistent structures
-// e.g., { value: string; label: string; icon?: React.ComponentType; type?: string }
+
 import {
   projectStatusOptions,
   projectTypeOptions,
   projectDomainsOptions,
-  sdgGoals, // Assuming this is like [{ name: 'GOAL_1', ... }, ...]
-  techStackOptions // Assuming this has { value: string; label: string; type: string; icon?: ... }
-} from "../../types/project/mapping"; // Adjust path
+  sdgGoals,
+  techStackOptions
+} from "../../types/project/mapping";
+import { Checkbox } from "../ui/checkbox";
+import { Label } from "../ui/label";
 
 // Define the shape of a filter option
 type Option = {
   value: string;
   label: string;
   icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  // Add type for tech stack grouping if needed within Option, or handle separately
   type?: string;
 };
 
@@ -37,12 +37,12 @@ export interface FilterState {
 }
 
 // --- GenericFilterSection Component ---
-// Props type for GenericFilterSection
+
 type GenericSectionProps = {
   title: string;
-  options: ReadonlyArray<Option>; // Use ReadonlyArray for immutable props
-  selection: ReadonlyArray<string>; // Use ReadonlyArray
-  setSelection: React.Dispatch<React.SetStateAction<string[]>>; // State setter remains mutable
+  options: ReadonlyArray<Option>;
+  selection: ReadonlyArray<string>;
+  setSelection: React.Dispatch<React.SetStateAction<string[]>>;
   showIcons?: boolean;
 };
 
@@ -85,31 +85,22 @@ function GenericFilterSection({
       <CollapsibleContent className="px-2 data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up overflow-hidden">
         <div className="pt-1 pb-2 space-y-1">
           {displayedOptions.map((option) => {
-            const Icon = option.icon;
             const isSelected = selection.includes(option.value);
             return (
-              <div
-                key={option.value}
-                role="checkbox"
-                aria-checked={isSelected}
-                tabIndex={0}
-                className="flex items-center gap-2 px-1 py-1 rounded-md hover:bg-muted cursor-pointer text-sm"
-                onClick={() => toggleOption(option.value)}
-                onKeyDown={(e) => (e.key === ' ' || e.key === 'Enter') && toggleOption(option.value)}
-              >
-                <div
-                  className={cn(
-                    "h-4 w-4 rounded-sm border flex items-center justify-center flex-shrink-0 transition-colors",
-                    isSelected ? "bg-primary border-primary" : "border-muted-foreground/50"
-                  )}
-                >
-                  {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
-                </div>
-                {showIcons && Icon && <Icon className="h-4 w-4 text-muted-foreground flex-shrink-0" />}
-                <span className="flex-grow truncate">{option.label}</span>
+              <div key={option.value} className="flex items-center gap-2 px-1 py-1">
+                <Checkbox
+                  id={option.value}
+                  checked={isSelected}
+                  onCheckedChange={() => toggleOption(option.value)}
+                  className="flex-shrink-0"
+                />
+                <Label htmlFor={option.value} className="flex-grow truncate text-sm cursor-pointer">
+                  {option.label}
+                </Label>
               </div>
             );
           })}
+
 
           {hasMore && (
             <Button
@@ -152,10 +143,10 @@ function TechStackSection({
   // Group tech stack options by type, memoize the result
   const grouped = useMemo(() => {
     // Ensure techStackOptions is an array before reducing
-     if (!Array.isArray(techStackOptions)) {
-        console.error("techStackOptions is not an array:", techStackOptions);
-        return {}; // Return empty object if data is invalid
-      }
+    if (!Array.isArray(techStackOptions)) {
+      console.error("techStackOptions is not an array:", techStackOptions);
+      return {}; // Return empty object if data is invalid
+    }
     return techStackOptions.reduce((acc, tech) => {
       // Ensure tech object and tech.type are valid
       if (typeof tech !== 'object' || tech === null) return acc;
@@ -164,9 +155,9 @@ function TechStackSection({
         acc[typeKey] = [];
       }
       // Ensure tech.value is valid before pushing
-       if (typeof tech.value === 'string') {
-         acc[typeKey].push(tech);
-       }
+      if (typeof tech.value === 'string') {
+        acc[typeKey].push(tech);
+      }
       return acc;
     }, {} as Record<string, Option[]>); // Type the accumulator
   }, []); // Dependency array is empty as techStackOptions is imported
@@ -185,7 +176,7 @@ function TechStackSection({
           <ChevronDown className={cn("h-4 w-4 transition-transform", isOpen && "rotate-180")} />
         </Button>
       </CollapsibleTrigger>
-       <CollapsibleContent className="px-2 data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up overflow-hidden">
+      <CollapsibleContent className="px-2 data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up overflow-hidden">
         <div className="pt-1 pb-2 space-y-3">
           {Object.entries(grouped).map(([category, options]) => {
             const isExpanded = expandedCategories[category] ?? false; // Use nullish coalescing
@@ -196,31 +187,24 @@ function TechStackSection({
               <div key={category} className="space-y-1">
                 <h4 className="text-xs font-semibold text-muted-foreground px-1 uppercase tracking-wider">{category}</h4>
                 {displayed.map((option) => {
-                   const Icon = option.icon;
-                   const isSelected = selection.includes(option.value);
-                   return (
-                    <div
-                        key={option.value}
-                        role="checkbox"
-                        aria-checked={isSelected}
-                        tabIndex={0}
-                        className="flex items-center gap-2 px-1 py-1 rounded-md hover:bg-muted cursor-pointer text-sm"
-                        onClick={() => toggleOption(option.value)}
-                         onKeyDown={(e) => (e.key === ' ' || e.key === 'Enter') && toggleOption(option.value)}
-                    >
-                        <div
-                        className={cn(
-                            "h-4 w-4 rounded-sm border flex items-center justify-center flex-shrink-0 transition-colors",
-                            isSelected ? "bg-primary border-primary" : "border-muted-foreground/50"
-                        )}
-                        >
-                        {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
-                        </div>
-                         {Icon && <Icon className="h-4 w-4 text-muted-foreground flex-shrink-0" />}
-                        <span className="flex-grow truncate">{option.label}</span>
-                    </div>
-                   );
-                 })}
+                  const Icon = option.icon;
+                  const isSelected = selection.includes(option.value);
+                  return (
+                    <div key={option.value} className="flex items-center gap-2 px-1 py-1">
+                    <Checkbox
+                      id={option.value}
+                      checked={isSelected}
+                      onCheckedChange={() => toggleOption(option.value)}
+                      className="h-4 w-4"
+                    />
+                    {Icon && <Icon className="h-4 w-4 text-muted-foreground flex-shrink-0" />}
+                    <Label htmlFor={option.value} className="flex-grow truncate text-sm cursor-pointer">
+                      {option.label}
+                    </Label>
+                  </div>
+                  
+                  );
+                })}
                 {hasMore && (
                   <Button
                     variant="link"
@@ -295,25 +279,25 @@ export default function FilterSidebar({
   useEffect(() => {
     // Helper to compare arrays, prevents unnecessary state updates
     const arraysAreEqual = (a: string[] | undefined, b: string[] | undefined): boolean =>
-        JSON.stringify(a?.sort() || []) === JSON.stringify(b?.sort() || []);
+      JSON.stringify(a?.sort() || []) === JSON.stringify(b?.sort() || []);
 
     if (!arraysAreEqual(initialFilters.status, selectedStatuses)) {
-        setSelectedStatuses(initialFilters.status || []);
+      setSelectedStatuses(initialFilters.status || []);
     }
     if (!arraysAreEqual(initialFilters.years, selectedYears)) {
-        setSelectedYears(initialFilters.years || []);
+      setSelectedYears(initialFilters.years || []);
     }
     if (!arraysAreEqual(initialFilters.projectTypes, selectedProjectTypes)) {
-        setSelectedProjectTypes(initialFilters.projectTypes || []);
+      setSelectedProjectTypes(initialFilters.projectTypes || []);
     }
     if (!arraysAreEqual(initialFilters.domains, selectedDomains)) {
-        setSelectedDomains(initialFilters.domains || []);
+      setSelectedDomains(initialFilters.domains || []);
     }
-     if (!arraysAreEqual(initialFilters.sdgGoals, selectedSDGs)) {
-        setSelectedSDGs(initialFilters.sdgGoals || []);
+    if (!arraysAreEqual(initialFilters.sdgGoals, selectedSDGs)) {
+      setSelectedSDGs(initialFilters.sdgGoals || []);
     }
     if (!arraysAreEqual(initialFilters.techStack, selectedTechStack)) {
-        setSelectedTechStack(initialFilters.techStack || []);
+      setSelectedTechStack(initialFilters.techStack || []);
     }
   }, [initialFilters]); // Depend on the entire initialFilters object
 
@@ -329,43 +313,43 @@ export default function FilterSidebar({
 
   // Map SDG goals for the filter section, memoized
   const sdgOptions: ReadonlyArray<Option> = useMemo(() => {
-     // Ensure sdgGoals is an array of objects with a 'name' property
+    // Ensure sdgGoals is an array of objects with a 'name' property
     if (!Array.isArray(sdgGoals) || !sdgGoals.every(g => typeof g === 'object' && g !== null && typeof g.name === 'string')) {
-        console.error("Invalid sdgGoals data structure:", sdgGoals);
-        return [];
+      console.error("Invalid sdgGoals data structure:", sdgGoals);
+      return [];
     }
     return sdgGoals.map((goal) => ({
-        value: goal.name, // Use the name (e.g., 'GOAL_1') as the value
-        label: goal.name.replace(/_/g, " ").replace(/^GOAL /i, '') // Make label readable (e.g., '1')
+      value: goal.name, // Use the name (e.g., 'GOAL_1') as the value
+      label: goal.name.replace(/_/g, " ").replace(/^GOAL /i, '') // Make label readable (e.g., '1')
     }));
   }, []); // Depends on imported sdgGoals
 
   // Helper map for faster label lookups for active filter badges
   const labelMap = useMemo(() => {
-      const map = new Map<string, string>();
-      [
-          ...projectStatusOptions,
-          ...yearOptions, // Already {value, label}
-          ...projectTypeOptions,
-          ...projectDomainsOptions,
-          ...sdgOptions, // Use the mapped sdgOptions
-          ...techStackOptions
-      ].forEach(opt => {
-          if (opt && typeof opt.value === 'string' && typeof opt.label === 'string') {
-            map.set(opt.value, opt.label);
-          }
-        });
-      return map;
+    const map = new Map<string, string>();
+    [
+      ...projectStatusOptions,
+      ...yearOptions, // Already {value, label}
+      ...projectTypeOptions,
+      ...projectDomainsOptions,
+      ...sdgOptions, // Use the mapped sdgOptions
+      ...techStackOptions
+    ].forEach(opt => {
+      if (opt && typeof opt.value === 'string' && typeof opt.label === 'string') {
+        map.set(opt.value, opt.label);
+      }
+    });
+    return map;
   }, [yearOptions, sdgOptions]); // Recalculate if dynamic options change
 
   // Create a list of active filters with their labels for display, memoized
   const activeFiltersList = useMemo(() => [
-      ...selectedStatuses.map(value => ({ type: 'status' as keyof FilterState, value, label: labelMap.get(value) ?? value })),
-      ...selectedYears.map(value => ({ type: 'years' as keyof FilterState, value, label: value })), // Year value is the label
-      ...selectedProjectTypes.map(value => ({ type: 'projectTypes' as keyof FilterState, value, label: labelMap.get(value) ?? value })),
-      ...selectedDomains.map(value => ({ type: 'domains' as keyof FilterState, value, label: labelMap.get(value) ?? value })),
-      ...selectedSDGs.map(value => ({ type: 'sdgGoals' as keyof FilterState, value, label: labelMap.get(value) ?? value })), // Use sdgOptions label
-      ...selectedTechStack.map(value => ({ type: 'techStack' as keyof FilterState, value, label: labelMap.get(value) ?? value })),
+    ...selectedStatuses.map(value => ({ type: 'status' as keyof FilterState, value, label: labelMap.get(value) ?? value })),
+    ...selectedYears.map(value => ({ type: 'years' as keyof FilterState, value, label: value })), // Year value is the label
+    ...selectedProjectTypes.map(value => ({ type: 'projectTypes' as keyof FilterState, value, label: labelMap.get(value) ?? value })),
+    ...selectedDomains.map(value => ({ type: 'domains' as keyof FilterState, value, label: labelMap.get(value) ?? value })),
+    ...selectedSDGs.map(value => ({ type: 'sdgGoals' as keyof FilterState, value, label: labelMap.get(value) ?? value })), // Use sdgOptions label
+    ...selectedTechStack.map(value => ({ type: 'techStack' as keyof FilterState, value, label: labelMap.get(value) ?? value })),
   ], [selectedStatuses, selectedYears, selectedProjectTypes, selectedDomains, selectedSDGs, selectedTechStack, labelMap]);
 
   const hasActiveFilters = activeFiltersList.length > 0;
@@ -386,16 +370,16 @@ export default function FilterSidebar({
   // Callback to remove a single specific filter internally
   const removeFilter = useCallback((filterType: keyof FilterState, filterValue: string) => {
     const setterMap = {
-        status: setSelectedStatuses,
-        years: setSelectedYears,
-        projectTypes: setSelectedProjectTypes,
-        domains: setSelectedDomains,
-        sdgGoals: setSelectedSDGs,
-        techStack: setSelectedTechStack,
+      status: setSelectedStatuses,
+      years: setSelectedYears,
+      projectTypes: setSelectedProjectTypes,
+      domains: setSelectedDomains,
+      sdgGoals: setSelectedSDGs,
+      techStack: setSelectedTechStack,
     };
     const setter = setterMap[filterType];
     if (setter) {
-        setter(prev => prev.filter(f => f !== filterValue));
+      setter(prev => prev.filter(f => f !== filterValue));
     }
     // Parent notification happens via useEffect watching state
   }, []);
