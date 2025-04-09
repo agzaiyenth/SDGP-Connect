@@ -1,51 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../prisma/prismaClient";
-import { ProjectDomainEnum, ProjectTypeEnum, ProjectApprovalStatus } from "@prisma/client";
+import { ProjectApprovalStatus } from "@prisma/client";
 
-export const GET = async (req: NextRequest) => {  try {
-    const { searchParams } = new URL(req.url);    // Get query parameters with defaults
-    const page = Math.max(parseInt(searchParams.get("page") || "1"), 1); // Ensure page is at least 1
-    const limit = Math.max(parseInt(searchParams.get("limit") || "9"), 1); // Ensure limit is at least 1
+export const GET = async (req: NextRequest) => {
+  try {
+    const { searchParams } = new URL(req.url);
+
+    // --- Pagination & Search ---
+    const page = Math.max(parseInt(searchParams.get("page") || "1", 10), 1);
+    const limit = Math.max(parseInt(searchParams.get("limit") || "9", 10), 1);
     const search = searchParams.get("search") || "";
-    
-    // Get filter parameters using the same keys as frontend
-    const projectTypes = searchParams.getAll("projectTypes") as ProjectTypeEnum[];
-    const domains = searchParams.getAll("domains") as ProjectDomainEnum[];
-    const statusValues = searchParams.getAll("status") as string[];
-    const sdgGoals = searchParams.getAll("sdgGoals");
-    const years = searchParams.getAll("years");
-    const techStack = searchParams.getAll("techStack");    // Calculate skip for pagination
-    const skip = (page - 1) * limit;    // Build filter conditions
-    const whereClause: any = {
-      projectContent: {
-        associations: {},
-        status: {
-          // Default to showing only APPROVED projects
-          approved_status: ProjectApprovalStatus.APPROVED
-        },
-      },
-    };
-    
-    // Sort the status values into project status (IDEA, MVP, etc.) and approval status (APPROVED, PENDING, REJECTED)
-    const projectStatusValues = statusValues.filter(status => 
-      ["IDEA", "MVP", "DEPLOYED", "STARTUP"].includes(status)
-    );
-    
-    const approvalStatusValues = statusValues.filter(status => 
-      ["APPROVED", "PENDING", "REJECTED"].includes(status)
-    );
-    
-    // Apply project status filters if provided
-    if (projectStatusValues.length > 0) {
-      whereClause.projectContent.status.status = { in: projectStatusValues };
-    }
-    
-    // Apply approval status filters if provided
-    if (approvalStatusValues.length > 0) {
-      whereClause.projectContent.status.approved_status = { in: approvalStatusValues };
-    }
+    const skip = (page - 1) * limit;
 
-    // Add search filter if provided
+    // --- Filter Parameters (as strings from URL) ---
+    const projectTypes = searchParams.getAll("projectTypes"); 
+    const domains = searchParams.getAll("domains");           
+    const statusValues = searchParams.getAll("status");        
+    const sdgGoals = searchParams.getAll("sdgGoals");         
+    const years = searchParams.getAll("years");                
+    const techStack = searchParams.getAll("techStack");       
+
+    // --- Base Where Clause ---
+ 
+    const whereClause: any = {}; 
+
+    // --- Search Filter ---
     if (search) {
       whereClause.OR = [
         { title: { contains: search, mode: 'insensitive' } },
@@ -53,94 +32,121 @@ export const GET = async (req: NextRequest) => {  try {
       ];
     }
 
-    // Initialize association filters array to handle multiple association types
-    const associationFilters = [];
+    // --- Year Filter (using sdgp_year string field) ---
+    if (years.length > 0) {
+      
+      whereClause.sdgp_year = { in: years };
+    }
+    
 
-    // Add filters for project types
-    if (projectTypes.length > 0) {
-      associationFilters.push({
-        type: "PROJECT_TYPE",
-        projectType: { in: projectTypes },
-      });
+    // --- Status Filtering ---
+    
+    const projectStatusValues = statusValues.filter(status =>
+      ["IDEA", "MVP", "DEPLOYED", "STARTUP"].includes(status.toUpperCase()) 
+    );
+    const approvalStatusValues = statusValues.filter(status =>
+      ["APPROVED", "PENDING", "REJECTED"].includes(status.toUpperCase())
+    );
+
+ 
+    if (projectStatusValues.length > 0 || approvalStatusValues.length > 0) {
+        whereClause.projectContent = whereClause.projectContent || {};
+        whereClause.projectContent.status = whereClause.projectContent.status || {};
+
+        if (projectStatusValues.length > 0) {
+             whereClause.projectContent.status.status = { in: projectStatusValues };
+        }
+
+        if (approvalStatusValues.length > 0) {
+            whereClause.projectContent.status.approved_status = { in: approvalStatusValues };
+        } else {
+              whereClause.projectContent.status.approved_status = ProjectApprovalStatus.APPROVED;
+        }
+    } else {
+          whereClause.projectContent = whereClause.projectContent || {};
+        whereClause.projectContent.status = { approved_status: ProjectApprovalStatus.APPROVED };
     }
 
-    // Add filters for domains
+
+    // --- Association Filtering ---
+    const associationFilters = [];
+
+    if (projectTypes.length > 0) {
+       associationFilters.push({
+        type: "PROJECT_TYPE",
+        projectType: { in: projectTypes }, 
+      });
+    }
     if (domains.length > 0) {
       associationFilters.push({
         type: "PROJECT_DOMAIN",
         domain: { in: domains },
       });
-    }    // Add filters for SDG goals
+    }
     if (sdgGoals.length > 0) {
-      associationFilters.push({
+        associationFilters.push({
         type: "PROJECT_SDG",
         sdgGoal: { in: sdgGoals },
       });
     }
-
-    // Add filters for tech stack
     if (techStack.length > 0) {
       associationFilters.push({
-        type: "PROJECT_TECH",
+        type: "PROJECT_TECH", 
         techStack: { in: techStack },
       });
     }
 
-    // Apply association filters if any exist
+    // Apply association filters using 'some' if any exist
     if (associationFilters.length > 0) {
-      whereClause.projectContent.associations.some = {
-        OR: associationFilters
+      whereClause.projectContent = whereClause.projectContent || {}; 
+      whereClause.projectContent.associations = {
+        some: {
+          OR: associationFilters
+        }
       };
     }
 
-    // Add filter for years if provided
-    if (years.length > 0) {
-      whereClause.createdAt = {
-        OR: years.map(year => ({
-          gte: new Date(`${year}-01-01`),
-          lte: new Date(`${year}-12-31`),
-        }))
-      };
-    }
+    // --- Database Queries ---
 
-    // Count total projects matching the criteria
     const totalProjects = await prisma.projectMetadata.count({
       where: whereClause,
     });
 
     const totalPages = Math.ceil(totalProjects / limit);
 
-    // Fetch projects with pagination
     const projects = await prisma.projectMetadata.findMany({
       where: whereClause,
       take: limit,
       skip: skip,
       orderBy: {
-        updatedAt: 'desc',
+        updatedAt: 'desc', 
       },
       select: {
         project_id: true,
         title: true,
         subtitle: true,
         cover_image: true,
+        sdgp_year: true, 
         projectContent: {
           select: {
             status: {
               select: {
+                status: true,         
                 approved_status: true,
               },
             },
             associations: {
               where: {
-                OR: [
+                  OR: [
                   { type: "PROJECT_TYPE" },
                   { type: "PROJECT_DOMAIN" },
+                 
                 ],
               },
               select: {
                 type: true,
-                projectType: true,
-                domain: true,
+                projectType: true, 
+                domain: true,      
               },
             },
           },
@@ -148,28 +154,36 @@ export const GET = async (req: NextRequest) => {  try {
       },
     });
 
-    // Transform the projects into the required format for the frontend
+    // --- Format Response Data ---
     const formattedProjects = projects.map((project) => {
-      const projectTypes =
-        project.projectContent?.associations
-          .filter((assoc) => assoc.type === "PROJECT_TYPE" && assoc.projectType)
-          .map((assoc) => assoc.projectType as ProjectTypeEnum) || [];
+     
+      const associations = project.projectContent?.associations || [];
+      const statusInfo = project.projectContent?.status;
 
-      const domains =
-        project.projectContent?.associations
-          .filter((assoc) => assoc.type === "PROJECT_DOMAIN" && assoc.domain)
-          .map((assoc) => assoc.domain as ProjectDomainEnum) || [];
+      const projectTypesData = associations
+        .filter((assoc) => assoc.type === "PROJECT_TYPE" && assoc.projectType)
+        .map((assoc) => assoc.projectType); 
+
+      const domainsData = associations
+        .filter((assoc) => assoc.type === "PROJECT_DOMAIN" && assoc.domain)
+        .map((assoc) => assoc.domain); 
+
+
+      const displayStatus = statusInfo?.status || "UNKNOWN"; 
 
       return {
         id: project.project_id,
         title: project.title,
-        subtitle: project.subtitle,
+        subtitle: project.subtitle || "", 
         coverImage: project.cover_image,
-        status: project.projectContent?.status?.approved_status || ProjectApprovalStatus.PENDING,
-        projectTypes,
-        domains,
+        status: displayStatus as string, 
+        projectTypes: projectTypesData,
+        domains: domainsData,     
+        year: project.sdgp_year,   
       };
-    });    // Return the paginated response
+    });
+
+    // Return the paginated response
     return NextResponse.json({
       data: formattedProjects,
       metadata: {
@@ -181,10 +195,13 @@ export const GET = async (req: NextRequest) => {  try {
         hasPrevPage: page > 1,
       },
     });
+
   } catch (error) {
     console.error("Error fetching projects:", error);
+    // Provide more context in error logging if possible
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
     return NextResponse.json(
-      { error: "Failed to fetch projects" },
+      { error: "Failed to fetch projects", details: errorMessage },
       { status: 500 }
     );
   }
