@@ -2,11 +2,12 @@
 
 import { Menu, Bell, Sun, Moon } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { useSession, signOut } from 'next-auth/react';
 import {
   DropdownMenu,
+  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -17,6 +18,15 @@ interface NavbarProps {
 
 export function Navbar({ onMenuClick }: NavbarProps) {
   const { setTheme } = useTheme();
+  const { data: session } = useSession();
+
+  const userName = session?.user?.name ?? 'User';
+  const initials = userName
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
 
   return (
     <nav className="fixed top-0 z-50 w-full border-b bg-background">
@@ -30,6 +40,7 @@ export function Navbar({ onMenuClick }: NavbarProps) {
         </div>
 
         <div className="ml-auto flex items-center space-x-4">
+          {/* Theme toggle */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">
@@ -38,35 +49,45 @@ export function Navbar({ onMenuClick }: NavbarProps) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setTheme('light')}>
-                Light
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme('dark')}>
-                Dark
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme('system')}>
-                System
-              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme('light')}>Light</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme('dark')}>Dark</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme('system')}>System</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
+          {/* Notifications */}
           <Button variant="ghost" size="icon">
             <Bell className="h-6 w-6" />
           </Button>
 
+          {/* User menu with name and logout */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+              <Button
+                variant="ghost"
+                className="flex items-center space-x-2 rounded-full px-2 py-1"
+              >
                 <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>AD</AvatarFallback>
+                <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>{initials}</AvatarFallback>
                 </Avatar>
+                <span className="text-sm font-medium text-zinc-200">
+                  {userName}
+                </span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem>Profile</DropdownMenuItem>
               <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() =>
+                  signOut({
+                    callbackUrl: '/login',
+                  })
+                }
+              >
+                Logout
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
