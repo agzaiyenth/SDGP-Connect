@@ -59,9 +59,9 @@ export function ApprovedProjectsTable({
         </TableBody>
       </Table>
       <Pagination className="mt-4">
-        {currentPage > 1 && <PaginationPrevious onClick={onPreviousPage} />}
+        {currentPage > 1 && <PaginationPrevious href="#" onClick={onPreviousPage} />}
         <span className="mx-2">Page {currentPage} of {totalPages}</span>
-        {currentPage < totalPages && <PaginationNext onClick={onNextPage} />}
+        {currentPage < totalPages && <PaginationNext href="#" onClick={onNextPage} />}
       </Pagination>
     </div>
   );

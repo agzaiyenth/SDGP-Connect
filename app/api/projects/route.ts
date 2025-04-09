@@ -1,103 +1,149 @@
-import { NextResponse } from 'next/server';
-import { prisma } from '@/prisma/prismaClient';
-import { ProjectApprovalStatus } from '@prisma/client';
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/prisma/prismaClient";
+import { ProjectApprovalStatus } from "@prisma/client";
 
-export async function GET(request: Request) {
+export const GET = async (req: NextRequest) => {
   try {
-    const { searchParams } = new URL(request.url);
-    const status = searchParams.get('status') as ProjectApprovalStatus;
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '10');
-    const skip = (page - 1) * limit;
+    const { searchParams } = new URL(req.url);
 
-    if (!Object.values(ProjectApprovalStatus).includes(status)) {
-      return NextResponse.json(
-        { error: 'Invalid project status type' },
-        { status: 400 }
-      );
+    // --- Pagination ---
+    const page  = Math.max(parseInt(searchParams.get("page")  || "1", 10), 1);
+    const limit = Math.max(parseInt(searchParams.get("limit") || "9", 10), 1);
+    const skip  = (page - 1) * limit;
+
+    // --- Filters from URL ---
+    const title        = searchParams.get("title")    || "";
+    const years        = searchParams.getAll("years");
+    const statusValues = searchParams.getAll("status");
+    const projectTypes = searchParams.getAll("projectTypes");
+    const domains      = searchParams.getAll("domains");
+    const sdgGoals     = searchParams.getAll("sdgGoals");
+    const techStack    = searchParams.getAll("techStack");
+
+    // --- Build baseWhere (common to both count & find) ---
+    const baseWhere: any = {};
+
+    // Year filter
+    if (years.length) {
+      baseWhere.sdgp_year = { in: years };
     }
 
-    const totalCount = await prisma.projectStatus.count({
-      where: {
-        approved_status: status,
-      },
-    });
+    // Status filter
+    const projectStatusValues = statusValues.filter(s =>
+      ["IDEA","MVP","DEPLOYED","STARTUP"].includes(s.toUpperCase())
+    );
+    const approvalStatusValues = statusValues.filter(s =>
+      ["APPROVED","PENDING","REJECTED"].includes(s.toUpperCase())
+    );
 
-    const projects = await prisma.projectStatus.findMany({
-      where: {
-        approved_status: status,
-      },
+    baseWhere.projectContent = { status: {} };
+    if (projectStatusValues.length) {
+      baseWhere.projectContent.status.status = { in: projectStatusValues };
+    }
+    if (approvalStatusValues.length) {
+      baseWhere.projectContent.status.approved_status = { in: approvalStatusValues };
+    } else {
+      baseWhere.projectContent.status.approved_status = ProjectApprovalStatus.APPROVED;
+    }
+
+    // Association filters
+    const assocFilters: any[] = [];
+    if (projectTypes.length) assocFilters.push({ type: "PROJECT_TYPE",   projectType: { in: projectTypes } });
+    if (domains.length)      assocFilters.push({ type: "PROJECT_DOMAIN", domain: { in: domains } });
+    if (sdgGoals.length)     assocFilters.push({ type: "PROJECT_SDG",    sdgGoal: { in: sdgGoals } });
+    if (techStack.length)    assocFilters.push({ type: "PROJECT_TECH",   techStack: { in: techStack } });
+
+    if (assocFilters.length) {
+      baseWhere.projectContent.associations = { some: { OR: assocFilters } };
+    }
+
+    // --- titleFilter (no `mode`) ---
+    const titleFilter = title
+      ? [
+          { title:    { contains: title } },
+          { subtitle: { contains: title } },
+        ]
+      : [];
+
+    // --- countWhere & findManyWhere ---
+    const countWhere = {
+      ...baseWhere,
+      ...(title ? { OR: titleFilter } : {})
+    };
+    const findManyWhere = { ...countWhere }; // identical since no mode
+
+    // --- Query total & paginated data ---
+    const totalProjects = await prisma.projectMetadata.count({ where: countWhere });
+    const totalPages    = Math.ceil(totalProjects / limit);
+
+    const projects = await prisma.projectMetadata.findMany({
+      where:   findManyWhere,
+      take:    limit,
       skip,
-      take: limit,
-      include: {
-        content: {
-          include: {
-            metadata: true,
-            projectDetails: true,
-          },
-        },
-        approved_by: {
+      orderBy: { updatedAt: "desc" },
+      select: {
+        project_id: true,
+        title:      true,
+        subtitle:   true,
+        cover_image:true,
+        sdgp_year:  true,
+        projectContent: {
           select: {
-            name: true,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
-
-    const transformedProjects = projects.map((projectStatus) => {
-      // Get the base project information from the metadata through content relation
-      const baseProject = {
-        id: projectStatus.content.metadata.project_id,
-        title: projectStatus.content.metadata.title || 'Untitled Project',
-        groupNumber: projectStatus.content.metadata.group_num || 'N/A',
-      };
-
-      switch (status) {
-        case ProjectApprovalStatus.PENDING:
-          return {
-            ...baseProject,
-            submissionDate: projectStatus.createdAt.toISOString(),
-            status: projectStatus.status,
-          };
-
-        case ProjectApprovalStatus.APPROVED:
-          return {
-            ...baseProject,
-            featured: projectStatus.content.metadata.featured || false,
-            approvedBy: projectStatus.approved_by?.name || 'Unknown',
-            approvedAt: projectStatus.approved_at?.toISOString() || '',
-          };
-
-        case ProjectApprovalStatus.REJECTED:
-          return {
-            ...baseProject,
-            rejectedBy: projectStatus.approved_by?.name || 'Unknown',
-            rejectedAt: projectStatus.approved_at?.toISOString() || '',
-            rejectionReason: projectStatus.rejected_reason || '', // Use actual rejection reason
-          };
-
-        default:
-          return baseProject;
+            status: {
+              select: { status: true, approved_status: true }
+            },
+            associations: {
+              where: {
+                OR: [
+                  { type: "PROJECT_TYPE" },
+                  { type: "PROJECT_DOMAIN" },
+                  { type: "PROJECT_SDG" },
+                  { type: "PROJECT_TECH" },
+                ]
+              },
+              select: {
+                type:       true,
+                projectType:true,
+                domain:     true,
+                sdgGoal:    true,
+                techStack:  true,
+              }
+            }
+          }
+        }
       }
     });
 
+    // --- Format response ---
+    const formatted = projects.map((p) => {
+      const assocs = p?.projectContent?.associations || [];
+      return {
+        id:          p.project_id,
+        title:       p.title,
+        subtitle:    p.subtitle || "",
+        coverImage:  p.cover_image,
+        status:      p?.projectContent?.status?.status,
+        approved:    p?.projectContent?.status?.approved_status,
+        projectTypes: assocs.filter(a => a.type === "PROJECT_TYPE").map(a => a.projectType),
+        domains:      assocs.filter(a => a.type === "PROJECT_DOMAIN").map(a => a.domain),
+        year:        p.sdgp_year,
+      };
+    });
+
     return NextResponse.json({
-      data: transformedProjects,
+      data: formatted,
       metadata: {
         currentPage: page,
-        totalPages: Math.ceil(totalCount / limit),
-        totalItems: totalCount,
+        totalPages,
+        totalItems: totalProjects,
         itemsPerPage: limit,
-      },
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1,
+      }
     });
-  } catch (error) {
-    console.error('Error fetching projects:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch projects', details: error instanceof Error ? error.message : undefined },
-      { status: 500 }
-    );
+  } catch (err) {
+    console.error("Error fetching projects:", err);
+    const msg = err instanceof Error ? err.message : "Unknown error";
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
-}
+};

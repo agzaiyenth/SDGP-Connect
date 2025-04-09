@@ -1,15 +1,23 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as random from 'maath/random';
+import { Points as ThreePoints } from 'three';
 
 function Stars() {
-  const ref = useRef();
-  const sphere = random.inSphere(new Float32Array(5000), { radius: 1.5, center: new Float32Array([0, 0, 0]) });
+  const ref = useRef<ThreePoints>(null);
 
-  useFrame((state, delta) => {
+  const sphere = new Float32Array(
+    random.inSphere(new Float32Array(5000), {
+      radius: 1.5,
+      center: [0, 0, 0],
+    })
+  );
+  
+
+  useFrame((_, delta) => {
     if (ref.current) {
       ref.current.rotation.x -= delta / 10;
       ref.current.rotation.y -= delta / 15;
@@ -20,15 +28,15 @@ function Stars() {
     <group rotation={[0, 0, Math.PI / 4]}>
       <Points
         ref={ref}
-        positions={sphere}
+        positions={sphere} 
         stride={3}
         frustumCulled={false}
       >
         <PointMaterial
           transparent
-          color="#fff"
+          color="#ffffff"
           size={0.002}
-          sizeAttenuation={true}
+          sizeAttenuation
           depthWrite={false}
         />
       </Points>

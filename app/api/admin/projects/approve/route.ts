@@ -65,15 +65,22 @@ export async function POST(request: NextRequest) {
         },
         { status: 409 }
       );
+    }    // Check if the user exists in the database
+    const user = await prisma.user.findUnique({
+      where: { user_id: userId }
+    });
+    
+    if (!user) {
+      console.log(`Warning: User ${userId} not found in database`);
     }
-
-    // update status with the real session.user.id
+    
+    // Update status with the session.user.id, but only if user exists
     const updatedStatus = await prisma.projectStatus.update({
       where: { content_id: projectContent.content_id },
       data: {
         approved_status: ProjectApprovalStatus.APPROVED,
         approved_at: new Date(),
-        approved_by_userId: userId,
+        ...(user ? { approved_by_userId: userId } : {})
       },
     });
 

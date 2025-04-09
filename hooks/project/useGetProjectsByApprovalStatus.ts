@@ -5,7 +5,7 @@ import { PendingProject, ApprovedProject, RejectedProject } from '@/types/projec
 
 interface PaginatedResponse<T> {
   data: T[];
-  metadata: {
+  metadata?: {
     currentPage: number;
     totalPages: number;
     totalItems: number;
@@ -37,13 +37,13 @@ export function useGetProjectsByApprovalStatus<T extends PendingProject | Approv
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [isEmpty, setIsEmpty] = useState(false);
-
   const fetchProjects = useCallback(async (page: number) => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await axios.get<PaginatedResponse<T>>(`/api/projects`, {
+      // Use the dedicated admin API endpoint for project approval management
+      const response = await axios.get<PaginatedResponse<T>>(`/api/admin/projects`, {
         params: {
           status: statusType,
           page,
@@ -52,13 +52,16 @@ export function useGetProjectsByApprovalStatus<T extends PendingProject | Approv
       });
 
       const { data, metadata } = response.data;
-      
-      // Check if the response contains data
-      if (data && Array.isArray(data)) {
+
+      // Log the response for debugging
+      console.log('API Response:', response.data);
+
+      // Check if the response contains data and metadata
+      if (data && Array.isArray(data) && metadata) {
         setProjects(data);
-        setTotalPages(metadata.totalPages);
-        setTotalItems(metadata.totalItems);
-        setCurrentPage(metadata.currentPage);
+        setTotalPages(metadata.totalPages || 1);
+        setTotalItems(metadata.totalItems || 0);
+        setCurrentPage(metadata.currentPage || 1);
         setIsEmpty(data.length === 0);
       } else {
         throw new Error('Invalid response format from API');
