@@ -1,35 +1,33 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import "./globals.css";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { getServerSession } from "next-auth/next";
+import { redirect } from "next/navigation";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { ClientProviders } from "@/components/Providers/ClientProvider";
 
-import { DashboardLayout } from '@/components/layout/dashboard-layout';
-import { ThemeProvider } from '@/components/Providers/ThemeProvider';
-import { Toaster } from 'sonner';
-
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Admin Dashboard',
-  description: 'Modern admin dashboard built with Next.js',
+  title: "Admin Dashboard",
+  description: "Modern admin dashboard built with Next.js",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(authOptions);
+  if (!session) redirect("/login");
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ClientProviders session={session}>
           <DashboardLayout>{children}</DashboardLayout>
-          <Toaster />
-        </ThemeProvider>
+        </ClientProviders>
       </body>
     </html>
   );
