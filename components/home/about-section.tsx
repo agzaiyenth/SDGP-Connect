@@ -17,11 +17,11 @@ const Data = {
         alt: "Avatar 1",
       },
       {
-        src: "https://www.shadcnblocks.com/images/block/avatar-2.webp",
+        src: "/home/about-logo/amor.png",
         alt: "Avatar 2",
       },
       {
-        src: "https://www.shadcnblocks.com/images/block/avatar-3.webp",
+        src: "/home/about-logo/raspberry.png",
         alt: "Avatar 3",
       },
       {
