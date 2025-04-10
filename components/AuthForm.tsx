@@ -152,7 +152,7 @@ const LoginForm: React.FC = () => {
         }
       } else if (result?.ok) {
         toast.success("Login successful!");
-        router.push("/dashboard");  // Redirect to the dashboard on successful login
+        router.push("/admin");  // Redirect to the dashboard on successful login
       }
     } catch (err) {
       console.error("SignIn Error:", err); // LOG
