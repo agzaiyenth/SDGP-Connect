@@ -16,7 +16,7 @@ export function useToggleProjectFeature(options?: UseToggleProjectFeatureOptions
     setError(null);
 
     try {
-      const response = await axios.post('/api/projects/feature', {
+      const response = await axios.post('/api/admin/projects/feature', {
         projectId: String(projectId),
         featured
       });
