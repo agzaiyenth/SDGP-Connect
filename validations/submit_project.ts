@@ -29,8 +29,8 @@ export const projectSubmissionSchema = z.object({
     title: z.string().min(1, "Title is required").max(100),
     subtitle: z.string().optional().nullable(),
     website: z.string().url("Must be a valid URL").or(z.string().length(0)).optional().nullable(),
-    cover_image: z.any().optional().nullable(),
-    logo: z.any().optional().nullable(),
+    cover_image: z.string().url("Must be a valid URL").default("https://placehold.co/600x400/png?text=NO+IMAGE"),
+    logo: z.string().url("Must be a valid URL").default("https://placehold.co/100/png"),
   }),
   
   projectDetails: z.object({

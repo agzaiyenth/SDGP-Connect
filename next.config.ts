@@ -17,6 +17,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'sdgs.un.org',
       },
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+      },
       
     ],
   },
