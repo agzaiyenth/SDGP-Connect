@@ -13,24 +13,24 @@ import { usePathname } from 'next/navigation';
 const sidebarItems = [
   {
     title: 'Dashboard',
-    href: '/dashboard',
+    href: '/admin',
     icon: LayoutDashboard,
   },
   {
     title: 'User Management',
-    href: '/dashboard/users',
+    href: '/admin/users',
     icon: Users,
   },
   {
     title: 'Project Overview',
-    href: '/dashboard/projects',
+    href: '/admin/projects',
     icon: FolderKanban,
   },
-  {
-    title: 'Module Team',
-    href: '/dashboard/team',
-    icon: Users2,
-  },
+  // {
+  //   title: 'Module Team',
+  //   href: '/admin/team',
+  //   icon: Users2,
+  // },
 ];
 
 interface SidebarProps {

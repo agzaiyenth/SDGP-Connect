@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProjectQueryParams } from '@/hooks/project/useGetProjects';
+import { useProjects } from '@/hooks/project/useGetProjects';
 
 interface FilterState {
     status: string[];
@@ -37,6 +38,8 @@ function ProjectsPageContent() {
         techStack: searchParams.getAll('techStack'),
     }), [searchParams]);
 
+    const { projects, isLoading, error, meta } = useProjects(currentParams);
+
     const initialFilters = useMemo((): FilterState => ({
         status: currentParams.status || [],
         years: currentParams.years || [],
@@ -51,19 +54,14 @@ function ProjectsPageContent() {
     };
 
     const handleFilterChange = useCallback((newFilters: FilterState) => {
-
         const params = new URLSearchParams();
-
-
         params.append('page', '1');
         params.append('limit', String(currentParams.limit || 9));
         if (currentParams.title) params.append('title', currentParams.title);
 
-
         Object.entries(newFilters).forEach(([key, values]) => {
             if (values && values.length > 0) {
                 values.forEach((value: string) => {
-
                     params.append(key, value);
                 });
             }
@@ -74,7 +72,6 @@ function ProjectsPageContent() {
         setShowMobileFilters(false);
     }, [router, currentParams.limit, currentParams.title]);
 
-
     const handleSearch = useCallback((value: string) => {
         const params = new URLSearchParams(searchParams.toString());
         if (value) {
@@ -82,16 +79,19 @@ function ProjectsPageContent() {
         } else {
             params.delete('title');
         }
-        params.set('page', '1')
+        params.set('page', '1');
         router.push(`${window.location.pathname}?${params.toString()}`, { scroll: false });
     }, [router, searchParams]);
-
 
     const handlePageChange = useCallback((newPage: number) => {
         const params = new URLSearchParams(searchParams.toString());
         params.set('page', String(newPage));
         router.push(`${window.location.pathname}?${params.toString()}`, { scroll: false });
     }, [router, searchParams]);
+
+    if (isLoading) {
+        return <LoadingSkeleton />;
+    }
 
     return (
         <div className="container mx-auto py-8 px-4">

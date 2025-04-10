@@ -11,7 +11,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
       <Navbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
-      <div className="flex h-[calc(100vh-4rem)] pt-16">
+      <div className="flex  pt-16">
         <Sidebar isOpen={sidebarOpen} />
         <main
           className={cn(
