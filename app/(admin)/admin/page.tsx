@@ -8,10 +8,14 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import useGetTotalProjectsCount from '@/hooks/dashboard/useGetTotalProjectsCount';
 import useGetFeaturedProjectsCount from '@/hooks/dashboard/useGetFeaturedProjectsCount';
 import useGetPendingProjectsCount from '@/hooks/dashboard/useGetPendingProjectsCount';
-import { Clock, Folder, Star } from 'lucide-react';
+import { Clock, Folder, Star, Laptop } from 'lucide-react';
 import useGetActivity from '@/hooks/dashboard/useGetActivity';
+import useIsMobile from '@/hooks/useIsMobile';
 
 export default function DashboardPage() {
+  // Use the mobile detection hook
+  const isMobile = useIsMobile();
+
   // Fetch real data using custom hooks
   const { count: totalCount, isLoading: isTotalLoading } = useGetTotalProjectsCount();
   const { count: featuredCount, isLoading: isFeaturedLoading } = useGetFeaturedProjectsCount();
@@ -39,20 +43,25 @@ export default function DashboardPage() {
     },
   ];
 
-
-  // Sample data for line chart
-  const submissionsData = [
-    { name: 'Jan', submissions: 65 },
-    { name: 'Feb', submissions: 78 },
-    { name: 'Mar', submissions: 90 },
-    { name: 'Apr', submissions: 81 },
-    { name: 'May', submissions: 125 },
-    { name: 'Jun', submissions: 156 },
-    { name: 'Jul', submissions: 139 },
-    { name: 'Aug', submissions: 162 },
-  ];
-  // Get real activity data using the hook
   const { activities: recentActivities, isLoading: isActivitiesLoading, error: activitiesError } = useGetActivity();
+
+  // Mobile fallback UI
+  if (isMobile) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center">
+        <Laptop className="h-16 w-16 mb-4 text-primary" />
+        <h2 className="text-2xl font-bold tracking-tight mb-2">Desktop View Required</h2>
+        <p className="text-muted-foreground mb-4">
+          The admin dashboard is optimized for larger screens. Please open this page on a laptop or desktop computer for the best experience.
+        </p>
+        <div className="p-4 bg-muted rounded-lg max-w-md">
+          <p className="text-sm">
+            If you need immediate access on mobile, you can request the desktop site in your browser settings, but functionality may be limited.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -73,17 +82,16 @@ export default function DashboardPage() {
             style={{ animationDelay: `${index * 100}ms` }}
           />
         ))}
-      </div>      {/* Charts Section */}
+      </div>
+      
+      {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <StatusPieChart/>
         <SubmissionsLineChart />
       </div>
-
       
       {/* Recent Activity Table */}
       <RecentActivityTable activities={recentActivities} />
-
-      
     </>
   );
 }
