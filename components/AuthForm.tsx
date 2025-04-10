@@ -6,6 +6,7 @@ import { motion } from "framer-motion"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import Image from "next/image"
 
 const AuthForm: React.FC = () => {
   return (
@@ -21,7 +22,6 @@ const AuthForm: React.FC = () => {
           <Logo />
           <Header />
           <LoginForm />
-          <TermsAndConditions />
         </div>
       </motion.div>
       <BackgroundDecoration />
@@ -64,10 +64,12 @@ const Logo: React.FC = () => (
     className="mb-10 flex justify-center items-center"
   >
     <div className="relative">
-      <img
-        src="https://svgl.app/library/tailwindcss.svg"
+      <Image
+        src="/icon.png"
         alt="Logoipsum"
         className="h-12 w-12"
+        width={48}
+        height={48}
       />
     </div>
     <span className="ml-4 text-3xl font-bold text-white">
@@ -249,19 +251,7 @@ const LoginForm: React.FC = () => {
 };
 
 
-const TermsAndConditions: React.FC = () => (
-  <p className="mt-10 text-center text-sm text-zinc-400">
-    By signing in, you agree to our{" "}
-    <a href="#" className="font-medium text-zinc-300 hover:text-white transition-colors">
-      Terms & Conditions
-    </a>{" "}
-    and{" "}
-    <a href="#" className="font-medium text-zinc-300 hover:text-white transition-colors">
-      Privacy Policy
-    </a>
-    .
-  </p>
-)
+
 
 const BackgroundDecoration: React.FC = () => {
   return (
