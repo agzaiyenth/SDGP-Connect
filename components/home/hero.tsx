@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ChevronDown, Mouse } from 'lucide-react';
 import ThreeScene from './three-scene';
 import Carousel from './carousel';
+import { Button } from '../ui/button';
 
 export default function Hero() {
   return (
@@ -49,12 +50,12 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
         >
-          <button className="px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
+          <Button className="px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
             Explore Projects
-          </button>
-          <button className="px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-primary/30">
+          </Button>
+          <Button className="px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-primary/30">
             Learn More
-          </button>
+          </Button>
         </motion.div>
 
         <Carousel />

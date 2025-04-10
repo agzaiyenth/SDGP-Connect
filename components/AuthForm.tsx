@@ -7,6 +7,7 @@ import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import Image from "next/image"
+import Link from "next/link"
 
 const AuthForm: React.FC = () => {
   return (
@@ -36,7 +37,9 @@ const BackButton: React.FC = () => (
     transition={{ delay: 0.2 }}
     className="absolute left-4 top-4 sm:left-8 sm:top-8"
   >
+       <Link href="/">
     <SocialButton icon={<ChevronLeft size={16} />}>Go back</SocialButton>
+    </Link>
   </motion.div>
 )
 
