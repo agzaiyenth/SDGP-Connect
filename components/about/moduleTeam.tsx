@@ -4,22 +4,6 @@ import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-// Import all lecturer images
-import johnImg from "../about/john.png";
-import banukaImg from "../about/assets/banu sir.png";
-import sureshImg from "../about/assets/suresh sir.png";
-import kushanImg from "../about/assets/kushan sir.png";
-import mithushanImg from "../about/assets/Mithushan sir.png";
-import pubuduImg from "../about/john.png";
-import manulImg from "../about/assets/manul sir.png";
-import mohanadasImg from "../about/assets/janani miss.png";
-import seyedImg from "../about/assets/rusaik sir.png";
-import vinodaniImg from "../about/john.png";
-import asithImg from "../about/assets/asith sir.png";
-import thashinImg from "../about/assets/thashin sir.png";
-import ahtishayanImg from "../about/assets/ahtshayan sir.png";
-import krishnaImg from "../about/assets/kripa miss.png";
-import deshanImg from "../about/assets/deshan sir.png";
 
 const teamMembers = [
   // VL Hybrid lecturers
@@ -31,7 +15,7 @@ const teamMembers = [
     description:
       "Managing Director @ Andro Dollar Network (PVT) LTD | Tech YouTuber | Software Engineering, Marketing and Entrepreneurship Visiting Lecturer",
     category: "VL Hybrid",
-    image: banukaImg,
+    image: "/assets/banu sir.png",
   },
   {
     name: "Suresh Peiris",
@@ -41,7 +25,7 @@ const teamMembers = [
     description:
       "Co Founder - Inforwaves | Organizer - GDG Sri Lanka | Visiting Lecturer - IIT | Cloud Researcher | National Award Winner",
     category: "VL Hybrid",
-    image: sureshImg,
+    image: "/assets/suresh sir.png",
   },
   {
     name: "Kushan Bhareti",
@@ -50,7 +34,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/kushan-bhareti/",
     description: "Co-founder of Inforwaves | Visiting Lecturer at IIT",
     category: "VL Hybrid",
-    image: kushanImg,
+    image:"/assets/kushan sir.png",
   },
   {
     name: "Mithushan Jalangan",
@@ -60,7 +44,7 @@ const teamMembers = [
     description:
       "I help founders build better software | Product Engineer | Full stack Web/AI | asyncdot & shopbook.lk - Co-founder",
     category: "VL Hybrid",
-    image: mithushanImg,
+    image: "/assets/Mithushan sir.png",
   },
   {
     name: "Pubudu Mihiranga",
@@ -70,7 +54,7 @@ const teamMembers = [
     description:
       "Brings industry experience in software architecture and system design.",
     category: "VL Hybrid",
-    image: pubuduImg,
+    image:"/assets/john.png",
   },
 
   // FT Hybrid lecturers
@@ -82,7 +66,7 @@ const teamMembers = [
     description:
       "Software Developer | Game Developer | Game Designer | Knight Owl Founder and CEO",
     category: "FT Hybrid",
-    image: manulImg,
+    image:"/assets/manul sir.png",
   },
   {
     name: "Mohanadas Jananie",
@@ -92,7 +76,7 @@ const teamMembers = [
     description:
       "Focuses on software testing practices and quality assurance in group projects.",
     category: "FT Hybrid",
-    image: mohanadasImg,
+    image: "/assets/janani miss.png",
   },
   {
     name: "Seyed Ruzaik",
@@ -101,7 +85,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/seyed-ruzaik/",
     description: "Software Developer | Tech Blogger | Assistant Lecturer",
     category: "FT Hybrid",
-    image: seyedImg,
+    image: "/assets/rusaik sir.png",
   },
   {
     name: "Vinodani Thilakarathne",
@@ -111,7 +95,7 @@ const teamMembers = [
     description:
       "Guides students in requirements gathering and business analysis for software projects.",
     category: "FT Hybrid",
-    image: vinodaniImg,
+    image: "/assets/john.png",
   },
   {
     name: "Asith Pallemulla",
@@ -120,7 +104,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/asith-pallemulla/",
     description: "Expert in back-end development and systems integration.",
     category: "FT Hybrid",
-    image: asithImg,
+    image: "/assets/asith sir.png",
   },
   {
     name: "Thashin Rahuman",
@@ -129,7 +113,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/thashin-rahuman/",
     description: "Software Engineer | Blockchain | React JS/ NodeJS | GO",
     category: "FT Hybrid",
-    image: thashinImg,
+    image: "/assets/thashin sir.png",
   },
   {
     name: "Ahtshayan Udayasanthiran",
@@ -139,7 +123,7 @@ const teamMembers = [
     description:
       "Focuses on software development lifecycle and project documentation.",
     category: "FT Hybrid",
-    image: ahtishayanImg,
+    image: "/assets/ahtshayan sir.png",
   },
 
   // VL Online lecturers
@@ -151,7 +135,7 @@ const teamMembers = [
     description:
       "CEO @ Telexar | Helping Businesses Scale with Offshore Teams | Resource Augmentation Specialist",
     category: "VL Online",
-    image: johnImg,
+    image:"/assets/john.png",
   },
   {
     name: "Krishnakripa Jayakumar",
@@ -161,7 +145,7 @@ const teamMembers = [
     description:
       "Cybersecurity & Software Engineering Professional | Lecturer | Multiple Award Winner",
     category: "VL Online",
-    image: krishnaImg,
+    image: "/assets/kripa miss.png",
   },
   {
     name: "Deshan Sumanathilaka",
@@ -171,7 +155,7 @@ const teamMembers = [
     description:
       "PhD Candidate at Swansea University / Visiting Lecturer at IIT / Youtuber-Tutor at DS-IT Academy",
     category: "VL Online",
-    image: deshanImg,
+    image:"/assets/deshan sir.png",
   },
 ];
 
@@ -288,7 +272,7 @@ const ModuleTeam: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-background via-background/80 to-background/20 p-6 md:p-10 ml-24">
+    <div className="min-h-screen bg-black p-6 md:p-10 ml-24">
       <motion.h1
         className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-300 to-gray-400 tracking-wider"
         initial={{ opacity: 0, y: -20 }}

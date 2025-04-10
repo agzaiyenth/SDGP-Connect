@@ -1,4 +1,5 @@
 import React from 'react';
+import ModuleTeam from '@/components/about/moduleTeam';
 
 interface Props {
     // Add specific props here if needed
@@ -37,12 +38,6 @@ const Page: React.FC<Props> = (props) => {
             name: "Manul Singhe",
             role: "Game Developer",
             passion: "Founder of Knight Owl",
-            image: "/path/to/kieran-image.jpg"
-        },
-        {
-            name: "Thashin Rahuman",
-            role: "Software Engineer",
-            passion: "Web Developer at Rubber-Cal",
             image: "/path/to/kieran-image.jpg"
         },
     ];
@@ -129,43 +124,10 @@ const Page: React.FC<Props> = (props) => {
 
             {/* Contributors Section */}
             <section className="py-20 px-6 bg-black border-t border-b border-gray-900">
-                <div className="max-w-6xl mx-auto">
-                    <h2 className="text-4xl font-extrabold text-center mb-16 tracking-tight animate-slide-up bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent">
-                        THE MODULE TEAM
-                    </h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {contributors.map((contributor, index) => (
-                            <div
-                                key={index}
-                                className="relative bg-gray-900 rounded-xl overflow-hidden transform hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-xl border border-gray-800 group"
-                            >
-                                {/* Image Container */}
-                                <div className="relative h-64 w-full overflow-hidden">
-                                    <img
-                                        src={
-                                            contributor.image ||
-                                            "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-                                        }
-                                        alt={contributor.name}
-                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                    />
-                                    {/* Overlay Effect */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                </div>
-
-                                {/* Content */}
-                                <div className="p-6 relative z-10">
-                                    <h2 className="text-xl font-semibold text-white mb-2">{contributor.name}</h2>
-                                    <p className="text-gray-400 text-sm italic mb-3">{contributor.role}</p>
-                                    <p className="text-gray-300 text-sm leading-relaxed">{contributor.passion}</p>
-                                </div>
-
-                                {/* Hover Border Effect */}
-                                <div className="absolute inset-0 border-2 border-transparent group-hover:border-white/30 rounded-xl pointer-events-none transition-colors duration-300"></div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+               
+                   
+                    <ModuleTeam/>
+              
             </section>
 
             {/* CTA Section */}
