@@ -26,11 +26,11 @@ const sidebarItems = [
     href: '/dashboard/projects',
     icon: FolderKanban,
   },
-  {
-    title: 'Module Team',
-    href: '/dashboard/team',
-    icon: Users2,
-  },
+  // {
+  //   title: 'Module Team',
+  //   href: '/dashboard/team',
+  //   icon: Users2,
+  // },
 ];
 
 interface SidebarProps {
