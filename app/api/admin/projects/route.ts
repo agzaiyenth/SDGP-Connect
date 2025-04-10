@@ -16,7 +16,7 @@ export const GET = async (req: NextRequest) => {
 
   // Role-based authorization check
   const { role } = session.user;
-  if (!["ADMIN", "MODERATOR", "REVIEWER"].includes(role)) {
+  if (!["ADMIN", "MODERATOR", ].includes(role)) {
     return NextResponse.json(
       { error: "Forbidden. You don't have permission to access this resource." },
       { status: 403 }
@@ -64,10 +64,20 @@ export const GET = async (req: NextRequest) => {
     const projects = await prisma.projectContent.findMany({
       where: whereClause,
       take: limit,
-      skip: skip,
-      orderBy: {
-        updatedAt: 'desc',
-      },
+      skip: skip,      orderBy: statusType === ProjectApprovalStatus.APPROVED 
+        ? [
+            {
+              metadata: {
+                featured: 'desc'
+              }
+            },
+            {
+              updatedAt: 'desc'
+            }
+          ]
+        : {
+            updatedAt: 'desc'
+          },
       include: {
         metadata: true,
         status: {
@@ -84,7 +94,7 @@ export const GET = async (req: NextRequest) => {
     });
 
     // Transform the projects into the required format for the admin dashboard
-    const formattedProjects = projects.map((project) => {
+    const formattedProjects = projects.map((project: any) => {
       if (statusType === ProjectApprovalStatus.PENDING) {
         return {
           id: project.metadata.project_id,

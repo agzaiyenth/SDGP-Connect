@@ -13,7 +13,7 @@ const projectData = [
 const userRoleData = [
   { name: 'Admin', value: 5 },
   { name: 'Moderator', value: 15 },
-  { name: 'Reviewer', value: 30 },
+  { name: 'DEVELOPER', value: 30 },
   { name: 'User', value: 150 },
 ];
 

@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 
   // 2) Enforce role-based access
   const { role, id: userId } = session.user;
-  if (!["ADMIN", "MODERATOR", "REVIEWER"].includes(role)) {
+  if (!["ADMIN", "MODERATOR", ].includes(role)) {
     return NextResponse.json(
       { error: "Forbidden. You don't have permission to reject projects." },
       { status: 403 }
