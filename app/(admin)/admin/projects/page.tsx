@@ -6,6 +6,9 @@ import RejectDialog from '@/components/dialogs/RejectDialog';
 import { ApprovedProjectsTable } from '@/components/tables/ApprovedProjectsTable';
 import { PendingProjectsTable } from '@/components/tables/PendingProjectsTable';
 import { RejectedProjectsTable } from '@/components/tables/RejectedProjectsTable';
+import PendingProjectsTableSkeleton from '@/components/tables/skeletons/PendingProjectsTableSkeleton';
+import ApprovedProjectsTableSkeleton from '@/components/tables/skeletons/ApprovedProjectsTableSkeleton';
+import RejectedProjectsTableSkeleton from '@/components/tables/skeletons/RejectedProjectsTableSkeleton';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGetProjectsByApprovalStatus } from '@/hooks/project/useGetProjectsByApprovalStatus';
@@ -18,7 +21,6 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { EmptyState } from '@/components/ui/empty-state';
 import { AlertCircle, FileX2, Inbox, RefreshCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import BulkApproveDialog from '@/components/dialogs/BulkApproveDialog';
 
 const projectStatuses = ['IDEA', 'MVP', 'DEPLOYED', 'STARTUP'];
@@ -166,10 +168,9 @@ export default function ProjectManagement() {
       </div>
     );
   };
-
   const renderContent = () => {
     if (currentTab === 'pending') {
-      if (isPendingLoading) return <LoadingSpinner />;
+      if (isPendingLoading) return <PendingProjectsTableSkeleton />;
       if (pendingError) return renderError(pendingError);
       if (isPendingEmpty) return renderEmptyState('pending');
       return (
@@ -190,7 +191,7 @@ export default function ProjectManagement() {
     }
 
     if (currentTab === 'approved') {
-      if (isApprovedLoading) return <LoadingSpinner />;
+      if (isApprovedLoading) return <ApprovedProjectsTableSkeleton />;
       if (approvedError) return renderError(approvedError);
       if (isApprovedEmpty) return renderEmptyState('approved');
       return (
@@ -207,7 +208,7 @@ export default function ProjectManagement() {
     }
 
     if (currentTab === 'rejected') {
-      if (isRejectedLoading) return <LoadingSpinner />;
+      if (isRejectedLoading) return <RejectedProjectsTableSkeleton />;
       if (rejectedError) return renderError(rejectedError);
       if (isRejectedEmpty) return renderEmptyState('rejected');
       return (
