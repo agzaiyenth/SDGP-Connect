@@ -4,7 +4,9 @@ import { Brands } from "@/components/home/brands";
 import Domains from "@/components/home/domains";
 import Featured from "@/components/home/featured";
 import Hero from "@/components/home/hero";
-import ImpactStats from "@/components/home/impact-stats";
+// import ImpactStats from "@/components/home/impact-stats";
+import ImpactSection from "@/components/home/impact-section";
+
 
 
 export default function Home() {
