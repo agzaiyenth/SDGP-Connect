@@ -9,6 +9,7 @@ import useGetTotalProjectsCount from '@/hooks/dashboard/useGetTotalProjectsCount
 import useGetFeaturedProjectsCount from '@/hooks/dashboard/useGetFeaturedProjectsCount';
 import useGetPendingProjectsCount from '@/hooks/dashboard/useGetPendingProjectsCount';
 import { Clock, Folder, Star } from 'lucide-react';
+import useGetActivity from '@/hooks/dashboard/useGetActivity';
 
 export default function DashboardPage() {
   // Fetch real data using custom hooks
@@ -50,50 +51,8 @@ export default function DashboardPage() {
     { name: 'Jul', submissions: 139 },
     { name: 'Aug', submissions: 162 },
   ];
-
-  // Sample data for recent activity table
-  const recentActivities = [
-    {
-      id: '1',
-      projectTitle: 'Quantum Analytics Platform',
-      groupNumber: 'G-0032',
-      lastUpdated: 'Today, 10:30 AM',
-      actionType: 'Approved' as const,
-      actionBy: 'Sarah Johnson'
-    },
-    {
-      id: '2',
-      projectTitle: 'Neural Network Visualizer',
-      groupNumber: 'G-0028',
-      lastUpdated: 'Today, 09:15 AM',
-      actionType: 'Featured' as const,
-      actionBy: 'Michael Chen'
-    },
-    {
-      id: '3',
-      projectTitle: 'Blockchain Explorer Interface',
-      groupNumber: 'G-0045',
-      lastUpdated: 'Yesterday, 05:45 PM',
-      actionType: 'Rejected' as const,
-      actionBy: 'Alex Rodriguez'
-    },
-    {
-      id: '4',
-      projectTitle: 'Smart City Dashboard',
-      groupNumber: 'G-0019',
-      lastUpdated: 'Yesterday, 01:30 PM',
-      actionType: 'Submitted' as const,
-      actionBy: 'Lisa Wong'
-    },
-    {
-      id: '5',
-      projectTitle: 'Augmented Reality Learning Tool',
-      groupNumber: 'G-0051',
-      lastUpdated: '2 days ago',
-      actionType: 'Approved' as const,
-      actionBy: 'David Patel'
-    },
-  ];
+  // Get real activity data using the hook
+  const { activities: recentActivities, isLoading: isActivitiesLoading, error: activitiesError } = useGetActivity();
 
   return (
     <>
