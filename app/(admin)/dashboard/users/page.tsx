@@ -50,9 +50,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { useSession } from "next-auth/react";
 
 // Form validation schema for creating/editing users
+// Update userFormSchema to allow empty string in edit mode
 const userFormSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
-  password: z.string().min(8, 'Password must be at least 8 characters').optional(),
+  password: z
+    .string()
+    .min(8, 'Password must be at least 8 characters')
+    .or(z.literal(""))
+    .transform(val => val === "" ? undefined : val),
   role: z.enum(['ADMIN', 'MODERATOR', 'DEVELOPER']),
 });
 
@@ -108,7 +113,12 @@ export default function UserManagement() {
       toast.error('Only administrators can create users');
       return;
     }
-
+    // Ensure that a password is provided in create mode
+    if (!data.password) {
+      toast.error('Password is required');
+      return;
+    }
+    
     const result = await addUser(data as any);
     if (result) {
       setCreateDialog(false);
@@ -454,14 +464,15 @@ password: ${newUserCredentials.password}`;
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleEdit)} className="space-y-4">              <FormField
+            <form onSubmit={form.handleSubmit(handleEdit)} className="space-y-4">
+              <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} disabled />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
