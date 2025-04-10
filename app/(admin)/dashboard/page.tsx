@@ -1,30 +1,40 @@
+"use client";
+
 import RecentActivityTable from '@/components/dashboard/RecentActivityTable';
 import StatCard from '@/components/dashboard/StatCard';
 import StatusPieChart from '@/components/dashboard/StatusPieChart';
 import SubmissionsLineChart from '@/components/dashboard/SubmissionsLineChart';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import useGetTotalProjectsCount from '@/hooks/dashboard/useGetTotalProjectsCount';
+import useGetFeaturedProjectsCount from '@/hooks/dashboard/useGetFeaturedProjectsCount';
+import useGetPendingProjectsCount from '@/hooks/dashboard/useGetPendingProjectsCount';
 import { Clock, Folder, Star } from 'lucide-react';
 
-
 export default function DashboardPage() {
-  // Sample data for statistics
+  // Fetch real data using custom hooks
+  const { count: totalCount, isLoading: isTotalLoading } = useGetTotalProjectsCount();
+  const { count: featuredCount, isLoading: isFeaturedLoading } = useGetFeaturedProjectsCount();
+  const { count: pendingCount, isLoading: isPendingLoading } = useGetPendingProjectsCount();
+  
+  // Stats card data
   const stats = [
     {
       title: 'Total Projects',
-      value: '1,258',
+      value: isTotalLoading ? <LoadingSpinner /> : totalCount?.toString() || '0',
       icon: <Folder className="h-5 w-5" />,
-
+      isLoading: isTotalLoading
     },
     {
       title: 'Featured Projects',
-      value: '83',
+      value: isFeaturedLoading ? <LoadingSpinner /> : featuredCount?.toString() || '0',
       icon: <Star className="h-5 w-5" />,
-     
+      isLoading: isFeaturedLoading
     },
     {
       title: 'Pending Review',
-      value: '35',
+      value: isPendingLoading ? <LoadingSpinner /> : pendingCount?.toString() || '0',
       icon: <Clock className="h-5 w-5" />,
-  
+      isLoading: isPendingLoading
     },
   ];
 
