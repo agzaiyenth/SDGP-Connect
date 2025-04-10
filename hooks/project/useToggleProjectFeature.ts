@@ -11,7 +11,7 @@ export function useToggleProjectFeature(options?: UseToggleProjectFeatureOptions
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const toggleFeature = async (projectId: string, featured: boolean) => {
+  const toggleFeature = async (projectId: number, featured: boolean) => {
     setIsLoading(true);
     setError(null);
 

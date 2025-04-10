@@ -9,6 +9,7 @@ import { RejectedProjectsTable } from '@/components/tables/RejectedProjectsTable
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGetProjectsByApprovalStatus } from '@/hooks/project/useGetProjectsByApprovalStatus';
+import { useToggleProjectFeature } from '@/hooks/project/useToggleProjectFeature';
 import { ApprovedProject, PendingProject, RejectedProject } from '@/types/project/response';
 import { ProjectApprovalStatus } from '@prisma/client';
 import { useEffect, useState } from 'react';
@@ -90,10 +91,12 @@ export default function ProjectManagement() {
     setCurrentProject(project);
     setDetailsDialog(true);
   };
+  const { toggleFeature, isLoading: isFeatureToggling } = useToggleProjectFeature({
+    onSuccess: () => refreshApproved()
+  });
 
   const handleToggleFeature = async (project: ApprovedProject, featured: boolean) => {
-    // Feature toggle logic will be implemented later
-    console.log('Toggle feature for project:', project.id, featured);
+    await toggleFeature(project.id, featured);
   };
 
   const handleTabChange = (value: string) => {
