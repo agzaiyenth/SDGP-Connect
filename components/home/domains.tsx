@@ -57,7 +57,7 @@ export default function Domains() {
                     className="basis-1/2 pl-4 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6"
                   >
                     <a
-                      href={"projects?domain=" + domain.value}
+                      href={"project?domains=" + domain.value}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="group flex flex-col items-center justify-center gap-3 rounded-xl border border-muted/60 p-6 transition-all hover:border-primary/20 hover:bg-muted/30 hover:shadow-sm"
@@ -81,7 +81,7 @@ export default function Domains() {
         </div>
 
         <div className="mt-12 flex justify-center">
-            <Link href="/projects" >
+            <Link href="/project" >
           <Button variant="outline" className="group" size="lg">
             View projects of all domains
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
