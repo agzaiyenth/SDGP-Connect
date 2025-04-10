@@ -55,6 +55,7 @@ export function RejectedProjectsTable({
                   <TooltipContent>{project.rejectionReason}</TooltipContent>
                 </Tooltip>
               </TableCell>
+
               <TableCell>
                 <Button size="sm" onClick={() => onViewDetails(project)}>
                   View Details
