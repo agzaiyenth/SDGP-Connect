@@ -38,12 +38,6 @@ export default function DashboardPage() {
     },
   ];
 
-  // Sample data for pie chart
-  const statusData = [
-    { name: 'Approved', value: 785, color: '#16a34a' },
-    { name: 'Pending', value: 245, color: '#054afc' },
-    { name: 'Rejected', value: 228, color: '#dc2626' },
-  ];
 
   // Sample data for line chart
   const submissionsData = [
