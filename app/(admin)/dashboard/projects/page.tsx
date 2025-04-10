@@ -17,7 +17,8 @@ import { useEffect, useState } from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { EmptyState } from '@/components/ui/empty-state';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { AlertCircle, FileX2, Inbox } from 'lucide-react';
+import { AlertCircle, FileX2, Inbox, RefreshCcw } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const projectStatuses = ['IDEA', 'MVP', 'DEPLOYED', 'STARTUP'];
 
@@ -230,12 +231,23 @@ export default function ProjectManagement() {
         </TabsList>
 
         <div className="my-4 flex flex-wrap gap-4">
+         
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              onClick={() => {
+                if (currentTab === 'pending') refreshPending();
+                if (currentTab === 'approved') refreshApproved();
+                if (currentTab === 'rejected') refreshRejected();
+              }}
+            >Last Fetched: {new Date().toLocaleTimeString()}
+             <RefreshCcw/>
+            </Button>
+          </div>
           <Input
             placeholder="Search projects..."
             className="max-w-xs"
           />
-      
-         
         </div>
 
         {renderContent()}
