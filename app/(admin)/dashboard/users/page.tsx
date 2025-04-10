@@ -47,12 +47,12 @@ const userFormSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   username: z.string().min(3, 'Username must be at least 3 characters'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
-  role: z.enum(['ADMIN', 'MODERATOR', 'REVIEWER']),
+  role: z.enum(['ADMIN', 'MODERATOR', 'DEVELOPER']),
 });
 
 type UserFormValues = z.infer<typeof userFormSchema>;
 
-const roles = ['ADMIN', 'MODERATOR', 'REVIEWER'] as const;
+const roles = ['ADMIN', 'MODERATOR', 'DEVELOPER'] as const;
 
 // Mock data
 const mockUsers = [
@@ -74,7 +74,7 @@ const mockUsers = [
     id: 3,
     name: 'Bob Wilson',
     username: 'bobwilson',
-    role: 'REVIEWER',
+    role: 'DEVELOPER',
     createdAt: '2024-03-17T09:15:00Z',
   },
 ];
@@ -96,7 +96,7 @@ export default function UserManagement() {
       name: '',
       username: '',
       password: '',
-      role: 'REVIEWER',
+      role: 'DEVELOPER',
     },
   });
 
@@ -186,65 +186,13 @@ export default function UserManagement() {
         <Button onClick={() => setCreateDialog(true)}>Create User</Button>
       </div>
 
-      <div className="flex flex-wrap gap-4">
-        <Input
-          placeholder="Search users..."
-          value={searchTerm}
-          onChange={(e) => handleSearch(e.target.value)}
-          className="max-w-xs"
-        />
-        <Select value={roleFilter || undefined} onValueChange={setRoleFilter}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Filter by role" />
-          </SelectTrigger>
-          <SelectContent>
-            {roles.map((role) => (
-              <SelectItem key={role} value={role}>
-                {role}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {selectedUsers.length > 0 && (
-          <div className="flex gap-2">
-            <Select onValueChange={handleBulkRoleUpdate}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Update role" />
-              </SelectTrigger>
-              <SelectContent>
-                {roles.map((role) => (
-                  <SelectItem key={role} value={role}>
-                    {role}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Button
-              variant="destructive"
-              onClick={handleBulkDelete}
-            >
-              Delete Selected
-            </Button>
-          </div>
-        )}
-      </div>
+    
 
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-12">
-                <Checkbox
-                  checked={selectedUsers.length === filteredUsers.length}
-                  onCheckedChange={(checked) => {
-                    if (checked) {
-                      setSelectedUsers(filteredUsers.map(u => u.id));
-                    } else {
-                      setSelectedUsers([]);
-                    }
-                  }}
-                />
-              </TableHead>
+            
               <TableHead
                 className="cursor-pointer"
                 onClick={() => handleSort('name')}
@@ -275,18 +223,7 @@ export default function UserManagement() {
           <TableBody>
             {filteredUsers.map((user) => (
               <TableRow key={user.id}>
-                <TableCell>
-                  <Checkbox
-                    checked={selectedUsers.includes(user.id)}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSelectedUsers([...selectedUsers, user.id]);
-                      } else {
-                        setSelectedUsers(selectedUsers.filter(id => id !== user.id));
-                      }
-                    }}
-                  />
-                </TableCell>
+              
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.username}</TableCell>
                 <TableCell>

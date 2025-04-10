@@ -13,7 +13,7 @@ datasource db {
 enum Role {
   ADMIN
   MODERATOR
-  REVIEWER
+  DEVELOPER
 }
 
 // Defines the association types that can be linked to projects.
