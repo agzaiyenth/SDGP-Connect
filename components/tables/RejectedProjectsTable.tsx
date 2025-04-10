@@ -1,6 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Pagination, PaginationPrevious, PaginationNext } from '@/components/ui/pagination';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { RejectedProject } from '@/types/project/response';
 
 interface RejectedProjectsTableProps {
@@ -46,7 +47,14 @@ export function RejectedProjectsTable({
                     year: 'numeric'
                   })}
                 </TableCell>
-              <TableCell className="max-w-xs truncate">{project.rejectionReason}</TableCell>
+              <TableCell className="max-w-xs truncate">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="cursor-default">{project.rejectionReason}</span>
+                  </TooltipTrigger>
+                  <TooltipContent>{project.rejectionReason}</TooltipContent>
+                </Tooltip>
+              </TableCell>
               <TableCell>
                 <Button size="sm" onClick={() => onViewDetails(project)}>
                   View Details
