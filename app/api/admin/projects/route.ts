@@ -16,7 +16,7 @@ export const GET = async (req: NextRequest) => {
 
   // Role-based authorization check
   const { role } = session.user;
-  if (!["ADMIN", "MODERATOR", "REVIEWER"].includes(role)) {
+  if (!["ADMIN", "MODERATOR", ].includes(role)) {
     return NextResponse.json(
       { error: "Forbidden. You don't have permission to access this resource." },
       { status: 403 }
