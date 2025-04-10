@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/prisma/prismaClient';
 import { getServerSession } from 'next-auth';
 import * as z from 'zod';
-import { hash } from 'bcryptjs';
+import { hash } from 'bcrypt';
 
 // Schema for validating user creation
 const userCreateSchema = z.object({
@@ -47,6 +47,15 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }    const { name, password, role } = validationResult.data;
+
+    // Check if user with the same name already exists
+    const existingUser = await prisma.user.findFirst({ where: { name } });
+    if (existingUser) {
+      return NextResponse.json(
+        { error: "User with this name already exists" },
+        { status: 400 }
+      );
+    }
 
     // Hash password
     const hashedPassword = await hash(password, 12);
