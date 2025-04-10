@@ -245,7 +245,7 @@ export default function UserManagement() {
 
       <div className="rounded-md border">
         <Table>
-          <TableHeader><TableRow>              <TableHead
+          <TableHeader><TableRow><TableHead
                 className="cursor-pointer"
                 onClick={() => handleSort('name')}
               >
