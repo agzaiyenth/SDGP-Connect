@@ -11,12 +11,17 @@ import { ProjectHeader } from './s-project/project-header';
 import { ProjectOverview } from './s-project/project-overview';
 import { SlideDeck } from './s-project/slide-deck';
 import Teamandsocial from './s-project/team-social';
+import { Spinner } from './ui/spinner';
 
 const ProjectDetails = ({ projectID }: { projectID: string }) => {
   const { project, isLoading, error } = useGetProjectDetailsByID(projectID);
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return (
+      <div className='flex justify-center items-center min-h-screen'>
+        <Spinner variant="ring" className='size-24' />
+      </div>
+    );
   }
 
   if (error) {

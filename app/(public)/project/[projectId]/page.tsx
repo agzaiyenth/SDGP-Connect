@@ -7,10 +7,12 @@ interface Props {
     }
 }
 
-const ProjectPage = ({ params }: Props) => {
+const ProjectPage = async ({ params }: Props) => {
+    const projectId = params.projectId;
+    
     return (
         <div>
-           <ProjectDetails projectID={params.projectId} />
+           <ProjectDetails projectID={projectId} />
             
         </div>
     )
