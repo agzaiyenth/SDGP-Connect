@@ -39,7 +39,13 @@ export function RejectedProjectsTable({
               <TableCell>{project.title}</TableCell>
               <TableCell>{project.groupNumber}</TableCell>
               <TableCell>{project.rejectedBy}</TableCell>
-              <TableCell>{project.rejectedAt}</TableCell>
+              <TableCell>
+                  {new Date(project.rejectedAt).toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  })}
+                </TableCell>
               <TableCell className="max-w-xs truncate">{project.rejectionReason}</TableCell>
               <TableCell>
                 <Button size="sm" onClick={() => onViewDetails(project)}>
