@@ -21,7 +21,7 @@ const Data = {
         alt: "Avatar 2",
       },
       {
-        src: "/home/about-logo/raspberry.png",
+        src: "/home/about-logo/raspberry.jpg",
         alt: "Avatar 3",
       },
       {
