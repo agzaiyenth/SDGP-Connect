@@ -114,12 +114,10 @@ export default function DashboardPage() {
             style={{ animationDelay: `${index * 100}ms` }}
           />
         ))}
-      </div>
-
-      {/* Charts Section */}
+      </div>      {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <StatusPieChart/>
-        <SubmissionsLineChart data={submissionsData} />
+        <SubmissionsLineChart />
       </div>
 
       
