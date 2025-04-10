@@ -12,8 +12,8 @@ import {
   ResponsiveContainer,
   ReferenceLine
 } from 'recharts';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { useGetSubmissions } from '@/hooks/dashboard/useGetSubmissions';
+import SubmissionsLineChartSkeleton from './skeletons/SubmissionsLineChartSkeleton';
 
 const SubmissionsLineChart: React.FC = () => {
   // Fetch real data using custom hook
@@ -27,14 +27,9 @@ const SubmissionsLineChart: React.FC = () => {
     <Card className="neo-card overflow-hidden w-full h-[350px]">
       <CardHeader>
         <CardTitle className="text-lg font-medium">Submissions Over Time</CardTitle>
-      </CardHeader>
-      <CardContent className="pb-4">
+      </CardHeader>      <CardContent className="pb-4">
         {isLoading ? (
-          <div className="flex items-center justify-center h-[250px]">
-            <LoadingSpinner 
-            // size="lg" 
-            />
-          </div>
+          <SubmissionsLineChartSkeleton />
         ) : error ? (
           <div className="flex items-center justify-center h-[250px] text-destructive">
             Failed to load submission data

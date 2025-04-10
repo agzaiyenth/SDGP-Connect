@@ -4,7 +4,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import useGetCountByStatus from '@/hooks/dashboard/useGetCountByStatus';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import StatusPieChartSkeleton from './skeletons/StatusPieChartSkeleton';
 
 interface Props {
     
@@ -22,11 +22,10 @@ const StatusPieChart = (props: Props) => {
     <Card className="neo-card overflow-hidden w-full h-[350px]">
       <CardHeader>
         <CardTitle className="text-lg font-medium">Projects by Status</CardTitle>
-      </CardHeader>
-      <CardContent className="pb-4">
+      </CardHeader>      <CardContent className="pb-4">
         {isLoading ? (
-          <div className="flex items-center justify-center h-[250px]">
-            <LoadingSpinner />
+          <div className="h-[250px]">
+            <StatusPieChartSkeleton />
           </div>
         ) : error ? (
           <div className="flex items-center justify-center h-[250px] text-destructive">
