@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/prisma/prismaClient';
 import { getServerSession } from 'next-auth';
 import * as z from 'zod';
-import { hash } from 'bcryptjs';
+import { hash } from 'bcrypt';
 
 // Schema for validating user updates
 const userUpdateSchema = z.object({
