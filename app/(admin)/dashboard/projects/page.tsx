@@ -16,9 +16,10 @@ import { useEffect, useState } from 'react';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { EmptyState } from '@/components/ui/empty-state';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { AlertCircle, FileX2, Inbox, RefreshCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import BulkApproveDialog from '@/components/dialogs/BulkApproveDialog';
 
 const projectStatuses = ['IDEA', 'MVP', 'DEPLOYED', 'STARTUP'];
 
@@ -27,6 +28,7 @@ export default function ProjectManagement() {
   const [approveDialog, setApproveDialog] = useState(false);
   const [rejectDialog, setRejectDialog] = useState(false);
   const [detailsDialog, setDetailsDialog] = useState(false);
+  const [bulkApproveDialog, setBulkApproveDialog] = useState(false);
   const [currentProject, setCurrentProject] = useState<any>(null);
   const [currentTab, setCurrentTab] = useState<'pending' | 'approved' | 'rejected'>('pending');
   const [currentPage, setCurrentPage] = useState(1);
@@ -228,10 +230,7 @@ export default function ProjectManagement() {
           <TabsTrigger value="pending">Pending</TabsTrigger>
           <TabsTrigger value="approved">Approved</TabsTrigger>
           <TabsTrigger value="rejected">Rejected</TabsTrigger>
-        </TabsList>
-
-        <div className="my-4 flex flex-wrap gap-4">
-         
+        </TabsList>        <div className="my-4 flex flex-wrap gap-4 justify-between">
           <div className="flex items-center gap-4">
             <Button
               variant="outline"
@@ -243,6 +242,15 @@ export default function ProjectManagement() {
             >Last Fetched: {new Date().toLocaleTimeString()}
              <RefreshCcw/>
             </Button>
+            
+            {currentTab === 'pending' && selectedProjects.length > 0 && (
+              <Button 
+                onClick={() => setBulkApproveDialog(true)}
+                variant="default"
+              >
+                Approve All ({selectedProjects.length})
+              </Button>
+            )}
           </div>
           <Input
             placeholder="Search projects..."
@@ -268,14 +276,21 @@ export default function ProjectManagement() {
           projectID={currentProject.id}
           onApproved={refreshPending}
         />
-      )}
-
-      {rejectDialog && currentProject && (
+      )}      {rejectDialog && currentProject && (
         <RejectDialog
           open={rejectDialog}
           onOpenChange={setRejectDialog}
           project={currentProject}
           onRejected={refreshPending}
+        />
+      )}
+
+      {bulkApproveDialog && selectedProjects.length > 0 && (
+        <BulkApproveDialog
+          open={bulkApproveDialog}
+          onOpenChange={setBulkApproveDialog}
+          projectIds={selectedProjects}
+          onApproved={refreshPending}
         />
       )}
     </div>
