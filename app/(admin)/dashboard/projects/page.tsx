@@ -33,6 +33,7 @@ export default function ProjectManagement() {
   const [currentTab, setCurrentTab] = useState<'pending' | 'approved' | 'rejected'>('pending');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [lastFetchedTime, setLastFetchedTime] = useState<string>('');
 
   const {
     projects: pendingProjects,
@@ -57,11 +58,15 @@ export default function ProjectManagement() {
     isEmpty: isRejectedEmpty,
     refresh: refreshRejected,
   } = useGetProjectsByApprovalStatus<RejectedProject>(ProjectApprovalStatus.REJECTED);
-
   // Reset selected projects when changing tabs
   useEffect(() => {
     setSelectedProjects([]);
   }, [currentTab]);
+
+  // Initialize lastFetchedTime on client-side only
+  useEffect(() => {
+    setLastFetchedTime(new Date().toLocaleTimeString());
+  }, []);
 
   const handleSelectProject = (projectId: number) => {
     setSelectedProjects(prev => {
@@ -230,7 +235,12 @@ export default function ProjectManagement() {
           <TabsTrigger value="pending">Pending</TabsTrigger>
           <TabsTrigger value="approved">Approved</TabsTrigger>
           <TabsTrigger value="rejected">Rejected</TabsTrigger>
-        </TabsList>        <div className="my-4 flex flex-wrap gap-4 justify-between">
+        </TabsList>
+        <div className="my-4 flex flex-wrap gap-4 justify-between">
+          <Input
+            placeholder="Search projects..."
+            className="max-w-xs"
+          />
           <div className="flex items-center gap-4">
             <Button
               variant="outline"
@@ -238,13 +248,14 @@ export default function ProjectManagement() {
                 if (currentTab === 'pending') refreshPending();
                 if (currentTab === 'approved') refreshApproved();
                 if (currentTab === 'rejected') refreshRejected();
+                setLastFetchedTime(new Date().toLocaleTimeString());
               }}
-            >Last Fetched: {new Date().toLocaleTimeString()}
-             <RefreshCcw/>
+            >Last Fetched: {lastFetchedTime}
+              <RefreshCcw />
             </Button>
-            
+
             {currentTab === 'pending' && selectedProjects.length > 0 && (
-              <Button 
+              <Button
                 onClick={() => setBulkApproveDialog(true)}
                 variant="default"
               >
@@ -252,10 +263,7 @@ export default function ProjectManagement() {
               </Button>
             )}
           </div>
-          <Input
-            placeholder="Search projects..."
-            className="max-w-xs"
-          />
+
         </div>
 
         {renderContent()}
