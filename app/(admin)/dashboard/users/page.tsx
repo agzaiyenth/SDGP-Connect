@@ -44,6 +44,10 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { Copy } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useSession } from "next-auth/react";
 
 // Form validation schema for creating/editing users
 const userFormSchema = z.object({
@@ -65,6 +69,9 @@ export default function UserManagement() {
   const [createDialog, setCreateDialog] = useState(false);
   const [editDialog, setEditDialog] = useState(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [shareDialog, setShareDialog] = useState(false);
+  const [newUserCredentials, setNewUserCredentials] = useState<{ name: string; password: string } | null>(null);
+  const { data: session } = useSession();
 
   // Authentication and user role check
   const { isAdmin } = useCurrentUser();
@@ -81,7 +88,7 @@ export default function UserManagement() {
     defaultValues: {
       name: '',
       password: '',
-      role: 'DEVELOPER',
+      role: 'MODERATOR',
     },
   });
 
@@ -106,8 +113,14 @@ export default function UserManagement() {
     const result = await addUser(data as any);
     if (result) {
       setCreateDialog(false);
+      // Store credentials for sharing
+      setNewUserCredentials({
+        name: data.name,
+        password: data.password || ''
+      });
+      setShareDialog(true);
       form.reset();
-      refetch(); // Refresh the users list
+      refetch();
     }
   };
 
@@ -220,6 +233,24 @@ export default function UserManagement() {
         ? String(aValue).localeCompare(String(bValue))
         : String(bValue).localeCompare(String(aValue));
     });
+
+  // Function to copy credentials to clipboard
+  const copyCredentials = () => {
+    if (!newUserCredentials || !session?.user?.name) return;
+    
+    const message = `Hi ${newUserCredentials.name}!
+Your Credentials for SDGP-Connect is as below
+username: ${newUserCredentials.name}
+password: ${newUserCredentials.password}`;
+    
+    navigator.clipboard.writeText(message)
+      .then(() => {
+        toast.success('Credentials copied to clipboard');
+      })
+      .catch(() => {
+        toast.error('Failed to copy credentials');
+      });
+  };
 
   return (
     <div className="space-y-6">      <div className="flex justify-between items-center">
@@ -484,6 +515,47 @@ export default function UserManagement() {
               </DialogFooter>
             </form>
           </Form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Share Credentials Dialog */}
+      <Dialog open={shareDialog} onOpenChange={setShareDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Share Credentials</DialogTitle>
+            <DialogDescription>
+              Hi {session?.user?.name}, copy the below details and share with the user
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex items-center space-x-2">
+            <div className="grid flex-1 gap-2">
+              <Label htmlFor="credentials" className="sr-only">
+                Credentials
+              </Label>
+              <Textarea
+                id="credentials"
+                readOnly
+                className="h-[100px]"
+                value={newUserCredentials ? `Hi ${newUserCredentials.name}!
+Your Credentials for SDGP-Connect is
+username: ${newUserCredentials.name}
+password: ${newUserCredentials.password}` : ''}
+              />
+            </div>
+            <Button type="button" size="sm" className="px-3" onClick={copyCredentials}>
+              <span className="sr-only">Copy</span>
+              <Copy className="h-4 w-4" />
+            </Button>
+          </div>
+          <DialogFooter className="sm:justify-start">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => setShareDialog(false)}
+            >
+              Close
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
