@@ -13,7 +13,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       {
         <Image
           fill
-          src={coverImage || "https://picsum.photos/800/450?random=6"}
+          src={coverImage || "https://placehold.co/600x400/png?text=NO+IMAGE"}
           alt="Project Cover"
           className="w-full h-full object-cover"
         />
