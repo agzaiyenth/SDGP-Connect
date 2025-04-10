@@ -12,19 +12,19 @@ export default function DashboardPage() {
       title: 'Total Projects',
       value: '1,258',
       icon: <Folder className="h-5 w-5" />,
-      trend: { value: 12, isPositive: true }
+
     },
     {
       title: 'Featured Projects',
       value: '83',
       icon: <Star className="h-5 w-5" />,
-      trend: { value: 8, isPositive: true }
+     
     },
     {
       title: 'Pending Review',
       value: '35',
       icon: <Clock className="h-5 w-5" />,
-      trend: { value: 3, isPositive: false }
+  
     },
   ];
 
@@ -106,7 +106,6 @@ export default function DashboardPage() {
             title={stat.title}
             value={stat.value}
             icon={stat.icon}
-            trend={stat.trend}
             className="animate-fade-in"
             style={{ animationDelay: `${index * 100}ms` }}
           />
