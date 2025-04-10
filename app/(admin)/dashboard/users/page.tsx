@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import debounce from 'lodash.debounce';
+import { format } from 'date-fns';
 import {
   Table,
   TableBody,
@@ -28,6 +28,8 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { useAddUser, useEditUser, useDeleteUser, useFetchUsers, User } from '@/hooks/user';
+import { useCurrentUser } from '@/hooks/auth/useCurrentUser';
 import {
   Dialog,
   DialogContent,
@@ -41,12 +43,12 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
-// Form validation schema
+// Form validation schema for creating/editing users
 const userFormSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
-  username: z.string().min(3, 'Username must be at least 3 characters'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
+  password: z.string().min(8, 'Password must be at least 8 characters').optional(),
   role: z.enum(['ADMIN', 'MODERATOR', 'DEVELOPER']),
 });
 
@@ -54,65 +56,38 @@ type UserFormValues = z.infer<typeof userFormSchema>;
 
 const roles = ['ADMIN', 'MODERATOR', 'DEVELOPER'] as const;
 
-// Mock data
-const mockUsers = [
-  {
-    id: 1,
-    name: 'John Doe',
-    username: 'johndoe',
-    role: 'ADMIN',
-    createdAt: '2024-03-15T10:00:00Z',
-  },
-  {
-    id: 2,
-    name: 'Jane Smith',
-    username: 'janesmith',
-    role: 'MODERATOR',
-    createdAt: '2024-03-16T11:30:00Z',
-  },
-  {
-    id: 3,
-    name: 'Bob Wilson',
-    username: 'bobwilson',
-    role: 'DEVELOPER',
-    createdAt: '2024-03-17T09:15:00Z',
-  },
-];
-
 export default function UserManagement() {
-  const [users, setUsers] = useState(mockUsers);
-  const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState<string | null>(null);
   const [sortColumn, setSortColumn] = useState<string>('name');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [createDialog, setCreateDialog] = useState(false);
   const [editDialog, setEditDialog] = useState(false);
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
+  // Authentication and user role check
+  const { isAdmin } = useCurrentUser();
+
+  // Fetch users
+  const { users, loading: loadingUsers, error: fetchError, refetch } = useFetchUsers();
+
+  // User operations hooks
+  const { addUser, loading: addingUser } = useAddUser();
+  const { editUser, loading: editingUser } = useEditUser();
+  const { deleteUser, loading: deletingUser } = useDeleteUser();
   const form = useForm<UserFormValues>({
     resolver: zodResolver(userFormSchema),
     defaultValues: {
       name: '',
-      username: '',
       password: '',
       role: 'DEVELOPER',
     },
   });
 
-  // Debounced search
-  const debouncedSearch = useCallback(
-    debounce((term: string) => {
-      // Implement actual search logic here
-      console.log('Searching for:', term);
-    }, 300),
-    []
-  );
+ 
 
-  const handleSearch = (value: string) => {
-    setSearchTerm(value);
-    debouncedSearch(value);
-  };
+
 
   const handleSort = (column: string) => {
     if (sortColumn === column) {
@@ -122,88 +97,159 @@ export default function UserManagement() {
       setSortDirection('asc');
     }
   };
+  const handleCreate = async (data: UserFormValues) => {
+    if (!isAdmin) {
+      toast.error('Only administrators can create users');
+      return;
+    }
 
-  const handleCreate = (data: UserFormValues) => {
-    // Implement actual create logic here
-    console.log('Creating user:', data);
-    setCreateDialog(false);
-    form.reset();
-    toast.success('User created successfully');
+    const result = await addUser(data as any);
+    if (result) {
+      setCreateDialog(false);
+      form.reset();
+      refetch(); // Refresh the users list
+    }
   };
 
-  const handleEdit = (data: UserFormValues) => {
-    // Implement actual edit logic here
-    console.log('Editing user:', data);
-    setEditDialog(false);
-    form.reset();
-    toast.success('User updated successfully');
+  const handleEdit = async (data: UserFormValues) => {
+    if (!isAdmin || !currentUser) {
+      toast.error('Only administrators can edit users');
+      return;
+    }
+
+    const updateData = {
+      user_id: currentUser.user_id,
+      ...data
+    };
+
+    // If password is empty, delete it from the payload
+    if (!updateData.password) {
+      delete updateData.password;
+    }
+
+    const result = await editUser(updateData);
+    if (result) {
+      setEditDialog(false);
+      form.reset();
+      refetch(); // Refresh the users list
+    }
   };
 
-  const handleDelete = (userId: number) => {
-    // Implement actual delete logic here
-    setUsers(users.filter(user => user.id !== userId));
-    toast.success('User deleted successfully');
-  };
+  const handleDelete = async (userId: string) => {
+    if (!isAdmin) {
+      toast.error('Only administrators can delete users');
+      return;
+    }
 
-  const handleBulkDelete = () => {
-    // Implement actual bulk delete logic here
-    setUsers(users.filter(user => !selectedUsers.includes(user.id)));
+    const confirmed = window.confirm('Are you sure you want to delete this user?');
+    if (confirmed) {
+      const success = await deleteUser(userId);
+      if (success) {
+        refetch(); // Refresh the users list
+      }
+    }
+  };
+  const handleBulkDelete = async () => {
+    if (!isAdmin) {
+      toast.error('Only administrators can delete users');
+      return;
+    }
+
+    const confirmed = window.confirm('Are you sure you want to delete these users?');
+    if (!confirmed) return;
+
+    let success = true;
+
+    // Delete users one by one
+    for (const userId of selectedUsers) {
+      const result = await deleteUser(userId);
+      if (!result) {
+        success = false;
+      }
+    }
+
+    if (success) {
+      toast.success('Selected users deleted successfully');
+    } else {
+      toast.error('Some users could not be deleted');
+    }
+
     setSelectedUsers([]);
-    toast.success('Selected users deleted successfully');
+    refetch(); // Refresh the users list
   };
 
-  const handleBulkRoleUpdate = (role: string) => {
-    // Implement actual bulk role update logic here
-    setUsers(users.map(user => 
-      selectedUsers.includes(user.id) ? { ...user, role } : user
-    ));
+  const handleBulkRoleUpdate = async (role: string) => {
+    if (!isAdmin) {
+      toast.error('Only administrators can update user roles');
+      return;
+    }
+
+    let success = true;
+
+    // Update user roles one by one
+    for (const userId of selectedUsers) {
+      const userData = {
+        user_id: userId,
+        role: role as 'ADMIN' | 'MODERATOR' | 'DEVELOPER'
+      };
+
+      const result = await editUser(userData);
+      if (!result) {
+        success = false;
+      }
+    }
+
+    if (success) {
+      toast.success('User roles updated successfully');
+    } else {
+      toast.error('Some user roles could not be updated');
+    }
+
     setSelectedUsers([]);
-    toast.success('Roles updated successfully');
-  };
-
-  const filteredUsers = users
-    .filter(user => 
+    refetch(); // Refresh the users list
+  };  const filteredUsers = users
+    .filter(user =>
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.role.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .filter(user => !roleFilter || user.role === roleFilter)
     .sort((a, b) => {
-      const aValue = a[sortColumn as keyof typeof a];
-      const bValue = b[sortColumn as keyof typeof b];
+      const aValue = a[sortColumn as keyof User];
+      const bValue = b[sortColumn as keyof User];
       return sortDirection === 'asc'
         ? String(aValue).localeCompare(String(bValue))
         : String(bValue).localeCompare(String(aValue));
     });
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold">User Management</h1>
-          <p className="text-muted-foreground">Manage user accounts and roles</p>
-        </div>
-        <Button onClick={() => setCreateDialog(true)}>Create User</Button>
+    <div className="space-y-6">      <div className="flex justify-between items-center">
+      <div>
+        <h1 className="text-3xl font-bold">User Management</h1>
+        <p className="text-muted-foreground">Manage user accounts and roles</p>
       </div>
+      <Button
+        onClick={() => {
+          if (!isAdmin) {
+            toast.error('Only administrators can create users');
+            return;
+          }
+          setCreateDialog(true);
+        }}
+        disabled={!isAdmin}
+      >
+        Create User
+      </Button>
+    </div>
 
-    
+
 
       <div className="rounded-md border">
         <Table>
-          <TableHeader>
-            <TableRow>
-            
-              <TableHead
+          <TableHeader><TableRow>              <TableHead
                 className="cursor-pointer"
                 onClick={() => handleSort('name')}
               >
                 Name {sortColumn === 'name' && (sortDirection === 'asc' ? '↑' : '↓')}
-              </TableHead>
-              <TableHead
-                className="cursor-pointer"
-                onClick={() => handleSort('username')}
-              >
-                Username {sortColumn === 'username' && (sortDirection === 'asc' ? '↑' : '↓')}
               </TableHead>
               <TableHead
                 className="cursor-pointer"
@@ -218,32 +264,44 @@ export default function UserManagement() {
                 Created At {sortColumn === 'createdAt' && (sortDirection === 'asc' ? '↑' : '↓')}
               </TableHead>
               <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
+            </TableRow></TableHeader>
           <TableBody>
-            {filteredUsers.map((user) => (
-              <TableRow key={user.id}>
-              
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.username}</TableCell>
-                <TableCell>
-                  <Badge variant={user.role === 'ADMIN' ? 'default' : 'secondary'}>
+            {loadingUsers ? (
+            <TableRow>
+              <TableCell colSpan={5} className="text-center py-4">
+                <LoadingSpinner/>
+              </TableCell>
+            </TableRow>
+          ) : filteredUsers.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={5} className="text-center py-4">
+                No users found
+              </TableCell>
+            </TableRow>
+          ) : (
+            filteredUsers.map((user) => (
+              <TableRow key={user.user_id}>                  <TableCell>{user.name}</TableCell>
+                  <TableCell>
+                    <Badge variant={
+                    user.role === 'ADMIN'
+                        ? 'default'
+                        : 'secondary'
+                  }>
                     {user.role}
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  {new Date(user.createdAt).toLocaleDateString()}
+                  {format(new Date(user.createdAt), 'd MMM yyyy')}
                 </TableCell>
                 <TableCell>
                   <div className="flex gap-2">
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => {
-                        setCurrentUser(user);
+                      disabled={!isAdmin}
+                      onClick={() => {                        setCurrentUser(user);
                         form.reset({
                           name: user.name,
-                          username: user.username,
                           password: '',
                           role: user.role as any,
                         });
@@ -255,14 +313,16 @@ export default function UserManagement() {
                     <Button
                       size="sm"
                       variant="destructive"
-                      onClick={() => handleDelete(user.id)}
+                      disabled={!isAdmin}
+                      onClick={() => handleDelete(user.user_id)}
                     >
                       Delete
                     </Button>
                   </div>
                 </TableCell>
               </TableRow>
-            ))}
+            ))
+          )}
           </TableBody>
         </Table>
       </div>
@@ -276,27 +336,13 @@ export default function UserManagement() {
               Add a new user to the system
             </DialogDescription>
           </DialogHeader>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleCreate)} className="space-y-4">
+          <Form {...form}>            <form onSubmit={form.handleSubmit(handleCreate)} className="space-y-4">
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Username</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -352,7 +398,7 @@ export default function UserManagement() {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" style={{ backgroundColor: '#054afc' }}>
+                <Button type="submit" >
                   Create User
                 </Button>
               </DialogFooter>
@@ -371,26 +417,12 @@ export default function UserManagement() {
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleEdit)} className="space-y-4">
-              <FormField
+            <form onSubmit={form.handleSubmit(handleEdit)} className="space-y-4">              <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Username</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -446,7 +478,7 @@ export default function UserManagement() {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" style={{ backgroundColor: '#054afc' }}>
+                <Button type="submit" >
                   Save Changes
                 </Button>
               </DialogFooter>
