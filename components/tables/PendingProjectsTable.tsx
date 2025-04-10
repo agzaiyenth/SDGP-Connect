@@ -67,7 +67,13 @@ export function PendingProjectsTable({
               </TableCell>
               <TableCell>{project.title}</TableCell>
               <TableCell>{project.groupNumber}</TableCell>
-              <TableCell>{project.submissionDate}</TableCell>
+              <TableCell>
+                  {new Date(project.submissionDate).toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  })}
+                </TableCell>
               <TableCell>
                 <Badge>{project.status}</Badge>
               </TableCell>
