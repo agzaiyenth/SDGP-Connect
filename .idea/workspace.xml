@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e1b0be46-10d9-4b8f-8629-c6d0b3df057c" name="Changes" comment="About Us page Implementation">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(public)/about/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(public)/about/page.tsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;LAKI-1&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/agzaiyenth/SDGP-Connect.git&quot;,
+    &quot;accountId&quot;: &quot;f3d68bed-f119-4130-b1de-38c3ccd5cebb&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2v7SENHL1rSDKZVYLFcANmc7369" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feat/aboutUs&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lakindu/OneDrive/Desktop/SDGP connect/SDGP-Connect&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Lakindu\\OneDrive\\Desktop\\SDGP connect\\SDGP-Connect\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-WS-243.23654.157" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e1b0be46-10d9-4b8f-8629-c6d0b3df057c" name="Changes" comment="" />
+      <created>1743494506899</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1743494506899</updated>
+      <workItem from="1743494508429" duration="827000" />
+      <workItem from="1743495614455" duration="852000" />
+      <workItem from="1743496485785" duration="2978000" />
+      <workItem from="1743571520193" duration="9000" />
+      <workItem from="1743589164989" duration="309000" />
+      <workItem from="1743614489981" duration="10000" />
+      <workItem from="1743660026901" duration="457000" />
+      <workItem from="1743667845107" duration="9000" />
+      <workItem from="1743674023726" duration="451000" />
+      <workItem from="1743676724013" duration="2837000" />
+      <workItem from="1743697792234" duration="663000" />
+      <workItem from="1743742274414" duration="2432000" />
+      <workItem from="1743756594695" duration="663000" />
+      <workItem from="1743851373290" duration="931000" />
+      <workItem from="1744047319109" duration="4329000" />
+    </task>
+    <task id="LOCAL-00001" summary="About Us page Implementation">
+      <option name="closed" value="true" />
+      <created>1743852306039</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1743852306039</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="About Us page Implementation" />
+    <option name="LAST_COMMIT_MESSAGE" value="About Us page Implementation" />
+  </component>
+</project>
