@@ -71,6 +71,9 @@ export default function UserManagement() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [shareDialog, setShareDialog] = useState(false);
   const [newUserCredentials, setNewUserCredentials] = useState<{ name: string; password: string } | null>(null);
+  const [deleteUserDialog, setDeleteUserDialog] = useState(false);
+  const [pendingDeleteUserId, setPendingDeleteUserId] = useState<string | null>(null);
+  const [bulkDeleteDialog, setBulkDeleteDialog] = useState(false);
   const { data: session } = useSession();
 
   // Authentication and user role check
@@ -91,10 +94,6 @@ export default function UserManagement() {
       role: 'MODERATOR',
     },
   });
-
- 
-
-
 
   const handleSort = (column: string) => {
     if (sortColumn === column) {
@@ -153,42 +152,46 @@ export default function UserManagement() {
       toast.error('Only administrators can delete users');
       return;
     }
-
-    const confirmed = window.confirm('Are you sure you want to delete this user?');
-    if (confirmed) {
-      const success = await deleteUser(userId);
-      if (success) {
-        refetch(); // Refresh the users list
-      }
+    const result = await deleteUser(userId);
+    if (result) {
+      refetch();
     }
   };
-  const handleBulkDelete = async () => {
+
+  // New function to confirm single deletion from dialog
+  const confirmDelete = async () => {
+    if (pendingDeleteUserId) {
+      await handleDelete(pendingDeleteUserId);
+      setPendingDeleteUserId(null);
+      setDeleteUserDialog(false);
+    }
+  };
+
+  const handleBulkDelete = () => {
     if (!isAdmin) {
       toast.error('Only administrators can delete users');
       return;
     }
+    setBulkDeleteDialog(true);
+  };
 
-    const confirmed = window.confirm('Are you sure you want to delete these users?');
-    if (!confirmed) return;
-
+  // New function to confirm bulk deletion from dialog
+  const confirmBulkDelete = async () => {
     let success = true;
-
-    // Delete users one by one
     for (const userId of selectedUsers) {
       const result = await deleteUser(userId);
       if (!result) {
         success = false;
       }
     }
-
     if (success) {
       toast.success('Selected users deleted successfully');
     } else {
       toast.error('Some users could not be deleted');
     }
-
     setSelectedUsers([]);
-    refetch(); // Refresh the users list
+    refetch();
+    setBulkDeleteDialog(false);
   };
 
   const handleBulkRoleUpdate = async (role: string) => {
@@ -345,7 +348,10 @@ password: ${newUserCredentials.password}`;
                       size="sm"
                       variant="destructive"
                       disabled={!isAdmin}
-                      onClick={() => handleDelete(user.user_id)}
+                      onClick={() => {
+                        setPendingDeleteUserId(user.user_id);
+                        setDeleteUserDialog(true);
+                      }}
                     >
                       Delete
                     </Button>
@@ -468,7 +474,7 @@ password: ${newUserCredentials.password}`;
                   <FormItem>
                     <FormLabel>Password (leave blank to keep current)</FormLabel>
                     <FormControl>
-                      <Input type="password" {...field} />
+                      <Input type="text" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -554,6 +560,62 @@ password: ${newUserCredentials.password}` : ''}
               onClick={() => setShareDialog(false)}
             >
               Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Single Delete Confirmation Dialog */}
+      <Dialog open={deleteUserDialog} onOpenChange={setDeleteUserDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm Delete</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this user?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setDeleteUserDialog(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={confirmDelete}
+            >
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Bulk Delete Confirmation Dialog */}
+      <Dialog open={bulkDeleteDialog} onOpenChange={setBulkDeleteDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm Bulk Delete</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete selected users?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setBulkDeleteDialog(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={confirmBulkDelete}
+            >
+              Delete
             </Button>
           </DialogFooter>
         </DialogContent>
