@@ -16,8 +16,10 @@ import { useEffect, useState } from 'react';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { EmptyState } from '@/components/ui/empty-state';
+import { AlertCircle, FileX2, Inbox, RefreshCcw } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { AlertCircle, FileX2, Inbox } from 'lucide-react';
+import BulkApproveDialog from '@/components/dialogs/BulkApproveDialog';
 
 const projectStatuses = ['IDEA', 'MVP', 'DEPLOYED', 'STARTUP'];
 
@@ -26,10 +28,12 @@ export default function ProjectManagement() {
   const [approveDialog, setApproveDialog] = useState(false);
   const [rejectDialog, setRejectDialog] = useState(false);
   const [detailsDialog, setDetailsDialog] = useState(false);
+  const [bulkApproveDialog, setBulkApproveDialog] = useState(false);
   const [currentProject, setCurrentProject] = useState<any>(null);
   const [currentTab, setCurrentTab] = useState<'pending' | 'approved' | 'rejected'>('pending');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [lastFetchedTime, setLastFetchedTime] = useState<string>('');
 
   const {
     projects: pendingProjects,
@@ -54,11 +58,15 @@ export default function ProjectManagement() {
     isEmpty: isRejectedEmpty,
     refresh: refreshRejected,
   } = useGetProjectsByApprovalStatus<RejectedProject>(ProjectApprovalStatus.REJECTED);
-
   // Reset selected projects when changing tabs
   useEffect(() => {
     setSelectedProjects([]);
   }, [currentTab]);
+
+  // Initialize lastFetchedTime on client-side only
+  useEffect(() => {
+    setLastFetchedTime(new Date().toLocaleTimeString());
+  }, []);
 
   const handleSelectProject = (projectId: number) => {
     setSelectedProjects(prev => {
@@ -228,14 +236,34 @@ export default function ProjectManagement() {
           <TabsTrigger value="approved">Approved</TabsTrigger>
           <TabsTrigger value="rejected">Rejected</TabsTrigger>
         </TabsList>
-
-        <div className="my-4 flex flex-wrap gap-4">
+        <div className="my-4 flex flex-wrap gap-4 justify-between">
           <Input
             placeholder="Search projects..."
             className="max-w-xs"
           />
-      
-         
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              onClick={() => {
+                if (currentTab === 'pending') refreshPending();
+                if (currentTab === 'approved') refreshApproved();
+                if (currentTab === 'rejected') refreshRejected();
+                setLastFetchedTime(new Date().toLocaleTimeString());
+              }}
+            >Last Fetched: {lastFetchedTime}
+              <RefreshCcw />
+            </Button>
+
+            {currentTab === 'pending' && selectedProjects.length > 0 && (
+              <Button
+                onClick={() => setBulkApproveDialog(true)}
+                variant="default"
+              >
+                Approve All ({selectedProjects.length})
+              </Button>
+            )}
+          </div>
+
         </div>
 
         {renderContent()}
@@ -256,14 +284,21 @@ export default function ProjectManagement() {
           projectID={currentProject.id}
           onApproved={refreshPending}
         />
-      )}
-
-      {rejectDialog && currentProject && (
+      )}      {rejectDialog && currentProject && (
         <RejectDialog
           open={rejectDialog}
           onOpenChange={setRejectDialog}
           project={currentProject}
           onRejected={refreshPending}
+        />
+      )}
+
+      {bulkApproveDialog && selectedProjects.length > 0 && (
+        <BulkApproveDialog
+          open={bulkApproveDialog}
+          onOpenChange={setBulkApproveDialog}
+          projectIds={selectedProjects}
+          onApproved={refreshPending}
         />
       )}
     </div>
