@@ -13,6 +13,7 @@ import { EffectCoverflow, Pagination, Navigation, Autoplay } from "swiper/module
 import { Button } from "../ui/button"
 import { useGetFeaturedProjects } from "@/hooks/project/useGetFeaturedProjects"
 import Link from "next/link"
+import Image from "next/image"
 
 export default function Featured() {
   const { featuredProjects, isLoading, error } = useGetFeaturedProjects();
@@ -114,7 +115,9 @@ export default function Featured() {
                         </span>
                       )}
                       {project.coverImage && (
-                        <img 
+                        <Image
+                          width={300}
+                          height={200}
                           src={project.coverImage} 
                           alt={project.title}
                           className="w-full h-full object-cover"

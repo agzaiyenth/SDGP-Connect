@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 interface HeroSectionProps {
@@ -10,7 +11,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <div className="relative w-full h-[70vh] min-h-[500px]">
       {
-        <img
+        <Image
+          fill
           src={coverImage || "https://picsum.photos/800/450?random=6"}
           alt="Project Cover"
           className="w-full h-full object-cover"
