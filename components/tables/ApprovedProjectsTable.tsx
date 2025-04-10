@@ -48,7 +48,13 @@ export function ApprovedProjectsTable({
                 />
               </TableCell>
               <TableCell>{project.approvedBy}</TableCell>
-              <TableCell>{project.approvedAt}</TableCell>
+                <TableCell>
+                  {new Date(project.approvedAt).toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  })}
+                </TableCell>
               <TableCell>
                 <Button size="sm" onClick={() => onViewDetails(project)}>
                   View Details

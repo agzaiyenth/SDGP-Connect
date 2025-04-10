@@ -11,12 +11,12 @@ export function useToggleProjectFeature(options?: UseToggleProjectFeatureOptions
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const toggleFeature = async (projectId: string, featured: boolean) => {
+  const toggleFeature = async (projectId: number, featured: boolean) => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await axios.post('/api/projects/feature', {
+      const response = await axios.post('/api/admin/projects/feature', {
         projectId: String(projectId),
         featured
       });
