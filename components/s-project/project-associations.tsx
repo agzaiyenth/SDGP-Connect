@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { AssociationType } from "@prisma/client";
 import ProjectTypeCard from "../project-type-card";
 import TechCard from "../techcard";
+import Image from "next/image";
 
 interface SDGSectionProps {
     associations: IProjectAssociation[];
@@ -44,7 +45,7 @@ export const ProjectAssociation: React.FC<SDGSectionProps> = ({
                 
                 return (
                   <div key={association.id} className="flex justify-between space-x-4 border border-primary/10 rounded-lg p-4">
-                    <img src={sdgGoal.icon} alt={sdgGoal.name} className="h-12 rounded-xs" />
+                    <Image src={sdgGoal.icon} alt={sdgGoal.name} className="h-12 rounded-xs" width={48} height={48} />
                     <div className="space-y-1">
                       <h4 className="text-sm font-semibold">{sdgGoal.name.replace(/_/g, ' ')}</h4>
                       <p className="text-sm">

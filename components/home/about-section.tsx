@@ -1,7 +1,7 @@
 import { Hero7 } from "../modern-hero";
 
 
-const demoData = {
+const Data = {
   heading: "More than Just an academic module",
   description:
     "SDGP Module has shaped the academic landscape by providing students with a unique opportunity to engage with real-world challenges. This module not only enhances their academic experience but also equips them with the skills and knowledge needed to make a positive impact in society.",
@@ -13,7 +13,7 @@ const demoData = {
     count: 200,
     avatars: [
       {
-        src: "/Lexi/icon.png",
+        src: "/home/about-logo/lexi.png",
         alt: "Avatar 1",
       },
       {
@@ -37,7 +37,7 @@ const demoData = {
 };
 
 function About() {
-  return <Hero7 {...demoData} />;
+  return <Hero7 {...Data} />;
 }
 
 export { About };

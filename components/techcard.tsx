@@ -1,6 +1,7 @@
 import React from 'react';
 import { IProjectAssociation } from "@/types/project/type";
 import { techStackOptions } from "@/types/project/mapping";
+import { Button } from './ui/button';
 
 interface TechCardProps {
   techStacks: IProjectAssociation[];
@@ -20,13 +21,13 @@ const TechCard: React.FC<TechCardProps> = ({ techStacks }) => {
           const IconComponent = techStack.icon;
           
           return (
-            <button 
+            <Button 
               key={tech.id} 
               className="cursor-pointer text-zinc-200 flex gap-2 items-center bg-black px-4 py-2 rounded-lg font-medium text-sm hover:bg-[#111] transition-all ease-in duration-200"
             >
               <IconComponent className="w-5 h-5" />
               {techStack.label}
-            </button>
+            </Button>
           );
         })
       ) : (
