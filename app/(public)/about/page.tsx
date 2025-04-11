@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import React from 'react';
 
 interface Props {
@@ -177,9 +178,9 @@ const Page: React.FC<Props> = (props) => {
                     <p className="text-gray-400 mb-10 text-lg">
                         Dare to shape the unseen? Join us in crafting a legacy that echoes through the infinite.
                     </p>
-                    <button className="px-8 py-3 bg-white text-black rounded-full font-semibold hover:bg-gray-200 transform hover:scale-110 transition-all duration-300">
+                    <Button className="px-8 py-3 bg-white text-black rounded-full font-semibold hover:bg-gray-200 transform hover:scale-110 transition-all duration-300">
                         More Details Of This Journey
-                    </button>
+                    </Button>
                 </div>
             </section>
         </div>

@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
 import { Linkedin } from 'lucide-react'
 import Link from 'next/link'
 import { IProjectSocialLink, IProjectTeam } from '@/types/project/type'
+import Image from 'next/image'
 
 interface Props {
     teamEmail?: string
@@ -40,7 +41,7 @@ const Teamandsocial = ({ teamEmail, teamPhone, teamMembers, teamSocials }: Props
                 <div className="grid gap-4 sm:grid-cols-6 mt-5">
                     {/* loop through the team members */}
                     <div className="border rounded-lg p-4 flex flex-col items-center">
-                        <img src="https://picsum.photos/1920/1080" alt="John Doe" className="w-20 h-20 rounded-full mb-4" />
+                        <Image src="https://picsum.photos/1920/1080" alt="John Doe" className="w-20 h-20 rounded-full mb-4" width={80} height={80} />
                         <h3 className="text-xl font-bold">John Doe</h3>
                         <Link
                             href="https://linkedin.com/in/janesmith"
@@ -54,7 +55,7 @@ const Teamandsocial = ({ teamEmail, teamPhone, teamMembers, teamSocials }: Props
                     </div>
 
                     <div className="border rounded-lg p-4 flex flex-col items-center">
-                        <img src="https://picsum.photos/1920/1080" alt="Jane Smith" className="w-20 h-20 rounded-full mb-4" />
+                        <Image src="https://picsum.photos/1920/1080" alt="Jane Smith" className="w-20 h-20 rounded-full mb-4" width={80} height={80} />
                         <h3 className="text-xl font-bold">Jane Smith</h3>
                         <Link
                             href="https://linkedin.com/in/janesmith"
