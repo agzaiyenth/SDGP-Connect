@@ -323,7 +323,7 @@ export default function Contact() {
                             <FormLabel>Project Description</FormLabel>
                             <FormControl>
                               <Textarea
-                                placeholder="Briefly describe your project, its purpose, and key features..."
+                                placeholder="Briefly describe your issue/ Reason to contact us..."
                                 className="min-h-24 resize-none bg-gray-800 border-gray-700"
                                 {...field}
                               />
@@ -333,30 +333,6 @@ export default function Contact() {
                         )}
                       />
 
-                      <FormField
-                        control={form.control}
-                        name="githubLink"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>
-                              GitHub Repository <span className="text-gray-400">(Optional)</span>
-                            </FormLabel>
-                            <FormControl>
-                              <div className="relative">
-                                <span className="absolute left-3 top-2.5 text-gray-400">
-                                  <Github className="size-4" />
-                                </span>
-                                <Input
-                                  placeholder="https://github.com/username/repo"
-                                  {...field}
-                                  className="pl-10 bg-gray-800 border-gray-700"
-                                />
-                              </div>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
 
                       <FormField
                         control={form.control}
@@ -376,14 +352,7 @@ export default function Contact() {
                     </div>
 
                     <CardFooter className="flex w-full flex-col justify-end space-y-3 p-0 pt-2">
-                      <Alert className="mb-4 border-[#1e3a8a]/10 bg-gray-800">
-                        <CheckCircle2 className="size-4 text-[#3b82f6]" />
-                        <AlertTitle className="ml-2 text-[#3b82f6]">Showcase Promise</AlertTitle>
-                        <AlertDescription className="ml-6 text-sm text-gray-400">
-                          Selected projects will be featured on our platform and may receive opportunities for further
-                          development and recognition.
-                        </AlertDescription>
-                      </Alert>
+                      
 
                       <Button
                         type="submit"
