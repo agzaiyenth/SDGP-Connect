@@ -5,10 +5,10 @@ import Image from 'next/image';
 
 const images = [
   'https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=2069&auto=format&fit=crop',
-  '/Projects/2.png',
+  '/assets/2.jpg',
   '/Lexi/1.jpg',
-  '/Projects/1.PNG',
-  'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?q=80&w=2013&auto=format&fit=crop',
+  '/assets/1.jpg',
+  '/assets/3.jpg',
 ];
 
 export default function Carousel() {
