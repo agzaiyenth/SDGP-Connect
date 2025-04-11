@@ -48,10 +48,7 @@ export function AboutSection() {
                 valuable time.
               </p>
 
-              <Button variant="outline" className="justify-between group border-zinc-800 hover:bg-zinc-800">
-                Discover How
-                <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
+
             </div>
 
             {/* Middle Column */}
@@ -91,10 +88,7 @@ export function AboutSection() {
                 digital environment.
               </p>
 
-              <Button variant="outline" className="justify-between group border-zinc-800 hover:bg-zinc-800">
-                Uncover Integrations
-                <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
+
             </div>
           </div>
         </div>
