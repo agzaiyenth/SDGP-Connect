@@ -71,7 +71,7 @@
     "remark-breaks": "^4.0.0",
     "remark-gfm": "^4.0.1",
     "select": "^1.1.2",
-    "sonner": "^2.0.2",
+    "sonner": "^2.0.3",
     "swiper": "^11.2.6",
     "tailwind-merge": "^3.0.2",
     "tailwind-variants": "^1.0.0",

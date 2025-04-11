@@ -1,16 +1,5 @@
-import React from 'react'
+import Contact from "@/components/contact/contact-form"
 
-interface Props {
-    
+export default function Page() {
+  return <Contact />
 }
-
-const page = (props: Props) => {
-    return (
-        <div>
-            
-            <h1>Contact Us</h1>
-        </div>
-    )
-}
-
-export default page
