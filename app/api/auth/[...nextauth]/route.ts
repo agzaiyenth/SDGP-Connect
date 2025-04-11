@@ -6,6 +6,10 @@ import { prisma } from "@/prisma/prismaClient";
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
+  pages: {
+    signIn: "/login",
+    error: "/login",
+  },
   providers: [
     CredentialsProvider({
       name: "Credentials",
