@@ -314,7 +314,7 @@ export default function Contact() {
                         name="message"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Project Description</FormLabel>
+                            <FormLabel>Your Message</FormLabel>
                             <FormControl>
                               <Textarea
                                 placeholder="Briefly describe your issue/ Reason to contact us..."
@@ -361,7 +361,7 @@ export default function Contact() {
                           </>
                         ) : (
                           <>
-                            Submit Project <ArrowRight className="ml-2 size-4" />
+                            Send Message <ArrowRight className="ml-2 size-4" />
                           </>
                         )}
                       </Button>
