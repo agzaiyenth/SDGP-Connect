@@ -94,9 +94,9 @@ export default function Contact() {
   }
 
   return (
-    <section className="relative py-24 md:py-32 bg-black text-white">
-      <div className="absolute inset-0 bg-[url('/placeholder.svg?height=500&width=1000')] bg-fixed bg-center opacity-5"></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-black/95 to-black/90"></div>
+    <section className="relative py-24 md:py-32 pl-32 bg-[#0c0a09] text-white">
+      <div className="absolute inset-0 bg-fixed bg-center opacity-5"></div>
+      <div className="absolute inset-0 bg-[#0c0a09]"></div>
 
       {/* Dark blue animated gradient */}
       <div className="absolute inset-0 overflow-hidden">
@@ -119,42 +119,9 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Smaller Website Creation Card */}
-          <div className="mb-8">
-            <Card className="border-gray-800 bg-gray-900/40 backdrop-blur-sm shadow-[0_0_25px_-15px_rgba(30,58,138,0.3)]">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="flex size-8 items-center justify-center rounded-full bg-[#1e3a8a]/10">
-                    <Code className="size-4 text-[#3b82f6]" />
-                  </div>
-                  <h3 className="text-lg font-medium">Need a Similar Website?</h3>
-                </div>
-                <p className="text-sm text-gray-400 mb-4">
-                  We can create custom project showcase platforms for educational institutions.
-                </p>
-                <Link href="https://example.com/contact" target="_blank">
-                  <Button className="w-full bg-[#1e3a8a] hover:bg-[#1e3a8a]/90 text-white">
-                    Learn More <ExternalLink className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="space-y-4 flex-grow">
-            <p className="text-lg font-semibold">Featured Project Categories:</p>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center space-x-3 bg-gray-900/50 p-3 rounded-lg border border-gray-800">
-                <Code className="size-5 text-[#3b82f6]" />
-                <span>Software Development</span>
-              </div>
-              <div className="flex items-center space-x-3 bg-gray-900/50 p-3 rounded-lg border border-gray-800">
-                <Github className="size-5 text-[#3b82f6]" />
-                <span>Open Source Projects</span>
-              </div>
-            </div>
-
-            <div className="mt-8 space-y-4">
+          
+          
+          <div className="mb-8 space-y-4">
               <p className="text-lg font-semibold">Why Showcase Your Project?</p>
               <div className="grid gap-3">
                 <div className="flex items-center space-x-3">
@@ -183,6 +150,40 @@ export default function Contact() {
                 </div>
               </div>
             </div>
+          <div className="space-y-4 flex-grow">
+            <p className="text-lg font-semibold">Featured Project Categories:</p>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex items-center space-x-3 bg-gray-900/50 p-3 rounded-lg border border-gray-800">
+                <Code className="size-5 text-[#3b82f6]" />
+                <span>Software Development</span>
+              </div>
+              <div className="flex items-center space-x-3 bg-gray-900/50 p-3 rounded-lg border border-gray-800">
+                <Github className="size-5 text-[#3b82f6]" />
+                <span>Open Source Projects</span>
+              </div>
+            </div>
+
+            
+            {/* Smaller Website Creation Card */}
+         
+            <Card className="border-gray-800 bg-gray-900/40 backdrop-blur-sm shadow-[0_0_25px_-15px_rgba(30,58,138,0.3)]">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="flex size-8 items-center justify-center rounded-full bg-[#1e3a8a]/10">
+                    <Code className="size-4 text-[#3b82f6]" />
+                  </div>
+                  <h3 className="text-lg font-medium">Need a Similar Website?</h3>
+                </div>
+                <p className="text-sm text-gray-400 mb-4">
+                  We can create custom project showcase platforms for educational institutions.
+                </p>
+                <Link href="https://psycodelabs.lk" target="_blank">
+                  <Button className="w-full bg-[#1e3a8a] hover:bg-[#1e3a8a]/90 text-white">
+                    Learn More <ExternalLink className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
           </div>
         </div>
 
@@ -256,7 +257,7 @@ export default function Contact() {
                                     <GraduationCap className="size-4" />
                                   </span>
                                   <Input
-                                    placeholder="SD12345"
+                                    placeholder="20230746"
                                     {...field}
                                     className="pl-10 bg-gray-800 border-gray-700"
                                   />
@@ -280,7 +281,7 @@ export default function Contact() {
                                   </span>
                                   <Input
                                     type="email"
-                                    placeholder="you@example.com"
+                                    placeholder="yourname@iit.ac.lk"
                                     {...field}
                                     className="pl-10 bg-gray-800 border-gray-700"
                                   />
