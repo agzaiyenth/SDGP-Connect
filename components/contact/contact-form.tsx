@@ -40,7 +40,7 @@ const formSchema = z.object({
   institution: z.string().min(1, { message: "Institution name is required" }),
   projectTitle: z.string().min(3, { message: "Project title is required" }),
   projectCategory: z.string().min(1, { message: "Please select a project category" }),
-  projectDescription: z
+  message: z
     .string()
     .min(20, { message: "Please provide a brief description of your project (min 20 characters)" }),
   githubLink: z.string().url({ message: "Please enter a valid URL" }).optional().or(z.literal("")),
@@ -63,7 +63,6 @@ export default function Contact() {
       email: "",
       projectTitle: "",
       message: "",
-      githubLink: "",
       agreeTerms: false,
     },
   })
