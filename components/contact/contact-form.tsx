@@ -189,7 +189,7 @@ export default function Contact() {
               </div>
             </div>
             <CardHeader className="pb-2 pt-16">
-              <div className="flex flex-col items-center space-y-1.5 text-center">
+              <div className="flex flex-col items-center space-y-1.5 text-center w-max -ml-24">
                 <h2 className="text-2xl font-semibold">SDGP Connect</h2>
                 <p className="text-sm text-gray-400">Submit your project for showcase</p>
               </div>
