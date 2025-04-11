@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { ProjectSubmissionSchema } from '@/validations/submit_project';
-import useUploadImageToBlob from '../useUploadImageToBlob';
+import useUploadImageToBlob from '../azure/useUploadImageToBlob';
 import { SubmitProjectResponse } from '@/types/project/response';
 
 export const useSubmitProject = () => {
@@ -37,6 +37,7 @@ export const useSubmitProject = () => {
     
     return result;
   };
+
   const submitProject = async (data: ProjectSubmissionSchema): Promise<SubmitProjectResponse> => {
     setError(null);
     setIsSubmitting(true);
@@ -45,7 +46,28 @@ export const useSubmitProject = () => {
     let submissionData = { ...data };
     
     try {
-          
+      // Handle image uploads - Cover Image
+      if (data.metadata.cover_image && data.metadata.cover_image instanceof File) {
+        try {
+          const coverImageUrl = await uploadImage(data.metadata.cover_image);
+          submissionData.metadata.cover_image = coverImageUrl;
+        } catch (err) {
+          console.error('Error uploading cover image:', err);
+          submissionData.metadata.cover_image = null;
+        }
+      }
+      
+      // Handle image uploads - Logo
+      if (data.metadata.logo && data.metadata.logo instanceof File) {
+        try {
+          const logoUrl = await uploadImage(data.metadata.logo);
+          submissionData.metadata.logo = logoUrl;
+        } catch (err) {
+          console.error('Error uploading logo:', err);
+          submissionData.metadata.logo = null;
+        }
+      }
+      
       // Handle team member profile images
       if (data.team && data.team.length > 0) {
         const updatedTeam = await Promise.all(
@@ -83,7 +105,7 @@ export const useSubmitProject = () => {
       // Final sanitization to ensure data is JSON serializable
       const sanitizedData = sanitizeSubmissionData(submissionData);
       
-      try {
+      try {``
         // Submit to API using axios
         const response = await axios.post<SubmitProjectResponse>('/api/projects/submit', sanitizedData);
         setIsSubmitting(false);
