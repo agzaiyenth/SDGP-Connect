@@ -1,6 +1,7 @@
-import React from 'react';
+import Hero from '@/components/about/hero';
 import ModuleTeam from '@/components/about/moduleTeam';
-import ImpactSection from "@/components/about/impact-section";
+
+import React from 'react';
 
 interface Props {
     
@@ -10,6 +11,7 @@ const Page: React.FC<Props> = (props) => {
     
     return (
         <div className="">
+            <Hero/>
            <ModuleTeam/>
                    
           

@@ -1,6 +1,5 @@
 import React from 'react';
 import ModuleTeam from '@/components/about/moduleTeam';
-import ImpactSection from "@/components/about/impact-section";
 
 interface Props {
     
@@ -95,7 +94,6 @@ const Page: React.FC<Props> = (props) => {
                     <ModuleTeam/>
               
             </section>
-            <ImpactSection/>
 
             {/* CTA Section */}
             <section className="py-20 px-6 bg-black text-center border-t border-gray-900">
