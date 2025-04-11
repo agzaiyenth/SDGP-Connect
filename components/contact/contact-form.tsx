@@ -293,38 +293,17 @@ export default function Contact() {
                         />
                       </div>
 
-                      <FormField
-                        control={form.control}
-                        name="institution"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Institution</FormLabel>
-                            <FormControl>
-                              <div className="relative">
-                                <span className="absolute left-3 top-2.5 text-gray-400">
-                                  <Globe className="size-4" />
-                                </span>
-                                <Input
-                                  placeholder="Your University"
-                                  {...field}
-                                  className="pl-10 bg-gray-800 border-gray-700"
-                                />
-                              </div>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                      
 
                       <FormField
                         control={form.control}
                         name="projectTitle"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Project Title</FormLabel>
+                            <FormLabel>Project Name</FormLabel>
                             <FormControl>
                               <Input
-                                placeholder="Enter your project title"
+                                placeholder="LEXi"
                                 {...field}
                                 className="bg-gray-800 border-gray-700"
                               />
@@ -334,36 +313,11 @@ export default function Contact() {
                         )}
                       />
 
-                      <FormField
-                        control={form.control}
-                        name="projectCategory"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Project Category</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                              <FormControl>
-                                <SelectTrigger className="bg-gray-800 border-gray-700">
-                                  <SelectValue placeholder="Select category" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent className="bg-gray-800 border-gray-700">
-                                <SelectItem value="web">Web Development</SelectItem>
-                                <SelectItem value="mobile">Mobile App</SelectItem>
-                                <SelectItem value="ai">AI/Machine Learning</SelectItem>
-                                <SelectItem value="iot">IoT</SelectItem>
-                                <SelectItem value="game">Game Development</SelectItem>
-                                <SelectItem value="blockchain">Blockchain</SelectItem>
-                                <SelectItem value="other">Other</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                
 
                       <FormField
                         control={form.control}
-                        name="projectDescription"
+                        name="message"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Project Description</FormLabel>
