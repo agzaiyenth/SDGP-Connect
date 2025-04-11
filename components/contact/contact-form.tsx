@@ -37,13 +37,10 @@ const formSchema = z.object({
     }),
   studentId: z.string().min(5, { message: "Student ID is required" }),
   email: z.string().email({ message: "Please enter a valid email address" }),
-  institution: z.string().min(1, { message: "Institution name is required" }),
   projectTitle: z.string().min(3, { message: "Project title is required" }),
-  projectCategory: z.string().min(1, { message: "Please select a project category" }),
   message: z
     .string()
     .min(20, { message: "Please provide a brief description of your project (min 20 characters)" }),
-  githubLink: z.string().url({ message: "Please enter a valid URL" }).optional().or(z.literal("")),
   agreeTerms: z.boolean().refine((val) => val === true, { message: "You must agree to the terms and conditions" }),
 })
 
