@@ -1,4 +1,4 @@
-import { ArrowRight, Link, Zap } from "lucide-react"
+import { ArrowRight, Eye, Link, Target, Zap } from "lucide-react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 
@@ -37,8 +37,8 @@ export function AboutSection() {
             {/* Left Column */}
             <div className="flex flex-col p-6 border border-zinc-800 rounded-lg">
               <div className="inline-flex items-center space-x-2 mb-2">
-                <Zap size={18} className="text-white" />
-                <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">Boost Efficiency</span>
+                <Eye size={18} className="text-white" />
+                <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">Our Vision</span>
               </div>
 
               <h3 className="text-xl font-bold mb-3">Accelerated Workflows</h3>
@@ -80,8 +80,8 @@ export function AboutSection() {
             {/* Right Column */}
             <div className="flex flex-col p-6 border border-zinc-800 rounded-lg">
               <div className="inline-flex items-center space-x-2 mb-2">
-                <Link size={18} className="text-white" />
-                <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">Unified Ecosystem</span>
+                <Target size={18} className="text-white" />
+                <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">Our Mission</span>
               </div>
 
               <h3 className="text-xl font-bold mb-3">Boundless Connectivity</h3>
