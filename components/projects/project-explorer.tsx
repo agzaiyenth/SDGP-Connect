@@ -25,7 +25,7 @@ interface ProjectExplorerProps {
 export default function ProjectExplorer({ currentParams, onPageChange }: ProjectExplorerProps) {
     // Use the hook with the parameters passed down from the page component
     const { projects, isLoading, error, meta } = useProjects(currentParams);
-
+console.log("Projects:", projects); // Debugging line to check the projects data
     if (isLoading) return <Skeleton />;
     if (error) return <div>Error loading projects</div>;
 
@@ -168,10 +168,10 @@ export default function ProjectExplorer({ currentParams, onPageChange }: Project
                     >
                         <div className="relative aspect-video overflow-hidden"> {/* Added overflow-hidden */}
                             <Image
-                                src={project.coverImage || "/placeholder.svg"} // Provide a placeholder
-                                alt={project.title}
-                                fill // Use fill for responsiveness
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Add sizes prop
+                                src={project.coverImage || "https://placehold.co/600x400?text=NO+IMAGE"}
+                                alt={project.title || "No title available"}
+                                fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                             />
                              {/* Display status badge if status exists */}

@@ -28,7 +28,6 @@ const ProjectSubmissionForm = () => {
   // Use our custom submission hook
   const { submitProject, isSubmitting, error } = useSubmitProject();
 
-
   const methods = useForm<ProjectSubmissionSchema>({
     resolver: zodResolver(projectSubmissionSchema),
     defaultValues: {
@@ -38,8 +37,8 @@ const ProjectSubmissionForm = () => {
         title: "",
         subtitle: "",
         website: "",
-        cover_image: null,
-        logo: null,
+        cover_image: "https://placehold.co/600x400/png?text=NO+IMAGE",
+        logo: "https://placehold.co/100/png",
       },
       projectDetails: {
         problem_statement: "",

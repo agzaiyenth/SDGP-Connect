@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { Globe2Icon, Share, Share2Icon } from "lucide-react";
 import Link from "next/link";
 import { Avatar, AvatarImage } from "../ui/avatar";
+import { AvatarFallback } from "@radix-ui/react-avatar";
 
 interface ProjectHeaderProps {
   title: string;
@@ -27,8 +28,11 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
   return (
     <div className="px-4 md:px-8 -mt-20 relative z-10">
       <div className="flex gap-2 items-center ">
-        <Avatar className="size-14 border">
+        <Avatar className="size-14 border bg-background flex items-center justify-center text-center">
           <AvatarImage src={logo} alt={title} />
+          <AvatarFallback className="flex items-center justify-center text-center text-white font-bold">
+           {logo ? "" : title.charAt(0).toUpperCase()}
+          </AvatarFallback>
         </Avatar>
         <h1 className="text-4xl md:text-6xl font-bold text-white mb-2 drop-shadow-lg">
           {title}

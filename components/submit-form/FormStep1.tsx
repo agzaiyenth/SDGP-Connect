@@ -13,28 +13,39 @@ const FormStep1 = () => {
   const { control, setValue } = useFormContext<ProjectSubmissionSchema>();
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, type: "cover_image" | "logo") => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: "cover_image" | "logo") => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setValue(`metadata.${type}`, file, { shouldValidate: true });
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (type === "cover_image") setPreviewUrl(reader.result as string);
-      if (type === "logo") setLogoPreviewUrl(reader.result as string);
-    };
-    reader.readAsDataURL(file);
+    try {
+      // For preview purposes only
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (type === "cover_image") setPreviewUrl(reader.result as string);
+        if (type === "logo") setLogoPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+      
+      // TODO: Upload the file to your storage service
+      // For now, we'll use a placeholder URL that matches the schema requirement
+      // Replace this with your actual file upload logic using your blob storage
+      const mockImageUrl = type === "logo" 
+        ? "https://placehold.co/100/png"
+        : "https://placehold.co/600x400/png?text=UPLOADED+IMAGE";
+        
+      // Set the URL string (not the File object)
+      setValue(`metadata.${type}`, mockImageUrl, { shouldValidate: true });
+    } catch (error) {
+      console.error(`Error uploading ${type}:`, error);
+    }
   };
-
   const clearImage = () => {
-    setValue("metadata.cover_image", null, { shouldValidate: true });
+    setValue("metadata.cover_image", "https://placehold.co/600x400/png?text=NO+IMAGE", { shouldValidate: true });
     setPreviewUrl(null);
   };
 
   const clearLogo = () => {
-    setValue("metadata.logo", null, { shouldValidate: true });
+    setValue("metadata.logo", "https://placehold.co/100/png", { shouldValidate: true });
     setLogoPreviewUrl(null);
   };
 
