@@ -1,6 +1,7 @@
 import { AboutSection } from '@/components/about/about';
 import Hero from '@/components/about/hero';
 import ModuleTeam from '@/components/about/moduleTeam';
+import StatsSection from '@/components/about/stats';
 
 import React from 'react';
 
@@ -14,6 +15,7 @@ const Page: React.FC<Props> = (props) => {
         <div className="">
             <Hero/>
             <AboutSection/>
+            <StatsSection/>
            <ModuleTeam/>
                    
           
