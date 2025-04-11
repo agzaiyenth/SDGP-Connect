@@ -15,9 +15,6 @@ import {
   Github,
   ExternalLink,
   Globe,
-  Laptop,
-  PenTool,
-  Zap,
 } from "lucide-react"
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -101,18 +98,18 @@ export default function Contact() {
       <div className="absolute inset-0 bg-[url('/placeholder.svg?height=500&width=1000')] bg-fixed bg-center opacity-5"></div>
       <div className="absolute inset-0 bg-gradient-to-b from-black via-black/95 to-black/90"></div>
 
-      {/* Ocean blue animated gradient */}
+      {/* Dark blue animated gradient */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -inset-[10px] opacity-10 blur-3xl">
-          <div className="absolute top-0 -left-40 h-[500px] w-[800px] rounded-full bg-gradient-to-r from-[#0a192f] to-[#0ea5e9] animate-pulse [animation-duration:8s]"></div>
-          <div className="absolute bottom-0 -right-40 h-[500px] w-[800px] rounded-full bg-gradient-to-r from-[#0ea5e9] to-[#0a192f] animate-pulse [animation-duration:10s] [animation-delay:1s]"></div>
+          <div className="absolute top-0 -left-40 h-[500px] w-[800px] rounded-full bg-gradient-to-r from-[#0a192f] to-[#1e3a8a] animate-pulse [animation-duration:8s]"></div>
+          <div className="absolute bottom-0 -right-40 h-[500px] w-[800px] rounded-full bg-gradient-to-r from-[#1e3a8a] to-[#0a192f] animate-pulse [animation-duration:10s] [animation-delay:1s]"></div>
         </div>
       </div>
 
       <div className="container grid w-full grid-cols-1 gap-x-8 lg:gap-x-16 overflow-hidden lg:grid-cols-2 relative z-10">
         <div className="w-full pb-10 md:pb-0 flex flex-col">
           <div className="space-y-6 mb-8">
-            <div className="inline-flex items-center rounded-full border border-[#0ea5e9]/20 bg-[#0ea5e9]/10 px-3 py-1 text-sm font-medium text-[#0ea5e9]">
+            <div className="inline-flex items-center rounded-full border border-[#1e3a8a]/20 bg-[#1e3a8a]/10 px-3 py-1 text-sm font-medium text-[#3b82f6]">
               SDGP Connect
             </div>
             <h1 className="text-4xl font-bold tracking-tight lg:text-5xl">Showcase Your Innovation</h1>
@@ -122,79 +119,78 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Website Creation Card - This is the main card on the left */}
-          <Card className="border-gray-800 bg-gray-900/40 backdrop-blur-sm shadow-[0_0_35px_-15px_rgba(14,165,233,0.3)] mb-8 flex-grow">
-            <CardHeader className="pb-4">
-              <h3 className="text-2xl font-semibold text-white flex items-center">
-                <Laptop className="mr-2 h-6 w-6 text-[#0ea5e9]" />
-                Need a Similar Website?
-              </h3>
-              <p className="text-gray-400">Let us create a custom platform for your institution or organization</p>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-black/30 p-4 rounded-lg border border-gray-800 flex flex-col">
-                  <div className="flex items-center mb-3">
-                    <div className="flex size-8 items-center justify-center rounded-full bg-[#0ea5e9]/10 mr-3">
-                      <PenTool className="size-4 text-[#0ea5e9]" />
-                    </div>
-                    <h4 className="font-medium">Custom Design</h4>
+          {/* Smaller Website Creation Card */}
+          <div className="mb-8">
+            <Card className="border-gray-800 bg-gray-900/40 backdrop-blur-sm shadow-[0_0_25px_-15px_rgba(30,58,138,0.3)]">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="flex size-8 items-center justify-center rounded-full bg-[#1e3a8a]/10">
+                    <Code className="size-4 text-[#3b82f6]" />
                   </div>
-                  <p className="text-sm text-gray-400">
-                    Tailored to match your brand identity and specific requirements
-                  </p>
+                  <h3 className="text-lg font-medium">Need a Similar Website?</h3>
                 </div>
-
-                <div className="bg-black/30 p-4 rounded-lg border border-gray-800 flex flex-col">
-                  <div className="flex items-center mb-3">
-                    <div className="flex size-8 items-center justify-center rounded-full bg-[#0ea5e9]/10 mr-3">
-                      <Zap className="size-4 text-[#0ea5e9]" />
-                    </div>
-                    <h4 className="font-medium">Fast Development</h4>
-                  </div>
-                  <p className="text-sm text-gray-400">Quick turnaround with modern technologies and best practices</p>
-                </div>
-
-                <div className="bg-black/30 p-4 rounded-lg border border-gray-800 flex flex-col">
-                  <div className="flex items-center mb-3">
-                    <div className="flex size-8 items-center justify-center rounded-full bg-[#0ea5e9]/10 mr-3">
-                      <Code className="size-4 text-[#0ea5e9]" />
-                    </div>
-                    <h4 className="font-medium">Project Showcase</h4>
-                  </div>
-                  <p className="text-sm text-gray-400">Feature student projects with advanced filtering and search</p>
-                </div>
-
-                <div className="bg-black/30 p-4 rounded-lg border border-gray-800 flex flex-col">
-                  <div className="flex items-center mb-3">
-                    <div className="flex size-8 items-center justify-center rounded-full bg-[#0ea5e9]/10 mr-3">
-                      <Globe className="size-4 text-[#0ea5e9]" />
-                    </div>
-                    <h4 className="font-medium">Fully Responsive</h4>
-                  </div>
-                  <p className="text-sm text-gray-400">Works perfectly on all devices from mobile to desktop</p>
-                </div>
-              </div>
-
-              <div className="pt-4">
+                <p className="text-sm text-gray-400 mb-4">
+                  We can create custom project showcase platforms for educational institutions.
+                </p>
                 <Link href="https://example.com/contact" target="_blank">
-                  <Button className="w-full bg-[#0ea5e9] hover:bg-[#0ea5e9]/90 text-white h-12 text-base">
-                    Get Your Custom Website <ExternalLink className="ml-2 h-4 w-4" />
+                  <Button className="w-full bg-[#1e3a8a] hover:bg-[#1e3a8a]/90 text-white">
+                    Learn More <ExternalLink className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
-                <p className="text-center text-sm text-gray-500 mt-3">
-                  Contact us today for a free consultation and quote
-                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="space-y-4 flex-grow">
+            <p className="text-lg font-semibold">Featured Project Categories:</p>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex items-center space-x-3 bg-gray-900/50 p-3 rounded-lg border border-gray-800">
+                <Code className="size-5 text-[#3b82f6]" />
+                <span>Software Development</span>
               </div>
-            </CardContent>
-          </Card>
+              <div className="flex items-center space-x-3 bg-gray-900/50 p-3 rounded-lg border border-gray-800">
+                <Github className="size-5 text-[#3b82f6]" />
+                <span>Open Source Projects</span>
+              </div>
+            </div>
+
+            <div className="mt-8 space-y-4">
+              <p className="text-lg font-semibold">Why Showcase Your Project?</p>
+              <div className="grid gap-3">
+                <div className="flex items-center space-x-3">
+                  <div className="flex size-6 items-center justify-center rounded-full bg-[#1e3a8a]/10">
+                    <CheckCircle2 className="size-3.5 text-[#3b82f6]" />
+                  </div>
+                  <p className="text-sm">Gain visibility among industry professionals</p>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="flex size-6 items-center justify-center rounded-full bg-[#1e3a8a]/10">
+                    <CheckCircle2 className="size-3.5 text-[#3b82f6]" />
+                  </div>
+                  <p className="text-sm">Connect with potential employers and collaborators</p>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="flex size-6 items-center justify-center rounded-full bg-[#1e3a8a]/10">
+                    <CheckCircle2 className="size-3.5 text-[#3b82f6]" />
+                  </div>
+                  <p className="text-sm">Receive feedback from experts in your field</p>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="flex size-6 items-center justify-center rounded-full bg-[#1e3a8a]/10">
+                    <CheckCircle2 className="size-3.5 text-[#3b82f6]" />
+                  </div>
+                  <p className="text-sm">Build your professional portfolio</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="flex w-full justify-center">
-          <Card className="relative flex w-full min-w-80 max-w-[30rem] flex-col items-center overflow-visible border-gray-800 bg-gray-900/80 shadow-[0_0_45px_-15px_rgba(14,165,233,0.3)] backdrop-blur-sm md:min-w-96">
-            <div className="absolute -top-12 flex h-24 w-24 items-center justify-center rounded-full bg-black border-4 border-gray-800 shadow-[0_0_30px_-5px_rgba(14,165,233,0.5)]">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#0ea5e9]/20">
-                <Code className="h-8 w-8 text-[#0ea5e9]" />
+          <Card className="relative flex w-full min-w-80 max-w-[30rem] flex-col items-center overflow-visible border-gray-800 bg-gray-900/80 shadow-[0_0_45px_-15px_rgba(30,58,138,0.3)] backdrop-blur-sm md:min-w-96">
+            <div className="absolute -top-12 flex h-24 w-24 items-center justify-center rounded-full bg-black border-4 border-gray-800 shadow-[0_0_30px_-5px_rgba(30,58,138,0.5)]">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#1e3a8a]/20">
+                <Code className="h-8 w-8 text-[#3b82f6]" />
               </div>
             </div>
             <CardHeader className="pb-2 pt-16">
@@ -206,8 +202,8 @@ export default function Contact() {
             <CardContent className="w-full p-6">
               {isSuccess ? (
                 <div className="flex flex-col items-center justify-center space-y-6 py-10 text-center">
-                  <div className="flex size-16 items-center justify-center rounded-full bg-[#0ea5e9]/10">
-                    <CheckCircle2 className="size-8 text-[#0ea5e9]" />
+                  <div className="flex size-16 items-center justify-center rounded-full bg-[#1e3a8a]/10">
+                    <CheckCircle2 className="size-8 text-[#3b82f6]" />
                   </div>
                   <div className="space-y-2">
                     <h3 className="text-xl font-semibold">Thank You!</h3>
@@ -425,9 +421,9 @@ export default function Contact() {
                     </div>
 
                     <CardFooter className="flex w-full flex-col justify-end space-y-3 p-0 pt-2">
-                      <Alert className="mb-4 border-[#0ea5e9]/10 bg-gray-800">
-                        <CheckCircle2 className="size-4 text-[#0ea5e9]" />
-                        <AlertTitle className="ml-2 text-[#0ea5e9]">Showcase Promise</AlertTitle>
+                      <Alert className="mb-4 border-[#1e3a8a]/10 bg-gray-800">
+                        <CheckCircle2 className="size-4 text-[#3b82f6]" />
+                        <AlertTitle className="ml-2 text-[#3b82f6]">Showcase Promise</AlertTitle>
                         <AlertDescription className="ml-6 text-sm text-gray-400">
                           Selected projects will be featured on our platform and may receive opportunities for further
                           development and recognition.
@@ -436,7 +432,7 @@ export default function Contact() {
 
                       <Button
                         type="submit"
-                        className="w-full bg-[#0ea5e9] hover:bg-[#0ea5e9]/90 text-white"
+                        className="w-full bg-[#1e3a8a] hover:bg-[#1e3a8a]/90 text-white"
                         size="lg"
                         disabled={isSubmitting}
                       >
@@ -453,11 +449,11 @@ export default function Contact() {
                       </Button>
                       <div className="text-xs text-gray-400">
                         By submitting this form, you agree to our{" "}
-                        <a href="#" className="text-[#0ea5e9] hover:underline">
+                        <a href="#" className="text-[#3b82f6] hover:underline">
                           terms of service
                         </a>{" "}
                         and{" "}
-                        <a href="#" className="text-[#0ea5e9] hover:underline">
+                        <a href="#" className="text-[#3b82f6] hover:underline">
                           privacy policy
                         </a>
                         .
