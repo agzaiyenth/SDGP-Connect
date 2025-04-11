@@ -26,7 +26,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Textarea } from "@/components/ui/textarea"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { useToast } from "@/hooks/use-toast"
+import { useToast } from "@/hooks/contact/use-toast"
 import { Checkbox } from "@/components/ui/checkbox"
 import Link from "next/link"
 
