@@ -7,6 +7,7 @@ import { SubmitProjectResponse } from '@/types/project/response';
 export const useSubmitProject = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<{[key: string]: number}>({});
   const { uploadImage, isLoading: isUploadingImages } = useUploadImageToBlob();
 
   // Helper to sanitize the submission data to ensure it's JSON serializable
@@ -38,74 +39,112 @@ export const useSubmitProject = () => {
     return result;
   };
 
+  /**
+   * Helper function to handle a single image upload
+   */
+  const handleImageUpload = async (
+    image: File | string | null | undefined,
+    identifier: string
+  ): Promise<string | null> => {
+    if (!image || typeof image === 'string') {
+      return image as string | null;
+    }
+    
+    if (!(image instanceof File)) {
+      return null;
+    }
+    
+    try {
+      setUploadProgress(prev => ({ ...prev, [identifier]: 0 }));
+      
+      // Track progress (if your uploadImage function supports progress tracking)
+      const updateProgress = (progress: number) => {
+        setUploadProgress(prev => ({ ...prev, [identifier]: progress }));
+      };
+      
+      const imageUrl = await uploadImage(image);
+      
+      setUploadProgress(prev => ({ ...prev, [identifier]: 100 }));
+      return imageUrl;
+    } catch (err) {
+      console.error(`Error uploading image (${identifier}):`, err);
+      setUploadProgress(prev => ({ ...prev, [identifier]: -1 })); // -1 indicates error
+      return null;
+    }
+  };
+
   const submitProject = async (data: ProjectSubmissionSchema): Promise<SubmitProjectResponse> => {
     setError(null);
     setIsSubmitting(true);
+    setUploadProgress({});
     
     // Clone the data to avoid modifying the original
-    let submissionData = { ...data };
+    let submissionData = JSON.parse(JSON.stringify(data));
     
     try {
-      // Handle image uploads - Cover Image
-      if (data.metadata.cover_image && data.metadata.cover_image instanceof File) {
-        try {
-          const coverImageUrl = await uploadImage(data.metadata.cover_image);
-          submissionData.metadata.cover_image = coverImageUrl;
-        } catch (err) {
-          console.error('Error uploading cover image:', err);
-          submissionData.metadata.cover_image = null;
-        }
+      // Create an array to store all image upload promises
+      const uploadPromises: Promise<void>[] = [];
+      
+      // Handle cover image
+      if (data.metadata?.cover_image && data.metadata.cover_image instanceof File) {
+        const coverImagePromise = handleImageUpload(data.metadata.cover_image, 'cover_image')
+          .then(url => {
+            submissionData.metadata.cover_image = url;
+          });
+        uploadPromises.push(coverImagePromise);
       }
       
-      // Handle image uploads - Logo
-      if (data.metadata.logo && data.metadata.logo instanceof File) {
-        try {
-          const logoUrl = await uploadImage(data.metadata.logo);
-          submissionData.metadata.logo = logoUrl;
-        } catch (err) {
-          console.error('Error uploading logo:', err);
-          submissionData.metadata.logo = null;
-        }
+      // Handle logo image
+      if (data.metadata?.logo && data.metadata.logo instanceof File) {
+        const logoPromise = handleImageUpload(data.metadata.logo, 'logo')
+          .then(url => {
+            submissionData.metadata.logo = url;
+          });
+        uploadPromises.push(logoPromise);
       }
       
       // Handle team member profile images
       if (data.team && data.team.length > 0) {
-        const updatedTeam = await Promise.all(
-          data.team.map(async (member:any) => {
-            if (member.profile_image && member.profile_image instanceof File) {
-              try {
-                const profileImageUrl = await uploadImage(member.profile_image);
-                return { ...member, profile_image: profileImageUrl };
-              } catch (err) {
-                console.error('Error uploading profile image:', err);
-                return { ...member, profile_image: null };
-              }
-            }
-            return member;
-          })
-        );
-        
-        submissionData.team = updatedTeam;
-      }
-      
-      // Handle slides content - ensure it's properly formatted
-      if (submissionData.slides && submissionData.slides.length > 0) {
-        submissionData.slides = submissionData.slides.map((slide: any) => {
-          // If slides_content is a DataURL (likely from an image), extract just the URL for storage
-          let processedContent = slide.slides_content;
-          if (typeof slide.slides_content === 'string' && 
-              slide.slides_content.length > 65535) {
-            // Truncate if too long for database
-            processedContent = slide.slides_content.substring(0, 65535);
+        data.team.forEach((member: any, index: number) => {
+          if (member.profile_image && member.profile_image instanceof File) {
+            const memberImagePromise = handleImageUpload(
+              member.profile_image, 
+              `team_member_${index}`
+            ).then(url => {
+              submissionData.team[index].profile_image = url;
+            });
+            uploadPromises.push(memberImagePromise);
           }
-          return { ...slide, slides_content: processedContent };
         });
       }
+      
+      // Handle slides that might contain images
+      if (data.slides && data.slides.length > 0) {
+        data.slides.forEach((slide: any, index: number) => {
+          // Check if slides_content is a File (for image slides)
+          if (slide.slides_content instanceof File) {
+            const slideImagePromise = handleImageUpload(
+              slide.slides_content,
+              `slide_${index}`
+            ).then(url => {
+              submissionData.slides[index].slides_content = url;
+            });
+            uploadPromises.push(slideImagePromise);
+          } else if (typeof slide.slides_content === 'string' && 
+                    slide.slides_content.length > 65535) {
+            // Truncate if too long for database
+            submissionData.slides[index].slides_content = slide.slides_content.substring(0, 65535);
+          }
+        });
+      }
+      
+      // Wait for all image uploads to complete
+      await Promise.all(uploadPromises);
       
       // Final sanitization to ensure data is JSON serializable
       const sanitizedData = sanitizeSubmissionData(submissionData);
       
-      try {``
+      try {
         // Submit to API using axios
         const response = await axios.post<SubmitProjectResponse>('/api/projects/submit', sanitizedData);
         setIsSubmitting(false);
@@ -143,6 +182,7 @@ export const useSubmitProject = () => {
   return {
     submitProject,
     isSubmitting: isSubmitting || isUploadingImages,
+    uploadProgress,
     error
   };
 };
