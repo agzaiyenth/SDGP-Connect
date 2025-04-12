@@ -52,7 +52,7 @@ export default function Contact() {
   }
 
   return (
-    <section className="relative min-h-screen overflow-x-hidden overflow-y-auto py-24 md:py-32 px-4 md:px-32 bg-[#0a0a0a] text-white">
+    <section className="relative min-h-screen overflow-x-hidden overflow-y-auto px-auto px-10 bg-[#0a0a0a] text-white">
       <div className="absolute inset-0 bg-[#0a0a0a] z-0" />
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 container">
         <div className="space-y-6 mt-32 md:mt-12">

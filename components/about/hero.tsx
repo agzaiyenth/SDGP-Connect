@@ -17,7 +17,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="p-10 relative overflow-hidden py-32 mt-28 md:mt-0">
+    <section className="px-10 relative overflow-hidden  mt-28 md:mt-0 md:py-32">
       {/* Decorative background elements */}
       <div className="absolute inset-0 -z-10 " />
 
@@ -84,9 +84,9 @@ export default function Hero() {
               style={{ maxHeight: "480px" }}
             />
             <div className="absolute bottom-4 left-4 rounded-lg bg-background p-4 shadow">
-              <p className="font-semibold">Taking Projects</p>
+              <p className="font-semibold">Dialog Innovation</p>
               <p className="text-sm text-muted-foreground">
-              To the Next Level
+              Winner 2024
               </p>
             </div>
             </div>
