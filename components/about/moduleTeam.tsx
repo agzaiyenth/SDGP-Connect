@@ -14,10 +14,11 @@ const teamMembers = [
     description:
       "Managing Director @ Andro Dollar Network (PVT) LTD | Tech YouTuber | Software Engineering, Marketing and Entrepreneurship Visiting Lecturer",
     category: "Primary",
-    image: "/assets/banu sir.png",
+    image: "/assets/Banu.jpg", 
+    
   },
   {
-    name: "Suresh Peiris",
+    name: "Suresh Peiris", 
     role: "Visiting Lecturer (Hybrid)",
     email: "suresh.p@iit.ac.lk",
     linkedin: "https://www.linkedin.com/in/suresh-peiris/",
