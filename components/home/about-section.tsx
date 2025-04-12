@@ -10,7 +10,7 @@ const Data = {
     url: "/about",
   },
   reviews: {
-    count: 200,
+    count: 250,
     avatars: [
       {
         src: "/home/about-logo/lexi.png",
