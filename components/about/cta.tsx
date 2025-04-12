@@ -28,7 +28,7 @@ function CTASection() {
         <div className="flex gap-8 py-20 lg:py-40 items-center justify-center flex-col">
           <div>
             <Button variant="secondary" size="sm" className="gap-4">
-              Reach us out<MoveRight className="w-4 h-4" />
+              Reach out<MoveRight className="w-4 h-4" />
             </Button>
           </div>
           <div className="flex gap-4 flex-col">
