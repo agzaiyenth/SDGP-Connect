@@ -23,7 +23,7 @@ function CTASection() {
   }, [titleNumber, titles]);
 
   return (
-    <div className="w-full -mt-12 mb-32">
+    <div className="w-full -mt-12 mb-32 px-10">
       <div className="container mx-auto">
         <div className="flex gap-8 py-20 lg:py-40 items-center justify-center flex-col">
           <div>

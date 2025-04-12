@@ -17,7 +17,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="p-10 relative overflow-hidden py-32 mt-28 md:mt-0">
+    <section className="px-10 relative overflow-hidden  mt-28 md:mt-0 md:py-32">
       {/* Decorative background elements */}
       <div className="absolute inset-0 -z-10 " />
 
@@ -73,23 +73,23 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="relative">
+            <div className="relative">
             <div className="absolute -inset-4 -z-10 rounded-2xl bg-dark/10 blur-sm" />
             <Image
               src="/assets/3.jpg"
               alt="Students who won dialog Innovative challenge"
-              className="w-full rounded-xl object-contain shadow-lg transition-transform hover:scale-[1.02] border border-gray-600"
+              className="w-full rounded-xl object-cover shadow-lg transition-transform hover:scale-[1.02] border border-gray-600"
               height={800}
               width={800}
               style={{ maxHeight: "480px" }}
             />
             <div className="absolute bottom-4 left-4 rounded-lg bg-background p-4 shadow">
-              <p className="font-semibold">Taking Projects</p>
+              <p className="font-semibold">Dialog Innovation</p>
               <p className="text-sm text-muted-foreground">
-                To the Next Level
+              Winner 2024
               </p>
             </div>
-          </div>
+            </div>
 
 
         </div>

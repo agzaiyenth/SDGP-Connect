@@ -13,7 +13,7 @@ const StatsSection = () => {
               Empowering Innovation with SDGP
             </h2>
           </div>
-          <Card className="w-full max-w-md border-primary/10 -mt-8">
+          <Card className="w-full max-w-md border-primary/10 md:-mt-8 ">
             <CardContent className="p-2">
               <div className="grid gap-6 sm:grid-cols-3">
                 <StatItem
