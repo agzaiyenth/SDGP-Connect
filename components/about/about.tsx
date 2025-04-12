@@ -1,4 +1,4 @@
-import { ArrowRight, Eye, Link, Target, Zap } from "lucide-react"
+import { ArrowRight, Eye, Link, Target, Zap, HeartHandshake } from "lucide-react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 
@@ -11,80 +11,70 @@ export function AboutSection() {
             <div className="absolute inset-0 flex items-center justify-center bg-zinc-800 rounded-2xl">
               <div className="w-12 h-12 text-white flex items-center justify-center ">
                 {/* TODO REPLACE SVG WITH IIT LOGO */}
-                <Image 
-                    src="/assets/logo.png"
-                    alt="Logo"
-                    width={120}
-                    height={80}
+                <Image
+                  src="/assets/logo.png"
+                  alt="Logo"
+                  width={120}
+                  height={80}
                 />
               </div>
             </div>
           </div>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter max-w-3xl">
-          Crafting Code for a Sustainable Tomorrow
+            Crafting Code for a Sustainable Tomorrow
           </h1>
 
           <p className="text-zinc-400 md:text-xl max-w-[700px] mt-4 mb-8">
-          Build impactful tech solutions through teamwork, innovation, and purpose driven by SDGP and the UN SDGs.
+            Build impactful tech solutions through teamwork, innovation, and purpose driven by SDGP and the UN SDGs.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mt-12">
-            {/* Left Column */}
-            <div className="flex flex-col p-6 border border-zinc-800 rounded-lg">
-              <div className="inline-flex items-center space-x-2 mb-2 pt-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mt-8">
+            {/* Vision */}
+            <div className="flex flex-col p-4 border border-zinc-800 rounded-lg">
+              <div className="inline-flex items-center space-x-2 mb-2 pt-6 self-center">
                 <Eye size={18} className="text-white" />
                 <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">Our Vision</span>
               </div>
 
-              <h3 className="text-xl font-bold mb-3">Accelerated Workflows</h3>
+              <h3 className="text-xl font-bold mb-2 text-center">Tech for Global Good</h3>
 
-              <p className="text-zinc-400 mb-6 flex-grow">
-              To lead a generation of tech professionals who combine technical excellence with a deep commitment to global sustainability, making a lasting difference through digital innovation.
+              <p className="text-zinc-400 mb-4 flex-grow text-left">
+                To become a launchpad for socially-driven tech innovation, where young minds transform global challenges into digital opportunities, building a more sustainable and equitable future through software.
               </p>
-
-
             </div>
 
-            {/* Middle Column */}
-            <div className="flex flex-col items-center justify-center p-6 bg-gradient-to-b from-zinc-800 to-zinc-900 rounded-lg relative">
-              <div className="w-full aspect-square bg-zinc-700 rounded-md flex items-center justify-center mb-6">
-                <Image
-                  src="/placeholder.svg?height=200&width=200"
-                  alt="Product preview"
-                  width={200}
-                  height={200}
-                  className="opacity-50"
-                />
+            {/* Core Values */}
+            <div className="flex flex-col p-4 border border-zinc-800 rounded-lg">
+              <div className="inline-flex items-center space-x-2 mb-2 pt-6 self-center">
+                <HeartHandshake size={18} className="text-white" />
+                <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">Our Core Values</span>
               </div>
 
-              <div className="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-80 rounded-b-lg">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span className="text-sm font-medium">Active Now</span>
-                </div>
-                <p className="text-sm text-zinc-300 mt-2">
-                  Harness the power of intuitive design and smart automation to streamline your processes.
-                </p>
-              </div>
+              <h3 className="text-xl font-bold mb-2 text-center">Driven by Purpose</h3>
+
+              <p className="text-zinc-400 mb-4 flex-grow text-left">
+                We believe in innovation, collaboration, and meaningful impact. Our community thrives on solving real-world problems, learning continuously, and developing technology that serves humanity and the planet.
+              </p>
             </div>
 
-            {/* Right Column */}
-            <div className="flex flex-col p-6 border border-zinc-800 rounded-lg">
-              <div className="inline-flex items-center space-x-2 mb-2 pt-8">
+            {/* Mission */}
+            <div className="flex flex-col p-4 border border-zinc-800 rounded-lg">
+              <div className="inline-flex items-center space-x-2 mb-2 pt-6 self-center">
                 <Target size={18} className="text-white" />
                 <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">Our Mission</span>
               </div>
 
-              <h3 className="text-xl font-bold mb-3">Boundless Connectivity</h3>
+              <h3 className="text-xl font-bold mb-2 text-center">Empowering Innovators</h3>
 
-              <p className="text-zinc-400 mb-6 flex-grow">
-              To nurture innovative, socially-conscious developers by providing hands-on experience in building impactful software solutions that address real-world problems.
+              <p className="text-zinc-400 mb-4 flex-grow text-left">
+                To empower the next generation of socially-conscious developers by offering hands-on experience in building impactful full-stack applications that address real-world challenges aligned with the UN SDGs.
               </p>
-
-
             </div>
           </div>
+
+
+
         </div>
       </div>
     </section>
