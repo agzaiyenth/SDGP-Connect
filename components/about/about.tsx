@@ -1,6 +1,5 @@
-import { ArrowRight, Eye, Link, Target, Zap, HeartHandshake } from "lucide-react"
+import {Eye, Target,HeartHandshake } from "lucide-react"
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
 
 export function AboutSection() {
   return (
@@ -10,7 +9,6 @@ export function AboutSection() {
           <div className="relative w-24 h-24 mb-2">
             <div className="absolute inset-0 flex items-center justify-center bg-zinc-800 rounded-2xl">
               <div className="w-12 h-12 text-white flex items-center justify-center ">
-                {/* TODO REPLACE SVG WITH IIT LOGO */}
                 <Image
                   src="/assets/logo.png"
                   alt="Logo"

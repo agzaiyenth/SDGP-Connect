@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 function CTASection() {
   const [titleNumber, setTitleNumber] = useState(0);
   const titles = useMemo(
-    () => ["amazing", "new", "wonderful", "beautiful", "smart"],
+    () => ["real.", "impactful.", "collaborative.", "sustainable.", "transformative."],
     []
   );
 
@@ -23,12 +23,12 @@ function CTASection() {
   }, [titleNumber, titles]);
 
   return (
-    <div className="w-full">
+    <div className="w-full -mt-12 mb-32">
       <div className="container mx-auto">
         <div className="flex gap-8 py-20 lg:py-40 items-center justify-center flex-col">
           <div>
             <Button variant="secondary" size="sm" className="gap-4">
-              Read our launch article <MoveRight className="w-4 h-4" />
+              Reach us out<MoveRight className="w-4 h-4" />
             </Button>
           </div>
           <div className="flex gap-4 flex-col">
@@ -45,13 +45,13 @@ function CTASection() {
                     animate={
                       titleNumber === index
                         ? {
-                            y: 0,
-                            opacity: 1,
-                          }
+                          y: 0,
+                          opacity: 1,
+                        }
                         : {
-                            y: titleNumber > index ? -150 : 150,
-                            opacity: 0,
-                          }
+                          y: titleNumber > index ? -150 : 150,
+                          opacity: 0,
+                        }
                     }
                   >
                     {title}
@@ -61,20 +61,26 @@ function CTASection() {
             </h1>
 
             <p className="text-lg md:text-xl leading-relaxed tracking-tight text-muted-foreground max-w-2xl text-center">
-              Managing a small business today is already tough. Avoid further
-              complications by ditching outdated, tedious trade methods. Our
-              goal is to streamline SMB trade, making it easier and faster than
-              ever.
+              Building meaningful solutions begins here.
+              Through teamwork, innovation, and a shared commitment to solving real-world challenges, we transform ideas into impactful software that uplifts communities and drives sustainable change.
             </p>
           </div>
           <div className="flex flex-row gap-3">
-            <Button size="lg" className="gap-4" variant="outline">
-              Jump on a call <PhoneCall className="w-4 h-4" />
-            </Button>
-            <Button size="lg" className="gap-4">
-              Sign up here <MoveRight className="w-4 h-4" />
-            </Button>
+            {/* Call Button */}
+            <a href="tel:+94777781061">
+              <Button size="lg" className="gap-4" variant="outline">
+                Jump on a call <PhoneCall className="w-4 h-4" />
+              </Button>
+            </a>
+
+            {/* Contact Page Button */}
+            <a href="/contact">
+              <Button size="lg" className="gap-4">
+                Contact Us <MoveRight className="w-4 h-4" />
+              </Button>
+            </a>
           </div>
+
         </div>
       </div>
     </div>

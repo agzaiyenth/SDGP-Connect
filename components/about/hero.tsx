@@ -17,7 +17,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="p-10 relative overflow-hidden py-32">
+    <section className="p-10 relative overflow-hidden py-32 mt-28">
       {/* Decorative background elements */}
       <div className="absolute inset-0 -z-10 " />
 
@@ -74,11 +74,11 @@ export default function Hero() {
           </div>
 
           <div className="relative">
-            <div className="absolute -inset-4 -z-10 rounded-2xl bg-primary/10  blur-sm" />
+            <div className="absolute -inset-4 -z-10 rounded-2xl bg-dark/10 blur-sm" />
             <Image
-              src="/placeholder.svg"
-              alt="Futuristic spaceship orbiting a planet"
-              className="w-full rounded-xl object-cover shadow-lg transition-transform hover:scale-[1.02]"
+              src="/assets/3.jpg"
+              alt="Students who won dialog Innovative challenge"
+              className="w-full rounded-xl object-contain shadow-lg transition-transform hover:scale-[1.02] border border-gray-600"
               height={800}
               width={800}
               style={{ maxHeight: "480px" }}
@@ -90,6 +90,8 @@ export default function Hero() {
               </p>
             </div>
           </div>
+
+
         </div>
       </div>
     </section>

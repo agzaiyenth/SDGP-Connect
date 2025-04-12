@@ -64,7 +64,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/manul-singhe/",
     description:
       "Software Developer | Game Developer | Game Designer | Knight Owl Founder and CEO",
-    category: "Secondary",
+    category: "Primary",
     image: "/assets/manul sir.png",
   },
   {
@@ -74,7 +74,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/mohanadas-jananie/",
     description:
       "Focuses on software testing practices and quality assurance in group projects.",
-    category: "Secondary",
+    category: "ft",
     image: "/assets/janani miss.png",
   },
   {
@@ -83,7 +83,7 @@ const teamMembers = [
     email: "ruzaik.s@iit.ac.lk",
     linkedin: "https://www.linkedin.com/in/seyed-ruzaik/",
     description: "Software Developer | Tech Blogger | Assistant Lecturer",
-    category: "Secondary",
+    category: "ft",
     image: "/assets/rusaik sir.png",
   },
   {
@@ -93,7 +93,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/vinodani-thilakarathne/",
     description:
       "Guides students in requirements gathering and business analysis for software projects.",
-    category: "Secondary",
+    category: "ft",
     image: "/assets/john.png",
   },
   {
@@ -102,7 +102,7 @@ const teamMembers = [
     email: "asith.p@iit.ac.lk",
     linkedin: "https://www.linkedin.com/in/asith-pallemulla/",
     description: "Expert in back-end development and systems integration.",
-    category: "Secondary",
+    category: "ft",
     image: "/assets/asith sir.png",
   },
   {
@@ -111,7 +111,7 @@ const teamMembers = [
     email: "thashin.r@iit.ac.lk",
     linkedin: "https://www.linkedin.com/in/thashin-rahuman/",
     description: "Software Engineer | Blockchain | React JS/ NodeJS | GO",
-    category: "Secondary",
+    category: "ft",
     image: "/assets/thashin sir.png",
   },
   {
@@ -121,7 +121,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/ahtshayan-udayasanthiran/",
     description:
       "Focuses on software development lifecycle and project documentation.",
-    category: "Secondary",
+    category: "ft",
     image: "/assets/ahtshayan sir.png",
   },
 
@@ -133,7 +133,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/john-sriskandarajah/",
     description:
       "CEO @ Telexar | Helping Businesses Scale with Offshore Teams | Resource Augmentation Specialist",
-    category: "Secondary",
+    category: "vl",
     image: "/assets/john.png",
   },
   {
@@ -143,7 +143,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/krishnakripa-jayakumar/",
     description:
       "Cybersecurity & Software Engineering Professional | Lecturer | Multiple Award Winner",
-    category: "Secondary",
+    category: "vl",
     image: "/assets/kripa miss.png",
   },
   {
@@ -153,7 +153,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/deshan-sumanathilaka/",
     description:
       "PhD Candidate at Swansea University / Visiting Lecturer at IIT / Youtuber-Tutor at DS-IT Academy",
-    category: "Secondary",
+    category: "vl",
     image: "/assets/deshan sir.png",
   },
 ];
@@ -164,6 +164,12 @@ const ModuleTeam: React.FC = () => {
   );
   const secondaryMembers = teamMembers.filter(
     (member) => member.category === "Secondary"
+  );
+  const ftMembers = teamMembers.filter(
+    (member) => member.category === "ft"
+  );
+  const vlMembers = teamMembers.filter(
+    (member) => member.category === "vl"
   );
 
   const renderTeamSection = (members: typeof teamMembers, title: string) => (
@@ -330,7 +336,9 @@ const ModuleTeam: React.FC = () => {
       </motion.p>
 
       {renderTeamSection(primaryMembers, "Primary Module Team")}
-      {renderTeamSection(secondaryMembers, "Additional Lecturers")}
+      {renderTeamSection(secondaryMembers, "VL Hybrid Lecturers")}
+      {renderTeamSection(ftMembers, "FT Hybrid Lecturers")}
+      {renderTeamSection(vlMembers, "VL Online Lecturers")}
 
       <style jsx global>{`
         @keyframes fadeIn {

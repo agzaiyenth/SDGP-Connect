@@ -1,8 +1,7 @@
 "use client";
 
-import { User, Users, Projector } from "lucide-react"; // Replacing with relevant icons
+import { User, Users, Projector } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 const StatsSection = () => {
   return (
