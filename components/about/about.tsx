@@ -12,27 +12,27 @@ export function AboutSection() {
               <div className="w-12 h-12 text-white flex items-center justify-center ">
                 {/* TODO REPLACE SVG WITH IIT LOGO */}
                 <Image 
-                    src="/placeholder.svg?height=48&width=48"
+                    src="/assets/logo.png"
                     alt="Logo"
-                    width={48}
-                    height={48}
+                    width={120}
+                    height={80}
                 />
               </div>
             </div>
           </div>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter max-w-3xl">
-            Experience the Future of Efficiency
+          Crafting Code for a Sustainable Tomorrow
           </h1>
 
           <p className="text-zinc-400 md:text-xl max-w-[700px] mt-4 mb-8">
-            Revolutionize your operations and unlock unprecedented levels of productivity with our cutting-edge feature.
+          Build impactful tech solutions through teamwork, innovation, and purpose driven by SDGP and the UN SDGs.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mt-12">
             {/* Left Column */}
             <div className="flex flex-col p-6 border border-zinc-800 rounded-lg">
-              <div className="inline-flex items-center space-x-2 mb-2">
+              <div className="inline-flex items-center space-x-2 mb-2 pt-8">
                 <Eye size={18} className="text-white" />
                 <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">Our Vision</span>
               </div>
@@ -71,7 +71,7 @@ export function AboutSection() {
 
             {/* Right Column */}
             <div className="flex flex-col p-6 border border-zinc-800 rounded-lg">
-              <div className="inline-flex items-center space-x-2 mb-2">
+              <div className="inline-flex items-center space-x-2 mb-2 pt-8">
                 <Target size={18} className="text-white" />
                 <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">Our Mission</span>
               </div>
