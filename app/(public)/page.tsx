@@ -7,6 +7,8 @@ import Hero from "@/components/home/hero";
 import ImpactStats from "@/components/home/impact-stats";
 
 
+
+
 export default function Home() {
   return (
     <div className="flex flex-col gap-12 pb-12">
