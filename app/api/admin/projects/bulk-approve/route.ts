@@ -12,6 +12,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
+    const { role } = session.user;
+  if (!["ADMIN", "MODERATOR", ].includes(role)) {
+    return NextResponse.json(
+      { error: "Forbidden. You don't have required Permission" },
+      { status: 403 }
+    );
+  }
+
     // Expect metadata IDs (project_id from ProjectMetadata)
     const { projectIds } = await req.json();
     if (!Array.isArray(projectIds) || projectIds.length === 0) {
