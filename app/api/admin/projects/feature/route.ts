@@ -16,6 +16,14 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const { role } = session.user;
+  if (!["ADMIN", "MODERATOR", ].includes(role)) {
+    return NextResponse.json(
+      { error: "Forbidden. You don't have required Permission" },
+      { status: 403 }
+    );
+  }
+
   try {
     // 2) Parse the request
     const { projectId, featured } = await request.json();
