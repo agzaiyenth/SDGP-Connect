@@ -73,12 +73,12 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="relative">
+            <div className="relative">
             <div className="absolute -inset-4 -z-10 rounded-2xl bg-dark/10 blur-sm" />
             <Image
               src="/assets/3.jpg"
               alt="Students who won dialog Innovative challenge"
-              className="w-full rounded-xl object-contain shadow-lg transition-transform hover:scale-[1.02] border border-gray-600"
+              className="w-full rounded-xl object-cover shadow-lg transition-transform hover:scale-[1.02] border border-gray-600"
               height={800}
               width={800}
               style={{ maxHeight: "480px" }}
@@ -86,10 +86,10 @@ export default function Hero() {
             <div className="absolute bottom-4 left-4 rounded-lg bg-background p-4 shadow">
               <p className="font-semibold">Taking Projects</p>
               <p className="text-sm text-muted-foreground">
-                To the Next Level
+              To the Next Level
               </p>
             </div>
-          </div>
+            </div>
 
 
         </div>
