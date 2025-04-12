@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { BlobServiceClient } from '@azure/storage-blob';
+import { v4 as uuidv4 } from 'uuid';
 
 const useUploadImageToBlob = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +19,9 @@ const useUploadImageToBlob = () => {
 
       const containerClient = blobServiceClient.getContainerClient(containerName);
 
-      const uniqueFileName = `${Date.now()}-${file.name}`;
+      // Generate a unique file name using UUID
+      const uniqueFileName = `${uuidv4()}-${file.name}`;
+
       const blockBlobClient = containerClient.getBlockBlobClient(uniqueFileName);
 
       await blockBlobClient.uploadBrowserData(file, {
