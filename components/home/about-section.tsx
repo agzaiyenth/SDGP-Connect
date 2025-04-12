@@ -25,7 +25,7 @@ const Data = {
         alt: "Avatar 3",
       },
       {
-        src: "https://www.shadcnblocks.com/images/block/avatar-4.webp",
+        src: "/home/about-logo/genie.png",
         alt: "Avatar 4",
       },
       {
