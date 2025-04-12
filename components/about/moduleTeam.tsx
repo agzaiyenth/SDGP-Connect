@@ -54,7 +54,7 @@ const teamMembers = [
     description:
       "Brings industry experience in software architecture and system design.",
     category: "Secondary",
-    image: "/assets/john.png",
+    image: "/assets/pubudu.jpg",
   },
 
   // FT Hybrid lecturers
