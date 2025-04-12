@@ -21,10 +21,6 @@ export function AboutSection() {
             </div>
           </div>
 
-          <div className="inline-block rounded-full bg-zinc-800 px-3 py-1 text-sm text-zinc-300 mb-2">
-            Unveiling Our Latest Innovation
-          </div>
-
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter max-w-3xl">
             Experience the Future of Efficiency
           </h1>
@@ -44,8 +40,7 @@ export function AboutSection() {
               <h3 className="text-xl font-bold mb-3">Accelerated Workflows</h3>
 
               <p className="text-zinc-400 mb-6 flex-grow">
-                Harness the power of intuitive design and smart automation to streamline your processes and reclaim
-                valuable time.
+              To lead a generation of tech professionals who combine technical excellence with a deep commitment to global sustainability, making a lasting difference through digital innovation.
               </p>
 
 
@@ -84,8 +79,7 @@ export function AboutSection() {
               <h3 className="text-xl font-bold mb-3">Boundless Connectivity</h3>
 
               <p className="text-zinc-400 mb-6 flex-grow">
-                Effortlessly integrate with your preferred tools and platforms, creating a seamless and interconnected
-                digital environment.
+              To nurture innovative, socially-conscious developers by providing hands-on experience in building impactful software solutions that address real-world problems.
               </p>
 
 
