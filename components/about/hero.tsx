@@ -17,7 +17,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="p-10 relative overflow-hidden py-32 mt-28">
+    <section className="p-10 relative overflow-hidden py-32 mt-28 md:mt-0">
       {/* Decorative background elements */}
       <div className="absolute inset-0 -z-10 " />
 
