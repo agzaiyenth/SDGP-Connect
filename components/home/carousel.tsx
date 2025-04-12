@@ -4,11 +4,13 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 
 const images = [
-  'https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=2069&auto=format&fit=crop',
-  '/assets/2.jpg',
-  '/Lexi/1.jpg',
+  '/assets/Dialog.jpg',
   '/assets/1.jpg',
+  '/assets/2.jpg',
+  '/assets/Codesprint.jpg',
   '/assets/3.jpg',
+  '/assets/innovex.jpg',
+  '/assets/movemate1.jpg',
 ];
 
 export default function Carousel() {
