@@ -2,19 +2,25 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Play, ArrowRight } from "lucide-react";
+import { Play, ArrowRight, Link } from "lucide-react";
 import Image from "next/image";
 import { Zap } from "lucide-react";
 
 export default function Hero() {
   const [videoOpen, setVideoOpen] = useState(false);
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push("/contact");
+  };
 
   return (
     <section className="p-10 relative overflow-hidden py-32">
       {/* Decorative background elements */}
       <div className="absolute inset-0 -z-10 " />
- 
+
 
       <div className="container relative">
         <div className="grid items-center gap-12 lg:grid-cols-2">
@@ -30,7 +36,7 @@ export default function Hero() {
               </h1>
 
               <p className="text-base text-muted-foreground lg:text-lg">
-              Explore student-led software solutions addressing real-world challenges aligned with the UN Sustainable Development Goals.
+                Explore student-led software solutions addressing real-world challenges aligned with the UN Sustainable Development Goals.
               </p>
             </div>
 
@@ -59,10 +65,11 @@ export default function Hero() {
                 </DialogContent>
               </Dialog>
 
-              <Button size="lg" className="group w-full sm:w-auto">
+              <Button size="lg" className="group w-full sm:w-auto" onClick={handleClick}>
                 Contact Us
                 <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
               </Button>
+
             </div>
           </div>
 
