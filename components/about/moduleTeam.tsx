@@ -25,7 +25,7 @@ const teamMembers = [
     description:
       "Co Founder - Inforwaves | Organizer - GDG Sri Lanka | Visiting Lecturer - IIT | Cloud Researcher | National Award Winner",
     category: "Primary",
-    image: "/assets/suresh sir.png",
+    image: "/assets/suresh.jpg",
   },
   {
     name: "Kushan Bhareti",
