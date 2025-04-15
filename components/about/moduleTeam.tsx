@@ -135,7 +135,7 @@ const teamMembers = [
     description:
       "CEO @ Telexar | Helping Businesses Scale with Offshore Teams | Resource Augmentation Specialist",
     category: "vl",
-    image: "/assets/john.png",
+    image: "/assets/Johnsir.png",
   },
   {
     name: "Krishnakripa Jayakumar",
