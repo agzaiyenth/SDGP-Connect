@@ -21,9 +21,9 @@ export async function POST(request: NextRequest) {
     const tempFilePath = join(os.tmpdir(), `upload-${uuidv4()}`);
     await writeFile(tempFilePath, buffer);
 
-    const account = process.env.AZURE_STORAGE_ACCOUNT_NAME;
-    const container = process.env.AZURE_STORAGE_CONTAINER_NAME;
-    const sas = process.env.AZURE_SAS_TOKEN;
+    const account = process.env.NEXT_PUBLIC_AZURE_STORAGE_ACCOUNT_NAME;
+    const container = process.env.NEXT_PUBLIC_AZURE_STORAGE_CONTAINER_NAME;
+    const sas = process.env.NEXT_PUBLIC_AZURE_SAS_TOKEN;
 
     if (!account || !container || !sas) {
       fs.unlinkSync(tempFilePath);
