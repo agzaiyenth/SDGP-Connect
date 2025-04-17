@@ -8,7 +8,7 @@ export const useSubmitProject = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const [warning, setWarning] = useState<string | null>(null);
-  const [uploadProgress, setUploadProgress] = useState<{[key: string]: number}>({});
+  const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
   const { uploadImage, isLoading: isUploadingImages } = useUploadImageToBlob();
 
   // Helper to sanitize the submission data to ensure it's JSON serializable
@@ -16,27 +16,27 @@ export const useSubmitProject = () => {
     if (data === null || data === undefined) {
       return data;
     }
-    
+
     if (typeof data !== 'object') {
       return data;
     }
-    
+
     // Handle File objects
     if (data instanceof File) {
       return null; // Files should already be uploaded and URLs stored instead
     }
-    
+
     // Handle arrays
     if (Array.isArray(data)) {
       return data.map(item => sanitizeSubmissionData(item));
     }
-    
+
     // Handle objects
     const result: Record<string, any> = {};
     for (const [key, value] of Object.entries(data)) {
       result[key] = sanitizeSubmissionData(value);
     }
-    
+
     return result;
   };
 
@@ -47,21 +47,21 @@ export const useSubmitProject = () => {
     // Check file type
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
     if (!allowedTypes.includes(image.type)) {
-      return { 
-        valid: false, 
-        message: `Unsupported file type: ${image.type}. Please use JPEG, PNG, GIF, WebP, or SVG.` 
+      return {
+        valid: false,
+        message: `Unsupported file type: ${image.type}. Please use JPEG, PNG, GIF, WebP, or SVG.`
       };
     }
-    
+
     // Check file size (e.g., 5MB limit)
     const maxSize = 5 * 1024 * 1024; // 5MB
     if (image.size > maxSize) {
-      return { 
-        valid: false, 
-        message: `File too large (${(image.size/1024/1024).toFixed(2)}MB). Maximum size is 5MB.` 
+      return {
+        valid: false,
+        message: `File too large (${(image.size / 1024 / 1024).toFixed(2)}MB). Maximum size is 5MB.`
       };
     }
-    
+
     return { valid: true };
   };
 
@@ -75,55 +75,59 @@ export const useSubmitProject = () => {
     if (!image) {
       return null;
     }
-    
+
     if (typeof image === 'string') {
       return image; // Already a URL
     }
-    
+
     if (!(image instanceof File)) {
       return null;
     }
-    
-    // Validate the image first
+
+    // Log the image to ensure it's a valid file before proceeding
+    console.log(`Uploading image for ${identifier}:`, image);
+
+    // Validate the image
     const validation = validateImage(image);
     if (!validation.valid) {
       setUploadProgress(prev => ({ ...prev, [identifier]: -1 })); // -1 indicates error
       throw new Error(validation.message || 'Invalid image file');
     }
-    
+
     try {
       setUploadProgress(prev => ({ ...prev, [identifier]: 0 }));
-      
+
       // Use the progress callback
       const imageUrl = await uploadImage(image, (progress) => {
         setUploadProgress(prev => ({ ...prev, [identifier]: progress }));
       });
-      
+
       setUploadProgress(prev => ({ ...prev, [identifier]: 100 }));
       return imageUrl;
     } catch (err) {
       console.error(`Error uploading image (${identifier}):`, err);
       setUploadProgress(prev => ({ ...prev, [identifier]: -1 })); // -1 indicates error
-      throw err; // Re-throw to be caught by the main submission handler
+      throw err;
     }
   };
+
 
   /**
    * Update a path in submission data based on the identifier
    */
   const updateSubmissionPath = (
-    data: any, 
-    identifier: string, 
+    data: any,
+    identifier: string,
     value: any
   ): any => {
     // Clone the data first
     const updatedData = { ...data };
-    
+
     // Handle different identifier patterns
     if (identifier === 'cover_image') {
       if (!updatedData.metadata) updatedData.metadata = {};
       updatedData.metadata.cover_image = value;
-    } 
+    }
     else if (identifier === 'logo') {
       if (!updatedData.metadata) updatedData.metadata = {};
       updatedData.metadata.logo = value;
@@ -140,23 +144,24 @@ export const useSubmitProject = () => {
       if (!updatedData.slides[index]) updatedData.slides[index] = {};
       updatedData.slides[index].slides_content = value;
     }
-    
+
     return updatedData;
   };
 
   const submitProject = async (data: ProjectSubmissionSchema): Promise<SubmitProjectResponse> => {
+    console.log('Project submission data:', data);
+
     setError(null);
     setWarning(null);
     setIsSubmitting(true);
     setUploadProgress({});
-    
-    // Clone the data to avoid modifying the original
+
     let submissionData = JSON.parse(JSON.stringify(data));
-    
+
     try {
       // Create an array to store all image upload tasks
       const uploadTasks: { id: string; promise: Promise<any> }[] = [];
-      
+
       // Handle cover image
       if (data.metadata?.cover_image && data.metadata.cover_image instanceof File) {
         uploadTasks.push({
@@ -167,7 +172,7 @@ export const useSubmitProject = () => {
             })
         });
       }
-      
+
       // Handle logo image
       if (data.metadata?.logo && data.metadata.logo instanceof File) {
         uploadTasks.push({
@@ -178,7 +183,7 @@ export const useSubmitProject = () => {
             })
         });
       }
-      
+
       // Handle team member profile images
       if (data.team && data.team.length > 0) {
         data.team.forEach((member: any, index: number) => {
@@ -188,8 +193,8 @@ export const useSubmitProject = () => {
               promise: handleImageUpload(member.profile_image, `team_member_${index}`)
                 .then(url => {
                   submissionData = updateSubmissionPath(
-                    submissionData, 
-                    `team_member_${index}`, 
+                    submissionData,
+                    `team_member_${index}`,
                     url
                   );
                 })
@@ -197,7 +202,7 @@ export const useSubmitProject = () => {
           }
         });
       }
-      
+
       // Handle slides that might contain images
       if (data.slides && data.slides.length > 0) {
         data.slides.forEach((slide: any, index: number) => {
@@ -208,44 +213,44 @@ export const useSubmitProject = () => {
               promise: handleImageUpload(slide.slides_content, `slide_${index}`)
                 .then(url => {
                   submissionData = updateSubmissionPath(
-                    submissionData, 
-                    `slide_${index}`, 
+                    submissionData,
+                    `slide_${index}`,
                     url
                   );
                 })
             });
-          } else if (typeof slide.slides_content === 'string' && 
-                    slide.slides_content.length > 65535) {
+          } else if (typeof slide.slides_content === 'string' &&
+            slide.slides_content.length > 65535) {
             // Truncate if too long for database
             submissionData.slides[index].slides_content = slide.slides_content.substring(0, 65535);
           }
         });
       }
-      
+
       // Use Promise.allSettled for better error handling
       const results = await Promise.allSettled(uploadTasks.map(task => task.promise));
-      
+
       // Check for any failed uploads
       const failedUploads = results
         .map((result, index) => ({ result, task: uploadTasks[index] }))
         .filter(item => item.result.status === 'rejected');
-      
+
       if (failedUploads.length > 0) {
         // Some uploads failed
         const failedItems = failedUploads.map(item => item.task.id).join(', ');
-        
+
         // Set warning instead of throwing error
         setWarning(`Some images failed to upload: ${failedItems}. The form will be submitted without them.`);
-        
+
         // Process anyway, with null values for failed uploads
         failedUploads.forEach(item => {
           submissionData = updateSubmissionPath(submissionData, item.task.id, null);
         });
       }
-      
+
       // Final sanitization to ensure data is JSON serializable
       const sanitizedData = sanitizeSubmissionData(submissionData);
-      
+
       try {
         // Submit to API using axios
         const response = await axios.post<SubmitProjectResponse>('/api/projects/submit', sanitizedData);
@@ -253,15 +258,15 @@ export const useSubmitProject = () => {
         return response.data;
       } catch (err: any) {
         setIsSubmitting(false);
-        
+
         const errorMessage = err.response?.data?.message || 'Failed to submit project';
         const errorDetails = err.response?.data?.error || '';
-        
+
         const error = new Error(`${errorMessage}${errorDetails ? `: ${errorDetails}` : ''}`);
         setError(error);
-        
+
         console.error('API Error:', err.response?.data);
-        
+
         return {
           success: false,
           message: errorMessage,
@@ -273,14 +278,14 @@ export const useSubmitProject = () => {
       const error = err instanceof Error ? err : new Error('Unknown error occurred during submission');
       setError(error);
       console.error("Submission error:", error);
-      
+
       return {
         success: false,
         message: error.message || 'Project submission failed',
       };
     }
   };
-  
+
   return {
     submitProject,
     isSubmitting: isSubmitting || isUploadingImages,
