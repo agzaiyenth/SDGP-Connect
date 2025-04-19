@@ -95,7 +95,7 @@ const teamMembers = [
     description:
       "Guides students in requirements gathering and business analysis for software projects.",
     category: "ft",
-    image: "/assets/john.png",
+    image: "/assets/image.png",
   },
   {
     name: "Asith Pallemulla",
