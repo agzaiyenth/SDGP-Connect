@@ -254,6 +254,8 @@ export const useSubmitProject = () => {
       try {
         // Submit to API using axios
         const response = await axios.post<SubmitProjectResponse>('/api/projects/submit', sanitizedData);
+        console.log('Submitting project:', sanitizedData);
+        console.log('API response:', response.data);
         setIsSubmitting(false);
         return response.data;
       } catch (err: any) {

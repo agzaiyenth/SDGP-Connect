@@ -1,4 +1,5 @@
 'use client'
+import { Dispatch, SetStateAction } from "react";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useFormContext, useFieldArray } from "react-hook-form";
 import { ProjectSubmissionSchema } from "@/validations/submit_project";
@@ -6,37 +7,57 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Plus, Trash2, Upload, X } from "lucide-react";
-import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Textarea } from "@/components/ui/textarea";
 
-const FormStep5 = () => {
-  const { control, setValue } = useFormContext<ProjectSubmissionSchema>();
-  const [profilePreviews, setProfilePreviews] = useState<Record<number, string>>({});
+interface FormStep5Props {
+  teamProfileFiles: (File|null)[];
+  setTeamProfileFiles: React.Dispatch<React.SetStateAction<(File|null)[]>>;
+  teamProfilePreviews: (string|null)[];
+  setTeamProfilePreviews: React.Dispatch<React.SetStateAction<(string|null)[]>>;
+}
 
+const FormStep5 = ({
+  teamProfileFiles,
+  setTeamProfileFiles,
+  teamProfilePreviews,
+  setTeamProfilePreviews
+}: FormStep5Props) => {
+  const { control, setValue, watch } = useFormContext<ProjectSubmissionSchema>();
   const { fields: teamFields, append: appendTeam, remove: removeTeam } = useFieldArray({
     control,
-    name: "team", 
+    name: "team",
   });
 
   // Add a new team member
   const addTeamMember = () => {
     appendTeam({ name: "", linkedin_url: "", profile_image: null });
+    setTeamProfileFiles((prev) => [...prev, null]);
+    setTeamProfilePreviews((prev) => [...prev, null]);
+  };
+
+  // Remove a team member
+  const handleRemoveTeam = (index: number) => {
+    removeTeam(index);
+    setTeamProfileFiles((prev) => prev.filter((_, i) => i !== index));
+    setTeamProfilePreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   // Handle profile image upload
   const handleProfileImageUpload = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
-    setValue(`team.${index}.profile_image`, file, { shouldValidate: true });
-
     const reader = new FileReader();
     reader.onload = () => {
-      setProfilePreviews(prev => ({
-        ...prev,
-        [index]: reader.result as string
-      }));
+      setTeamProfilePreviews((prev) => {
+        const arr = [...prev];
+        arr[index] = reader.result as string;
+        return arr;
+      });
+      setTeamProfileFiles((prev) => {
+        const arr = [...prev];
+        arr[index] = file;
+        return arr;
+      });
     };
     reader.readAsDataURL(file);
   };
@@ -44,10 +65,15 @@ const FormStep5 = () => {
   // Clear profile image
   const clearProfileImage = (index: number) => {
     setValue(`team.${index}.profile_image`, null, { shouldValidate: true });
-    setProfilePreviews(prev => {
-      const newPreviews = { ...prev };
-      delete newPreviews[index];
-      return newPreviews;
+    setTeamProfilePreviews((prev) => {
+      const arr = [...prev];
+      arr[index] = null;
+      return arr;
+    });
+    setTeamProfileFiles((prev) => {
+      const arr = [...prev];
+      arr[index] = null;
+      return arr;
     });
   };
 
@@ -81,7 +107,7 @@ const FormStep5 = () => {
                 type="button"
                 variant="ghost"
                 size="icon"
-                onClick={() => removeTeam(index)}
+                onClick={() => handleRemoveTeam(index)}
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
@@ -129,7 +155,7 @@ const FormStep5 = () => {
                     <FormLabel>Profile Photo (optional)</FormLabel>
                     <div className="flex justify-center">
                       <AnimatePresence>
-                        {!profilePreviews[index] ? (
+                        {!teamProfilePreviews[index] ? (
                           <motion.label
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -154,7 +180,7 @@ const FormStep5 = () => {
                           >
                             <Avatar className="h-32 w-32 border-2 border-primary">
                               <AvatarImage 
-                                src={profilePreviews[index]} 
+                                src={teamProfilePreviews[index] || ""} 
                                 alt="Team member profile" 
                               />
                               <AvatarFallback>

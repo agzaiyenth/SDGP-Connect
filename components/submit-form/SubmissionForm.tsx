@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import FormStepper from "./FormStepper";
@@ -31,6 +31,8 @@ const ProjectSubmissionForm = () => {
   const [uploading, setUploading] = useState(false);
   const [slideFiles, setSlideFiles] = useState<File[]>([]);
   const [slidePreviews, setSlidePreviews] = useState<string[]>([]);
+  const [teamProfileFiles, setTeamProfileFiles] = useState<(File|null)[]>([null]);
+  const [teamProfilePreviews, setTeamProfilePreviews] = useState<(string|null)[]>([null]);
   const { uploadImage } = useUploadImageToBlob();
   const router = useRouter();
   
@@ -133,6 +135,36 @@ const ProjectSubmissionForm = () => {
       }
       setUploading(false);
     }
+    // Upload team profile images if on step 5
+    if (currentStep === 5) {
+      setUploading(true);
+      try {
+        const currentTeam = methods.getValues("team");
+        console.log("[DEBUG] Before upload - team:", currentTeam);
+        console.log("[DEBUG] teamProfileFiles:", teamProfileFiles);
+        const updatedTeam = await Promise.all(
+          currentTeam.map(async (member, i) => {
+            const file = teamProfileFiles[i];
+            if (file) {
+              const url = await uploadImage(file);
+              console.log(`[DEBUG] Uploaded profile image for team[${i}]:`, url);
+              return { ...member, profile_image: url };
+            }
+            return member;
+          })
+        );
+        console.log("[DEBUG] After upload - updatedTeam:", updatedTeam);
+        methods.setValue("team", updatedTeam, { shouldValidate: true });
+        setTeamProfileFiles(updatedTeam.map(() => null));
+        setTeamProfilePreviews(updatedTeam.map(() => null));
+        console.log("[DEBUG] After setValue - methods.getValues('team'):", methods.getValues('team'));
+      } catch (err) {
+        toast.error("Team profile image upload failed. Please try again.");
+        setUploading(false);
+        return;
+      }
+      setUploading(false);
+    }
     if (currentStep < TOTAL_STEPS) {
       setCurrentStep((prev) => prev + 1);
       window.scrollTo(0, 0);
@@ -144,10 +176,53 @@ const ProjectSubmissionForm = () => {
       setCurrentStep((prev) => prev - 1);
       window.scrollTo(0, 0);
     }
-  };
-
-  const onSubmit: SubmitHandler<ProjectSubmissionSchema> = async (data) => {
+  };  const onSubmit: SubmitHandler<ProjectSubmissionSchema> = async (data) => {
     try {
+      // Handle team profile image uploads before final submission
+      // Check if there are any profile images to upload
+      const hasProfileImages = teamProfileFiles.some(file => file !== null);
+      console.log("[DEBUG] Do we have profile images to upload?", hasProfileImages);
+      console.log("[DEBUG] Team profile files:", teamProfileFiles);
+      
+      if (hasProfileImages) {
+        setUploading(true);
+        try {
+          const currentTeam = [...data.team]; // Create a copy of the team array
+          console.log("[DEBUG] Before submission upload - team:", currentTeam);
+          
+          const updatedTeam = await Promise.all(
+            currentTeam.map(async (member, i) => {
+              const file = teamProfileFiles[i];
+              if (file) {
+                console.log(`[DEBUG] Uploading team image for member ${i}:`, file.name);
+                const url = await uploadImage(file);
+                console.log(`[DEBUG] Successfully uploaded image. URL for team[${i}]:`, url);
+                return { ...member, profile_image: url };
+              }
+              return member;
+            })
+          );
+          
+          console.log("[DEBUG] After upload - updatedTeam:", updatedTeam);
+          
+          // Update the data that will be submitted with the new team data including image URLs
+          data = {
+            ...data,
+            team: updatedTeam
+          };
+          
+          console.log("[DEBUG] Final submission data team array:", data.team);
+        } catch (err) {
+          console.error("Error uploading team profile images:", err);
+          toast.error("Team profile image upload failed. Please try again.");
+          setUploading(false);
+          return;
+        }
+        setUploading(false);
+      } else {
+        console.log("[DEBUG] No team profile images to upload, continuing with submission");
+      }
+      
       // Submit the project using our hook
       const result = await submitProject(data);
       console.log("Submission result:", result);
@@ -213,9 +288,26 @@ const ProjectSubmissionForm = () => {
       case 4:
         return <FormStep4 />;
       case 5:
-        return <FormStep5 />;
-      default:
-        return <FormStep1 />;
+        return (
+          <FormStep5
+            teamProfileFiles={teamProfileFiles}
+            setTeamProfileFiles={setTeamProfileFiles}
+            teamProfilePreviews={teamProfilePreviews}
+            setTeamProfilePreviews={setTeamProfilePreviews}
+          />
+        );      default:
+        return (
+          <FormStep1
+            logoFile={logoFile}
+            setLogoFile={setLogoFile}
+            logoPreviewUrl={logoPreviewUrl}
+            setLogoPreviewUrl={setLogoPreviewUrl}
+            coverFile={coverFile}
+            setCoverFile={setCoverFile}
+            coverPreviewUrl={coverPreviewUrl}
+            setCoverPreviewUrl={setCoverPreviewUrl}
+          />
+        );
     }
   };
 
@@ -236,8 +328,7 @@ const ProjectSubmissionForm = () => {
             >
               Previous
             </Button>
-            
-            {currentStep < TOTAL_STEPS ? (
+              {currentStep < TOTAL_STEPS ? (
               <Button 
                 type="button" 
                 onClick={handleNext}
@@ -255,12 +346,12 @@ const ProjectSubmissionForm = () => {
             ) : (
               <Button 
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || uploading}
               >
-                {isSubmitting ? (
+                {isSubmitting || uploading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Submitting...
+                    {uploading ? "Uploading..." : "Submitting..."}
                   </>
                 ) : (
                   "Submit Project"

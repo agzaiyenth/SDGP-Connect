@@ -26,6 +26,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'sample-storage.example.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'sdgpblob.blob.core.windows.net',
+      },
       
     ],
   },
