@@ -1,7 +1,7 @@
 import { ProjectStatusEnum, ProjectTypeEnum, SDGGoalEnum, TechStackEnum } from "@prisma/client";
 import { Heart } from "lucide-react";
 import { DiJava, DiReact } from "react-icons/di";
-import { FaAws, FaDesktop, FaGlobe, FaMobileAlt, FaTools } from "react-icons/fa";
+import { FaAws, FaDesktop, FaFacebook, FaGlobe, FaInstagram, FaLinkedin, FaMobileAlt, FaTiktok, FaTools, FaTwitter, FaYoutube } from "react-icons/fa";
 import {
     SiAndroid,
     SiAngular,
@@ -225,3 +225,12 @@ export const sdgGoals = [
       { value: "ENTERTAINMENT", label: "Entertainment", icon: Clapperboard },
       { value: "SUSTAINABILITY", label: "Sustainability", icon: Leaf },
     ]
+
+    export const socialPlatformMap: Record<string, { icon: any; label: string }> = {
+      LINKEDIN: { icon: FaLinkedin, label: 'LinkedIn' },
+      TWITTER: { icon: FaTwitter, label: 'Twitter' },
+      INSTAGRAM: { icon: FaInstagram, label: 'Instagram' },
+      FACEBOOK: { icon: FaFacebook, label: 'Facebook' },
+      YOUTUBE: { icon: FaYoutube, label: 'YouTube' },
+      TIKTOK: { icon: FaTiktok, label: 'TikTok' },
+    };

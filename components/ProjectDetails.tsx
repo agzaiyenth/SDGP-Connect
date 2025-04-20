@@ -82,7 +82,7 @@ const ProjectDetails = ({ projectID }: { projectID: string }) => {
           associations={project.content?.associations || []}
         />
 
-        {/* TODO : Add the team details and social */}
+
         <Teamandsocial
         teamMembers={project.content?.team || []}
         teamSocials={project.content?.socialLinks || []}
