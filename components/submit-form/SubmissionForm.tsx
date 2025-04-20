@@ -16,6 +16,7 @@ import FormStep5 from "./FormStep5";
 import { toast } from "sonner";
 import { useSubmitProject } from "@/hooks/project/useSubmitProject";
 import { Loader2 } from "lucide-react";
+import useUploadImageToBlob from "@/hooks/azure/useUploadImageToBlob";
 
 const TOTAL_STEPS = 5;
 
@@ -23,6 +24,12 @@ const ProjectSubmissionForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedProjectId, setSubmittedProjectId] = useState<string | null>(null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [coverFile, setCoverFile] = useState<File | null>(null);
+  const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
+  const [coverPreviewUrl, setCoverPreviewUrl] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const { uploadImage } = useUploadImageToBlob();
   const router = useRouter();
   
   // Use our custom submission hook
@@ -69,23 +76,36 @@ const ProjectSubmissionForm = () => {
       4: ["socialLinks", "projectDetails.team_email", "projectDetails.team_phone"],
       5: ["team"],
     };
-
     const fieldsToValidate = stepFieldsMap[currentStep as keyof typeof stepFieldsMap];
-    
-    // Trigger validation for all fields in the current step
     const results = await Promise.all(
       fieldsToValidate.map(field => methods.trigger(field as any))
     );
-    
     const isValid = results.every(result => result === true);
-    
     if (!isValid) {
       toast.error("Check your inputs", {
         description: "Please ensure all required fields are filled out correctly.",
       });
       return;
     }
-
+    // Upload images if on step 1
+    if (currentStep === 1) {
+      setUploading(true);
+      try {
+        if (logoFile) {
+          const url = await uploadImage(logoFile);
+          methods.setValue("metadata.logo", url, { shouldValidate: true });
+        }
+        if (coverFile) {
+          const url = await uploadImage(coverFile);
+          methods.setValue("metadata.cover_image", url, { shouldValidate: true });
+        }
+      } catch (err) {
+        toast.error("Image upload failed. Please try again.");
+        setUploading(false);
+        return;
+      }
+      setUploading(false);
+    }
     if (currentStep < TOTAL_STEPS) {
       setCurrentStep((prev) => prev + 1);
       window.scrollTo(0, 0);
@@ -140,7 +160,18 @@ const ProjectSubmissionForm = () => {
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <FormStep1 />;
+        return (
+          <FormStep1
+            logoFile={logoFile}
+            setLogoFile={setLogoFile}
+            logoPreviewUrl={logoPreviewUrl}
+            setLogoPreviewUrl={setLogoPreviewUrl}
+            coverFile={coverFile}
+            setCoverFile={setCoverFile}
+            coverPreviewUrl={coverPreviewUrl}
+            setCoverPreviewUrl={setCoverPreviewUrl}
+          />
+        );
       case 2:
         return <FormStep2 />;
       case 3:
@@ -176,9 +207,16 @@ const ProjectSubmissionForm = () => {
               <Button 
                 type="button" 
                 onClick={handleNext}
-                disabled={isSubmitting}
+                disabled={isSubmitting || uploading}
               >
-                Next
+                {uploading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Uploading...
+                  </>
+                ) : (
+                  "Next"
+                )}
               </Button>
             ) : (
               <Button 

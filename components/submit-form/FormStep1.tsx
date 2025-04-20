@@ -1,52 +1,71 @@
+import { Dispatch, SetStateAction, useState } from "react";
+import useUploadImageToBlob from "@/hooks/azure/useUploadImageToBlob";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { toast } from "sonner";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useFormContext } from "react-hook-form";
 import { ProjectSubmissionSchema } from "@/validations/submit_project";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState } from "react";
 import { Upload, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
 
-const FormStep1 = () => {
+interface FormStep1Props {
+  logoFile: File | null;
+  setLogoFile: Dispatch<SetStateAction<File | null>>;
+  logoPreviewUrl: string | null;
+  setLogoPreviewUrl: Dispatch<SetStateAction<string | null>>;
+  coverFile: File | null;
+  setCoverFile: Dispatch<SetStateAction<File | null>>;
+  coverPreviewUrl: string | null;
+  setCoverPreviewUrl: Dispatch<SetStateAction<string | null>>;
+}
+
+const FormStep1 = ({
+  logoFile,
+  setLogoFile,
+  logoPreviewUrl,
+  setLogoPreviewUrl,
+  coverFile,
+  setCoverFile,
+  coverPreviewUrl,
+  setCoverPreviewUrl,
+}: FormStep1Props) => {
   const { control, setValue } = useFormContext<ProjectSubmissionSchema>();
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: "cover_image" | "logo") => {
+  const [coverError, setCoverError] = useState<string | null>(null);
+  const [logoError, setLogoError] = useState<string | null>(null);
+  const { uploadImage } = useUploadImageToBlob();
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, type: "cover_image" | "logo") => {
     const file = e.target.files?.[0];
     if (!file) return;
+    // For preview purposes only
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (type === "cover_image") setCoverPreviewUrl(reader.result as string);
+      if (type === "logo") setLogoPreviewUrl(reader.result as string);
+    };
+    reader.readAsDataURL(file);
 
-    try {
-      // For preview purposes only
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (type === "cover_image") setPreviewUrl(reader.result as string);
-        if (type === "logo") setLogoPreviewUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-      
-      // TODO: Upload the file to your storage service
-      // For now, we'll use a placeholder URL that matches the schema requirement
-      // Replace this with your actual file upload logic using your blob storage
-      const mockImageUrl = type === "logo" 
-        ? "https://placehold.co/100/png"
-        : "https://placehold.co/600x400/png?text=UPLOADED+IMAGE";
-        
-      // Set the URL string (not the File object)
-      setValue(`metadata.${type}`, mockImageUrl, { shouldValidate: true });
-    } catch (error) {
-      console.error(`Error uploading ${type}:`, error);
-    }
+    // Upload to Azure Blob Storage
+    if (type === "cover_image") setCoverFile(file);
+    if (type === "logo") setLogoFile(file);
   };
+
   const clearImage = () => {
     setValue("metadata.cover_image", "https://placehold.co/600x400/png?text=NO+IMAGE", { shouldValidate: true });
-    setPreviewUrl(null);
+    setCoverPreviewUrl(null);
+    setCoverFile(null);
+    setCoverError(null);
   };
 
   const clearLogo = () => {
     setValue("metadata.logo", "https://placehold.co/100/png", { shouldValidate: true });
     setLogoPreviewUrl(null);
+    setLogoFile(null);
+    setLogoError(null);
   };
 
   return (
@@ -155,7 +174,23 @@ const FormStep1 = () => {
               <FormLabel>App Logo</FormLabel>
               <div className="space-y-4">
                 <AnimatePresence>
-                  {!logoPreviewUrl ? (
+                  {logoFile ? (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      onClick={clearLogo}
+                      className="relative flex justify-center cursor-pointer group"
+                    >
+                      <Avatar className="h-36 w-36 border-2 border-primary rounded-full">
+                        <AvatarImage src={logoPreviewUrl!} alt="App logo" />
+                        <AvatarFallback>LOGO</AvatarFallback>
+                      </Avatar>
+                      <div className="absolute inset-0 bg-black/30 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <X className="h-8 w-8 text-white" />
+                      </div>
+                    </motion.div>
+                  ) : (
                     <motion.label
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -170,24 +205,9 @@ const FormStep1 = () => {
                         className="hidden"
                       />
                     </motion.label>
-                  ) : (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      onClick={clearLogo}
-                      className="relative flex justify-center cursor-pointer group"
-                    >
-                      <Avatar className="h-36 w-36 border-2 border-primary rounded-full">
-                        <AvatarImage src={logoPreviewUrl} alt="App logo" />
-                        <AvatarFallback>LOGO</AvatarFallback>
-                      </Avatar>
-                      <div className="absolute inset-0 bg-black/30 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                        <X className="h-8 w-8 text-white" />
-                      </div>
-                    </motion.div>
                   )}
                 </AnimatePresence>
+                {logoError && <div className="text-red-500 text-xs text-center">{logoError}</div>}
               </div>
             </FormItem>
           )}
@@ -202,7 +222,22 @@ const FormStep1 = () => {
               <FormLabel>Cover Image</FormLabel>
               <div className="space-y-4">
                 <AnimatePresence>
-                  {!previewUrl ? (
+                  {coverFile ? (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      onClick={clearImage}
+                      className="relative cursor-pointer group"
+                    >
+                      <div className="overflow-hidden relative">
+                        <img src={coverPreviewUrl!} alt="Cover Image" className="object-cover w-full h-full rounded-lg" />
+                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                          <X className="h-8 w-8 text-white" />
+                        </div>
+                      </div>
+                    </motion.div>
+                  ) : (
                     <motion.label
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -217,23 +252,9 @@ const FormStep1 = () => {
                         className="hidden"
                       />
                     </motion.label>
-                  ) : (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      onClick={clearImage}
-                      className="relative cursor-pointer group"
-                    >
-                      <div className="overflow-hidden relative">
-                        <img src={previewUrl} alt="Cover Image" className="object-cover w-full h-full rounded-lg" />
-                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                          <X className="h-8 w-8 text-white" />
-                        </div>
-                      </div>
-                    </motion.div>
                   )}
                 </AnimatePresence>
+                {coverError && <div className="text-red-500 text-xs text-center">{coverError}</div>}
               </div>
             </FormItem>
           )}

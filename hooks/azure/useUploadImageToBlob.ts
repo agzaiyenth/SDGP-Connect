@@ -6,7 +6,7 @@ const useUploadImageToBlob = () => {
 
   const uploadImage = async (file: File, onProgress?: (progress: number) => void): Promise<string> => {
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('image', file);
   
     console.log('Uploading file:', file);
     console.log('FormData:', formData);
