@@ -29,6 +29,8 @@ const ProjectSubmissionForm = () => {
   const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null);
   const [coverPreviewUrl, setCoverPreviewUrl] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [slideFiles, setSlideFiles] = useState<File[]>([]);
+  const [slidePreviews, setSlidePreviews] = useState<string[]>([]);
   const { uploadImage } = useUploadImageToBlob();
   const router = useRouter();
   
@@ -106,6 +108,31 @@ const ProjectSubmissionForm = () => {
       }
       setUploading(false);
     }
+    // Upload slides if on step 2
+    if (currentStep === 2) {
+      setUploading(true);
+      try {
+        if (slideFiles.length > 0) {
+          const urls = [];
+          for (const file of slideFiles) {
+            const url = await uploadImage(file);
+            urls.push(url);
+          }
+          methods.setValue(
+            "slides",
+            urls.map((url) => ({ slides_content: url })),
+            { shouldValidate: true }
+          );
+          setSlideFiles([]);
+          setSlidePreviews([]);
+        }
+      } catch (err) {
+        toast.error("Slide image upload failed. Please try again.");
+        setUploading(false);
+        return;
+      }
+      setUploading(false);
+    }
     if (currentStep < TOTAL_STEPS) {
       setCurrentStep((prev) => prev + 1);
       window.scrollTo(0, 0);
@@ -173,7 +200,14 @@ const ProjectSubmissionForm = () => {
           />
         );
       case 2:
-        return <FormStep2 />;
+        return (
+          <FormStep2
+            slideFiles={slideFiles}
+            setSlideFiles={setSlideFiles}
+            slidePreviews={slidePreviews}
+            setSlidePreviews={setSlidePreviews}
+          />
+        );
       case 3:
         return <FormStep3 />;
       case 4:
