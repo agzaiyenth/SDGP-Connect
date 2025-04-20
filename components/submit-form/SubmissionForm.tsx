@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import { useSubmitProject } from "@/hooks/project/useSubmitProject";
 import { Loader2 } from "lucide-react";
 import useUploadImageToBlob from "@/hooks/azure/useUploadImageToBlob";
+import { UploadingSequence } from "@/components/ui/UploadingSequence";
 
 const TOTAL_STEPS = 5;
 
@@ -140,24 +141,19 @@ const ProjectSubmissionForm = () => {
       setUploading(true);
       try {
         const currentTeam = methods.getValues("team");
-        console.log("[DEBUG] Before upload - team:", currentTeam);
-        console.log("[DEBUG] teamProfileFiles:", teamProfileFiles);
-        const updatedTeam = await Promise.all(
+         const updatedTeam = await Promise.all(
           currentTeam.map(async (member, i) => {
             const file = teamProfileFiles[i];
             if (file) {
               const url = await uploadImage(file);
-              console.log(`[DEBUG] Uploaded profile image for team[${i}]:`, url);
               return { ...member, profile_image: url };
             }
             return member;
           })
         );
-        console.log("[DEBUG] After upload - updatedTeam:", updatedTeam);
         methods.setValue("team", updatedTeam, { shouldValidate: true });
         setTeamProfileFiles(updatedTeam.map(() => null));
         setTeamProfilePreviews(updatedTeam.map(() => null));
-        console.log("[DEBUG] After setValue - methods.getValues('team'):", methods.getValues('team'));
       } catch (err) {
         toast.error("Team profile image upload failed. Please try again.");
         setUploading(false);
@@ -181,29 +177,24 @@ const ProjectSubmissionForm = () => {
       // Handle team profile image uploads before final submission
       // Check if there are any profile images to upload
       const hasProfileImages = teamProfileFiles.some(file => file !== null);
-      console.log("[DEBUG] Do we have profile images to upload?", hasProfileImages);
-      console.log("[DEBUG] Team profile files:", teamProfileFiles);
-      
+  
       if (hasProfileImages) {
         setUploading(true);
         try {
           const currentTeam = [...data.team]; // Create a copy of the team array
-          console.log("[DEBUG] Before submission upload - team:", currentTeam);
           
           const updatedTeam = await Promise.all(
             currentTeam.map(async (member, i) => {
               const file = teamProfileFiles[i];
               if (file) {
-                console.log(`[DEBUG] Uploading team image for member ${i}:`, file.name);
+                
                 const url = await uploadImage(file);
-                console.log(`[DEBUG] Successfully uploaded image. URL for team[${i}]:`, url);
                 return { ...member, profile_image: url };
               }
               return member;
             })
           );
           
-          console.log("[DEBUG] After upload - updatedTeam:", updatedTeam);
           
           // Update the data that will be submitted with the new team data including image URLs
           data = {
@@ -211,7 +202,6 @@ const ProjectSubmissionForm = () => {
             team: updatedTeam
           };
           
-          console.log("[DEBUG] Final submission data team array:", data.team);
         } catch (err) {
           console.error("Error uploading team profile images:", err);
           toast.error("Team profile image upload failed. Please try again.");
@@ -219,13 +209,11 @@ const ProjectSubmissionForm = () => {
           return;
         }
         setUploading(false);
-      } else {
-        console.log("[DEBUG] No team profile images to upload, continuing with submission");
       }
       
       // Submit the project using our hook
       const result = await submitProject(data);
-      console.log("Submission result:", result);
+     
       
       if (result.success && result.data?.projectId) {
         // Show success message
@@ -318,13 +306,12 @@ const ProjectSubmissionForm = () => {
         
         <form onSubmit={methods.handleSubmit(onSubmit)} className="mt-6 space-y-8">
           {renderStep()}
-          
           <div className="flex justify-between pt-6">
             <Button 
               type="button" 
               variant="outline"
               onClick={handlePrevious}
-              disabled={currentStep === 1 || isSubmitting}
+              disabled={currentStep === 1 || isSubmitting || uploading}
             >
               Previous
             </Button>
@@ -334,11 +321,8 @@ const ProjectSubmissionForm = () => {
                 onClick={handleNext}
                 disabled={isSubmitting || uploading}
               >
-                {uploading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Uploading...
-                  </>
+                {(isSubmitting || uploading) ? (
+                  <UploadingSequence />
                 ) : (
                   "Next"
                 )}
@@ -348,11 +332,8 @@ const ProjectSubmissionForm = () => {
                 type="submit"
                 disabled={isSubmitting || uploading}
               >
-                {isSubmitting || uploading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {uploading ? "Uploading..." : "Submitting..."}
-                  </>
+                {(isSubmitting || uploading) ? (
+                  <UploadingSequence />
                 ) : (
                   "Submit Project"
                 )}
