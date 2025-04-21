@@ -1,9 +1,9 @@
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { useFormContext } from "react-hook-form";
 import { ProjectSubmissionSchema } from "@/validations/submit_project";
 import { Upload, X } from "lucide-react";
-import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Markdown from 'markdown-to-jsx';
 import { toast } from "sonner";
@@ -13,10 +13,16 @@ import { Input } from "../ui/input";
 
 const MAX_SLIDES = 10;
 
-const FormStep2 = () => {
+interface FormStep2Props {
+  slideFiles: File[];
+  setSlideFiles: Dispatch<SetStateAction<File[]>>;
+  slidePreviews: string[];
+  setSlidePreviews: Dispatch<SetStateAction<string[]>>;
+}
+
+const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews }: FormStep2Props) => {
   const { control, setValue, watch } = useFormContext<ProjectSubmissionSchema>();
   const features = watch("projectDetails.features") || "";
-  const [slideImagePreviews, setSlideImagePreviews] = useState<string[]>([]);
   const [isPlaceholderVisible, setIsPlaceholderVisible] = useState(true);
 
   useEffect(() => {
@@ -29,39 +35,25 @@ const FormStep2 = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
-
     const fileArray = Array.from(files);
-
-    if (slideImagePreviews.length + fileArray.length > MAX_SLIDES) {
+    if (slidePreviews.length + fileArray.length > MAX_SLIDES) {
       toast.error(`You can only upload a maximum of ${MAX_SLIDES} slides.`);
       return;
     }
-
     setIsPlaceholderVisible(false);
-
     fileArray.forEach(file => {
       const reader = new FileReader();
       reader.onload = () => {
-        const result = reader.result as string;
-        setSlideImagePreviews(prev => [...prev, result]);
-        
-        // Update slides in form data
-        setValue("slides", [
-          ...(watch("slides") || []),
-          { slides_content: result }
-        ]);
+        setSlidePreviews(prev => [...prev, reader.result as string]);
+        setSlideFiles(prev => [...prev, file]);
       };
       reader.readAsDataURL(file);
     });
   };
 
   const removeSlideImage = (index: number) => {
-    setSlideImagePreviews(prev => prev.filter((_, i) => i !== index));
-    
-    // Update slides in form data
-    const currentSlides = [...(watch("slides") || [])];
-    currentSlides.splice(index, 1);
-    setValue("slides", currentSlides);
+    setSlidePreviews(prev => prev.filter((_, i) => i !== index));
+    setSlideFiles(prev => prev.filter((_, i) => i !== index));
   };
 
   return (
@@ -148,8 +140,6 @@ const FormStep2 = () => {
         )}
       />
 
-     
-
       {/* Slide Upload Section */}
       <FormField
         control={control}
@@ -167,7 +157,7 @@ const FormStep2 = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-6">
-              {slideImagePreviews.map((previewUrl, index) => (
+              {slidePreviews.map((previewUrl, index) => (
                 <div key={index} className="relative group overflow-hidden rounded-lg shadow-md border dark:border-gray-700 transition-all hover:shadow-xl">
                   <AspectRatio ratio={16 / 9}>
                     <img src={previewUrl} alt={`Slide ${index + 1}`} className="object-cover w-full h-full rounded-lg" />
