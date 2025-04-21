@@ -15,6 +15,15 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  // Role-based authorization check
+  const { role } = session.user;
+  if (!["ADMIN", "MODERATOR", ].includes(role)) {
+    return NextResponse.json(
+      { error: "Forbidden. You don't have required Permission" },
+      { status: 403 }
+    );
+  }
+
   const userId = session.user.id;   
 
   try {

@@ -10,10 +10,10 @@ const Data = {
     url: "/about",
   },
   reviews: {
-    count: 200,
+    count: 250,
     avatars: [
       {
-        src: "/home/about-logo/lexi.png",
+        src: "/home/about-logo/raspberry.jpg",
         alt: "Avatar 1",
       },
       {
@@ -21,15 +21,20 @@ const Data = {
         alt: "Avatar 2",
       },
       {
-        src: "/home/about-logo/raspberry.jpg",
+        
+        src: "/home/about-logo/lexi.png",
         alt: "Avatar 3",
       },
       {
-        src: "https://www.shadcnblocks.com/images/block/avatar-4.webp",
+        src: "/home/about-logo/sealanka.jpg",
         alt: "Avatar 4",
       },
       {
-        src: "https://www.shadcnblocks.com/images/block/avatar-5.webp",
+        src: "/home/about-logo/genie.png",
+        alt: "Avatar 4",
+      },
+      {
+        src: "/home/about-logo/movemate.jpg",
         alt: "Avatar 5",
       },
     ],

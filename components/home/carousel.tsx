@@ -4,16 +4,13 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 
 const images = [
-  '/home/hero/1.jpg',
-  '/home/hero/2.jpg',
-  '/home/hero/3.jpg',
-  '/home/hero/4.jpg',
-  '/home/hero/5.jpg',
-  '/home/hero/6.jpg',
-  '/home/hero/7.jpg',
-  '/home/hero/8.jpg',
-  '/home/hero/9.jpg',
-  '/home/hero/10.jpg',
+  '/assets/Dialog.jpg',
+  '/assets/1.jpg',
+  '/assets/2.jpg',
+  '/assets/Codesprint.jpg',
+  '/assets/3.jpg',
+  '/assets/innovex.jpg',
+  '/assets/movemate1.jpg',
 ];
 
 export default function Carousel() {
@@ -29,10 +26,10 @@ export default function Carousel() {
       >
         {duplicatedImages.map((image, index) => (
             <div key={index} className="flex-none relative rounded-lg overflow-hidden w-[400px] aspect-video">
-            <Image
+            <img
               src={image}
               alt={`Carousel image ${index + 1}`}
-             fill
+            
               className="object-cover"
               sizes="(max-width: 400px) 100vw, 400px"
             />

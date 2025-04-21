@@ -1,15 +1,10 @@
-import React from 'react'
+import Contact from "@/components/contact/contact-form"
+import { ContactTitle } from "@/components/contact/contactTitle"
 
-interface Props {
-    
-}
+export default function Page() {
+  return (
+  <div className="flex flex-col items-center justify-center text-white pb-24">
+    <ContactTitle/>
+    <Contact />
 
-const page = (props: Props) => {
-    return (
-        <div>
-            <h1>Contact Us</h1>
-        </div>
-    )
-}
-
-export default page
+  </div>)}
