@@ -7,13 +7,13 @@ import { revalidatePath } from 'next/cache';
 // Handle OPTIONS requests for CORS preflight
 export async function OPTIONS() {
   const response = NextResponse.json({});
-  
+
   // Set CORS headers
   response.headers.set('Access-Control-Allow-Origin', '*');
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   response.headers.set('Access-Control-Max-Age', '86400');  // Cache the CORS preflight response for 24 hours
-  
+
   // Return a 200 status for OPTIONS
   return response;
 }
@@ -22,10 +22,10 @@ export async function POST(request: Request) {
   try {
     // Parse the request body
     const body = await request.json();
-    
+
     // Validate the submission data
     const validatedData = projectSubmissionSchema.parse(body);
-    
+
     // Start a transaction to ensure all database operations succeed or fail together
     const result = await prisma.$transaction(async (tx) => {
       // 1. Create ProjectMetadata - This has our main project_id
@@ -74,7 +74,6 @@ export async function POST(request: Request) {
         }
       });
 
-      // 5. Create ProjectAssociations - Link to ProjectContent via content_id
       // Domain associations
       const createDomainAssociations = validatedData.domains.map(domain => {
         return tx.projectAssociation.create({
@@ -100,7 +99,7 @@ export async function POST(request: Request) {
       });
 
       // SDG associations (if present)
-      const createSdgAssociations = validatedData.sdgGoals.map(sdgGoal => {
+      const createSdgAssociations = validatedData.sdgGoals?.map(sdgGoal => {
         return tx.projectAssociation.create({
           data: {
             content: { connect: { content_id: projectContent.content_id } },
@@ -109,7 +108,7 @@ export async function POST(request: Request) {
             value: sdgGoal
           }
         });
-      });
+      }) || [];  // Handle case where sdgGoals might be undefined
 
       // Tech stack associations
       const createTechAssociations = validatedData.techStack.map(tech => {
@@ -133,6 +132,7 @@ export async function POST(request: Request) {
 
       // Wait for all association creations to complete
       await Promise.all(allAssociations);
+
 
       // 6. Create Team Members - Link to ProjectContent via content_id
       if (validatedData.team && validatedData.team.length > 0) {
@@ -167,7 +167,7 @@ export async function POST(request: Request) {
           await tx.projectSlide.create({
             data: {
               content: { connect: { content_id: projectContent.content_id } },
-              slides_content: typeof slide.slides_content === 'string' 
+              slides_content: typeof slide.slides_content === 'string'
                 ? slide.slides_content.substring(0, 65535)
                 : JSON.stringify(slide.slides_content).substring(0, 65535),
             }
@@ -175,7 +175,7 @@ export async function POST(request: Request) {
         }
       }
 
-      return { 
+      return {
         projectId: projectMetadata.project_id,
         contentId: projectContent.content_id
       };
@@ -186,8 +186,8 @@ export async function POST(request: Request) {
     revalidatePath('/(public)/project');
 
     // Return success response with CORS headers
-    const response = NextResponse.json({ 
-      success: true, 
+    const response = NextResponse.json({
+      success: true,
       message: 'Project submitted successfully',
       data: {
         projectId: result.projectId
@@ -206,7 +206,7 @@ export async function POST(request: Request) {
     console.error('Error submitting project:', error);
     if (error.cause) console.error('Cause:', error.cause);
     if (error.stack) console.error('Stack:', error.stack);
-    
+
     if (error.name === 'ZodError') {
       return NextResponse.json({
         success: false,
@@ -214,10 +214,10 @@ export async function POST(request: Request) {
         errors: error.errors
       }, { status: 400 });
     }
-    
+
     // Return error response with CORS headers
-    const response = NextResponse.json({ 
-      success: false, 
+    const response = NextResponse.json({
+      success: false,
       message: 'Failed to submit project',
       error: error.message || 'Unknown error occurred'
     }, { status: 500 });
