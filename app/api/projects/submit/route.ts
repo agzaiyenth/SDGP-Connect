@@ -4,6 +4,15 @@ import { projectSubmissionSchema } from '@/validations/submit_project';
 import { AssociationType, ProjectApprovalStatus } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
+// Handle OPTIONS requests for CORS preflight
+export async function OPTIONS() {
+  const response = NextResponse.json({});
+  response.headers.set('Access-Control-Allow-Origin', '*');
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  return response;
+}
+
 export async function POST(request: Request) {
   try {
     // Parse the request body
