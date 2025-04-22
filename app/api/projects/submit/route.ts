@@ -6,6 +6,17 @@ import { revalidatePath } from 'next/cache';
 
 export async function POST(request: Request) {
   try {
+    // Set CORS headers for the response
+    const response = NextResponse.next();
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
+
+    // Handle preflight request (OPTIONS)
+    if (request.method === 'OPTIONS') {
+      return response; // Respond immediately to OPTIONS requests
+    }
+
     // Parse the request body
     const body = await request.json();
     
