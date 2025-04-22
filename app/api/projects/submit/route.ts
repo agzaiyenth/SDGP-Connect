@@ -6,17 +6,6 @@ import { revalidatePath } from 'next/cache';
 
 export async function POST(request: Request) {
   try {
-    // Set CORS headers for the response
-    const response = NextResponse.next();
-    response.headers.set('Access-Control-Allow-Origin', '*');
-    response.headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
-
-    // Handle preflight request (OPTIONS)
-    if (request.method === 'OPTIONS') {
-      return response; // Respond immediately to OPTIONS requests
-    }
-
     // Parse the request body
     const body = await request.json();
     
@@ -173,13 +162,22 @@ export async function POST(request: Request) {
     revalidatePath('/project');
     revalidatePath('/(public)/project');
 
-    return NextResponse.json({ 
+    // Return success response with CORS headers
+    const response = NextResponse.json({ 
       success: true, 
       message: 'Project submitted successfully',
       data: {
         projectId: result.projectId
       }
-    }, { status: 201 });
+    });
+
+    // Set the CORS headers
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+    return response;
+
   } catch (error: any) {
     console.error('Error submitting project:', error);
     if (error.cause) console.error('Cause:', error.cause);
@@ -193,10 +191,18 @@ export async function POST(request: Request) {
       }, { status: 400 });
     }
     
-    return NextResponse.json({ 
+    // Return error response with CORS headers
+    const response = NextResponse.json({ 
       success: false, 
       message: 'Failed to submit project',
       error: error.message || 'Unknown error occurred'
     }, { status: 500 });
+
+    // Set the CORS headers for the error response as well
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+    return response;
   }
 }
