@@ -1,20 +1,17 @@
 import { PrismaClient } from '@prisma/client';
 
-// Define prisma client with connection pooling and SSL configuration
-const prismaClientSingleton = () => {
-  return new PrismaClient({
-    datasources: {
-      db: {
-        url: process.env.DATABASE_URL,
-      },
-    },
-    // Enable connection pooling in production
-    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-  });
-};
+let prisma: PrismaClient;
 
-// Use global variable to avoid multiple instances in development
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
-export const prisma = globalForPrisma.prisma || prismaClientSingleton();
+if (process.env.NODE_ENV === 'production') {
+  prisma = new PrismaClient();
+} else {
+  // @ts-ignore
+  if (!global.prisma) {
+    // @ts-ignore
+    global.prisma = new PrismaClient();
+  }
+  // @ts-ignore
+  prisma = global.prisma;
+}
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+export { prisma };
