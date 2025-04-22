@@ -10,7 +10,7 @@ export const useSubmitProject = () => {
   const [warning, setWarning] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
   const { uploadImage, isLoading: isUploadingImages } = useUploadImageToBlob();
-  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
   // Helper to sanitize the submission data to ensure it's JSON serializable
   const sanitizeSubmissionData = (data: any): any => {
     if (data === null || data === undefined) {
