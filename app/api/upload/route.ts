@@ -32,8 +32,7 @@ export async function POST(request: NextRequest) {
 
     const blobServiceClient = new BlobServiceClient(`https://${account}.blob.core.windows.net/?${sas}`);
     const containerClient = blobServiceClient.getContainerClient(container);
-    const sanitizedFileName = file.name.replace(/[^a-zA-Z0-9.\-]/g, '');
-    const uniqueName = `${uuidv4()}-${sanitizedFileName}`;
+    const uniqueName = `${uuidv4()}`;
     const blockBlobClient = containerClient.getBlockBlobClient(uniqueName);
 
     await blockBlobClient.uploadFile(tempFilePath, {
