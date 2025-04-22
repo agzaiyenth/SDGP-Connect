@@ -7,9 +7,14 @@ import { revalidatePath } from 'next/cache';
 // Handle OPTIONS requests for CORS preflight
 export async function OPTIONS() {
   const response = NextResponse.json({});
+  
+  // Set CORS headers
   response.headers.set('Access-Control-Allow-Origin', '*');
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  response.headers.set('Access-Control-Max-Age', '86400');  // Cache the CORS preflight response for 24 hours
+  
+  // Return a 200 status for OPTIONS
   return response;
 }
 
@@ -36,7 +41,7 @@ export async function POST(request: Request) {
           featured: false,
         }
       });
-      
+
       console.log(`Created ProjectMetadata with project_id: ${projectMetadata.project_id}`);
 
       // 2. Create ProjectContent - This links to ProjectMetadata via project_id
@@ -45,7 +50,7 @@ export async function POST(request: Request) {
           metadata_id: projectMetadata.project_id // Link to the main project_id
         }
       });
-      
+
       console.log(`Created ProjectContent with content_id: ${projectContent.content_id}`);
 
       // 3. Create ProjectDetails - Links to ProjectContent via content_id
@@ -71,8 +76,8 @@ export async function POST(request: Request) {
 
       // 5. Create ProjectAssociations - Link to ProjectContent via content_id
       // Domain associations
-      for (const domain of validatedData.domains) {
-        await tx.projectAssociation.create({
+      const createDomainAssociations = validatedData.domains.map(domain => {
+        return tx.projectAssociation.create({
           data: {
             content: { connect: { content_id: projectContent.content_id } },
             type: AssociationType.PROJECT_DOMAIN,
@@ -80,11 +85,11 @@ export async function POST(request: Request) {
             value: domain
           }
         });
-      }
-      
+      });
+
       // Project type associations
-      for (const projectType of validatedData.projectTypes) {
-        await tx.projectAssociation.create({
+      const createProjectTypeAssociations = validatedData.projectTypes.map(projectType => {
+        return tx.projectAssociation.create({
           data: {
             content: { connect: { content_id: projectContent.content_id } },
             type: AssociationType.PROJECT_TYPE,
@@ -92,25 +97,23 @@ export async function POST(request: Request) {
             value: projectType
           }
         });
-      }
-      
+      });
+
       // SDG associations (if present)
-      if (validatedData.sdgGoals && validatedData.sdgGoals.length > 0) {
-        for (const sdgGoal of validatedData.sdgGoals) {
-          await tx.projectAssociation.create({
-            data: {
-              content: { connect: { content_id: projectContent.content_id } },
-              type: AssociationType.PROJECT_SDG,
-              sdgGoal: sdgGoal,
-              value: sdgGoal
-            }
-          });
-        }
-      }
-      
+      const createSdgAssociations = validatedData.sdgGoals.map(sdgGoal => {
+        return tx.projectAssociation.create({
+          data: {
+            content: { connect: { content_id: projectContent.content_id } },
+            type: AssociationType.PROJECT_SDG,
+            sdgGoal: sdgGoal,
+            value: sdgGoal
+          }
+        });
+      });
+
       // Tech stack associations
-      for (const tech of validatedData.techStack) {
-        await tx.projectAssociation.create({
+      const createTechAssociations = validatedData.techStack.map(tech => {
+        return tx.projectAssociation.create({
           data: {
             content: { connect: { content_id: projectContent.content_id } },
             type: AssociationType.PROJECT_TECH,
@@ -118,7 +121,18 @@ export async function POST(request: Request) {
             value: tech
           }
         });
-      }
+      });
+
+      // Combine all associations into a single array of promises
+      const allAssociations = [
+        ...createDomainAssociations,
+        ...createProjectTypeAssociations,
+        ...createSdgAssociations,
+        ...createTechAssociations
+      ];
+
+      // Wait for all association creations to complete
+      await Promise.all(allAssociations);
 
       // 6. Create Team Members - Link to ProjectContent via content_id
       if (validatedData.team && validatedData.team.length > 0) {
@@ -180,10 +194,11 @@ export async function POST(request: Request) {
       }
     });
 
-    // Set the CORS headers
+    // Set the CORS headers for both success response and preflight response
     response.headers.set('Access-Control-Allow-Origin', '*');
     response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    response.headers.set('Access-Control-Max-Age', '86400');  // Cache the CORS preflight response for 24 hours
 
     return response;
 
@@ -211,6 +226,7 @@ export async function POST(request: Request) {
     response.headers.set('Access-Control-Allow-Origin', '*');
     response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    response.headers.set('Access-Control-Max-Age', '86400');  // Cache the CORS preflight response for 24 hours
 
     return response;
   }
