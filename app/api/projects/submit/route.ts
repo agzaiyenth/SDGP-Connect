@@ -179,7 +179,9 @@ export async function POST(request: Request) {
         projectId: projectMetadata.project_id,
         contentId: projectContent.content_id
       };
-    });
+    },
+    { timeout: 10000 }
+  );
 
     // Revalidate the projects paths to update the cache
     revalidatePath('/project');
