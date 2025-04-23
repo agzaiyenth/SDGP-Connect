@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 const teamMembers = [
   // VL Hybrid lecturers
   {
+    //Banu, John, Kripa, Suresh, Kushan, Manul, Mithushan, Deshan, Pubudu, Mohanadas, Seyed, Vinodani, Asith, Thashin, Ahtshayan, Imasha 
     name: "Banuka Athuraliya",
     role: "Module Leader (VL Hybrid)",
     email: "banu.a@iit.ac.lk",
@@ -14,11 +15,32 @@ const teamMembers = [
     description:
       "Managing Director @ Andro Dollar Network (PVT) LTD | Tech YouTuber | Software Engineering, Marketing and Entrepreneurship Visiting Lecturer",
     category: "Primary",
-    image: "/assets/Banu.jpg", 
-    
+    image: "/assets/Banu.jpg",
+
+  },
+  // VL Online lecturers
+  {
+    name: "John Sriskandarajah",
+    role: "Visiting Lecturer (Online)",
+    email: "john.s@iit.ac.lk",
+    linkedin: "https://www.linkedin.com/in/john-sriskandarajah/",
+    description:
+      "CEO @ Telexar | Helping Businesses Scale with Offshore Teams | Resource Augmentation Specialist",
+    category: "Primary",
+    image: "/assets/Johnsir.png",
   },
   {
-    name: "Suresh Peiris", 
+    name: "Krishnakripa Jayakumar",
+    role: "Visiting Lecturer (Online)",
+    email: "krishnakripa.j@iit.ac.lk",
+    linkedin: "https://www.linkedin.com/in/krishnakripa-jayakumar/",
+    description:
+      "Cybersecurity & Software Engineering Professional | Lecturer | Multiple Award Winner",
+    category: "Primary",
+    image: "/assets/kripa miss.png",
+  },
+  {
+    name: "Suresh Peiris",
     role: "Visiting Lecturer (Hybrid)",
     email: "suresh.p@iit.ac.lk",
     linkedin: "https://www.linkedin.com/in/suresh-peiris/",
@@ -36,27 +58,6 @@ const teamMembers = [
     category: "Primary",
     image: "/assets/kushan sir.png",
   },
-  {
-    name: "Mithushan Jalangan",
-    role: "Visiting Lecturer (Hybrid)",
-    email: "mithushan.j@iit.ac.lk",
-    linkedin: "https://www.linkedin.com/in/mithushan-jalangan/",
-    description:
-      "I help founders build better software | Product Engineer | Full stack Web/AI | asyncdot & shopbook.lk - Co-founder",
-    category: "Primary",
-    image: "/assets/Mithushan sir.png",
-  },
-  {
-    name: "Pubudu Mihiranga",
-    role: "Visiting Lecturer (Hybrid)",
-    email: "pubudu.s@iit.ac.lk",
-    linkedin: "https://www.linkedin.com/in/pubudu-mihiranga/",
-    description:
-      "Brings industry experience in software architecture and system design.",
-    category: "Secondary",
-    image: "/assets/pubudu.jpg",
-  },
-
   // FT Hybrid lecturers
   {
     name: "Manul Singhe",
@@ -69,13 +70,46 @@ const teamMembers = [
     image: "/assets/manul sir.png",
   },
   {
+    name: "Mithushan Jalangan",
+    role: "Visiting Lecturer (Hybrid)",
+    email: "mithushan.j@iit.ac.lk",
+    linkedin: "https://www.linkedin.com/in/mithushan-jalangan/",
+    description:
+      "I help founders build better software | Product Engineer | Full stack Web/AI | asyncdot & shopbook.lk - Co-founder",
+    category: "Primary",
+    image: "/assets/Mithushan sir.png",
+  },
+  {
+    name: "Deshan Sumanathilaka",
+    role: "Visiting Lecturer (Online)",
+    email: "deshan.s@iit.ac.lk",
+    linkedin: "https://www.linkedin.com/in/deshan-sumanathilaka/",
+    description:
+      "PhD Candidate at Swansea University / Visiting Lecturer at IIT / Youtuber-Tutor at DS-IT Academy",
+    category: "Primary",
+    image: "/assets/deshan sir.png",
+  },
+
+  {
+    name: "Pubudu Mihiranga",
+    role: "Visiting Lecturer (Hybrid)",
+    email: "pubudu.s@iit.ac.lk",
+    linkedin: "https://www.linkedin.com/in/pubudu-mihiranga/",
+    description:
+      "Brings industry experience in software architecture and system design.",
+    category: "Primary",
+    image: "/assets/pubudu.jpg",
+  },
+
+
+  {
     name: "Mohanadas Jananie",
     role: "Full-Time Lecturer (Hybrid)",
     email: "mohanadas.j@iit.ac.lk",
     linkedin: "https://www.linkedin.com/in/mohanadas-jananie/",
     description:
       "Focuses on software testing practices and quality assurance in group projects.",
-    category: "ft",
+    category: "Primary",
     image: "/assets/janani miss.png",
   },
   {
@@ -84,7 +118,7 @@ const teamMembers = [
     email: "ruzaik.s@iit.ac.lk",
     linkedin: "https://www.linkedin.com/in/seyed-ruzaik/",
     description: "Software Developer | Tech Blogger | Assistant Lecturer",
-    category: "ft",
+    category: "Primary",
     image: "/assets/rusaik sir.png",
   },
   {
@@ -94,7 +128,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/vinodani-thilakarathne/",
     description:
       "Guides students in requirements gathering and business analysis for software projects.",
-    category: "ft",
+    category: "Primary",
     image: "/assets/image.png",
   },
   {
@@ -103,7 +137,7 @@ const teamMembers = [
     email: "asith.p@iit.ac.lk",
     linkedin: "https://www.linkedin.com/in/asith-pallemulla/",
     description: "Expert in back-end development and systems integration.",
-    category: "ft",
+    category: "Primary",
     image: "/assets/asith sir.png",
   },
   {
@@ -112,7 +146,7 @@ const teamMembers = [
     email: "thashin.r@iit.ac.lk",
     linkedin: "https://www.linkedin.com/in/thashin-rahuman/",
     description: "Software Engineer | Blockchain | React JS/ NodeJS | GO",
-    category: "ft",
+    category: "Primary",
     image: "/assets/thashin sir.png",
   },
   {
@@ -122,58 +156,19 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/ahtshayan-udayasanthiran/",
     description:
       "Focuses on software development lifecycle and project documentation.",
-    category: "ft",
+    category: "Primary",
     image: "/assets/ahtshayan sir.png",
   },
 
-  // VL Online lecturers
-  {
-    name: "John Sriskandarajah",
-    role: "Visiting Lecturer (Online)",
-    email: "john.s@iit.ac.lk",
-    linkedin: "https://www.linkedin.com/in/john-sriskandarajah/",
-    description:
-      "CEO @ Telexar | Helping Businesses Scale with Offshore Teams | Resource Augmentation Specialist",
-    category: "vl",
-    image: "/assets/Johnsir.png",
-  },
-  {
-    name: "Krishnakripa Jayakumar",
-    role: "Visiting Lecturer (Online)",
-    email: "krishnakripa.j@iit.ac.lk",
-    linkedin: "https://www.linkedin.com/in/krishnakripa-jayakumar/",
-    description:
-      "Cybersecurity & Software Engineering Professional | Lecturer | Multiple Award Winner",
-    category: "vl",
-    image: "/assets/kripa miss.png",
-  },
-  {
-    name: "Deshan Sumanathilaka",
-    role: "Visiting Lecturer (Online)",
-    email: "deshan.s@iit.ac.lk",
-    linkedin: "https://www.linkedin.com/in/deshan-sumanathilaka/",
-    description:
-      "PhD Candidate at Swansea University / Visiting Lecturer at IIT / Youtuber-Tutor at DS-IT Academy",
-    category: "vl",
-    image: "/assets/deshan sir.png",
-  },
+
 ];
 
 const ModuleTeam: React.FC = () => {
   const primaryMembers = teamMembers.filter(
     (member) => member.category === "Primary"
   );
-  const secondaryMembers = teamMembers.filter(
-    (member) => member.category === "Secondary"
-  );
-  const ftMembers = teamMembers.filter(
-    (member) => member.category === "ft"
-  );
-  const vlMembers = teamMembers.filter(
-    (member) => member.category === "vl"
-  );
 
-  const renderTeamSection = (members: typeof teamMembers, title: string) => (
+  const renderTeamSection = (members: typeof teamMembers) => (
     <motion.div
       className="mb-16"
       initial={{ opacity: 0, y: 30 }}
@@ -181,9 +176,6 @@ const ModuleTeam: React.FC = () => {
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-      <h2 className="text-2xl md:text-3xl font-extrabold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-300 to-gray-500 text-center">
-        {title}
-      </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
         {members.map((member, index) => (
           <motion.div
@@ -336,11 +328,7 @@ const ModuleTeam: React.FC = () => {
         member for support and guidance.
       </motion.p>
 
-      {renderTeamSection(primaryMembers, "Primary Module Team")}
-      {renderTeamSection(secondaryMembers, "VL Hybrid Lecturers")}
-      {renderTeamSection(ftMembers, "FT Hybrid Lecturers")}
-      {renderTeamSection(vlMembers, "VL Online Lecturers")}
-
+      {renderTeamSection(primaryMembers)}
       <style jsx global>{`
         @keyframes fadeIn {
           from {

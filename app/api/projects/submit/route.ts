@@ -228,7 +228,7 @@ export async function POST(request: Request) {
     response.headers.set('Access-Control-Allow-Origin', '*');
     response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    response.headers.set('Access-Control-Max-Age', '86400');  // Cache the CORS preflight response for 24 hours
+    response.headers.set('Access-Control-Max-Age', '86400');  
 
     return response;
   }
