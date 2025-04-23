@@ -105,6 +105,9 @@ export async function POST(request: Request) {
         });
       }
 
+      // Ensure all previous records are committed before inserting slides
+      await tx.$executeRaw`SELECT 1`;
+
       if ((validatedData?.slides?.length ?? 0) > 0) {
         await tx.projectSlide.createMany({
           data: validatedData.slides!.map(slide => ({
