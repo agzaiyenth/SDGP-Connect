@@ -11,6 +11,7 @@ import { Upload, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
+import { validateImageFile } from "./utils/validateImageFile";
 
 interface FormStep1Props {
   logoFile: File | null;
@@ -41,6 +42,16 @@ const FormStep1 = ({
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, type: "cover_image" | "logo") => {
     const file = e.target.files?.[0];
     if (!file) return;
+    const error = validateImageFile(file);
+    if (error) {
+      toast.error(error);
+      if (type === "cover_image") setCoverError(error);
+      if (type === "logo") setLogoError(error);
+      return;
+    } else {
+      if (type === "cover_image") setCoverError(null);
+      if (type === "logo") setLogoError(null);
+    }
     // For preview purposes only
     const reader = new FileReader();
     reader.onload = () => {
