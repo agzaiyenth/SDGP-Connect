@@ -4,15 +4,35 @@ export const maxDuration = 30;
 import { NextResponse } from 'next/server';
 import { prisma } from '@/prisma/prismaClient';
 import { projectSubmissionSchema } from '@/validations/submit_project';
-import { ProjectApprovalStatus, AssociationType } from '@prisma/client';
+import {
+  ProjectApprovalStatus,
+  AssociationType,
+  Prisma,          // ⬅ needed for TransactionOptions
+} from '@prisma/client';
 import { revalidatePath } from 'next/cache';
+
+/** How many slides to send per createMany() call */
+const SLIDE_BATCH_SIZE = 50;
 
 export async function POST(request: Request) {
   try {
+    /* ------------------------------------------------------------------ */
+    /*  1️⃣  Parse & validate body                                         */
+    /* ------------------------------------------------------------------ */
     const body = await request.json();
     const validatedData = projectSubmissionSchema.parse(body);
 
-    const result = await prisma.$transaction(async (tx) => {
+    /* ------------------------------------------------------------------ */
+    /*  2️⃣  Main interactive transaction (metadata, details, etc.)       */
+    /*      – 20 s timeout / 10 s maxWait                                  */
+    /* ------------------------------------------------------------------ */
+    const txOptions = {
+      maxWait: 10_000,   // wait up to 10 s for a free connection
+      timeout: 20_000,   // give the work up to 20 s in the DB
+    };
+
+    const { project_id, content_id } = await prisma.$transaction(async (tx) => {
+      /* projectMetadata -------------------------------------------------- */
       const projectMetadata = await tx.projectMetadata.create({
         data: {
           sdgp_year: validatedData.metadata.sdgp_year,
@@ -23,17 +43,19 @@ export async function POST(request: Request) {
           cover_image: validatedData.metadata.cover_image || null,
           logo: validatedData.metadata.logo || null,
           featured: false,
-        }
+        },
+        select: { project_id: true },
       });
 
+      /* projectContent ---------------------------------------------------- */
       const projectContent = await tx.projectContent.create({
-        data: {
-          metadata_id: projectMetadata.project_id
-        }
+        data: { metadata_id: projectMetadata.project_id },
+        select: { content_id: true },
       });
 
       const contentId = projectContent.content_id;
 
+      /* projectDetails ---------------------------------------------------- */
       await tx.projectDetails.create({
         data: {
           content_id: contentId,
@@ -42,103 +64,126 @@ export async function POST(request: Request) {
           features: validatedData.projectDetails.features,
           team_email: validatedData.projectDetails.team_email,
           team_phone: validatedData.projectDetails.team_phone || '',
-        }
+        },
       });
 
+      /* projectStatus ----------------------------------------------------- */
       await tx.projectStatus.create({
         data: {
           content_id: contentId,
           status: validatedData.status.status,
-          approved_status: ProjectApprovalStatus.PENDING
-        }
+          approved_status: ProjectApprovalStatus.PENDING,
+        },
       });
 
+      /* projectAssociation ------------------------------------------------ */
       const associations = [
-        ...validatedData.domains.map(d => ({
+        ...validatedData.domains.map((d) => ({
           content_id: contentId,
           type: AssociationType.PROJECT_DOMAIN,
           domain: d,
-          value: d
+          value: d,
         })),
-        ...validatedData.projectTypes.map(t => ({
+        ...validatedData.projectTypes.map((t) => ({
           content_id: contentId,
           type: AssociationType.PROJECT_TYPE,
           projectType: t,
-          value: t
+          value: t,
         })),
-        ...(validatedData.sdgGoals || []).map(s => ({
+        ...(validatedData.sdgGoals || []).map((s) => ({
           content_id: contentId,
           type: AssociationType.PROJECT_SDG,
           sdgGoal: s,
-          value: s
+          value: s,
         })),
-        ...validatedData.techStack.map(t => ({
+        ...validatedData.techStack.map((t) => ({
           content_id: contentId,
           type: AssociationType.PROJECT_TECH,
           techStack: t,
-          value: t
-        }))
+          value: t,
+        })),
       ];
 
-      if (associations.length > 0) {
-        await tx.projectAssociation.createMany({ data: associations });
+      if (associations.length) {
+        await tx.projectAssociation.createMany({
+          data: associations,
+          skipDuplicates: true,
+        });
       }
 
-      if (validatedData.team.length > 0) {
+      /* projectTeam ------------------------------------------------------- */
+      if (validatedData.team.length) {
         await tx.projectTeam.createMany({
-          data: validatedData.team.map(member => ({
+          data: validatedData.team.map((member) => ({
             content_id: contentId,
             name: member.name,
             linkedin_url: member.linkedin_url || null,
             profile_image: member.profile_image || null,
-          }))
+          })),
+          skipDuplicates: true,
         });
       }
 
-      if ((validatedData?.socialLinks?.length ?? 0) > 0) {
+      /* socialLinks ------------------------------------------------------- */
+      if (validatedData.socialLinks?.length) {
         await tx.projectSocialLink.createMany({
-          data: (validatedData.socialLinks || []).map(link => ({
+          data: validatedData.socialLinks.map((link) => ({
             content_id: contentId,
             link_name: link.link_name,
-            url: link.url
-          }))
+            url: link.url,
+          })),
+          skipDuplicates: true,
         });
       }
 
-      // Ensure all previous records are committed before inserting slides
-      await tx.$executeRaw`SELECT 1`;
+      /*  Return identifiers for post-commit work ------------------------- */
+      return { project_id: projectMetadata.project_id, content_id: contentId };
+    }, txOptions);
 
-      if ((validatedData?.slides?.length ?? 0) > 0) {
-        await tx.projectSlide.createMany({
-          data: validatedData.slides!.map(slide => ({
-            content_id: contentId,
-            slides_content: typeof slide.slides_content === 'string'
-              ? slide.slides_content.slice(0, 65535)
-              : JSON.stringify(slide.slides_content).slice(0, 65535)
-          }))
+    /* ------------------------------------------------------------------ */
+    /*  3️⃣  Slides: insert outside the interactive transaction            */
+    /*      (keeps the DB lock short & avoids hitting the 20 s limit)      */
+    /* ------------------------------------------------------------------ */
+    if (validatedData.slides?.length) {
+      for (let i = 0; i < validatedData.slides.length; i += SLIDE_BATCH_SIZE) {
+        const batch = validatedData.slides.slice(i, i + SLIDE_BATCH_SIZE);
+
+        await prisma.projectSlide.createMany({
+          data: batch.map((slide) => ({
+            content_id,
+            slides_content:
+              typeof slide.slides_content === 'string'
+                ? slide.slides_content.slice(0, 65_535)
+                : JSON.stringify(slide.slides_content).slice(0, 65_535),
+          })),
+          skipDuplicates: true,
         });
       }
+    }
 
-      return {
-        projectId: projectMetadata.project_id
-      };
-    });
-
+    /* ------------------------------------------------------------------ */
+    /*  4️⃣  Cache revalidation                                             */
+    /* ------------------------------------------------------------------ */
     revalidatePath('/project');
     revalidatePath('/(public)/project');
 
+    /* ------------------------------------------------------------------ */
+    /*  5️⃣  Response                                                      */
+    /* ------------------------------------------------------------------ */
     return NextResponse.json({
       success: true,
       message: 'Project submitted successfully',
-      data: result
+      data: { projectId: project_id },
     });
-
   } catch (error: any) {
     console.error('Submission error:', error);
-    return NextResponse.json({
-      success: false,
-      message: error.message || 'Failed to submit project',
-      error: error.stack
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        message: error?.message ?? 'Failed to submit project',
+        error: error?.stack,
+      },
+      { status: 500 },
+    );
   }
 }
