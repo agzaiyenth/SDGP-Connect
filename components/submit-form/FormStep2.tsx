@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Input } from "../ui/input";
+import { validateImageFile } from "./utils/validateImageFile";
 
 const MAX_SLIDES = 10;
 
@@ -42,6 +43,11 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
     }
     setIsPlaceholderVisible(false);
     fileArray.forEach(file => {
+      const error = validateImageFile(file);
+      if (error) {
+        toast.error(error);
+        return;
+      }
       const reader = new FileReader();
       reader.onload = () => {
         setSlidePreviews(prev => [...prev, reader.result as string]);
