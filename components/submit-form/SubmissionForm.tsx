@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { compressImageFile } from "./utils/compressImageFile";
 
 import FormStepper from "./FormStepper";
 import { Button } from "@/components/ui/button";
@@ -97,11 +98,13 @@ const ProjectSubmissionForm = () => {
       setUploading(true);
       try {
         if (logoFile) {
-          const url = await uploadImage(logoFile);
+          const compressedLogo = await compressImageFile(logoFile, "logo");
+          const url = await uploadImage(compressedLogo);
           methods.setValue("metadata.logo", url, { shouldValidate: true });
         }
         if (coverFile) {
-          const url = await uploadImage(coverFile);
+          const compressedCover = await compressImageFile(coverFile, "cover_image");
+          const url = await uploadImage(compressedCover);
           methods.setValue("metadata.cover_image", url, { shouldValidate: true });
         }
       } catch (err) {
@@ -118,7 +121,8 @@ const ProjectSubmissionForm = () => {
         if (slideFiles.length > 0) {
           const urls = [];
           for (const file of slideFiles) {
-            const url = await uploadImage(file);
+            const compressedSlide = await compressImageFile(file, "slide");
+            const url = await uploadImage(compressedSlide);
             urls.push(url);
           }
           methods.setValue(
@@ -145,7 +149,8 @@ const ProjectSubmissionForm = () => {
           currentTeam.map(async (member, i) => {
             const file = teamProfileFiles[i];
             if (file) {
-              const url = await uploadImage(file);
+              const compressedTeam = await compressImageFile(file, "team");
+              const url = await uploadImage(compressedTeam);
               return { ...member, profile_image: url };
             }
             return member;

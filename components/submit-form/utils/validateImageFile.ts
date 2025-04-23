@@ -1,6 +1,6 @@
 // utils/validateImageFile.ts
 
-export function validateImageFile(file: File, maxSizeMB = 4): string | null {
+export function validateImageFile(file: File, maxSizeMB = 8): string | null {
   const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
   if (!allowedTypes.includes(file.type)) {
     return "Only JPG, JPEG, or PNG files are allowed.";

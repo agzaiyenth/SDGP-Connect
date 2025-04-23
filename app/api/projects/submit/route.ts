@@ -105,7 +105,7 @@ export async function POST(request: Request) {
         });
       }
 
-      if ((validatedData?.socialLinks?.length ?? 0) > 0) {
+      if ((validatedData?.slides?.length ?? 0) > 0) {
         await tx.projectSlide.createMany({
           data: validatedData.slides!.map(slide => ({
             content_id: contentId,
