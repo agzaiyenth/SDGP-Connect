@@ -1,3 +1,5 @@
+export const runtime = 'nodejs';
+
 import { NextResponse } from 'next/server';
 import { prisma } from '@/prisma/prismaClient';
 import { projectSubmissionSchema } from '@/validations/submit_project';
@@ -19,10 +21,11 @@ export async function OPTIONS() {
 }
 
 export async function POST(request: Request) {
+  console.log('[submit] – got request');
   try {
     // Parse the request body
     const body = await request.json();
-
+console.log('[submit] – parsed JSON:', body);
     // Validate the submission data
     const validatedData = projectSubmissionSchema.parse(body);
 
@@ -182,7 +185,7 @@ export async function POST(request: Request) {
     },
     { timeout: 10000 }
   );
-
+console.log('[submit] – transaction done:', result);
     // Revalidate the projects paths to update the cache
     revalidatePath('/project');
     revalidatePath('/(public)/project');

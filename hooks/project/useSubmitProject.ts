@@ -10,7 +10,7 @@ export const useSubmitProject = () => {
   const [warning, setWarning] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
   const { uploadImage, isLoading: isUploadingImages } = useUploadImageToBlob();
-  const BASE_URL = process.env.BASE_URL || 'https://sdgp-connect.vercel.app';
+  // const BASE_URL = process.env.BASE_URL || 'https://sdgp-connect.vercel.app';
   // Helper to sanitize the submission data to ensure it's JSON serializable
   const sanitizeSubmissionData = (data: any): any => {
     if (data === null || data === undefined) {
@@ -253,7 +253,7 @@ export const useSubmitProject = () => {
 
       try {
         // Submit to API using axios
-        const response = await axios.post<SubmitProjectResponse>(`${BASE_URL}/api/projects/submit`, sanitizedData);
+        const response = await axios.post<SubmitProjectResponse>(`/api/projects/submit`, sanitizedData);
         console.log('Submitting project:', sanitizedData);
         console.log('API response:', response.data);
         setIsSubmitting(false);
