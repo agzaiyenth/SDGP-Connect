@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Plus, Trash2, Upload, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { validateImageFile } from "./utils/validateImageFile";
+import { compressImageFile } from "./utils/compressImageFile";
+import { toast } from "sonner";
 
 interface FormStep5Props {
   teamProfileFiles: (File|null)[];
@@ -43,9 +46,25 @@ const FormStep5 = ({
   };
 
   // Handle profile image upload
-  const handleProfileImageUpload = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+  const handleProfileImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    const error = validateImageFile(file);
+    if (error) {
+      setTeamProfilePreviews((prev) => {
+        const arr = [...prev];
+        arr[index] = null;
+        return arr;
+      });
+      setTeamProfileFiles((prev) => {
+        const arr = [...prev];
+        arr[index] = null;
+        return arr;
+      });
+      return toast.error(error);
+    }
+    // Compress team profile image before preview/upload
+    const compressedFile = await compressImageFile(file, "team");
     const reader = new FileReader();
     reader.onload = () => {
       setTeamProfilePreviews((prev) => {
@@ -55,11 +74,11 @@ const FormStep5 = ({
       });
       setTeamProfileFiles((prev) => {
         const arr = [...prev];
-        arr[index] = file;
+        arr[index] = compressedFile;
         return arr;
       });
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(compressedFile);
   };
 
   // Clear profile image

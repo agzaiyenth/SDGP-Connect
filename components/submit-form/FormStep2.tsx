@@ -10,6 +10,8 @@ import { toast } from "sonner";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Input } from "../ui/input";
+import { validateImageFile } from "./utils/validateImageFile";
+import { compressImageFile } from "./utils/compressImageFile";
 
 const MAX_SLIDES = 10;
 
@@ -26,13 +28,22 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
   const [isPlaceholderVisible, setIsPlaceholderVisible] = useState(true);
 
   useEffect(() => {
+    // Keep form slides in sync with slidePreviews
+    setValue(
+      "slides",
+      slidePreviews.map((url) => ({ slides_content: url })),
+      { shouldValidate: true }
+    );
+  }, [slidePreviews, setValue]);
+
+  useEffect(() => {
     // Initialize slides array if it doesn't exist
     if (!watch("slides")) {
       setValue("slides", []);
     }
   }, [setValue, watch]);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
     const fileArray = Array.from(files);
@@ -41,14 +52,21 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
       return;
     }
     setIsPlaceholderVisible(false);
-    fileArray.forEach(file => {
+    for (const file of fileArray) {
+      const error = validateImageFile(file);
+      if (error) {
+        toast.error(error);
+        continue;
+      }
+      // Compress slide image before preview/upload
+      const compressedFile = await compressImageFile(file, "slide");
       const reader = new FileReader();
       reader.onload = () => {
         setSlidePreviews(prev => [...prev, reader.result as string]);
-        setSlideFiles(prev => [...prev, file]);
+        setSlideFiles(prev => [...prev, compressedFile]);
       };
-      reader.readAsDataURL(file);
-    });
+      reader.readAsDataURL(compressedFile);
+    }
   };
 
   const removeSlideImage = (index: number) => {
