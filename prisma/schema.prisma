@@ -292,9 +292,9 @@ model ProjectDetails {
   content_id        String         @unique
   content           ProjectContent @relation(fields: [content_id], references: [content_id], onDelete: Restrict)
 
-  problem_statement String
-  solution          String
-  features          String
+  problem_statement String         @db.LongText
+  solution          String         @db.LongText
+  features          String         @db.LongText
   team_email        String
   team_phone        String
 
