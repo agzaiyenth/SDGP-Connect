@@ -118,9 +118,9 @@ CREATE TABLE `ProjectSocialLink` (
 CREATE TABLE `ProjectDetails` (
     `id` VARCHAR(191) NOT NULL,
     `content_id` VARCHAR(191) NOT NULL,
-    `problem_statement` VARCHAR(191) NOT NULL,
-    `solution` VARCHAR(191) NOT NULL,
-    `features` VARCHAR(191) NOT NULL,
+    `problem_statement` LONGTEXT NOT NULL,
+`solution` LONGTEXT NOT NULL,
+`features` LONGTEXT NOT NULL,
     `team_email` VARCHAR(191) NOT NULL,
     `team_phone` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
