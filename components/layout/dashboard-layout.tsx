@@ -6,6 +6,7 @@ import { Navbar } from './navbar';
 import { cn } from '@/lib/utils';
 import useIsMobile from '@/hooks/useIsMobile';
 import { Laptop } from 'lucide-react';
+import Footer from '../Footer';
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -37,6 +38,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             </p>
           </div>
         </div>
+        <Footer />  
       </div>
     );
   }
@@ -55,6 +57,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           {children}
         </main>
       </div>
+      <Footer />
     </div>
   );
 }
