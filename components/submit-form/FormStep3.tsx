@@ -190,10 +190,9 @@ const FormStep3 = () => {
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs text-gray-600 leading-tight max-h-[3.75rem] overflow-y-auto pr-1 scrollbar-none">
+                      <p className="text-xs text-gray-600 leading-tight max-h-[3.75rem] overflow-y-auto pr-1 scroll-hide">
                         {goal.description}
                       </p>
-
                     </div>
                   </div>
                 );
