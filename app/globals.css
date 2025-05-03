@@ -125,6 +125,15 @@
   }
 }
 
+.scroll-hide::-webkit-scrollbar {
+  display: none;
+}
+.scroll-hide {
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+
 /* Custom animation for hover effects */
 .hover-slide::after {
   content: "";
