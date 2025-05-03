@@ -169,7 +169,7 @@ const FormStep3 = () => {
                   <div
                     key={goal.id}
                     className={cn(
-                      "flex items-center p-3 rounded-lg border cursor-pointer transition-colors gap-3",
+                      "flex items-center p-2 rounded-lg border cursor-pointer transition-colors gap-3",
                       isSelected
                         ? "border-primary bg-primary/10"
                         : "border-gray-200 hover:border-primary/50 dark:border-gray-700 dark:hover:border-primary/50"
@@ -182,22 +182,20 @@ const FormStep3 = () => {
                       field.onChange(updatedValue);
                     }}
                   >
-                    <img
-                      src={goal.icon}
-                      alt={goal.name}
-                      className="w-12 h-12"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium break-all">{goal.name}</div>
-                      <p className="text-xs text-gray-500 mt-1">
-                        {goal.description.length > 50
-                          ? `${goal.description.substring(0, 50)}...`
-                          : goal.description}
+                    <div className="flex-shrink-0 h-24 w-24">
+                      <img
+                        src={goal.icon}
+                        alt={goal.name}
+                        className="h-full w-full object-contain rounded-md"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0 flex items-center">
+                      <p className="text-xs text-gray-600 leading-snug line-clamp-3">
+                        {goal.description}
                       </p>
                     </div>
-
-
                   </div>
+
 
                 );
               })}
