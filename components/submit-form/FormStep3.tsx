@@ -11,7 +11,7 @@ import { MultiSelect } from "../ui/Multi-Select";
 const projectDomainOptions = Object.values(ProjectDomainEnum).map(domain => {
   // Format the domain name for display (e.g., AI_ML -> AI/ML)
   const label = domain.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-  
+
   return {
     value: domain,
     label: label
@@ -41,12 +41,12 @@ const FormStep3 = () => {
             <FormItem>
               <FormLabel>Project Type</FormLabel>
               <MultiSelect
-        options={projectTypeOptions}
-        onValueChange={(values) => field.onChange(values)}
-        placeholder='Select Project Type'
-        popoverClass='w-96'
-        maxCount={3}
-      />
+                options={projectTypeOptions}
+                onValueChange={(values) => field.onChange(values)}
+                placeholder='Select Project Type'
+                popoverClass='w-96'
+                maxCount={3}
+              />
               <FormMessage />
             </FormItem>
           )}
@@ -60,12 +60,12 @@ const FormStep3 = () => {
             <FormItem>
               <FormLabel>Tech Stack</FormLabel>
               <MultiSelect
-        options={techStackOptions}
-        onValueChange={(values) => field.onChange(values)}
-        placeholder='Select Tech Stack'
-        popoverClass='w-96'
-        maxCount={3}
-      />
+                options={techStackOptions}
+                onValueChange={(values) => field.onChange(values)}
+                placeholder='Select Tech Stack'
+                popoverClass='w-96'
+                maxCount={3}
+              />
               <FormMessage />
             </FormItem>
           )}
@@ -169,7 +169,7 @@ const FormStep3 = () => {
                   <div
                     key={goal.id}
                     className={cn(
-                      "flex flex-col items-center p-3 rounded-lg border cursor-pointer transition-colors",
+                      "flex items-center p-3 rounded-lg border cursor-pointer transition-colors gap-3",
                       isSelected
                         ? "border-primary bg-primary/10"
                         : "border-gray-200 hover:border-primary/50 dark:border-gray-700 dark:hover:border-primary/50"
@@ -185,15 +185,20 @@ const FormStep3 = () => {
                     <img
                       src={goal.icon}
                       alt={goal.name}
-                      className="w-12 h-12 mb-2"
+                      className="w-12 h-12"
                     />
-                    <div className="text-xs text-center font-medium">{goal.name}</div>
-                    <p className="text-xs text-center text-gray-500 mt-1">
-                      {goal.description.length > 50
-                        ? `${goal.description.substring(0, 50)}...`
-                        : goal.description}
-                    </p>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-medium break-all">{goal.name}</div>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {goal.description.length > 50
+                          ? `${goal.description.substring(0, 50)}...`
+                          : goal.description}
+                      </p>
+                    </div>
+
+
                   </div>
+
                 );
               })}
             </div>
@@ -202,7 +207,7 @@ const FormStep3 = () => {
         )}
       />
 
-     
+
 
     </div>
   );
