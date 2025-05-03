@@ -180,7 +180,7 @@ export async function POST(request: Request) {
         contentId: projectContent.content_id
       };
     },
-    { timeout: 10000 }
+    { timeout: 60000 }
   );
 
     // Revalidate the projects paths to update the cache
