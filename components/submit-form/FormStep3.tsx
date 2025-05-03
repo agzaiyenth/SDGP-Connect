@@ -167,34 +167,35 @@ const FormStep3 = () => {
 
                 return (
                   <div
-                  key={goal.id}
-                  className={cn(
-                    "flex items-center px-2 py-2 rounded-lg border cursor-pointer transition-colors gap-3",
-                    isSelected
-                      ? "border-primary bg-primary/10"
-                      : "border-gray-200 hover:border-primary/50 dark:border-gray-700 dark:hover:border-primary/50"
-                  )}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    const updatedValue = isSelected
-                      ? field.value?.filter((name) => name !== goal.name) || []
-                      : [...(field.value || []), goal.name];
-                    field.onChange(updatedValue);
-                  }}
-                >
-                  <div className="flex-shrink-0 h-20 w-20">
-                    <img
-                      src={goal.icon}
-                      alt={goal.name}
-                      className="h-full w-full object-contain rounded-md"
-                    />
+                    key={goal.id}
+                    className={cn(
+                      "flex items-center px-2 py-2 rounded-lg border cursor-pointer transition-colors gap-3",
+                      isSelected
+                        ? "border-primary bg-primary/10"
+                        : "border-gray-200 hover:border-primary/50 dark:border-gray-700 dark:hover:border-primary/50"
+                    )}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const updatedValue = isSelected
+                        ? field.value?.filter((name) => name !== goal.name) || []
+                        : [...(field.value || []), goal.name];
+                      field.onChange(updatedValue);
+                    }}
+                  >
+                    <div className="flex-shrink-0 h-20 w-20">
+                      <img
+                        src={goal.icon}
+                        alt={goal.name}
+                        className="h-full w-full object-contain rounded-md"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-600 leading-tight max-h-[3.75rem] overflow-y-auto pr-1 scrollbar-none">
+                        {goal.description}
+                      </p>
+
+                    </div>
                   </div>
-                  <div className="flex-1 min-w-0 flex items-center">
-                    <p className="text-xs text-gray-600 leading-tight line-clamp-2">
-                      {goal.description}
-                    </p>
-                  </div>
-                </div>
                 );
               })}
             </div>
