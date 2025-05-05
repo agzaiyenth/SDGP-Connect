@@ -20,7 +20,7 @@ export function useApproveAndFeatured(options?: UseApproveAndFeaturedOptions) {
 
     try {
       console.log('Sending approval request to API');
-      const response = await axios.post('/api/projects/approve', {
+      const response = await axios.post('/api/admin/projects/approve', {
         projectId: String(projectId),
         featured
       });
