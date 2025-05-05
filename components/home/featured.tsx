@@ -1,14 +1,9 @@
 "use client"
-// Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react"
-
-// Import Swiper styles
 import "swiper/css"
 import "swiper/css/effect-coverflow"
 import "swiper/css/pagination"
 import "swiper/css/navigation"
-
-// Import required modules
 import { EffectCoverflow, Pagination, Navigation, Autoplay } from "swiper/modules"
 import { Button } from "../ui/button"
 import { useGetFeaturedProjects } from "@/hooks/project/useGetFeaturedProjects"
@@ -18,13 +13,12 @@ import Image from "next/image"
 export default function Featured() {
   const { featuredProjects, isLoading, error } = useGetFeaturedProjects();
 
-  // Don't render the section if there's an error
   if (error || (featuredProjects.length === 0 && !isLoading)) {
     return null;
   }
 
   return (
-    <section className="py-[100px] bg-[#0c0a09] relative">
+    <section className="py-[60px] sm:py-[100px] bg-[#0c0a09] relative -mt-[150px]">
       <style jsx global>{`
         @keyframes smoothGlow {
           0% {
@@ -46,13 +40,16 @@ export default function Featured() {
           animation: smoothGlow 5s infinite cubic-bezier(0.4, 0, 0.2, 1);
         }
       `}</style>
-      {/* Added black gradients */}
-    
+
       <div className="max-w-7xl mx-auto px-5">
-        
-        <h2 className="text-[2.5rem] mb-[50px] text-center bg-gradient-to-r from-[#2a5298] to-[#042764] bg-clip-text text-transparent inline-block relative left-1/2 -translate-x-1/2">
+
+        {/* Updated Featured Projects Heading */}
+        <h2 className="text-[2.5rem] sm:text-[3rem] mb-[30px] sm:mb-[50px] text-center bg-gradient-to-r from-white via-white to-[#dcdcdc] bg-clip-text text-transparent inline-block relative left-1/2 -translate-x-1/2 font-extrabold text-shadow-lg">
           Featured Projects
-        </h2>        <Swiper
+        </h2>
+
+
+        <Swiper
           effect={"coverflow"}
           grabCursor={true}
           centeredSlides={true}
@@ -85,7 +82,7 @@ export default function Featured() {
         >
           <div className="absolute top-0 left-0 h-full z-99 w-22 pointer-events-none bg-gradient-to-r from-background to-transparent" />
           <div className="absolute top-0 right-0 h-full z-99 w-22 pointer-events-none bg-gradient-to-l from-background to-transparent" />
-          
+
           {isLoading ? (
             // Loading state - show skeleton cards
             Array.from({ length: 3 }).map((_, index) => (
@@ -118,7 +115,7 @@ export default function Featured() {
                         <Image
                           width={300}
                           height={200}
-                          src={project.coverImage} 
+                          src={project.coverImage}
                           alt={project.title}
                           className="w-full h-full object-cover"
                         />
@@ -135,8 +132,8 @@ export default function Featured() {
                       </p>
                       <div className="mt-auto flex flex-wrap gap-2">
                         {project.projectTypes.map((type, index) => (
-                          <span 
-                            key={`${project.id}-type-${index}`} 
+                          <span
+                            key={`${project.id}-type-${index}`}
                             className="inline-block bg-primary/15 text-primary py-1 px-4 rounded-full text-sm transition-all duration-300 ease-in-out backdrop-blur-md border border-primary/10 group-[.swiper-slide-active]:bg-primary/25 group-[.swiper-slide-active]:shadow-[0_0_15px_rgba(108,99,255,0.3)] group-[.swiper-slide-active]:-translate-y-[3px]"
                           >
                             {type}
@@ -155,12 +152,11 @@ export default function Featured() {
           <div className="swiper-button-prev bg-[#121212]/70 w-[50px] h-[50px] rounded-full flex items-center justify-center transition-all duration-300 ease-in-out backdrop-blur-[10px] hover:bg-primary hover:text-white hover:scale-110"></div> */}
         </Swiper>
         <div className="flex justify-center mt-10">
-        <Button >
-        view all projects
-        </Button>
+          <Button >
+            view all projects
+          </Button>
         </div>
       </div>
     </section>
   )
 }
-
