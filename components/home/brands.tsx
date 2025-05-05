@@ -72,7 +72,7 @@ const logos = [
 
 export function Brands() {
   return (
-    <div className="h-screen w-full overflow-hidden">
+    <div className="h-screen w-full overflow-hidden -mb-[150px]">
       <div className="mx-auto mt-32 w-full max-w-7xl">
         <div className="text-center text-5xl text-foreground">
           <span className="text-blue-900 ">
