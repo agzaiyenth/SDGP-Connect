@@ -2,12 +2,12 @@ import { Users, Award, TrendingUp, Rocket } from "lucide-react"
 
 const stats = [
   {
-    title: "240+",
+    title: "2400+",
     description: "Student Projects",
     icon: Users,
   },
   {
-    title: "53",
+    title: "100+",
     description: "Industry Partners",
     icon: Award,
   },
@@ -17,7 +17,7 @@ const stats = [
     icon: TrendingUp,
   },
   {
-    title: "3",
+    title: "25+",
     description: "Funded Startups",
     icon: Rocket,
   },
