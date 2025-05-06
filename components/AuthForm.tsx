@@ -68,16 +68,14 @@ const Logo: React.FC = () => (
   >
     <div className="relative">
       <Image
-        src="/icon.png"
+        src="/iconw.png"
         alt="Logoipsum"
-        className="h-12 w-12"
-        width={48}
-        height={48}
+        className="h-48 w-48 -mb-12"
+        width={88}
+        height={88}
       />
     </div>
-    <span className="ml-4 text-3xl font-bold text-white">
-      SDGP-Connect
-    </span>
+   
   </motion.div>
 )
 

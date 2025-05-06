@@ -20,6 +20,30 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "SDGP",
   description: "Where Your Future is Shaped",
+  icons: {
+    icon: "/iconw.png",
+  },
+  openGraph: {
+    title: "SDGP",
+    description: "Where Your Future is Shaped",
+    url: "https://sdgp.lk", 
+    siteName: "SDGP",
+    images: [
+      {
+        url: "/cover.png",
+        width: 1200,
+        height: 630,
+        alt: "SDGP Cover Image",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SDGP",
+    description: "Where Your Future is Shaped",
+    images: ["/cover.png"],
+  },
 };
 
 export default function RootLayout({
