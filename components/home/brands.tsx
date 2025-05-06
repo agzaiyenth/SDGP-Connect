@@ -81,19 +81,21 @@ export function Brands() {
 
         <div className="relative mt-7 h-[100px] w-full">
           <InfiniteSlider
-            className='flex h-full w-full items-center'
+            className="flex h-full w-full items-center"
             duration={30}
-            gap={48}
+            gap={48} 
           >
-            {logos.map(({ id, component: Logo, className }) => (
+            {logos.map(({ id, component: Logo }) => (
               <div
                 key={id}
-                className={className}
+                className="flex justify-center items-center w-[96px] h-[64px] shrink-0"
               >
                 <Logo />
               </div>
             ))}
+
           </InfiniteSlider>
+
           <ProgressiveBlur
             className='pointer-events-none absolute top-0 left-0 h-full w-[200px]'
             direction='left'
