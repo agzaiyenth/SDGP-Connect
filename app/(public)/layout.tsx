@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "SDGP",
-  description: "Where Entrepreneurs are made!",
+  description: "Where Your Future is Shaped",
 };
 
 export default function RootLayout({
