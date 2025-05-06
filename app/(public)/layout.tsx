@@ -19,7 +19,31 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "SDGP",
-  description: "Where Entrepreneurs are made!",
+  description: "Where Your Future is Shaped",
+  icons: {
+    icon: "/iconw.png",
+  },
+  openGraph: {
+    title: "SDGP",
+    description: "Where Your Future is Shaped",
+    url: "https://sdgp.lk", 
+    siteName: "SDGP",
+    images: [
+      {
+        url: "/iconw.png",
+        width: 1200,
+        height: 630,
+        alt: "SDGP Cover Image",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SDGP",
+    description: "Where Your Future is Shaped",
+    images: ["/iconw.png"],
+  },
 };
 
 export default function RootLayout({
@@ -30,7 +54,9 @@ export default function RootLayout({
   return (
     
     <html lang="en" suppressHydrationWarning>
-      
+      <head>
+        <link rel="icon" href="/iconw.png" type="image/png" sizes="128x128" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
