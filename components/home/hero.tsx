@@ -32,7 +32,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          SDGP-Connect
+          SDGP
         </motion.h1>
 
         <motion.p
