@@ -8,10 +8,9 @@ import { ProgressiveBlur } from '@/components/ui/progressive-blur'
 //sample logos
 
 const LEXi = () => (
-  <svg width="42" height="18" viewBox="0 0 42 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M9.664 15.24V18H0.256V1.68H3.136V15.24H9.664ZM21.8761 15.24V18H12.4201V1.68H21.6361V4.44H15.3001V8.352H20.9161V11.112H15.3001V15.24H21.8761ZM33.0633 18L29.6553 12.024L26.4153 18H23.3913L28.1673 9.528L23.6553 1.68H26.9193L30.0633 7.152L33.0153 1.68H36.0393L31.5513 9.672L36.3273 18H33.0633ZM41.4233 3.528H38.5193V0.671999H41.4233V3.528ZM41.3513 18H38.5913V5.832H41.3513V18Z" fill="white"/>
-</svg>
-
+  <svg width="52" height="19" viewBox="0 0 52 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M-0.0079999 19V2.2H3.88V15.832H12.304V19H-0.0079999ZM18.0758 8.968H26.1638V11.992H18.0758V8.968ZM18.3638 15.88H27.5078V19H14.4998V2.2H27.1958V5.32H18.3638V15.88ZM28.5173 19L35.7413 9.04V11.872L28.8293 2.2H33.2453L38.0213 8.944L36.1733 8.968L40.8773 2.2H45.1013L38.2373 11.704V8.92L45.5093 19H41.0213L36.0773 11.872H37.8533L32.9813 19H28.5173ZM47.3061 19V6.088H51.0501V19H47.3061ZM49.1781 4.288C48.4901 4.288 47.9301 4.088 47.4981 3.688C47.0661 3.288 46.8501 2.792 46.8501 2.2C46.8501 1.608 47.0661 1.112 47.4981 0.711999C47.9301 0.311999 48.4901 0.111999 49.1781 0.111999C49.8661 0.111999 50.4261 0.303999 50.8581 0.688C51.2901 1.056 51.5061 1.536 51.5061 2.128C51.5061 2.752 51.2901 3.272 50.8581 3.688C50.4421 4.088 49.8821 4.288 49.1781 4.288Z" fill="white" />
+  </svg>
 )
 
 
@@ -85,14 +84,14 @@ export function Brands() {
         </div>
 
         <div className="relative mt-7 h-[100px] w-full">
-          <InfiniteSlider 
-            className='flex h-full w-full items-center' 
+          <InfiniteSlider
+            className='flex h-full w-full items-center'
             duration={30}
             gap={48}
           >
             {logos.map(({ id, component: Logo, className }) => (
-              <div 
-                key={id} 
+              <div
+                key={id}
                 className={className}
               >
                 <Logo />
