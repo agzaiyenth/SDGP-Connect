@@ -12,6 +12,7 @@ const images = [
   '/assets/3.jpg',
   '/assets/innovex.jpg',
   '/assets/movemate1.jpg',
+  '/assets/win.jpg',
 ];
 
 export default function Carousel() {
