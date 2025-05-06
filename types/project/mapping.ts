@@ -191,6 +191,11 @@ export const sdgGoals = [
         description: "Initial concept or proposal" 
       },
       { 
+        value: ProjectStatusEnum.RESEARCH, 
+        label: "Research",
+        description: "Research and development phase" 
+      },
+      { 
         value: ProjectStatusEnum.MVP, 
         label: "MVP", 
         description: "Minimum viable product" 

@@ -46,7 +46,7 @@ CREATE TABLE `ProjectContent` (
 -- CreateTable
 CREATE TABLE `ProjectStatus` (
     `content_id` VARCHAR(191) NOT NULL,
-    `status` ENUM('IDEA', 'MVP', 'DEPLOYED', 'STARTUP') NOT NULL,
+    `status` ENUM('IDEA','RESEARCH', 'MVP', 'DEPLOYED', 'STARTUP') NOT NULL,
     `approved_status` ENUM('PENDING', 'APPROVED', 'REJECTED') NOT NULL DEFAULT 'PENDING',
     `rejected_reason` VARCHAR(191) NULL,
     `approved_at` DATETIME(3) NULL,

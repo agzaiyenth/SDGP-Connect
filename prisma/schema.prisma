@@ -28,6 +28,7 @@ enum AssociationType {
 enum ProjectStatusEnum {
   IDEA
   MVP
+  RESEARCH
   DEPLOYED
   STARTUP
 }
