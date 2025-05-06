@@ -62,7 +62,7 @@ export function ApprovedProjectsTable({
                 <Button size="sm" onClick={() => onViewDetails(project)}>
                   View Details
                 </Button>
-                <Button size="sm" variant="destructive" onClick={() => onReject(project)}>
+                <Button size="sm" variant="destructive" onClick={() => onReject(project)} className='ml-5'>
                   Reject
                 </Button>
               </TableCell>
