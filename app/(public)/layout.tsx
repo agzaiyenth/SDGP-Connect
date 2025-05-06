@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SDGP Connect",
+  title: "SDGP",
   description: "Where Entrepreneurs are made!",
 };
 
