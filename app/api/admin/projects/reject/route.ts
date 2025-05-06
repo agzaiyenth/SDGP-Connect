@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/prisma/prismaClient";
+import { ProjectStatusEnum } from "@prisma/client";
 import { ProjectApprovalStatus } from "@prisma/client";
 
 export async function POST(request: NextRequest) {
@@ -18,7 +19,7 @@ export async function POST(request: NextRequest) {
 
   // 2) Enforce role-based access
   const { role, id: userId } = session.user;
-  if (!["ADMIN", "MODERATOR", ].includes(role)) {
+  if (!["ADMIN", "MODERATOR",].includes(role)) {
     return NextResponse.json(
       { error: "Forbidden. You don't have permission to reject projects." },
       { status: 403 }
@@ -53,18 +54,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 5) Prevent rejecting an already-approved or already-rejected project
-    if (projectContent.status?.approved_status === ProjectApprovalStatus.APPROVED) {
-      return NextResponse.json(
-        {
-          error: "This project has already been approved and cannot be rejected.",
-          status: "ALREADY_APPROVED",
-          approvedBy: projectContent.status.approved_by_userId,
-          approvedAt: projectContent.status.approved_at,
-        },
-        { status: 409 }
-      );
-    }
+    // 5) Prevent rejecting an already-rejected project
     if (projectContent.status?.approved_status === ProjectApprovalStatus.REJECTED) {
       return NextResponse.json(
         {
@@ -75,17 +65,17 @@ export async function POST(request: NextRequest) {
         { status: 409 }
       );
     }
-
-    // 6) Update the status record to REJECTED
     const updatedStatus = await prisma.projectStatus.update({
       where: { content_id: projectContent.content_id },
       data: {
         approved_status: ProjectApprovalStatus.REJECTED,
         rejected_reason: reason,
-        approved_by_userId: userId,
+       // approved_by_userId: userId,
         approved_at: new Date(),
       },
     });
+    
+        
 
     // 7) Return success
     return NextResponse.json({
