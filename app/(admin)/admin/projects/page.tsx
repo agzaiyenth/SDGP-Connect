@@ -92,10 +92,11 @@ export default function ProjectManagement() {
     setApproveDialog(true);
   };
 
-  const handleReject = (project: PendingProject) => {
+  const handleReject = (project: PendingProject | ApprovedProject) => {
     setCurrentProject(project);
     setRejectDialog(true);
   };
+
 
   const handleViewDetails = (project: any) => {
     setCurrentProject(project);
@@ -199,11 +200,13 @@ export default function ProjectManagement() {
           projects={approvedProjects}
           onViewDetails={handleViewDetails}
           onToggleFeature={handleToggleFeature}
+          onReject={handleReject}
           currentPage={currentPage}
           totalPages={totalPages}
           onNextPage={fetchNextPage}
           onPreviousPage={fetchPreviousPage}
         />
+
       );
     }
 
@@ -290,8 +293,12 @@ export default function ProjectManagement() {
           open={rejectDialog}
           onOpenChange={setRejectDialog}
           project={currentProject}
-          onRejected={refreshPending}
+          onRejected={() => {
+            refreshPending();
+            refreshApproved(); 
+          }}
         />
+
       )}
 
       {bulkApproveDialog && selectedProjects.length > 0 && (
