@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     siteName: "SDGP",
     images: [
       {
-        url: "/cover.png",
+        url: "/iconw.png",
         width: 1200,
         height: 630,
         alt: "SDGP Cover Image",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "SDGP",
     description: "Where Your Future is Shaped",
-    images: ["/cover.png"],
+    images: ["/iconw.png"],
   },
 };
 
