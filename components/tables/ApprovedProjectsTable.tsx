@@ -12,17 +12,20 @@ interface ApprovedProjectsTableProps {
   totalPages: number;
   onNextPage: () => void;
   onPreviousPage: () => void;
+  onReject: (project: ApprovedProject) => void;
 }
 
 export function ApprovedProjectsTable({
   projects,
   onViewDetails,
   onToggleFeature,
+  onReject,
   currentPage,
   totalPages,
   onNextPage,
   onPreviousPage,
-}: ApprovedProjectsTableProps) {
+}: ApprovedProjectsTableProps)
+ {
   return (
     <div>
       <Table>
@@ -48,16 +51,19 @@ export function ApprovedProjectsTable({
                 />
               </TableCell>
               <TableCell>{project.approvedBy}</TableCell>
-                <TableCell>
-                  {new Date(project.approvedAt).toLocaleDateString('en-GB', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric'
-                  })}
-                </TableCell>
+              <TableCell>
+                {new Date(project.approvedAt).toLocaleDateString('en-GB', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric'
+                })}
+              </TableCell>
               <TableCell>
                 <Button size="sm" onClick={() => onViewDetails(project)}>
                   View Details
+                </Button>
+                <Button size="sm" variant="destructive" onClick={() => onReject(project)}>
+                  Reject
                 </Button>
               </TableCell>
             </TableRow>
