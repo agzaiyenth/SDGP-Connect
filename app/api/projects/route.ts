@@ -30,7 +30,7 @@ export const GET = async (req: NextRequest) => {
 
     // Status filter
     const projectStatusValues = statusValues.filter(s =>
-      ["IDEA","MVP","DEPLOYED","STARTUP"].includes(s.toUpperCase())
+      ["IDEA","MVP","DEPLOYED","STARTUP","RESEARCH"].includes(s.toUpperCase())
     );
     const approvalStatusValues = statusValues.filter(s =>
       ["APPROVED","PENDING","REJECTED"].includes(s.toUpperCase())
