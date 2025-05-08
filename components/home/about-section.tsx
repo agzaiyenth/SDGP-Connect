@@ -30,7 +30,7 @@ const Data = {
         alt: "Avatar 4",
       },
       {
-        src: "/home/about-logo/genie.png",
+        src: "/assets/spark.png",
         alt: "Avatar 4",
       },
       {
