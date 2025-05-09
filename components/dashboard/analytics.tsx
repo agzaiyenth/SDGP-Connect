@@ -4,8 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, PieChart, Pie, Cell } from 'recharts';
 
 const projectData = [
-  { name: 'IDEA', value: 45 },
-  { name: 'MVP', value: 30 },
+  { name: 'IDEA', value: 35 },
+  { name: 'MVP', value: 20 },
+  { name: 'RESEARCH', value: 20 },
   { name: 'DEPLOYED', value: 15 },
   { name: 'STARTUP', value: 10 },
 ];

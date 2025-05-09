@@ -23,7 +23,7 @@ import { AlertCircle, FileX2, Inbox, RefreshCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BulkApproveDialog from '@/components/dialogs/BulkApproveDialog';
 
-const projectStatuses = ['IDEA', 'MVP', 'DEPLOYED', 'STARTUP'];
+const projectStatuses = ['IDEA','RESEARCH', 'MVP', 'DEPLOYED', 'STARTUP'];
 
 export default function ProjectManagement() {
   const [selectedProjects, setSelectedProjects] = useState<number[]>([]);
