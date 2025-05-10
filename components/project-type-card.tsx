@@ -1,6 +1,6 @@
-import React from 'react'
-import { projectTypeOptions } from '../types/project/mapping'
-import { IconType } from 'react-icons'
+import React from "react";
+import { projectTypeOptions } from "../types/project/mapping";
+import { IconType } from "react-icons";
 
 interface Props {
   projectTypes?: typeof projectTypeOptions;
@@ -8,24 +8,24 @@ interface Props {
 }
 
 const ProjectTypeCard = ({ projectTypes = projectTypeOptions, onSelect }: Props) => {
- 
-  
   return (
-    <div className="flex justify-center items-center">
-      <div className="relative flex gap-2 justify-center items-center">
-        {projectTypes.map((type) => {
-          const Icon = type.icon as IconType;
-          
-          return (
-            <button key={type.value} className="flex gap-3 justify-center items-center cursor-pointer text-white font-semibold bg-background px-7 py-3 rounded-full border border-gray-600 hover:scale-105 duration-200 hover:text-gray-500 hover:border-gray-800 hover:from-black hover:to-gray-900" onClick={() => onSelect && onSelect(type.value)}>
-              {Icon && <Icon className=" text-white" />}   {type.label}
-            </button>
-          );
-        })}
-      </div>
-     
-    </div>
-  )
-}
+    <div className="flex flex-wrap gap-2">
+      {projectTypes.map((type) => {
+        const Icon = type.icon as IconType;
 
-export default ProjectTypeCard
+        return (
+          <button
+            key={type.value}
+            onClick={() => onSelect?.(type.value)}
+            className="inline-flex items-center gap-2 rounded-full border px-2.5 py-1 text-xs font-semibold transition-colors border-transparent bg-primary text-primary-foreground hover:bg-primary/80"
+          >
+            {Icon && <Icon className="text-[0.75rem]" />}
+            {type.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+};
+
+export default ProjectTypeCard;
