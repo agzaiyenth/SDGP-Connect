@@ -28,7 +28,7 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
 }) => {
   const handleShare = async () => {
     const shareUrl = `${window.location.origin}/project/${projectId}`;
-    const shareText = `Check out this project: ${title}`;
+    const shareText = `Check out ${title} project: `;
 
     if (navigator.share) {
       try {

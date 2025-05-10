@@ -97,7 +97,7 @@ export default function Contact() {
                     <FormItem>
                       <FormLabel>Email Address</FormLabel>
                       <FormControl>
-                        <Input type="email" placeholder="you@example.com" {...field} />
+                        <Input type="email" placeholder="info@psycodelabs.lk" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -110,7 +110,7 @@ export default function Contact() {
                     <FormItem>
                       <FormLabel>Company / Organization</FormLabel>
                       <FormControl>
-                        <Input placeholder="Optional" {...field} />
+                        <Input placeholder="Psycode Lab's" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
