@@ -2,7 +2,6 @@ import { IProjectAssociation } from "@/types/project/type";
 import React from "react";
 import { Card } from "../ui/card";
 import { sdgGoals, projectTypeOptions } from "@/types/project/mapping";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { AssociationType } from "@prisma/client";
 import ProjectTypeCard from "../project-type-card";
 import TechCard from "../techcard";
@@ -38,17 +37,11 @@ export const ProjectAssociation: React.FC<SDGSectionProps> = ({
       <div className="space-y-6">
         {/* SDG Goals Section */}
         <div>
-          <h3 className="text-lg font-medium mb-3">
-            Sustainable Development Goals
-          </h3>
+          <h3 className="text-lg font-medium mb-3">Sustainable Development Goals</h3>
 
           {sdgAssociations.length > 0 ? (
             <div
-              className={`${
-                sdgAssociations.length === 1
-                  ? "flex sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-                  : "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
-              } gap-3`}
+              className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3`}
             >
               {sdgAssociations.map((association) => {
                 const sdgGoal = sdgGoals.find(
@@ -59,20 +52,19 @@ export const ProjectAssociation: React.FC<SDGSectionProps> = ({
                 return (
                   <div
                     key={association.id}
-                    className="flex justify-between space-x-4 border border-primary/10 rounded-lg p-4 w-full"
+                    className="flex items-center px-2 py-2 rounded-lg border gap-3 cursor-default transition-colors border-gray-200 dark:border-gray-700"
                   >
-                    <Image
-                      src={sdgGoal.icon}
-                      alt={sdgGoal.name}
-                      className="h-12 w-12 object-contain"
-                      width={48}
-                      height={48}
-                    />
-                    <div className="space-y-1">
-                      <h4 className="text-sm font-semibold">
-                        {sdgGoal.name.replace(/_/g, " ")}
-                      </h4>
-                      <p className="text-sm">{sdgGoal.description}</p>
+                    <div className="flex-shrink-0 h-14 w-14">
+                      <img
+                        src={sdgGoal.icon}
+                        alt={sdgGoal.name}
+                        className="h-full w-full object-contain rounded-md"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs text-gray-600 leading-tight max-h-[3.5rem] overflow-y-auto pr-1 scroll-hide">
+                        {sdgGoal.description}
+                      </p>
                     </div>
                   </div>
                 );
@@ -88,18 +80,18 @@ export const ProjectAssociation: React.FC<SDGSectionProps> = ({
         {/* Domains */}
         <div>
           <h3 className="text-lg font-medium mb-3">Project Domains</h3>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5">
             {domainAssociations.length > 0 ? (
               domainAssociations.map((domain) => (
                 <div
                   key={domain.id}
-                  className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80"
+                  className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium transition-colors border-transparent bg-primary text-primary-foreground hover:bg-primary/80"
                 >
                   {domain.domain?.replace(/_/g, " ")}
                 </div>
               ))
             ) : (
-              <div className="text-center py-2 w-full">
+              <div className="text-center py-2 w-full text-sm text-muted-foreground">
                 No domains associated with this project
               </div>
             )}
@@ -109,7 +101,7 @@ export const ProjectAssociation: React.FC<SDGSectionProps> = ({
         {/* Project Type */}
         <div>
           <h3 className="text-lg font-medium mb-3">Project Type</h3>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5">
             {typeAssociations.length > 0 ? (
               <ProjectTypeCard
                 projectTypes={projectTypeOptions.filter((type) =>
@@ -119,7 +111,7 @@ export const ProjectAssociation: React.FC<SDGSectionProps> = ({
                 )}
               />
             ) : (
-              <div className="text-center py-2 w-full">
+              <div className="text-center py-2 w-full text-sm text-muted-foreground">
                 No project types associated with this project
               </div>
             )}
@@ -129,7 +121,7 @@ export const ProjectAssociation: React.FC<SDGSectionProps> = ({
         {/* Tech Stack */}
         <div>
           <h3 className="text-lg font-medium mb-3">Tech Stack</h3>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5">
             <TechCard techStacks={techStackAssociations} />
           </div>
         </div>
