@@ -66,6 +66,7 @@ const ProjectDetails = ({ projectID }: { projectID: string }) => {
           status={project.content?.status?.status}
           logo={project.metadata.logo}
           website={project.metadata.website}
+          projectId={project.metadata.project_id}
         />
         
         <ProjectOverview

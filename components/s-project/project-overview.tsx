@@ -1,5 +1,5 @@
 import React from "react";
-import Markdown from "markdown-to-jsx"; // ✅ Added import
+import Markdown from "markdown-to-jsx";
 import { Card } from "../ui/card";
 
 interface ProjectOverviewProps {
@@ -37,7 +37,6 @@ export const ProjectOverview: React.FC<ProjectOverviewProps> = ({
         <div className="border-t border-default-200 pt-4 mt-4">
           <h2 className="text-2xl font-semibold mb-3">Key Features</h2>
           <ul className="list-disc list-inside space-y-2 text-default-500">
-            {/* ✅ Markdown rendering added inside existing <ul> */}
             {keyFeatures && (
               <Markdown
                 options={{
