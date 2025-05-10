@@ -16,6 +16,7 @@ export interface PendingProject {
 }
 
 export interface RejectedProject {
+  submissionDate: string | number | Date;
   id: number;
   title: string;
   groupNumber: string;
