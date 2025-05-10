@@ -19,38 +19,49 @@ const Teamandsocial = ({ teamEmail, teamPhone, teamMembers, teamSocials }: Props
         <Card className="mt-8 p-6">
             <h2 className="text-2xl font-semibold mb-4">Contact & Team Details</h2>
             <Tabs defaultValue="contact" className="w-full">
-                {/* Tabs List with horizontal scroll on mobile */}
-                <TabsList className="flex overflow-x-auto whitespace-nowrap sm:grid sm:grid-cols-2 w-full">
+                {/* Tabs List - horizontal like original */}
+                <TabsList className="flex gap-2 w-full sm:w-auto">
                     <TabsTrigger
                         value="contact"
-                        className="max-w-[150px] truncate text-center p-2"
+                        className="px-4 py-2 truncate text-center"
                     >
                         Contact
                     </TabsTrigger>
                     <TabsTrigger
                         value="team"
-                        className="max-w-[150px] truncate text-center p-2"
+                        className="px-4 py-2 truncate text-center"
                     >
                         Team
                     </TabsTrigger>
                 </TabsList>
 
-                {/* Contact Information Tab */}
+                {/* Contact Tab */}
                 <TabsContent value="contact">
                     <div className="grid gap-4 sm:grid-cols-2 mt-5">
-                        <Card className="p-4">
-                            <h3 className="text-xl font-bold mb-2">Team Email</h3>
-                            <Link href={`mailto:${teamEmail || 'team@example.com'}`}>
-                                <p>{teamEmail || 'team@example.com'}</p>
-                            </Link>
-                        </Card>
-                        <Card className="p-4">
-                            <h3 className="text-xl font-bold mb-2">Team Phone</h3>
-                            <Link href={`tel:${teamPhone || '+1 234 567 8900'}`}>
-                                <p>{teamPhone || '+1 234 567 8900'}</p>
-                            </Link>
-                        </Card>
+                        <a
+                            href={`mailto:${teamEmail || 'team@example.com'}`}
+                            className="block rounded-lg transition hover:bg-muted/40 hover:scale-[1.01] duration-150"
+                        >
+                            <Card className="p-4 h-full cursor-pointer">
+                                <h3 className="text-xl font-bold mb-2">Team Email</h3>
+                                <p className="text-muted-foreground">
+                                    {teamEmail || 'team@example.com'}
+                                </p>
+                            </Card>
+                        </a>
+                        <a
+                            href={`tel:${teamPhone || '+1 234 567 8900'}`}
+                            className="block rounded-lg transition hover:bg-muted/40 hover:scale-[1.01] duration-150"
+                        >
+                            <Card className="p-4 h-full cursor-pointer">
+                                <h3 className="text-xl font-bold mb-2">Team Phone</h3>
+                                <p className="text-muted-foreground">
+                                    {teamPhone || '+1 234 567 8900'}
+                                </p>
+                            </Card>
+                        </a>
                     </div>
+
                     <div className="grid gap-4 sm:grid-cols-6 mt-5">
                         {teamSocials.map((social, index) => {
                             const platform = socialPlatformMap[social.link_name];
@@ -64,10 +75,12 @@ const Teamandsocial = ({ teamEmail, teamPhone, teamMembers, teamSocials }: Props
                                     rel="noopener noreferrer"
                                     className="no-underline"
                                 >
-                                    <Card className="p-4 flex items-center justify-between hover:bg-muted/40 transition group cursor-pointer">
+                                    <Card className="p-4 flex items-center justify-between hover:bg-muted/40 hover:scale-[1.01] transition duration-150 group cursor-pointer">
                                         <div className="flex items-center gap-3">
                                             <Icon className="h-6 w-6 text-primary" />
-                                            <span className="font-semibold text-lg">{platform.label}</span>
+                                            <span className="font-semibold text-lg">
+                                                {platform.label}
+                                            </span>
                                         </div>
                                         <ExternalLink className="h-5 w-5 text-muted-foreground group-hover:text-primary" />
                                     </Card>
@@ -77,11 +90,14 @@ const Teamandsocial = ({ teamEmail, teamPhone, teamMembers, teamSocials }: Props
                     </div>
                 </TabsContent>
 
-                {/* Team Information Tab */}
+                {/* Team Tab */}
                 <TabsContent value="team">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mt-5">
                         {teamMembers.map((member, index) => (
-                            <div key={index} className="border rounded-lg p-4 flex flex-col items-center w-full">
+                            <div
+                                key={index}
+                                className="border rounded-lg p-4 flex flex-col items-center w-full transition hover:bg-muted/40 hover:scale-[1.01] duration-150"
+                            >
                                 <Image
                                     src={member.profile_image || "https://picsum.photos/1920/1080"}
                                     alt={member.name}
