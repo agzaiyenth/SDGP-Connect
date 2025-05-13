@@ -13,13 +13,13 @@ const Logo: React.FC = () => (
     initial={{ scale: 0.8, opacity: 0 }}
     animate={{ scale: 1, opacity: 1 }}
     transition={{ duration: 0.5 }}
-    className="mb-10 flex justify-center items-center"
+    className="mb-10 flex justify-center items-center "
   >
     <div className="relative">
       <Image
-        src="/iconw.png"
+        src="/iconw.svg"
         alt="Logoipsum"
-        className="h-48 w-48 -mb-12"
+        className="h-48 w-48 -mb-26 -mt-14"
         width={88}
         height={88}
       />
@@ -30,7 +30,7 @@ const Logo: React.FC = () => (
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden perspective-1000">
+    <section className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden perspective-1000 ">
       <ThreeScene />
 
       <motion.div
