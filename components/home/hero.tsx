@@ -6,6 +6,27 @@ import ThreeScene from './three-scene';
 import Carousel from './carousel';
 import { Button } from '../ui/button';
 import Link from 'next/link';
+import Image from "next/image"
+
+const Logo: React.FC = () => (
+  <motion.div 
+    initial={{ scale: 0.8, opacity: 0 }}
+    animate={{ scale: 1, opacity: 1 }}
+    transition={{ duration: 0.5 }}
+    className="mb-10 flex justify-center items-center"
+  >
+    <div className="relative">
+      <Image
+        src="/iconw.png"
+        alt="Logoipsum"
+        className="h-48 w-48 -mb-12"
+        width={88}
+        height={88}
+      />
+    </div>
+   
+  </motion.div>
+)
 
 export default function Hero() {
   return (
@@ -33,7 +54,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          SDGP
+          <Logo/>
         </motion.h1>
 
         <motion.p
