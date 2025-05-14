@@ -6,7 +6,7 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/comp
 import { Input } from "@/components/ui/input";
 import { useFormContext } from "react-hook-form";
 import { ProjectSubmissionSchema } from "@/validations/submit_project";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue , SelectLabel , SelectGroup } from "@/components/ui/select";
 import { Upload, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -104,17 +104,25 @@ const FormStep1 = ({
           name="metadata.sdgp_year"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>SDGP Year</FormLabel>
+              <FormLabel>Year</FormLabel>
               <FormControl>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select Year" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="2023">2023</SelectItem>
-                    <SelectItem value="2024">2024</SelectItem>
-                    <SelectItem value="2025">2025</SelectItem>
-                    <SelectItem value="2026">2026</SelectItem>
+                    {/* SDGP section */}
+                    <SelectGroup>
+                    <SelectLabel>SDGP</SelectLabel>
+                    <SelectItem value="2023">FT 23/24</SelectItem>
+                    <SelectItem value="2024">FT 24/25</SelectItem>
+                    <SelectItem value="2025">FT 25/26</SelectItem>
+
+                    {/* Infoschol section */}
+                    <SelectLabel>Infoschol</SelectLabel>
+                    <SelectItem value="2025-jan">Infoschol '25 Jan</SelectItem>
+                    <SelectItem value="2025-sep">Infoschol '25 Sep</SelectItem>
+                    </SelectGroup>
                   </SelectContent>
                 </Select>
               </FormControl>
@@ -153,7 +161,7 @@ const FormStep1 = ({
           </FormItem>
         )}
       />
-      
+
       {/* Row 4: Website URL */}
       <FormField
         control={control}
@@ -162,9 +170,9 @@ const FormStep1 = ({
           <FormItem>
             <FormLabel>Project Website</FormLabel>
             <FormControl>
-              <Input 
-                type="url" 
-                placeholder="https://your-project-website.com" 
+              <Input
+                type="url"
+                placeholder="https://www.lexi.lk"
                 {...field}
                 value={field.value || ""}
               />
