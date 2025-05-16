@@ -65,17 +65,23 @@ export async function POST(request: NextRequest) {
         { status: 409 }
       );
     }
-    const updatedStatus = await prisma.projectStatus.update({
-      where: { content_id: projectContent.content_id },
-      data: {
-        approved_status: ProjectApprovalStatus.REJECTED,
-        rejected_reason: reason,
-       // approved_by_userId: userId,
-        approved_at: new Date(),
-      },
-    });
-    
-        
+
+    // 6) Reject the project and un-feature it atomically
+    const [updatedStatus, updatedMetadata] = await prisma.$transaction([
+      prisma.projectStatus.update({
+        where: { content_id: projectContent.content_id },
+        data: {
+          approved_status: ProjectApprovalStatus.REJECTED,
+          rejected_reason: reason,
+          // approved_by_userId: userId,
+          approved_at: new Date(),
+        },
+      }),
+      prisma.projectMetadata.update({
+        where: { project_id: projectContent.metadata_id },
+        data: { featured: false },
+      }),
+    ]);
 
     // 7) Return success
     return NextResponse.json({
@@ -86,6 +92,7 @@ export async function POST(request: NextRequest) {
         reason,
         rejectedAt: updatedStatus.approved_at,
         rejectedBy: userId,
+        featured: updatedMetadata.featured,
       },
     });
   } catch (error: any) {
