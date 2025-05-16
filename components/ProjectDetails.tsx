@@ -45,12 +45,12 @@ const ProjectDetails = ({ projectID }: { projectID: string }) => {
   }
 
   return (
-    
+
     <div className="min-h-screen ">
       <HeroSection
         coverImage={project.metadata.cover_image}
       />
-      
+
       <div className="container mx-auto px-4 pb-16">
         <ProjectHeader
           title={project.metadata.title}
@@ -68,7 +68,7 @@ const ProjectDetails = ({ projectID }: { projectID: string }) => {
           website={project.metadata.website}
           projectId={project.metadata.project_id}
         />
-        
+
         <ProjectOverview
           problemStatement={project.content?.projectDetails?.problem_statement}
           solution={project.content?.projectDetails?.solution}
@@ -77,21 +77,23 @@ const ProjectDetails = ({ projectID }: { projectID: string }) => {
           projectYear={project.metadata.sdgp_year}
         />
         {project.content?.slides && (
-        <SlideDeck slides={project.content?.slides} />
-      )}
+          <SlideDeck slides={project.content?.slides} />
+        )}
         <ProjectAssociation
           associations={project.content?.associations || []}
         />
 
 
         <Teamandsocial
-        teamMembers={project.content?.team || []}
-        teamSocials={project.content?.socialLinks || []}
-        teamPhone={project.content?.projectDetails?.team_phone}
-        teamEmail={project.content?.projectDetails?.team_email}
+          teamMembers={project.content?.team || []}
+          teamSocials={project.content?.socialLinks || []}
+          teamPhone={project.content?.projectDetails?.team_phone}
+          teamEmail={project.content?.projectDetails?.team_email}
+          projectTitle={project.metadata.title}
         />
-        
-       
+
+
+
       </div>
     </div>
   );
