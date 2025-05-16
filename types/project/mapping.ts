@@ -1,48 +1,57 @@
 import { ProjectStatusEnum, ProjectTypeEnum, SDGGoalEnum, TechStackEnum } from "@prisma/client";
-import { Heart } from "lucide-react";
-import { DiJava, DiReact } from "react-icons/di";
-import { FaAws, FaDesktop, FaFacebook, FaGlobe, FaInstagram, FaLinkedin, FaMobileAlt, FaTiktok, FaTools, FaTwitter, FaYoutube } from "react-icons/fa";
+import { TbBrandCSharp } from "react-icons/tb";
+
 import {
-    SiAndroid,
-    SiAngular,
-    SiArduino,
-    SiDjango,
-    SiDotnet,
-    SiFirebase,
-    SiFlask,
-    SiFlutter,
-    SiIos,
-    SiLaravel,
-    SiMongodb, SiMysql,
-    SiNodedotjs,
-    SiPhp,
-    SiPostgresql,
-    SiPython,
-    SiPytorch,
-    SiRaspberrypi,
-    SiReact,
-    SiSpring,
-    SiTensorflow,
-    SiVuedotjs
-} from "react-icons/si";
-import {
-  Brain,
-  Cpu,
-  MonitorSmartphone,
-  ShieldCheck,
-  SatelliteDish,
-  HeartPulse,
   Banknote,
-  BookOpen,
-  Sprout,
-  ShoppingCart,
-  Users,
-  Gamepad2,
-  Shield,
   BarChart3,
+  BookOpen,
+  Brain,
   Clapperboard,
+  Cpu,
+  Gamepad2,
+  HeartPulse,
   Leaf,
-} from "lucide-react"
+  MonitorSmartphone,
+  SatelliteDish,
+  Shield,
+  ShieldCheck,
+  ShoppingCart,
+  Sprout,
+  Users,
+} from "lucide-react";
+import { DiJava, DiReact } from "react-icons/di";
+import { FaAws, FaDesktop, FaFacebook, FaGlobe, FaInstagram, FaLinkedin, FaMobileAlt, FaPuzzlePiece, FaTiktok, FaTools, FaTwitter, FaYoutube } from "react-icons/fa";
+import {
+  SiAndroid,
+  SiAngular,
+  SiArduino,
+  SiDjango,
+  SiDotnet,
+  SiFirebase,
+  SiFlask,
+  SiFlutter,
+  SiIos,
+  SiLaravel,
+  SiMongodb, SiMysql,
+  SiNodedotjs,
+  SiPhp,
+  SiPostgresql,
+  SiPython,
+  SiPytorch,
+  SiRaspberrypi,
+  SiReact,
+  SiSpring,
+  SiTensorflow,
+  SiVuedotjs,
+  SiSvelte,
+  SiKotlin,
+  SiSwift,
+  SiRuby,
+  SiJavascript,
+  SiTypescript,
+  SiCplusplus,
+  SiC
+} from "react-icons/si";
 
 export const projectTypeOptions = [
   { value: ProjectTypeEnum.MOBILE, label: "Mobile App", icon: FaMobileAlt },
@@ -50,6 +59,7 @@ export const projectTypeOptions = [
   { value: ProjectTypeEnum.HARDWARE, label: "Hardware", icon: FaTools },
   { value: ProjectTypeEnum.DESKTOP, label: "Desktop Software", icon: FaDesktop },
   { value: ProjectTypeEnum.WEARABLE, label: "Wearable App", icon: FaMobileAlt },
+  { value: ProjectTypeEnum.EXTENSION, label: "Web Extension", icon: FaPuzzlePiece },
 ];
 
 export const sdgGoals = [
@@ -183,6 +193,15 @@ export const sdgGoals = [
         { value :TechStackEnum.PYTORCH ,label :"PyTorch" ,type :"ai" ,icon :SiPytorch},
         { value :TechStackEnum.ARDUINO ,label :"Arduino" ,type :"hardware" ,icon :SiArduino},
         { value :TechStackEnum.RASPBERRY_PI ,label :"Raspberry Pi" ,type :"hardware" ,icon :SiRaspberrypi},
+        { value: TechStackEnum.SVELTE, label: "Svelte", type: "frontend", icon: SiSvelte },
+        { value: TechStackEnum.KOTLIN, label: "Kotlin", type: "mobile", icon: SiKotlin },
+        { value: TechStackEnum.SWIFT, label: "Swift", type: "mobile", icon: SiSwift },
+        { value: TechStackEnum.RUBY, label: "Ruby", type: "backend", icon: SiRuby },
+        { value: TechStackEnum.JAVASCRIPT, label: "JavaScript", type: "frontend", icon: SiJavascript },
+        { value: TechStackEnum.TYPESCRIPT, label: "TypeScript", type: "frontend", icon: SiTypescript },
+        { value: TechStackEnum.C_SHARP, label: "C#", type: "backend", icon: TbBrandCSharp },
+        { value: TechStackEnum.C_PLUS_PLUS, label: "C++", type: "backend", icon: SiCplusplus },
+        { value: TechStackEnum.C, label: "C", type: "backend", icon: SiC },
          ];
    export const projectStatusOptions = [
       { 

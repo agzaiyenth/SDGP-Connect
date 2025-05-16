@@ -58,6 +58,7 @@ enum ProjectTypeEnum {
   HARDWARE
   DESKTOP
   WEARABLE
+  EXTENSION
 }
 
 enum SDGGoalEnum {
@@ -106,6 +107,17 @@ enum TechStackEnum {
   PYTORCH
   ARDUINO
   RASPBERRY_PI
+  SVELTE
+  KOTLIN
+  SWIFT
+  RUBY
+  JAVASCRIPT
+  TYPESCRIPT
+  C_SHARP
+  C_PLUS_PLUS
+  C
+  
+
 }
 
 enum ProjectApprovalStatus {
