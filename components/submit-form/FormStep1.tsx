@@ -120,8 +120,8 @@ const FormStep1 = ({
 
                     {/* Infoschol section */}
                     <SelectLabel>Infoschol</SelectLabel>
-                    <SelectItem value="2025-jan">Infoschol '25 Jan</SelectItem>
-                    <SelectItem value="2025-sep">Infoschol '25 Sep</SelectItem>
+                    <SelectItem value="I-25-jan">Infoschol '25 Jan</SelectItem>
+                    <SelectItem value="I-25-sep">Infoschol '25 Sep</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
