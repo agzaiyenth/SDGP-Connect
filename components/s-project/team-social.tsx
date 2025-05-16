@@ -10,11 +10,13 @@ import { socialPlatformMap } from '@/types/project/mapping'
 interface Props {
     teamEmail?: string
     teamPhone?: string
+    projectTitle?: string
     teamMembers: IProjectTeam[]
     teamSocials: IProjectSocialLink[]
+
 }
 
-const Teamandsocial = ({ teamEmail, teamPhone, teamMembers, teamSocials }: Props) => {
+const Teamandsocial = ({ teamEmail, teamPhone, teamMembers, teamSocials, projectTitle }: Props) => {
     return (
         <Card className="mt-8 p-6">
             <h2 className="text-2xl font-semibold mb-4">Contact & Team Details</h2>
@@ -49,17 +51,31 @@ const Teamandsocial = ({ teamEmail, teamPhone, teamMembers, teamSocials }: Props
                                 </p>
                             </Card>
                         </a>
-                        <a
-                            href={`tel:${teamPhone || '+1 234 567 8900'}`}
-                            className="block rounded-lg transition hover:bg-muted/40 hover:scale-[1.01] duration-150"
-                        >
-                            <Card className="p-4 h-full cursor-pointer">
-                                <h3 className="text-xl font-bold mb-2">Team Phone</h3>
-                                <p className="text-muted-foreground">
-                                    {teamPhone || '+1 234 567 8900'}
-                                </p>
-                            </Card>
-                        </a>
+                        {teamPhone && (
+                            <a
+                                href={`https://api.whatsapp.com/send?phone=${teamPhone.replace(/\D/g, '')}&text=${encodeURIComponent(
+                                    `👋 Hey there! I'm interested in learning more about your project "${projectTitle}". Could you please share more details?`
+                                )}`}
+                                onClick={(e) => {
+                                    // Optional fallback for non-WhatsApp users
+                                    if (!navigator.userAgent.includes('Mobile')) {
+                                        e.preventDefault();
+                                        window.location.href = `tel:${teamPhone}`;
+                                    }
+                                }}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block rounded-lg transition hover:bg-muted/40 hover:scale-[1.01] duration-150"
+                            >
+                                <Card className="p-4 h-full cursor-pointer">
+                                    <h3 className="text-xl font-bold mb-2">WhatsApp / Call</h3>
+                                    <p className="text-muted-foreground">
+                                        {teamPhone}
+                                    </p>
+                                </Card>
+                            </a>
+                        )}
+
                     </div>
 
                     <div className="grid gap-4 sm:grid-cols-6 mt-5">
