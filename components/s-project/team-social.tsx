@@ -10,8 +10,10 @@ import { socialPlatformMap } from '@/types/project/mapping'
 interface Props {
     teamEmail?: string
     teamPhone?: string
+    projectTitle?: string
     teamMembers: IProjectTeam[]
     teamSocials: IProjectSocialLink[]
+
 }
 
 const Teamandsocial = ({ teamEmail, teamPhone, teamMembers, teamSocials }: Props) => {
