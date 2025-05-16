@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
 import { validateImageFile } from "./utils/validateImageFile";
 import { compressImageFile } from "./utils/compressImageFile";
+import { yearOptions } from "@/types/project/mapping";
 
 interface FormStep1Props {
   logoFile: File | null;
@@ -111,18 +112,15 @@ const FormStep1 = ({
                     <SelectValue placeholder="Select Year" />
                   </SelectTrigger>
                   <SelectContent>
-                    {/* SDGP section */}
-                    <SelectGroup>
-                    <SelectLabel>SDGP</SelectLabel>
-                    <SelectItem value="2023">FT 23/24</SelectItem>
-                    <SelectItem value="2024">FT 24/25</SelectItem>
-                    <SelectItem value="2025">FT 25/26</SelectItem>
-
-                    {/* Infoschol section */}
-                    <SelectLabel>Infoschol</SelectLabel>
-                    <SelectItem value="I-25-jan">Infoschol '25 Jan</SelectItem>
-                    <SelectItem value="I-25-sep">Infoschol '25 Sep</SelectItem>
-                    </SelectGroup>
+                    {/* Dynamically group and render year options by type */}
+                    {Array.from(new Set(yearOptions.map(opt => opt.type))).map(type => (
+                      <SelectGroup key={type}>
+                        <SelectLabel>{type}</SelectLabel>
+                        {yearOptions.filter(opt => opt.type === type).map(opt => (
+                          <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                        ))}
+                      </SelectGroup>
+                    ))}
                   </SelectContent>
                 </Select>
               </FormControl>
