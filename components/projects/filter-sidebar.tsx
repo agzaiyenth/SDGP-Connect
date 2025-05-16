@@ -13,7 +13,8 @@ import {
   projectTypeOptions,
   projectDomainsOptions,
   sdgGoals,
-  techStackOptions
+  techStackOptions,
+  yearOptions
 } from "@/types/project/mapping";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
@@ -302,14 +303,6 @@ export default function FilterSidebar({
   }, [initialFilters]); // Depend on the entire initialFilters object
 
   // --- Data Transformations for Display ---
-
-  // Generate year options dynamically, memoized
-  const currentYear = useMemo(() => new Date().getFullYear(), []);
-  const yearOptions: ReadonlyArray<Option> = useMemo(() =>
-    Array.from({ length: 5 }, (_, i) => { // Show 5 years
-      const y = (currentYear - i).toString();
-      return { value: y, label: y };
-    }), [currentYear]);
 
   // Map SDG goals for the filter section, memoized
   const sdgOptions: ReadonlyArray<Option> = useMemo(() => {
