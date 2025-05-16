@@ -6,13 +6,14 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/comp
 import { Input } from "@/components/ui/input";
 import { useFormContext } from "react-hook-form";
 import { ProjectSubmissionSchema } from "@/validations/submit_project";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue , SelectLabel , SelectGroup } from "@/components/ui/select";
 import { Upload, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
 import { validateImageFile } from "./utils/validateImageFile";
 import { compressImageFile } from "./utils/compressImageFile";
+import { yearOptions } from "@/types/project/mapping";
 
 interface FormStep1Props {
   logoFile: File | null;
@@ -104,17 +105,22 @@ const FormStep1 = ({
           name="metadata.sdgp_year"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>SDGP Year</FormLabel>
+              <FormLabel>Year</FormLabel>
               <FormControl>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select Year" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="2023">2023</SelectItem>
-                    <SelectItem value="2024">2024</SelectItem>
-                    <SelectItem value="2025">2025</SelectItem>
-                    <SelectItem value="2026">2026</SelectItem>
+                    {/* Dynamically group and render year options by type */}
+                    {Array.from(new Set(yearOptions.map(opt => opt.type))).map(type => (
+                      <SelectGroup key={type}>
+                        <SelectLabel>{type}</SelectLabel>
+                        {yearOptions.filter(opt => opt.type === type).map(opt => (
+                          <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                        ))}
+                      </SelectGroup>
+                    ))}
                   </SelectContent>
                 </Select>
               </FormControl>
@@ -153,7 +159,7 @@ const FormStep1 = ({
           </FormItem>
         )}
       />
-      
+
       {/* Row 4: Website URL */}
       <FormField
         control={control}
@@ -162,9 +168,9 @@ const FormStep1 = ({
           <FormItem>
             <FormLabel>Project Website</FormLabel>
             <FormControl>
-              <Input 
-                type="url" 
-                placeholder="https://your-project-website.com" 
+              <Input
+                type="url"
+                placeholder="https://www.lexi.lk"
                 {...field}
                 value={field.value || ""}
               />
