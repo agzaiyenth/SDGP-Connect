@@ -1,9 +1,10 @@
-
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { ProjectApprovalStatus } from "@prisma/client";
 import { prisma } from "@/prisma/prismaClient";
+import { sendEmail } from "@/lib/email";
+import { approvedTemplate } from "@/lib/email/templates/approved";
 
 export async function POST(request: NextRequest) {
   
@@ -29,7 +30,7 @@ export async function POST(request: NextRequest) {
   try {
     console.log("Approve API called by user:", userId);
 
-    const { projectId, featured } = await request.json();
+    const { projectId, featured, title, groupNumber, teamEmail } = await request.json();
     if (!projectId) {
       return NextResponse.json(
         { error: "Project ID is required." },
@@ -101,6 +102,17 @@ export async function POST(request: NextRequest) {
           featured: true,
           featured_by_userId: userId,
         },
+      });
+    }
+
+    // Send approval email as a silent trigger (do not await)
+    if (teamEmail && title && groupNumber) {
+      sendEmail({
+        to: teamEmail,
+        subject: `Your project "${title}" has been approved!`,
+        html: approvedTemplate({ group_num: groupNumber, title, projectId }),
+      }).catch((err) => {
+        console.error("Failed to send approval email (silent):", err);
       });
     }
 
