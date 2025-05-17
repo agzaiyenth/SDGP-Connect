@@ -13,7 +13,6 @@ const ProjectPage = async ({ params }: Props) => {
     return (
         <div>
            <ProjectDetails projectID={projectId} />
-            
         </div>
     )
 }
