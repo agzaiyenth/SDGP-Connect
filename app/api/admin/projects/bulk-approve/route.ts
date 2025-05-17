@@ -4,6 +4,8 @@ import { authOptions } from "../../../auth/[...nextauth]/route";
 
 import { ProjectApprovalStatus } from "@prisma/client";
 import { prisma } from "@/prisma/prismaClient";
+import { sendEmail } from "@/lib/email";
+import { approvedTemplate } from "@/lib/email/templates/approved";
 
 export async function POST(req: NextRequest) {
   try {
@@ -71,6 +73,33 @@ export async function POST(req: NextRequest) {
         })
       )
     );
+
+    // 5) Fetch metadata and details for all approved projects
+    const approvedContentIds = statuses.map(s => s.content_id);
+    const approvedContents = await prisma.projectContent.findMany({
+      where: { content_id: { in: approvedContentIds } },
+      include: {
+        metadata: true,
+        projectDetails: true
+      }
+    });
+
+    // 6) Send approval emails in the background (do not await)
+    for (const content of approvedContents) {
+      const title = content.metadata?.title;
+      const group_num = content.metadata?.group_num;
+      const projectId = content.metadata?.project_id;
+      const teamEmail = content.projectDetails?.team_email;
+      if (title && group_num && projectId && teamEmail) {
+        sendEmail({
+          to: teamEmail,
+          subject: `Your project "${title}" has been approved!`,
+          html: approvedTemplate({ group_num, title, projectId }),
+        }).catch((err) => {
+          console.error("Failed to send approval email (silent):", err);
+        });
+      }
+    }
 
     return NextResponse.json({
       message: `Successfully approved ${updated.length} projects`,
