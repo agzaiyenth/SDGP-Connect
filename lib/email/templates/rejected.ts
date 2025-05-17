@@ -122,7 +122,7 @@ export function rejectedTemplate({
               <h2>Hello Team ${group_num},</h2>
               <p>
                 Regarding your project titled "<strong style="color: #333;">${title}</strong>", we regret to inform you that it has been
-                <span class="rejected">REJECTED</span> at SDGP.
+                <span class="rejected">REJECTED</span> at SDGP.LK.
               </p>
               <div class="reason-section">
                 <strong>Reason for Rejection:</strong>

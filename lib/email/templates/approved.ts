@@ -127,7 +127,7 @@ export function approvedTemplate({
               <h2>Hello Team ${group_num},</h2>
               <p style="font-weight: bold;">
                 Your project titled "<strong style="color: #333;">${title}</strong>" has been
-                <span class="approved">APPROVED</span> at SDGP!
+                <span class="approved">APPROVED</span> at SDGP.LK!
               </p>
               <p>We're thrilled to inform you that your hard work has paid off.</p>
               <div class="button-container">
