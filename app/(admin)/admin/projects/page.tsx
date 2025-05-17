@@ -92,10 +92,16 @@ export default function ProjectManagement() {
     setApproveDialog(true);
   };
 
-  const handleReject = (project: PendingProject | ApprovedProject) => {
-    setCurrentProject(project);
-    setRejectDialog(true);
-  };
+const handleReject = async (project: PendingProject | ApprovedProject) => {
+  // If the project is approved and featured, unfeature it first
+  if ('featured' in project && project.featured) {
+    await toggleFeature(project.id, false); // unfeature the project
+  }
+
+  setCurrentProject(project);
+  setRejectDialog(true);
+};
+
 
 
   const handleViewDetails = (project: any) => {
