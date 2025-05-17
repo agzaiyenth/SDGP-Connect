@@ -6,6 +6,8 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/prisma/prismaClient";
 import { ProjectStatusEnum } from "@prisma/client";
 import { ProjectApprovalStatus } from "@prisma/client";
+import { sendEmail } from "@/lib/email";
+import { rejectedTemplate } from "@/lib/email/templates/rejected";
 
 export async function POST(request: NextRequest) {
   // 1) Get real session & enforce login
@@ -45,7 +47,7 @@ export async function POST(request: NextRequest) {
     // 4) Lookup the project content + status
     const projectContent = await prisma.projectContent.findUnique({
       where: { metadata_id: String(projectId) },
-      include: { status: true },
+      include: { status: true, projectDetails: true, metadata: true },
     });
     if (!projectContent) {
       return NextResponse.json(
@@ -83,7 +85,23 @@ export async function POST(request: NextRequest) {
       }),
     ]);
 
-    // 7) Return success
+    // 7) Send rejection email in background (do not await)
+    try {
+      const teamEmail = projectContent.projectDetails?.team_email;
+      const groupNum = projectContent.metadata?.group_num;
+      const title = projectContent.metadata?.title;
+      if (teamEmail && groupNum && title) {
+        void sendEmail({
+          to: teamEmail,
+          subject: `Your SDGP Project "${title}" has been REJECTED`,
+          html: rejectedTemplate({ group_num: groupNum, title, reason }),
+        }).catch(console.error);
+      }
+    } catch (e) {
+      // fail silently
+    }
+
+    // 8) Return success
     return NextResponse.json({
       success: true,
       message: "Project rejected successfully",
