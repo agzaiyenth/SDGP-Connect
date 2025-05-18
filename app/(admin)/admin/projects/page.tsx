@@ -103,9 +103,8 @@ export default function ProjectManagement() {
   };
 
 const handleReject = async (project: PendingProject | ApprovedProject) => {
-  // If the project is approved and featured, unfeature it first
   if ('featured' in project && project.featured) {
-    await toggleFeature(project.id, false); // unfeature the project
+    await toggleFeature(project.id, false); 
   }
 
   setCurrentProject(project);
