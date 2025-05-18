@@ -6,6 +6,7 @@ import "../globals.css";
 import { Toaster } from "sonner";
 import { CustomCursor } from "@/components/Cursor";
 import Footer from "@/components/Footer";
+import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -60,6 +61,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Analytics />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
         <Toaster />
         <NavBar/>
