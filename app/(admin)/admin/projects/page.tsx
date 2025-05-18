@@ -23,7 +23,7 @@ import { AlertCircle, FileX2, Inbox, RefreshCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BulkApproveDialog from '@/components/dialogs/BulkApproveDialog';
 
-const projectStatuses = ['IDEA','RESEARCH', 'MVP', 'DEPLOYED', 'STARTUP'];
+const projectStatuses = ['IDEA', 'RESEARCH', 'MVP', 'DEPLOYED', 'STARTUP'];
 
 export default function ProjectManagement() {
   const [selectedProjects, setSelectedProjects] = useState<number[]>([]);
@@ -34,6 +34,7 @@ export default function ProjectManagement() {
   const [currentProject, setCurrentProject] = useState<any>(null);
   const [currentTab, setCurrentTab] = useState<'pending' | 'approved' | 'rejected'>('pending');
   const [lastFetchedTime, setLastFetchedTime] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const {
     projects: pendingProjects,
@@ -102,14 +103,14 @@ export default function ProjectManagement() {
     setApproveDialog(true);
   };
 
-const handleReject = async (project: PendingProject | ApprovedProject) => {
-  if ('featured' in project && project.featured) {
-    await toggleFeature(project.id, false); 
-  }
+  const handleReject = async (project: PendingProject | ApprovedProject) => {
+    if ('featured' in project && project.featured) {
+      await toggleFeature(project.id, false);
+    }
 
-  setCurrentProject(project);
-  setRejectDialog(true);
-};
+    setCurrentProject(project);
+    setRejectDialog(true);
+  };
 
 
 
@@ -172,6 +173,18 @@ const handleReject = async (project: PendingProject | ApprovedProject) => {
       </div>
     );
   };
+
+  const filterProjectsByTitle = <T extends { title: string }>(projects: T[]): T[] => {
+    return projects.filter((project) =>
+      project.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  };
+
+  const filteredPendingProjects = filterProjectsByTitle(pendingProjects);
+  const filteredApprovedProjects = filterProjectsByTitle(approvedProjects);
+  const filteredRejectedProjects = filterProjectsByTitle(rejectedProjects);
+
+
   const renderContent = () => {
     if (currentTab === 'pending') {
       if (isPendingLoading) return <PendingProjectsTableSkeleton />;
@@ -179,7 +192,7 @@ const handleReject = async (project: PendingProject | ApprovedProject) => {
       if (isPendingEmpty) return renderEmptyState('pending');
       return (
         <PendingProjectsTable
-          projects={pendingProjects}
+          projects={filteredPendingProjects}
           selectedProjects={selectedProjects}
           onSelectProject={handleSelectProject}
           onSelectAll={handleSelectAll}
@@ -200,7 +213,7 @@ const handleReject = async (project: PendingProject | ApprovedProject) => {
       if (isApprovedEmpty) return renderEmptyState('approved');
       return (
         <ApprovedProjectsTable
-          projects={approvedProjects}
+          projects={filteredApprovedProjects}
           onViewDetails={handleViewDetails}
           onToggleFeature={handleToggleFeature}
           onReject={handleReject}
@@ -218,7 +231,8 @@ const handleReject = async (project: PendingProject | ApprovedProject) => {
       if (isRejectedEmpty) return renderEmptyState('rejected');
       return (
         <RejectedProjectsTable
-          projects={rejectedProjects}
+          projects={filteredRejectedProjects}
+
           onViewDetails={handleViewDetails}
           currentPage={rejectedCurrentPage}
           totalPages={rejectedTotalPages}
@@ -246,7 +260,10 @@ const handleReject = async (project: PendingProject | ApprovedProject) => {
           <Input
             placeholder="Search projects..."
             className="max-w-xs"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
+
           <div className="flex items-center gap-4">
             <Button
               variant="outline"
@@ -297,7 +314,7 @@ const handleReject = async (project: PendingProject | ApprovedProject) => {
           project={currentProject}
           onRejected={() => {
             refreshPending();
-            refreshApproved(); 
+            refreshApproved();
           }}
         />
 
