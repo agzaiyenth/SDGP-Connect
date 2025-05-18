@@ -115,7 +115,7 @@ const Teamandsocial = ({ teamEmail, teamPhone, teamMembers, teamSocials, project
                                 className="border rounded-lg p-4 flex flex-col items-center w-full transition hover:bg-muted/40 hover:scale-[1.01] duration-150"
                             >
                                 <Image
-                                    src={member.profile_image || "https://picsum.photos/1920/1080"}
+                                    src={member.profile_image || "/user.png"}
                                     alt={member.name}
                                     className="w-20 h-20 rounded-full mb-4"
                                     width={80}
