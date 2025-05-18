@@ -132,7 +132,7 @@ export const GET = async (req: NextRequest) => {
 
     return NextResponse.json({
       data: formatted,
-      metadata: {
+      meta: {
         currentPage: page,
         totalPages,
         totalItems: totalProjects,

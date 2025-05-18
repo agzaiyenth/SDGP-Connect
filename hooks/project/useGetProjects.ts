@@ -1,108 +1,127 @@
 // hooks/useProjects.ts
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { PaginatedResponse } from '../../types/project/pagination'; 
-import { ProjectCardType } from '../../types/project/card'; // Adjust path if needed
-
-// Make sure ProjectQueryParams matches the keys used in the API and page
-// interface ProjectQueryParams {
-//   page?: number;
-//   limit?: number;
-//   search?: string;
-//   projectTypes?: string[]; // Changed from 'types'
-//   domains?: string[];
-//   status?: string[];
-//   sdgGoals?: string[];
-//   techStack?: string[];
-//   years?: string[]; // Added years
-// }
+import { ProjectCardType } from '../../types/project/card';
 
 // Hook now accepts current parameters derived from URLSearchParams
+// and supports infinite scrolling by accumulating projects
 function useProjects(currentParams: ProjectQueryParams) {
   const [projects, setProjects] = useState<ProjectCardType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [meta, setMeta] = useState<PaginatedResponse<ProjectCardType>['meta'] | null>(null);
-  // Removed internal params state: const [params, setParams] = useState(...)
+  const [hasMore, setHasMore] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      setIsLoading(true);
-      setError(null);
-      setProjects([]); // Clear previous results while loading new ones
-      setMeta(null);
+  const fetchProjects = useCallback(async (page: number, shouldAppend: boolean = false) => {
+    setIsLoading(true);
+    setError(null);
 
-      try {
-        // Build query string directly from the passed currentParams
-        const queryParams = new URLSearchParams();
+    try {
+      // Build query string from current parameters but override the page
+      const queryParams = new URLSearchParams();
+      
+      // Set page from the parameter
+      queryParams.append('page', page.toString());
+      queryParams.append('limit', String(currentParams.limit || 9));
+      
+      if (currentParams.title) queryParams.append('title', currentParams.title);
 
-        if (currentParams.page) queryParams.append('page', currentParams.page.toString());
-        if (currentParams.limit) queryParams.append('limit', currentParams.limit.toString());
-        if (currentParams.title) queryParams.append('title', currentParams.title);
-
-        // Use the correct keys matching the API route and page component
-        if (currentParams.projectTypes && currentParams.projectTypes.length > 0) {
-          currentParams.projectTypes.forEach(type => queryParams.append('projectTypes', type)); // Correct key
-        }
-
-        if (currentParams.domains && currentParams.domains.length > 0) {
-          currentParams.domains.forEach(domain => queryParams.append('domains', domain));
-        }
-
-        if (currentParams.status && currentParams.status.length > 0) {
-          currentParams.status.forEach(status => queryParams.append('status', status));
-        }
-
-        if (currentParams.sdgGoals && currentParams.sdgGoals.length > 0) {
-          currentParams.sdgGoals.forEach(goal => queryParams.append('sdgGoals', goal));
-        }
-
-        if (currentParams.techStack && currentParams.techStack.length > 0) {
-          currentParams.techStack.forEach(tech => queryParams.append('techStack', tech));
-        }
-
-        // Add years parameter handling
-        if (currentParams.years && currentParams.years.length > 0) {
-            currentParams.years.forEach(year => queryParams.append('years', year));
-        }
-
-        const response = await fetch(`/api/projects?${queryParams.toString()}`);
-
-        if (!response.ok) {
-          const errorData = await response.text(); // Get more error details
-          throw new Error(`Error ${response.status}: ${errorData || response.statusText}`);
-        }
-
-        const result = await response.json() as PaginatedResponse<ProjectCardType>;
-        setProjects(result.data);
-        setMeta(result.meta);
-
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred while fetching projects');
-        console.error('Error fetching projects:', err);
-        setProjects([]); // Clear projects on error
-        setMeta(null);
-      } finally {
-        setIsLoading(false);
+      // Use the correct keys matching the API route and page component
+      if (currentParams.projectTypes && currentParams.projectTypes.length > 0) {
+        currentParams.projectTypes.forEach(type => queryParams.append('projectTypes', type));
       }
-    };
 
-    fetchProjects();
-    // useEffect dependency is now the parameters passed from the page component
+      if (currentParams.domains && currentParams.domains.length > 0) {
+        currentParams.domains.forEach(domain => queryParams.append('domains', domain));
+      }
+
+      if (currentParams.status && currentParams.status.length > 0) {
+        currentParams.status.forEach(status => queryParams.append('status', status));
+      }
+
+      if (currentParams.sdgGoals && currentParams.sdgGoals.length > 0) {
+        currentParams.sdgGoals.forEach(goal => queryParams.append('sdgGoals', goal));
+      }
+
+      if (currentParams.techStack && currentParams.techStack.length > 0) {
+        currentParams.techStack.forEach(tech => queryParams.append('techStack', tech));
+      }
+
+      if (currentParams.years && currentParams.years.length > 0) {
+        currentParams.years.forEach(year => queryParams.append('years', year));
+      }
+
+      const response = await fetch(`/api/projects?${queryParams.toString()}`);
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(`Error ${response.status}: ${errorData || response.statusText}`);
+      }
+
+      const result = await response.json() as PaginatedResponse<ProjectCardType>;
+      
+      // For infinite scroll: append new projects instead of replacing them
+      if (shouldAppend) {
+        setProjects(prev => [...prev, ...result.data]);
+      } else {
+        setProjects(result.data);
+      }
+      
+      setMeta(result.meta);
+      
+      // Update hasMore based on pagination metadata
+      setHasMore(page < result.meta.totalPages);
+      setCurrentPage(page);
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred while fetching projects');
+      console.error('Error fetching projects:', err);
+      if (!shouldAppend) {
+        setProjects([]);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   }, [currentParams]);
 
-  // Return values - no need for updateParams or goToPage here
+  // Initial load of projects - reset everything
+  useEffect(() => {
+    setProjects([]);
+    setCurrentPage(1);
+    setHasMore(true);
+    fetchProjects(1, false);
+  }, [
+    currentParams.title,
+    currentParams.limit,
+    currentParams.projectTypes?.join(','),
+    currentParams.domains?.join(','),
+    currentParams.status?.join(','),
+    currentParams.sdgGoals?.join(','),
+    currentParams.techStack?.join(','),
+    currentParams.years?.join(','),
+    fetchProjects
+  ]);
+
+  // Function to load more projects (called when user scrolls to bottom)
+  const loadMore = useCallback(() => {
+    if (!isLoading && hasMore) {
+      fetchProjects(currentPage + 1, true);
+    }
+  }, [isLoading, hasMore, currentPage, fetchProjects]);
+
   return {
     projects,
     isLoading,
     error,
     meta,
-    // Removed updateParams,
-    // Removed goToPage
+    hasMore,
+    loadMore
   };
 }
 
 export { useProjects };
-// Make sure to define or import ProjectQueryParams type correctly
+
 export interface ProjectQueryParams {
   page?: number;
   limit?: number;

@@ -6,8 +6,8 @@ import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { ProjectQueryParams } from "@/hooks/project/useGetProjects";
 import { EmptyState } from "../ui/empty-state";
-import { FileX2, ArrowUp } from "lucide-react";
-import { useEffect, useRef, useCallback, useState } from 'react';
+import { FileX2 } from "lucide-react";
+import { useEffect, useRef, useCallback } from 'react';
 
 interface ProjectExplorerProps {
     currentParams: ProjectQueryParams; 
@@ -23,7 +23,6 @@ export default function ProjectExplorer({ currentParams, projects, isLoading, er
     // Create a ref for the loader element (at bottom of list)
     const observerRef = useRef<IntersectionObserver | null>(null);
     const loadingRef = useRef<HTMLDivElement | null>(null);
-    const [showScrollTop, setShowScrollTop] = useState(false);
 
     // Setup the intersection observer for infinite scrolling
     const lastProjectElementRef = useCallback((node: HTMLDivElement) => {
@@ -39,24 +38,6 @@ export default function ProjectExplorer({ currentParams, projects, isLoading, er
         
         if (node) observerRef.current.observe(node);
     }, [isLoading, hasMore, loadMore]);
-
-    // Add scroll to top button functionality
-    useEffect(() => {
-        const handleScroll = () => {
-            // Show button when user scrolls down 500px
-            setShowScrollTop(window.scrollY > 500);
-        };
-        
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    const scrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    };
 
     if (error) {
         return <div className="text-center py-10 text-red-500">Error loading projects: {error}</div>;
@@ -170,17 +151,6 @@ export default function ProjectExplorer({ currentParams, projects, isLoading, er
                 <div className="flex justify-center py-4" ref={loadingRef}>
                     <div className="w-8 h-8 border-2 border-primary/50 border-t-primary rounded-full animate-spin"></div>
                 </div>
-            )}
-
-            {/* Scroll to Top button */}
-            {showScrollTop && (
-                <button 
-                    onClick={scrollToTop} 
-                    className="fixed bottom-4 right-4 p-3 bg-primary text-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
-                    aria-label="Scroll to top"
-                >
-                    <ArrowUp className="w-5 h-5 text-black" />
-                </button>
             )}
         </div>
     );

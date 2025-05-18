@@ -9,8 +9,7 @@ import SearchHeader from "@/components/projects/search-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ProjectQueryParams } from '@/hooks/project/useGetProjects';
-import { useProjects } from '@/hooks/project/useGetProjects';
+import { ProjectQueryParams, useProjects } from "@/hooks/project/useGetProjects";
 
 interface FilterState {
     status: string[];
@@ -38,7 +37,8 @@ function ProjectsPageContent() {
         techStack: searchParams.getAll('techStack'),
     }), [searchParams]);
 
-    const { projects, isLoading, error, meta } = useProjects(currentParams);
+    // Use the hook with added infinite scroll capabilities
+    const { projects, isLoading, error, meta, hasMore, loadMore } = useProjects(currentParams);
 
     const initialFilters = useMemo((): FilterState => ({
         status: currentParams.status || [],
@@ -56,7 +56,7 @@ function ProjectsPageContent() {
     const handleFilterChange = useCallback((newFilters: FilterState) => {
         const params = new URLSearchParams();
         params.append('page', '1');
-        params.append('limit', String(currentParams.limit || 9));
+        params.append('limit', String(currentParams.limit || 15));
         if (currentParams.title) params.append('title', currentParams.title);
 
         Object.entries(newFilters).forEach(([key, values]) => {
@@ -83,13 +83,7 @@ function ProjectsPageContent() {
         router.push(`${window.location.pathname}?${params.toString()}`, { scroll: false });
     }, [router, searchParams]);
 
-    const handlePageChange = useCallback((newPage: number) => {
-        const params = new URLSearchParams(searchParams.toString());
-        params.set('page', String(newPage));
-        router.push(`${window.location.pathname}?${params.toString()}`, { scroll: false });
-    }, [router, searchParams]);
-
-    if (isLoading) {
+    if (isLoading && (!projects || projects.length === 0)) {
         return <LoadingSkeleton />;
     }
 
@@ -128,7 +122,12 @@ function ProjectsPageContent() {
                 <div className="flex-1">
                     <ProjectExplorer
                         currentParams={currentParams}
-                        onPageChange={handlePageChange}
+                        projects={projects}
+                        isLoading={isLoading}
+                        error={error}
+                        meta={meta}
+                        hasMore={hasMore}
+                        loadMore={loadMore}
                     />
                 </div>
             </div>
