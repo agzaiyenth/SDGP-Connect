@@ -9,11 +9,23 @@ interface UseApproveAndFeaturedOptions {
   onAlreadyApproved?: (data: any) => void;
 }
 
+interface ApproveProjectDetails {
+  projectId: string;
+  featured?: boolean;
+  title: string;
+  groupNumber: string;
+  teamEmail: string;
+}
+
 export function useApproveAndFeatured(options?: UseApproveAndFeaturedOptions) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const approveProject = async (projectId: string, featured: boolean = false) => {
+  const approveProject = async (
+    projectId: string,
+    featured: boolean = false,
+    details?: { title: string; groupNumber: string; teamEmail: string }
+  ) => {
     console.log('Approving project:', { projectId, featured });
     setIsLoading(true);
     setError(null);
@@ -22,7 +34,10 @@ export function useApproveAndFeatured(options?: UseApproveAndFeaturedOptions) {
       console.log('Sending approval request to API');
       const response = await axios.post('/api/admin/projects/approve', {
         projectId: String(projectId),
-        featured
+        featured,
+        title: details?.title,
+        groupNumber: details?.groupNumber,
+        teamEmail: details?.teamEmail,
       });
 
       console.log('API response received:', response);

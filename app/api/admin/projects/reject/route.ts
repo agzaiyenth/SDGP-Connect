@@ -6,6 +6,8 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/prisma/prismaClient";
 import { ProjectStatusEnum } from "@prisma/client";
 import { ProjectApprovalStatus } from "@prisma/client";
+import { sendEmail } from "@/lib/email";
+import { rejectedTemplate } from "@/lib/email/templates/rejected";
 
 export async function POST(request: NextRequest) {
   // 1) Get real session & enforce login
@@ -45,7 +47,7 @@ export async function POST(request: NextRequest) {
     // 4) Lookup the project content + status
     const projectContent = await prisma.projectContent.findUnique({
       where: { metadata_id: String(projectId) },
-      include: { status: true },
+      include: { status: true, projectDetails: true, metadata: true },
     });
     if (!projectContent) {
       return NextResponse.json(
@@ -65,19 +67,41 @@ export async function POST(request: NextRequest) {
         { status: 409 }
       );
     }
-    const updatedStatus = await prisma.projectStatus.update({
-      where: { content_id: projectContent.content_id },
-      data: {
-        approved_status: ProjectApprovalStatus.REJECTED,
-        rejected_reason: reason,
-       // approved_by_userId: userId,
-        approved_at: new Date(),
-      },
-    });
-    
-        
 
-    // 7) Return success
+    // 6) Reject the project and un-feature it atomically
+    const [updatedStatus, updatedMetadata] = await prisma.$transaction([
+      prisma.projectStatus.update({
+        where: { content_id: projectContent.content_id },
+        data: {
+          approved_status: ProjectApprovalStatus.REJECTED,
+          rejected_reason: reason,
+          // approved_by_userId: userId,
+          approved_at: new Date(),
+        },
+      }),
+      prisma.projectMetadata.update({
+        where: { project_id: projectContent.metadata_id },
+        data: { featured: false },
+      }),
+    ]);
+
+    // 7) Send rejection email in background (do not await)
+    try {
+      const teamEmail = projectContent.projectDetails?.team_email;
+      const groupNum = projectContent.metadata?.group_num;
+      const title = projectContent.metadata?.title;
+      if (teamEmail && groupNum && title) {
+        void sendEmail({
+          to: teamEmail,
+          subject: `Your SDGP Project "${title}" has been REJECTED`,
+          html: rejectedTemplate({ group_num: groupNum, title, reason }),
+        }).catch(console.error);
+      }
+    } catch (e) {
+      // fail silently
+    }
+
+    // 8) Return success
     return NextResponse.json({
       success: true,
       message: "Project rejected successfully",
@@ -86,6 +110,7 @@ export async function POST(request: NextRequest) {
         reason,
         rejectedAt: updatedStatus.approved_at,
         rejectedBy: userId,
+        featured: updatedMetadata.featured,
       },
     });
   } catch (error: any) {

@@ -42,7 +42,9 @@ const RejectDialog = ({ open, onOpenChange, project, onRejected }: { open: boole
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>{error.message}</AlertDescription>
           </Alert>
-        )}
+        )}<DialogDescription>
+        You cannot undo a rejected Project.
+      </DialogDescription>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
             Cancel

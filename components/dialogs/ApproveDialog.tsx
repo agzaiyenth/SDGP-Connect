@@ -8,6 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircle, CheckCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
+import { useGetProjectDetailsByID } from '@/hooks/project/useGetProjectDetailsByID';
 
 interface ApproveDialogProps {
   open: boolean;
@@ -55,10 +56,23 @@ const ApproveDialog = ({ open, onOpenChange, projectID, onApproved }: ApproveDia
     }
   });
 
+  const { project, isLoading: isProjectLoading } = useGetProjectDetailsByID(projectID);
+
   const handleApprove = async () => {
     console.log('Approve button clicked for project:', projectID);
     try {
-      await approveProject(projectID, featured);
+      if (!project) {
+        toast.error('Project details not loaded.');
+        return;
+      }
+      const title = project.metadata.title;
+      const groupNumber = project.metadata.group_num;
+      const teamEmail = project.content?.projectDetails?.team_email;
+      if (!title || !groupNumber || !teamEmail) {
+        toast.error('Missing project details for approval email.');
+        return;
+      }
+      await approveProject(projectID, featured, { title, groupNumber, teamEmail });
     } catch (err) {
       console.error('Unexpected error in handleApprove:', err);
       toast.error('An unexpected error occurred');
