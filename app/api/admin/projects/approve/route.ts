@@ -7,7 +7,7 @@ import { sendEmail } from "@/lib/email";
 import { approvedTemplate } from "@/lib/email/templates/approved";
 
 export async function POST(request: NextRequest) {
-  
+
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json(
@@ -18,14 +18,14 @@ export async function POST(request: NextRequest) {
 
   // Role-based authorization check
   const { role } = session.user;
-  if (!["ADMIN", "MODERATOR", ].includes(role)) {
+  if (!["ADMIN", "MODERATOR",].includes(role)) {
     return NextResponse.json(
       { error: "Forbidden. You don't have required Permission" },
       { status: 403 }
     );
   }
 
-  const userId = session.user.id;   
+  const userId = session.user.id;
 
   try {
     console.log("Approve API called by user:", userId);
@@ -79,11 +79,11 @@ export async function POST(request: NextRequest) {
     const user = await prisma.user.findUnique({
       where: { user_id: userId }
     });
-    
+
     if (!user) {
       console.log(`Warning: User ${userId} not found in database`);
     }
-    
+
     // Update status with the session.user.id, but only if user exists
     const updatedStatus = await prisma.projectStatus.update({
       where: { content_id: projectContent.content_id },
@@ -105,15 +105,18 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Send approval email as a silent trigger (do not await)
     if (teamEmail && title && groupNumber) {
       sendEmail({
         to: teamEmail,
         subject: `Your project "${title}" has been approved!`,
         html: approvedTemplate({ group_num: groupNumber, title, projectId }),
-      }).catch((err) => {
-        console.error("Failed to send approval email (silent):", err);
-      });
+      })
+        .then(() => {
+          console.log(`Email sent to ${teamEmail} for project ${projectId}`);
+        })
+        .catch((err) => {
+          console.error("Failed to send approval email (silent):", err);
+        });
     }
 
     return NextResponse.json({
