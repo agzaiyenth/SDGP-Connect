@@ -106,6 +106,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (teamEmail && title && groupNumber) {
+      console.log("Trying to send email to", teamEmail); 
       sendEmail({
         to: teamEmail,
         subject: `Your project "${title}" has been approved!`,
