@@ -105,20 +105,19 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    if (teamEmail && title && groupNumber) {
-      console.log("Trying to send email to", teamEmail); 
-      sendEmail({
-        to: teamEmail,
-        subject: `Your project "${title}" has been approved!`,
-        html: approvedTemplate({ group_num: groupNumber, title, projectId }),
-      })
-        .then(() => {
-          console.log(`Email sent to ${teamEmail} for project ${projectId}`);
-        })
-        .catch((err) => {
-          console.error("Failed to send approval email (silent):", err);
-        });
-    }
+   if (teamEmail && title && groupNumber) {
+  console.log("Trying to send email to", teamEmail);
+  try {
+    await sendEmail({
+      to: teamEmail,
+      subject: `Your project "${title}" has been approved!`,
+      html: approvedTemplate({ group_num: groupNumber, title, projectId }),
+    });
+    console.log(`Email sent to ${teamEmail} for project ${projectId}`);
+  } catch (err) {
+    console.error("Failed to send approval email:", err);
+  }
+}
 
     return NextResponse.json({
       success: true,
