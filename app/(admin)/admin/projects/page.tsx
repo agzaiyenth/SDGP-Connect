@@ -33,8 +33,6 @@ export default function ProjectManagement() {
   const [bulkApproveDialog, setBulkApproveDialog] = useState(false);
   const [currentProject, setCurrentProject] = useState<any>(null);
   const [currentTab, setCurrentTab] = useState<'pending' | 'approved' | 'rejected'>('pending');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [lastFetchedTime, setLastFetchedTime] = useState<string>('');
 
   const {
@@ -43,6 +41,10 @@ export default function ProjectManagement() {
     error: pendingError,
     isEmpty: isPendingEmpty,
     refresh: refreshPending,
+    currentPage: pendingCurrentPage,
+    totalPages: pendingTotalPages,
+    fetchNextPage: fetchPendingNextPage,
+    fetchPreviousPage: fetchPendingPreviousPage,
   } = useGetProjectsByApprovalStatus<PendingProject>(ProjectApprovalStatus.PENDING);
 
   const {
@@ -51,6 +53,10 @@ export default function ProjectManagement() {
     error: approvedError,
     isEmpty: isApprovedEmpty,
     refresh: refreshApproved,
+    currentPage: approvedCurrentPage,
+    totalPages: approvedTotalPages,
+    fetchNextPage: fetchApprovedNextPage,
+    fetchPreviousPage: fetchApprovedPreviousPage,
   } = useGetProjectsByApprovalStatus<ApprovedProject>(ProjectApprovalStatus.APPROVED);
 
   const {
@@ -59,6 +65,10 @@ export default function ProjectManagement() {
     error: rejectedError,
     isEmpty: isRejectedEmpty,
     refresh: refreshRejected,
+    currentPage: rejectedCurrentPage,
+    totalPages: rejectedTotalPages,
+    fetchNextPage: fetchRejectedNextPage,
+    fetchPreviousPage: fetchRejectedPreviousPage,
   } = useGetProjectsByApprovalStatus<RejectedProject>(ProjectApprovalStatus.REJECTED);
   // Reset selected projects when changing tabs
   useEffect(() => {
@@ -123,18 +133,6 @@ const handleReject = async (project: PendingProject | ApprovedProject) => {
     if (value === 'rejected') refreshRejected();
   };
 
-  const fetchNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(prev => prev + 1);
-    }
-  };
-
-  const fetchPreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(prev => prev - 1);
-    }
-  };
-
   const renderError = (error: Error | null) => {
     if (!error) return null;
     return (
@@ -189,10 +187,10 @@ const handleReject = async (project: PendingProject | ApprovedProject) => {
           onViewDetails={handleViewDetails}
           onApprove={handleApprove}
           onReject={handleReject}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onNextPage={fetchNextPage}
-          onPreviousPage={fetchPreviousPage}
+          currentPage={pendingCurrentPage}
+          totalPages={pendingTotalPages}
+          onNextPage={fetchPendingNextPage}
+          onPreviousPage={fetchPendingPreviousPage}
         />
       );
     }
@@ -207,12 +205,11 @@ const handleReject = async (project: PendingProject | ApprovedProject) => {
           onViewDetails={handleViewDetails}
           onToggleFeature={handleToggleFeature}
           onReject={handleReject}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onNextPage={fetchNextPage}
-          onPreviousPage={fetchPreviousPage}
+          currentPage={approvedCurrentPage}
+          totalPages={approvedTotalPages}
+          onNextPage={fetchApprovedNextPage}
+          onPreviousPage={fetchApprovedPreviousPage}
         />
-
       );
     }
 
@@ -224,10 +221,10 @@ const handleReject = async (project: PendingProject | ApprovedProject) => {
         <RejectedProjectsTable
           projects={rejectedProjects}
           onViewDetails={handleViewDetails}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onNextPage={fetchNextPage}
-          onPreviousPage={fetchPreviousPage}
+          currentPage={rejectedCurrentPage}
+          totalPages={rejectedTotalPages}
+          onNextPage={fetchRejectedNextPage}
+          onPreviousPage={fetchRejectedPreviousPage}
         />
       );
     }

@@ -70,7 +70,7 @@ export function ApprovedProjectsTable({
           ))}
         </TableBody>
       </Table>
-      <Pagination className="mt-4">
+      <Pagination className="mt-4 flex justify-center items-center">
         {currentPage > 1 && <PaginationPrevious href="#" onClick={onPreviousPage} />}
         <span className="mx-2">Page {currentPage} of {totalPages}</span>
         {currentPage < totalPages && <PaginationNext href="#" onClick={onNextPage} />}
