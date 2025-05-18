@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
   try {
     await sendEmail({
       to: teamEmail,
-      subject: `Your project "${title}" has been approved!`,
+      subject: `Your SDGP project "${title}" has been approved!`,
       html: approvedTemplate({ group_num: groupNumber, title, projectId }),
     });
     console.log(`Email sent to ${teamEmail} for project ${projectId}`);
