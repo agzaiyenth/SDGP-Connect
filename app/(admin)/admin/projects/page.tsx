@@ -215,7 +215,7 @@ export default function ProjectManagement() {
         <ApprovedProjectsTable
           projects={filteredApprovedProjects}
           onViewDetails={handleViewDetails}
-          onToggleFeature={handleToggleFeature}
+           onToggleFeature={handleToggleFeature}
           onReject={handleReject}
           currentPage={approvedCurrentPage}
           totalPages={approvedTotalPages}
