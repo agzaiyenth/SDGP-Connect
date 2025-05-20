@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react'
 import ProjectSubmissionForm from '../../../components/submit-form/SubmissionForm'
+import { MessageCircle } from 'lucide-react'
 
 const Page = () => {
   const [showPopup, setShowPopup] = useState(true)
+  const [showTooltip, setShowTooltip] = useState(false)
 
   const handleAgree = () => {
     setShowPopup(false)
@@ -55,6 +57,32 @@ const Page = () => {
           </div>
           <ProjectSubmissionForm />
         </div>
+      </div>
+      {/* Custom Help Button with Dark Theme Tooltip - Desktop Only */}
+      <div
+        className="fixed bottom-4 right-4 z-50 hidden md:flex flex-col items-end group"
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+      >
+        {/* Tooltip */}
+        <div
+          className={`mb-2 max-w-[200px] px-3 py-1.5 rounded-md bg-neutral-800 text-white text-xs text-center shadow-md transition-all duration-300 ease-out transform ${showTooltip
+              ? 'opacity-100 translate-y-0 scale-100'
+              : 'opacity-0 translate-y-2 scale-95 pointer-events-none'
+            }`}
+        >
+          Need help? Chat on WhatsApp
+        </div>
+
+        {/* Dark Theme Circle Button */}
+        <a
+          href="https://wa.me/94766867362"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-14 h-14 rounded-full bg-neutral-900 border border-neutral-700 text-white flex items-center justify-center shadow-lg hover:shadow-green-500/20 transition-all duration-300"
+        >
+          <MessageCircle className="w-6 h-6" />
+        </a>
       </div>
     </div>
   )
