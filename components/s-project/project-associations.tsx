@@ -30,52 +30,50 @@ export const ProjectAssociation: React.FC<SDGSectionProps> = ({
     (assoc) => assoc.type === AssociationType.PROJECT_TECH
   );
 
-  return (
-    <Card className="mt-8 p-6">
-      <h2 className="text-2xl font-semibold mb-4">SDG Goals & Domains</h2>
+const validSdgAssociations = sdgAssociations.filter((association) =>
+  sdgGoals.some((goal) => goal.name === association.sdgGoal)
+);
 
-      <div className="space-y-6">
-        {/* SDG Goals Section */}
+return (
+  <Card className="mt-8 p-6">
+    <h2 className="text-2xl font-semibold mb-2">SDG Goals & Domains</h2>
+
+    <div className="space-y-6">
+      {/* SDG Goals Section */}
+      {validSdgAssociations.length > 0 && (
         <div>
           <h3 className="text-lg font-medium mb-3">Sustainable Development Goals</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            {validSdgAssociations.map((association) => {
+              const sdgGoal = sdgGoals.find(
+                (goal) => goal.name === association.sdgGoal
+              );
+              if (!sdgGoal) return null;
 
-          {sdgAssociations.length > 0 ? (
-            <div
-              className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3`}
-            >
-              {sdgAssociations.map((association) => {
-                const sdgGoal = sdgGoals.find(
-                  (goal) => goal.name === association.sdgGoal
-                );
-                if (!sdgGoal) return null;
-
-                return (
-                  <div
-                    key={association.id}
-                    className="flex items-center px-2 py-2 rounded-lg border gap-3 cursor-default transition-colors border-gray-200 dark:border-gray-700"
-                  >
-                    <div className="flex-shrink-0 h-14 w-14">
-                      <img
-                        src={sdgGoal.icon}
-                        alt={sdgGoal.name}
-                        className="h-full w-full object-contain rounded-md"
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs text-gray-600 leading-tight max-h-[3.5rem] overflow-y-auto pr-1 scroll-hide">
-                        {sdgGoal.description}
-                      </p>
-                    </div>
+              return (
+                <div
+                  key={association.id}
+                  className="flex items-center px-2 py-2 rounded-lg border gap-3 cursor-default transition-colors border-gray-200 dark:border-gray-700"
+                >
+                  <div className="flex-shrink-0 h-14 w-14">
+                    <img
+                      src={sdgGoal.icon}
+                      alt={sdgGoal.name}
+                      className="h-full w-full object-contain rounded-md"
+                    />
                   </div>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="col-span-full text-center py-4">
-              No SDG goals associated with this project
-            </div>
-          )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-gray-600 leading-tight max-h-[3.5rem] overflow-y-auto pr-1 scroll-hide">
+                      {sdgGoal.description}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
+      )}
+
 
         {/* Domains */}
         <div>
