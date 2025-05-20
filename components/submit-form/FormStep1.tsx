@@ -38,6 +38,7 @@ const FormStep1 = ({
 }: FormStep1Props) => {
   const { control, setValue } = useFormContext<ProjectSubmissionSchema>();
   const [coverError, setCoverError] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
   const [logoError, setLogoError] = useState<string | null>(null);
   const { uploadImage } = useUploadImageToBlob();
 
@@ -105,7 +106,7 @@ const FormStep1 = ({
           name="metadata.sdgp_year"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Year</FormLabel>
+              <FormLabel>SDGP Year</FormLabel>
               <FormControl>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <SelectTrigger>
