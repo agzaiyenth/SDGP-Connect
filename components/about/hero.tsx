@@ -56,13 +56,15 @@ export default function Hero() {
                 <DialogContent className="sm:max-w-[800px]">
                   <div className="relative aspect-video rounded-lg border shadow-lg">
                     <iframe
-                      src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ"
+                      src="https://www.youtube.com/embed/qgQh2O1nbi8?end=2537&rel=0"
+                      title="YouTube video"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                       className="absolute inset-0 h-full w-full rounded-md"
                     />
                   </div>
                 </DialogContent>
+
               </Dialog>
 
               <Button size="lg" className="group w-full sm:w-auto" onClick={handleClick}>
@@ -73,7 +75,7 @@ export default function Hero() {
             </div>
           </div>
 
-            <div className="relative">
+          <div className="relative">
             <div className="absolute -inset-4 -z-10 rounded-2xl bg-dark/10 blur-sm" />
             <Image
               src="/assets/3.jpg"
@@ -86,10 +88,10 @@ export default function Hero() {
             <div className="absolute bottom-4 left-4 rounded-lg bg-background p-4 shadow">
               <p className="font-semibold">Dialog Innovation</p>
               <p className="text-sm text-muted-foreground">
-              Winner 2024
+                Winner 2024
               </p>
             </div>
-            </div>
+          </div>
 
 
         </div>
