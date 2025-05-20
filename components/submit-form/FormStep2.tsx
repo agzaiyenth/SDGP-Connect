@@ -77,19 +77,19 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Project Details</h2>
-      
+
       {/* Problem Statement */}
       <FormField
         control={control}
         name="projectDetails.problem_statement"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Problem Statement</FormLabel>
+            <FormLabel>Problem Statement<span className="text-red-500">*</span></FormLabel>
             <FormControl>
-              <Textarea 
-                placeholder="What problem does your project solve?" 
-                className="min-h-[120px]" 
-                {...field} 
+              <Textarea
+                placeholder="What problem does your project solve?"
+                className="min-h-[120px]"
+                {...field}
               />
             </FormControl>
             <FormMessage />
@@ -103,12 +103,12 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
         name="projectDetails.solution"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Solution</FormLabel>
+            <FormLabel>Solution<span className="text-red-500">*</span></FormLabel>
             <FormControl>
-              <Textarea 
-                placeholder="How does your project solve the problem?" 
-                className="min-h-[120px]" 
-                {...field} 
+              <Textarea
+                placeholder="How does your project solve the problem?"
+                className="min-h-[120px]"
+                {...field}
               />
             </FormControl>
             <FormMessage />
@@ -122,7 +122,7 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
         name="projectDetails.features"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Features</FormLabel>
+            <FormLabel>Features<span className="text-red-500">*</span></FormLabel>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <FormControl>
@@ -136,21 +136,21 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
                 </FormControl>
               </div>
               <div className="border rounded-md p-4 min-h-[300px] prose prose-zinc dark:prose-invert bg-zinc-50 dark:bg-zinc-900 overflow-auto">
-              <Markdown options={{
-    overrides: {
-      h1: { props: { className: 'text-2xl font-bold mb-4' } },
-      h2: { props: { className: 'text-xl font-bold mb-3' } },
-      h3: { props: { className: 'text-lg font-bold mb-2' } },
-      p: { props: { className: 'mb-4' } },
-      ul: { props: { className: 'list-disc pl-6 mb-4' } },
-      ol: { props: { className: 'list-decimal pl-6 mb-4' } },
-      li: { props: { className: 'mb-1' } }
-      
-    }
-  }}>
-    {features || "*Your markdown preview will appear here...*"}
-  </Markdown>
-</div>
+                <Markdown options={{
+                  overrides: {
+                    h1: { props: { className: 'text-2xl font-bold mb-4' } },
+                    h2: { props: { className: 'text-xl font-bold mb-3' } },
+                    h3: { props: { className: 'text-lg font-bold mb-2' } },
+                    p: { props: { className: 'mb-4' } },
+                    ul: { props: { className: 'list-disc pl-6 mb-4' } },
+                    ol: { props: { className: 'list-decimal pl-6 mb-4' } },
+                    li: { props: { className: 'mb-1' } }
+
+                  }
+                }}>
+                  {features || "*Your markdown preview will appear here...*"}
+                </Markdown>
+              </div>
             </div>
             <FormDescription>Describe your project's key features using Markdown</FormDescription>
             <FormMessage />
@@ -164,7 +164,7 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
         name="slides"
         render={() => (
           <FormItem>
-            <FormLabel>Featured Images</FormLabel>
+            <FormLabel>Featured Images<span className="text-red-500">*</span></FormLabel>
             <div className="relative mt-4 p-6 border-2 border-dashed border-gray-300 rounded-xl w-full cursor-pointer hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800 transition-all duration-200">
               <div className="flex flex-col items-center justify-center space-y-2 text-center">
                 <Upload className="h-10 w-10 text-primary mb-2" />
@@ -173,7 +173,9 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
                 <Input type="file" accept="image/*" multiple onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
               </div>
             </div>
-
+            <div className="text-xs font-normal text-muted-foreground mt-1">
+              Minimum 3 images required
+            </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-6">
               {slidePreviews.map((previewUrl, index) => (
                 <div key={index} className="relative group overflow-hidden rounded-lg shadow-md border dark:border-gray-700 transition-all hover:shadow-xl">

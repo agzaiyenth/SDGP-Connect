@@ -33,7 +33,7 @@ const FormStep4 = () => {
         name="projectDetails.team_email"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Team Email</FormLabel>
+            <FormLabel>Team Email<span className="text-red-500">*</span></FormLabel>
             <FormControl>
               <Input
                 type="email"
@@ -52,7 +52,7 @@ const FormStep4 = () => {
         name="projectDetails.team_phone"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Team Phone (or primary Contact)</FormLabel>
+            <FormLabel>Team Phone (or primary Contact)<span className="text-red-500">*</span></FormLabel>
             <FormControl>
               <Input
                 type="tel"

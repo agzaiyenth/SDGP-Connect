@@ -39,7 +39,7 @@ const FormStep3 = () => {
           name="projectTypes"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Project Type</FormLabel>
+              <FormLabel>Project Type<span className="text-red-500">*</span></FormLabel>
               <MultiSelect
                 options={projectTypeOptions}
                 onValueChange={(values) => field.onChange(values)}
@@ -58,7 +58,7 @@ const FormStep3 = () => {
           name="techStack"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Tech Stack</FormLabel>
+              <FormLabel>Tech Stack<span className="text-red-500">*</span></FormLabel>
               <MultiSelect
                 options={techStackOptions}
                 onValueChange={(values) => field.onChange(values)}
@@ -79,7 +79,7 @@ const FormStep3 = () => {
         name="domains"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Project Domains</FormLabel>
+            <FormLabel>Project Domains<span className="text-red-500">*</span></FormLabel>
             <FormDescription className="mb-2">
               Select the domains your project belongs to
             </FormDescription>
@@ -120,7 +120,7 @@ const FormStep3 = () => {
         name="status.status"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Project Status</FormLabel>
+            <FormLabel>Project Status<span className="text-red-500">*</span></FormLabel>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               {projectStatusOptions.map((status) => {
                 const isSelected = field.value === status.value;

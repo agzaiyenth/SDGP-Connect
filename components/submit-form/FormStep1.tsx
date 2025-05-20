@@ -107,7 +107,7 @@ const FormStep1 = ({
           name="metadata.sdgp_year"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>SDGP Year</FormLabel>
+              <FormLabel>SDGP Year<span className="text-red-500">*</span></FormLabel>
               <FormControl>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <SelectTrigger>
@@ -138,7 +138,7 @@ const FormStep1 = ({
         name="metadata.title"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Title</FormLabel>
+            <FormLabel>Title<span className="text-red-500">*</span></FormLabel>
             <FormControl>
               <Input placeholder="Ex: LEXi" {...field} />
             </FormControl>
@@ -153,7 +153,7 @@ const FormStep1 = ({
         name="metadata.subtitle"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Subtitle</FormLabel>
+            <FormLabel>Subtitle<span className="text-red-500">*</span></FormLabel>
             <FormControl>
               <Input placeholder="Subtitle (e.g., An AI-powered platform for Dyslexic Students)" {...field} value={field.value || ""} />
             </FormControl>
@@ -168,7 +168,7 @@ const FormStep1 = ({
         name="metadata.website"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Project Website</FormLabel>
+            <FormLabel>Project Website<span className="text-red-500">*</span></FormLabel>
             <FormControl>
               <Input
                 type="url"
