@@ -33,11 +33,11 @@ const ProjectSubmissionForm = () => {
   const [uploading, setUploading] = useState(false);
   const [slideFiles, setSlideFiles] = useState<File[]>([]);
   const [slidePreviews, setSlidePreviews] = useState<string[]>([]);
-  const [teamProfileFiles, setTeamProfileFiles] = useState<(File|null)[]>([null]);
-  const [teamProfilePreviews, setTeamProfilePreviews] = useState<(string|null)[]>([null]);
+  const [teamProfileFiles, setTeamProfileFiles] = useState<(File | null)[]>([null]);
+  const [teamProfilePreviews, setTeamProfilePreviews] = useState<(string | null)[]>([null]);
   const { uploadImage } = useUploadImageToBlob();
   const router = useRouter();
-  
+
   // Use our custom submission hook
   const { submitProject, isSubmitting, error } = useSubmitProject();
 
@@ -90,31 +90,33 @@ const ProjectSubmissionForm = () => {
     // Updated field mapping with all required fields for each step
     const stepFieldsMap = {
       1: [
-        "metadata.group_num", 
-        "metadata.sdgp_year", 
-        "metadata.title", 
-        "metadata.subtitle", 
+        "metadata.group_num",
+        "metadata.sdgp_year",
+        "metadata.title",
+        "metadata.subtitle",
         "metadata.website", // Added website validation
         "metadata.cover_image", // Added cover image validation
         "metadata.logo" // Added logo validation
       ],
       2: [
-        "projectDetails.problem_statement", 
-        "projectDetails.solution", 
-        "projectDetails.features", 
+        "projectDetails.problem_statement",
+        "projectDetails.solution",
+        "projectDetails.features",
         "slides"
       ],
       3: [
-        "techStack", 
-        "projectTypes", 
-        "status.status", 
-        "sdgGoals", 
+        "techStack",
+        "projectTypes",
+        "status.status",
+        "sdgGoals",
         "domains"
       ],
       4: [
-        "socialLinks", 
-        "projectDetails.team_email", 
-        "projectDetails.team_phone"
+        "socialLinks",
+        "projectDetails.team_email",
+        "projectDetails.country_code",  
+        "projectDetails.phone_number", 
+        "projectDetails.team_phone"     
       ],
       5: [
         "team"
@@ -122,19 +124,19 @@ const ProjectSubmissionForm = () => {
     };
 
     const fieldsToValidate = stepFieldsMap[currentStep as keyof typeof stepFieldsMap];
-    
+
     // Validate all fields for the current step
     const results = await Promise.all(
       fieldsToValidate.map(field => methods.trigger(field as any))
     );
-    
+
     const isValid = results.every(result => result === true);
-    
+
     if (!isValid) {
       // Get the current errors to provide more specific feedback
       const errors = methods.formState.errors;
       console.log("Validation errors:", errors);
-      
+
       toast.error("Please complete all required fields", {
         description: "Check the highlighted fields and ensure all required information is provided.",
       });
@@ -155,7 +157,7 @@ const ProjectSubmissionForm = () => {
         });
         return;
       }
-      
+
       // Upload images
       setUploading(true);
       try {
@@ -173,7 +175,7 @@ const ProjectSubmissionForm = () => {
       }
       setUploading(false);
     }
-    
+
     // Upload slides if on step 2
     if (currentStep === 2) {
       setUploading(true);
@@ -190,7 +192,7 @@ const ProjectSubmissionForm = () => {
             urls.map((url) => ({ slides_content: url })),
             { shouldValidate: true }
           );
-          
+
           // Don't clear the previews anymore - keep them for navigation
           // Instead, update previews with the uploaded URLs
           setSlidePreviews(urls);
@@ -203,7 +205,7 @@ const ProjectSubmissionForm = () => {
       }
       setUploading(false);
     }
-    
+
     // Upload team profile images if on step 5
     if (currentStep === 5) {
       setUploading(true);
@@ -230,7 +232,7 @@ const ProjectSubmissionForm = () => {
       }
       setUploading(false);
     }
-    
+
     if (currentStep < TOTAL_STEPS) {
       setCurrentStep((prev) => prev + 1);
       window.scrollTo(0, 0);
@@ -249,12 +251,12 @@ const ProjectSubmissionForm = () => {
       // Handle team profile image uploads before final submission
       // Check if there are any profile images to upload
       const hasProfileImages = teamProfileFiles.some(file => file !== null);
-  
+
       if (hasProfileImages) {
         setUploading(true);
         try {
           const currentTeam = [...data.team]; // Create a copy of the team array
-          
+
           const updatedTeam = await Promise.all(
             currentTeam.map(async (member, i) => {
               const file = teamProfileFiles[i];
@@ -265,13 +267,13 @@ const ProjectSubmissionForm = () => {
               return member;
             })
           );
-          
+
           // Update the data that will be submitted with the new team data including image URLs
           data = {
             ...data,
             team: updatedTeam
           };
-          
+
         } catch (err) {
           console.error("Error uploading team profile images:", err);
           toast.error("Team profile image upload failed. Please try again.");
@@ -280,20 +282,20 @@ const ProjectSubmissionForm = () => {
         }
         setUploading(false);
       }
-      
+
       // Submit the project using our hook
       const result = await submitProject(data);
-      
+
       if (result.success && result.data?.projectId) {
         // Show success message
         toast.success("Project Submitted!", {
           description: "Your project has been successfully submitted.",
         });
-        
+
         // Store the project ID for use in the success page
         setSubmittedProjectId(result.data.projectId);
         setIsSubmitted(true);
-        
+
         // redirect to the project page after a delay
         setTimeout(() => {
           router.push(`/project/${result?.data?.projectId}`);
@@ -373,12 +375,12 @@ const ProjectSubmissionForm = () => {
     <FormProvider {...methods}>
       <div className="rounded-xl bg-white p-6 shadow-sm dark:bg-background border md:p-8">
         <FormStepper currentStep={currentStep} totalSteps={TOTAL_STEPS} />
-        
+
         <form onSubmit={methods.handleSubmit(onSubmit)} className="mt-6 space-y-8">
           {renderStep()}
           <div className="flex justify-between pt-6">
-            <Button 
-              type="button" 
+            <Button
+              type="button"
               variant="outline"
               onClick={handlePrevious}
               disabled={currentStep === 1 || isSubmitting || uploading}
@@ -386,8 +388,8 @@ const ProjectSubmissionForm = () => {
               Previous
             </Button>
             {currentStep < TOTAL_STEPS ? (
-              <Button 
-                type="button" 
+              <Button
+                type="button"
                 onClick={handleNext}
                 disabled={isSubmitting || uploading}
               >
@@ -398,7 +400,7 @@ const ProjectSubmissionForm = () => {
                 )}
               </Button>
             ) : (
-              <Button 
+              <Button
                 type="submit"
                 disabled={isSubmitting || uploading}
               >

@@ -42,7 +42,14 @@ export const projectSubmissionSchema = z.object({
     solution: z.string().min(1, "Solution is required"),
     features: z.string().min(1, "Features are required"),
     team_email: z.string().email("Must be a valid email"),
-    team_phone: z.string().optional(),
+    team_phone: z.string().min(1, "Phone number is required"), 
+    country_code: z.string()
+      .min(1, "Country code is required")
+      .regex(/^\+\d{1,4}$/, "Country code must be in format +XX (1-4 digits)"),
+    phone_number: z.string()
+      .min(1, "Phone number is required")
+      .max(10, "Phone number cannot exceed 10 digits")
+      .regex(/^\d+$/, "Phone number must contain only digits"),
   }),
 
   status: z.object({
