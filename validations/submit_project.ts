@@ -1,10 +1,10 @@
 import {
-    ProjectDomainEnum,
-    ProjectStatusEnum,
-    ProjectTypeEnum,
-    SDGGoalEnum,
-    TechStackEnum,
-    SocialTypeEnum
+  ProjectDomainEnum,
+  ProjectStatusEnum,
+  ProjectTypeEnum,
+  SDGGoalEnum,
+  TechStackEnum,
+  SocialTypeEnum
 } from "@prisma/client";
 import { z } from "zod";
 
@@ -30,13 +30,13 @@ export const projectSubmissionSchema = z.object({
     subtitle: z.string().optional().nullable(),
     website: z.string().url("Must be a valid URL").or(z.string().length(0)).optional().nullable(),
     cover_image: z.any().refine((file) => file != null, {
-    message: "Cover image is required",
+      message: "Cover image is required",
+    }),
+    logo: z.any().refine((file) => file != null, {
+      message: "Logo is required",
+    }),
   }),
-  logo: z.any().refine((file) => file != null, {
-    message: "Logo is required",
-  }),
-  }),
-  
+
   projectDetails: z.object({
     problem_statement: z.string().min(1, "Problem statement is required"),
     solution: z.string().min(1, "Solution is required"),
@@ -44,20 +44,20 @@ export const projectSubmissionSchema = z.object({
     team_email: z.string().email("Must be a valid email"),
     team_phone: z.string().optional(),
   }),
-  
+
   status: z.object({
     status: projectStatusSchema,
   }),
-  
+
   // Associations using proper enums
   domains: z.array(projectDomainSchema).min(1, "Select at least one domain"),
   projectTypes: z.array(projectTypeSchema).min(1, "Select at least one project type"),
   sdgGoals: z.array(sdgGoalSchema).optional(),
   techStack: z.array(techStackSchema).min(1, "Select at least one technology"),
-  
+
   // Team members
   team: z.array(teamMemberSchema).min(1, "Add at least one team member"),
-  
+
   // Social links
   socialLinks: z.array(
     z.object({
@@ -65,17 +65,17 @@ export const projectSubmissionSchema = z.object({
       url: z.string().url("Must be a valid URL"),
     })
   ).optional(),
-  
+
   // Slides content
- slides: z.array(
-  z.object({
-    slides_content: z.string().min(1, "Slide content is required"),
-  })
-).min(3, "You must upload at least 3 images")
- .max(10, "You can upload a maximum of 10 images")
- .refine((slides) => slides.length >= 3, {
-   message: "At least 3 images are required to proceed"
- }),
+  slides: z.array(
+    z.object({
+      slides_content: z.string().min(1, "Slide content is required"),
+    })
+  ).min(3, "You must upload at least 3 images")
+    .max(10, "You can upload a maximum of 10 images")
+    .refine((slides) => slides.length >= 3, {
+      message: "At least 3 images are required to proceed"
+    }),
 });
 
 export type ProjectSubmissionSchema = z.infer<typeof projectSubmissionSchema>;

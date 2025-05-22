@@ -19,7 +19,11 @@ const projectDomainOptions = Object.values(ProjectDomainEnum).map(domain => {
 });
 
 const FormStep3 = () => {
-  const { control } = useFormContext<ProjectSubmissionSchema>();
+  const { control, watch } = useFormContext<ProjectSubmissionSchema>();
+
+  // Watch the current values to maintain state
+  const projectTypes = watch("projectTypes");
+  const techStack = watch("techStack");
 
   return (
     <div className="space-y-8">
@@ -43,6 +47,8 @@ const FormStep3 = () => {
               <MultiSelect
                 options={projectTypeOptions}
                 onValueChange={(values) => field.onChange(values)}
+                defaultValue={field.value || []}
+                value={field.value || []}
                 placeholder='Select Project Type'
                 popoverClass='w-96'
                 maxCount={3}
@@ -62,6 +68,8 @@ const FormStep3 = () => {
               <MultiSelect
                 options={techStackOptions}
                 onValueChange={(values) => field.onChange(values)}
+                defaultValue={field.value || []}
+                value={field.value || []}
                 placeholder='Select Tech Stack'
                 popoverClass='w-96'
                 maxCount={3}
