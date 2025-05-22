@@ -74,6 +74,18 @@ const ProjectSubmissionForm = () => {
     mode: "onBlur",
   });
 
+  // Effect to restore slide previews when navigating back to step 2
+  useEffect(() => {
+    if (currentStep === 2) {
+      const formSlides = methods.getValues("slides");
+      if (formSlides && formSlides.length > 0 && slidePreviews.length === 0) {
+        // If form has slides but previews are empty, restore previews from form data
+        const previewUrls = formSlides.map(slide => slide.slides_content);
+        setSlidePreviews(previewUrls);
+      }
+    }
+  }, [currentStep, methods, slidePreviews.length]);
+
   const handleNext = async () => {
     // Updated field mapping with all required fields for each step
     const stepFieldsMap = {
@@ -178,8 +190,11 @@ const ProjectSubmissionForm = () => {
             urls.map((url) => ({ slides_content: url })),
             { shouldValidate: true }
           );
-          setSlideFiles([]);
-          setSlidePreviews([]);
+          
+          // Don't clear the previews anymore - keep them for navigation
+          // Instead, update previews with the uploaded URLs
+          setSlidePreviews(urls);
+          setSlideFiles([]); // Clear files but keep previews
         }
       } catch (err) {
         toast.error("Slide image upload failed. Please try again.");

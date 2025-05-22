@@ -27,6 +27,7 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
   const { control, setValue, watch, setError, clearErrors } = useFormContext<ProjectSubmissionSchema>();
   const features = watch("projectDetails.features") || "";
   const [isPlaceholderVisible, setIsPlaceholderVisible] = useState(true);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   useEffect(() => {
     // Keep form slides in sync with slidePreviews
@@ -36,27 +37,40 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
       { shouldValidate: true }
     );
 
-    // Validate slide count
-    if (slidePreviews.length < MIN_SLIDES) {
-      setError("slides", {
-        type: "manual",
-        message: `You must upload at least ${MIN_SLIDES} images`
-      });
-    } else {
-      clearErrors("slides");
+    // Only validate slide count after user has interacted or has uploaded images
+    if (hasInteracted || slidePreviews.length > 0) {
+      if (slidePreviews.length < MIN_SLIDES) {
+        setError("slides", {
+          type: "manual",
+          message: `You must upload at least ${MIN_SLIDES} images`
+        });
+      } else {
+        clearErrors("slides");
+      }
     }
-  }, [slidePreviews, setValue, setError, clearErrors]);
+  }, [slidePreviews, setValue, setError, clearErrors, hasInteracted]);
 
   useEffect(() => {
     // Initialize slides array if it doesn't exist
     if (!watch("slides")) {
       setValue("slides", []);
     }
-  }, [setValue, watch]);
+    
+    // Restore previews from form data if slidePreviews is empty but form has slides
+    const formSlides = watch("slides");
+    if (formSlides && formSlides.length > 0 && slidePreviews.length === 0) {
+      const previewUrls = formSlides.map(slide => slide.slides_content);
+      setSlidePreviews(previewUrls);
+      setHasInteracted(true); // Mark as interacted since we have existing data
+    }
+  }, [setValue, watch, slidePreviews.length, setSlidePreviews]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
+    
+    // Mark as interacted when user tries to upload
+    setHasInteracted(true);
     
     const fileArray = Array.from(files);
     const remainingSlots = MAX_SLIDES - slidePreviews.length;
@@ -92,6 +106,7 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
   };
 
   const removeSlideImage = (index: number) => {
+    setHasInteracted(true); // Mark as interacted when removing images
     setSlidePreviews(prev => prev.filter((_, i) => i !== index));
     setSlideFiles(prev => prev.filter((_, i) => i !== index));
   };
