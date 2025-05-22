@@ -12,12 +12,26 @@ import Link from "next/link"
 import Image from "next/image"
 import { Sparkles } from "lucide-react"
 
+// Define the project type
+interface Project {
+  id: string
+  title: string
+  subtitle: string
+  coverImage: string
+  status: string
+  projectTypes: string[]
+}
+
 export default function Featured() {
   const { featuredProjects, isLoading, error } = useGetFeaturedProjects()
 
   if (error || (featuredProjects.length === 0 && !isLoading)) {
     return null
   }
+
+  // Create skeleton projects for loading state
+  const skeletonProjects: Partial<Project>[] = Array.from({ length: 3 }, (_, i) => ({ id: `skeleton-${i}` }))
+  const displayProjects = isLoading ? skeletonProjects : featuredProjects
 
   return (
     <section className="py-[60px] sm:py-[100px] bg-[#0c0a09] relative -mt-[150px] overflow-hidden">
@@ -78,7 +92,7 @@ export default function Featured() {
           <div className="absolute top-0 left-0 h-full w-20 z-10 bg-gradient-to-r from-[#0c0a09] to-transparent pointer-events-none" />
           <div className="absolute top-0 right-0 h-full w-20 z-10 bg-gradient-to-l from-[#0c0a09] to-transparent pointer-events-none" />
 
-          {(isLoading ? Array.from({ length: 3 }) : featuredProjects).map((project, index) => (
+          {displayProjects.map((project, index) => (
             <SwiperSlide key={project?.id || index} className="px-1 sm:px-2 md:px-3 py-2">
               <Link href={`/project/${project?.id || "#"}`}>
                 <div className="project-card bg-[#161616] bg-opacity-70 backdrop-blur-lg border border-white/10 rounded-2xl overflow-hidden shadow-xl transition-all hover:scale-[1.02] hover:z-20 duration-300 w-[320px] sm:w-[360px] lg:w-[420px] mx-auto relative">
@@ -89,14 +103,16 @@ export default function Featured() {
                         {project.status}
                       </span>
                     )}
-                    {project?.coverImage && (
+                    {project?.coverImage ? (
                       <Image
                         src={project.coverImage}
-                        alt={project.title}
+                        alt={project.title || 'Project'}
                         width={400}
                         height={250}
                         className="w-full h-full object-cover"
                       />
+                    ) : (
+                      <div className="w-full h-full bg-gray-700 animate-pulse" />
                     )}
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 z-[1]" />
                   </div>
@@ -119,6 +135,11 @@ export default function Featured() {
                         >
                           {type}
                         </span>
+                      )) || (isLoading && (
+                        <>
+                          <div className="w-16 h-6 bg-gray-700 rounded-full animate-pulse" />
+                          <div className="w-20 h-6 bg-gray-700 rounded-full animate-pulse" />
+                        </>
                       ))}
                     </div>
                   </div>
@@ -130,7 +151,7 @@ export default function Featured() {
 
         <div className="flex justify-center mt-8 sm:mt-10">
           <Link href="/project">
-            <Button className="px-6 sm:px-8 py-2 sm:py-3 text-sm sm:text-base">
+            <Button className="mt-2">
               View All Projects
             </Button>
           </Link>
