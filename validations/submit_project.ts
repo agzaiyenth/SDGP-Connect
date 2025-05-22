@@ -67,11 +67,15 @@ export const projectSubmissionSchema = z.object({
   ).optional(),
   
   // Slides content
-  slides: z.array(
-    z.object({
-      slides_content: z.string().min(1, "Slide content is required"),
-    })
-  ).max(10, "You can upload a maximum of 10 slides").optional(),
+ slides: z.array(
+  z.object({
+    slides_content: z.string().min(1, "Slide content is required"),
+  })
+).min(3, "You must upload at least 3 images")
+ .max(5, "You can upload a maximum of 5 images")
+ .refine((slides) => slides.length >= 3, {
+   message: "At least 3 images are required to proceed"
+ }),
 });
 
 export type ProjectSubmissionSchema = z.infer<typeof projectSubmissionSchema>;
