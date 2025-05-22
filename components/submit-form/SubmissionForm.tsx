@@ -50,8 +50,8 @@ const ProjectSubmissionForm = () => {
         title: "",
         subtitle: "",
         website: "",
-        cover_image: "https://placehold.co/600x400/png?text=NO+IMAGE",
-        logo: "https://placehold.co/100/png",
+        cover_image: null, // Changed from placeholder URL to null
+        logo: null, // Changed from placeholder URL to null
       },
       projectDetails: {
         problem_statement: "",
@@ -75,38 +75,85 @@ const ProjectSubmissionForm = () => {
   });
 
   const handleNext = async () => {
+    // Updated field mapping with all required fields for each step
     const stepFieldsMap = {
-      1: ["metadata.group_num", "metadata.sdgp_year", "metadata.title", "metadata.subtitle"],
-      2: ["projectDetails.problem_statement", "projectDetails.solution", "projectDetails.features", "slides"],
-      3: ["techStack", "projectTypes", "status.status", "sdgGoals", "domains"],
-      4: ["socialLinks", "projectDetails.team_email", "projectDetails.team_phone"],
-      5: ["team"],
+      1: [
+        "metadata.group_num", 
+        "metadata.sdgp_year", 
+        "metadata.title", 
+        "metadata.subtitle", 
+        "metadata.website", // Added website validation
+        "metadata.cover_image", // Added cover image validation
+        "metadata.logo" // Added logo validation
+      ],
+      2: [
+        "projectDetails.problem_statement", 
+        "projectDetails.solution", 
+        "projectDetails.features", 
+        "slides"
+      ],
+      3: [
+        "techStack", 
+        "projectTypes", 
+        "status.status", 
+        "sdgGoals", 
+        "domains"
+      ],
+      4: [
+        "socialLinks", 
+        "projectDetails.team_email", 
+        "projectDetails.team_phone"
+      ],
+      5: [
+        "team"
+      ],
     };
+
     const fieldsToValidate = stepFieldsMap[currentStep as keyof typeof stepFieldsMap];
+    
+    // Validate all fields for the current step
     const results = await Promise.all(
       fieldsToValidate.map(field => methods.trigger(field as any))
     );
+    
     const isValid = results.every(result => result === true);
+    
     if (!isValid) {
-      toast.error("Check your inputs", {
-        description: "Please ensure all required fields are filled out correctly.",
+      // Get the current errors to provide more specific feedback
+      const errors = methods.formState.errors;
+      console.log("Validation errors:", errors);
+      
+      toast.error("Please complete all required fields", {
+        description: "Check the highlighted fields and ensure all required information is provided.",
       });
       return;
     }
-    // Upload images if on step 1
+
+    // Additional validation for step 1 - ensure files are actually uploaded
     if (currentStep === 1) {
+      if (!logoFile) {
+        toast.error("Logo is required", {
+          description: "Please upload a logo for your project.",
+        });
+        return;
+      }
+      if (!coverFile) {
+        toast.error("Cover image is required", {
+          description: "Please upload a cover image for your project.",
+        });
+        return;
+      }
+      
+      // Upload images
       setUploading(true);
       try {
-        if (logoFile) {
-          const compressedLogo = await compressImageFile(logoFile, "logo");
-          const url = await uploadImage(compressedLogo);
-          methods.setValue("metadata.logo", url, { shouldValidate: true });
-        }
-        if (coverFile) {
-          const compressedCover = await compressImageFile(coverFile, "cover_image");
-          const url = await uploadImage(compressedCover);
-          methods.setValue("metadata.cover_image", url, { shouldValidate: true });
-        }
+        const compressedLogo = await compressImageFile(logoFile, "logo");
+        const logoUrl = await uploadImage(compressedLogo);
+        methods.setValue("metadata.logo", logoUrl, { shouldValidate: true });
+
+        const compressedCover = await compressImageFile(coverFile, "cover_image");
+        const coverUrl = await uploadImage(compressedCover);
+        methods.setValue("metadata.cover_image", coverUrl, { shouldValidate: true });
       } catch (err) {
         toast.error("Image upload failed. Please try again.");
         setUploading(false);
@@ -114,6 +161,7 @@ const ProjectSubmissionForm = () => {
       }
       setUploading(false);
     }
+    
     // Upload slides if on step 2
     if (currentStep === 2) {
       setUploading(true);
@@ -140,12 +188,13 @@ const ProjectSubmissionForm = () => {
       }
       setUploading(false);
     }
+    
     // Upload team profile images if on step 5
     if (currentStep === 5) {
       setUploading(true);
       try {
         const currentTeam = methods.getValues("team");
-         const updatedTeam = await Promise.all(
+        const updatedTeam = await Promise.all(
           currentTeam.map(async (member, i) => {
             const file = teamProfileFiles[i];
             if (file) {
@@ -166,6 +215,7 @@ const ProjectSubmissionForm = () => {
       }
       setUploading(false);
     }
+    
     if (currentStep < TOTAL_STEPS) {
       setCurrentStep((prev) => prev + 1);
       window.scrollTo(0, 0);
@@ -177,7 +227,9 @@ const ProjectSubmissionForm = () => {
       setCurrentStep((prev) => prev - 1);
       window.scrollTo(0, 0);
     }
-  };  const onSubmit: SubmitHandler<ProjectSubmissionSchema> = async (data) => {
+  };
+
+  const onSubmit: SubmitHandler<ProjectSubmissionSchema> = async (data) => {
     try {
       // Handle team profile image uploads before final submission
       // Check if there are any profile images to upload
@@ -192,14 +244,12 @@ const ProjectSubmissionForm = () => {
             currentTeam.map(async (member, i) => {
               const file = teamProfileFiles[i];
               if (file) {
-                
                 const url = await uploadImage(file);
                 return { ...member, profile_image: url };
               }
               return member;
             })
           );
-          
           
           // Update the data that will be submitted with the new team data including image URLs
           data = {
@@ -218,7 +268,6 @@ const ProjectSubmissionForm = () => {
       
       // Submit the project using our hook
       const result = await submitProject(data);
-     
       
       if (result.success && result.data?.projectId) {
         // Show success message
@@ -288,7 +337,8 @@ const ProjectSubmissionForm = () => {
             teamProfilePreviews={teamProfilePreviews}
             setTeamProfilePreviews={setTeamProfilePreviews}
           />
-        );      default:
+        );
+      default:
         return (
           <FormStep1
             logoFile={logoFile}
@@ -320,7 +370,7 @@ const ProjectSubmissionForm = () => {
             >
               Previous
             </Button>
-              {currentStep < TOTAL_STEPS ? (
+            {currentStep < TOTAL_STEPS ? (
               <Button 
                 type="button" 
                 onClick={handleNext}

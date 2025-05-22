@@ -46,6 +46,7 @@ const FormStep1 = ({
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: "cover_image" | "logo") => {
     const file = e.target.files?.[0];
     if (!file) return;
+    
     const error = validateImageFile(file);
     if (error) {
       toast.error(error);
@@ -56,6 +57,7 @@ const FormStep1 = ({
       if (type === "cover_image") setCoverError(null);
       if (type === "logo") setLogoError(null);
     }
+    
     // Compress image before preview and upload
     const compressedFile = await compressImageFile(file, type);
     const reader = new FileReader();
@@ -64,19 +66,30 @@ const FormStep1 = ({
       if (type === "logo") setLogoPreviewUrl(reader.result as string);
     };
     reader.readAsDataURL(compressedFile);
-    if (type === "cover_image") setCoverFile(compressedFile);
-    if (type === "logo") setLogoFile(compressedFile);
+    
+    if (type === "cover_image") {
+      setCoverFile(compressedFile);
+      // Set the actual file in the form
+      setValue("metadata.cover_image", compressedFile, { shouldValidate: true });
+    }
+    if (type === "logo") {
+      setLogoFile(compressedFile);
+      // Set the actual file in the form
+      setValue("metadata.logo", compressedFile, { shouldValidate: true });
+    }
   };
 
   const clearImage = () => {
-    setValue("metadata.cover_image", "https://placehold.co/600x400/png?text=NO+IMAGE", { shouldValidate: true });
+    // Clear the form value (set to null/undefined instead of placeholder URL)
+    setValue("metadata.cover_image", null, { shouldValidate: true });
     setCoverPreviewUrl(null);
     setCoverFile(null);
     setCoverError(null);
   };
 
   const clearLogo = () => {
-    setValue("metadata.logo", "https://placehold.co/100/png", { shouldValidate: true });
+    // Clear the form value (set to null/undefined instead of placeholder URL)
+    setValue("metadata.logo", null, { shouldValidate: true });
     setLogoPreviewUrl(null);
     setLogoFile(null);
     setLogoError(null);
@@ -186,116 +199,113 @@ const FormStep1 = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* App Logo */}
         <FormField
-  control={control}
-  rules={{ required: "App logo is required" }}
-  name="metadata.logo"
-  render={({ fieldState }) => (
-    <FormItem>
-      <FormLabel>
-        App Logo <span className="text-red-500">*</span>
-      </FormLabel>
-      <div className="space-y-4">
-        <AnimatePresence>
-          {logoFile ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              onClick={clearLogo}
-              className="relative flex justify-center cursor-pointer group"
-            >
-              <Avatar className="h-36 w-36 border-2 border-primary rounded-full">
-                <AvatarImage src={logoPreviewUrl!} alt="App logo" />
-                <AvatarFallback>LOGO</AvatarFallback>
-              </Avatar>
-              <div className="absolute inset-0 bg-black/30 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                <X className="h-8 w-8 text-white" />
+          control={control}
+          name="metadata.logo"
+          render={({ field, fieldState }) => (
+            <FormItem>
+              <FormLabel>
+                App Logo <span className="text-red-500">*</span>
+              </FormLabel>
+              <div className="space-y-4">
+                <AnimatePresence>
+                  {logoFile ? (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      onClick={clearLogo}
+                      className="relative flex justify-center cursor-pointer group"
+                    >
+                      <Avatar className="h-36 w-36 border-2 border-primary rounded-full">
+                        <AvatarImage src={logoPreviewUrl!} alt="App logo" />
+                        <AvatarFallback>LOGO</AvatarFallback>
+                      </Avatar>
+                      <div className="absolute inset-0 bg-black/30 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <X className="h-8 w-8 text-white" />
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.label
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="flex flex-col items-center justify-center border-2 border-dashed border-zinc-300 rounded-full h-36 w-36 mx-auto cursor-pointer dark:border-zinc-600"
+                    >
+                      <Upload className="h-10 w-10 text-zinc-400 mb-2" />
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleImageUpload(e, "logo")}
+                        className="hidden"
+                      />
+                    </motion.label>
+                  )}
+                </AnimatePresence>
+                {(logoError || fieldState.error) && (
+                  <div className="text-red-500 text-xs text-center">
+                    {logoError || fieldState.error?.message}
+                  </div>
+                )}
               </div>
-            </motion.div>
-          ) : (
-            <motion.label
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="flex flex-col items-center justify-center border-2 border-dashed border-zinc-300 rounded-full h-36 w-36 mx-auto cursor-pointer dark:border-zinc-600"
-            >
-              <Upload className="h-10 w-10 text-zinc-400 mb-2" />
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={(e) => handleImageUpload(e, "logo")}
-                className="hidden"
-              />
-            </motion.label>
+            </FormItem>
           )}
-        </AnimatePresence>
-        {(logoError || fieldState.error) && (
-          <div className="text-red-500 text-xs text-center">
-            {logoError || fieldState.error?.message}
-          </div>
-        )}
-      </div>
-    </FormItem>
-  )}
-/>
+        />
 
-{/* Cover Image */}
-<FormField
-  control={control}
-  rules={{ required: "Cover image is required" }}
-  name="metadata.cover_image"
-  render={({ fieldState }) => (
-    <FormItem>
-      <FormLabel>
-        Cover Image <span className="text-red-500">*</span>
-        <div className="text-xs font-normal text-muted-foreground mt-1">
-          Recommended Aspect ratio: 16:9
-        </div>
-      </FormLabel>
-      <div className="space-y-4">
-        <AnimatePresence>
-          {coverFile ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              onClick={clearImage}
-              className="relative cursor-pointer group"
-            >
-              <div className="overflow-hidden relative">
-                <img src={coverPreviewUrl!} alt="Cover Image" className="object-cover w-full h-full rounded-lg" />
-                <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  <X className="h-8 w-8 text-white" />
+        {/* Cover Image */}
+        <FormField
+          control={control}
+          name="metadata.cover_image"
+          render={({ field, fieldState }) => (
+            <FormItem>
+              <FormLabel>
+                Cover Image <span className="text-red-500">*</span>
+                <div className="text-xs font-normal text-muted-foreground mt-1">
+                  Recommended Aspect ratio: 16:9
                 </div>
+              </FormLabel>
+              <div className="space-y-4">
+                <AnimatePresence>
+                  {coverFile ? (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      onClick={clearImage}
+                      className="relative cursor-pointer group"
+                    >
+                      <div className="overflow-hidden relative">
+                        <img src={coverPreviewUrl!} alt="Cover Image" className="object-cover w-full h-full rounded-lg" />
+                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                          <X className="h-8 w-8 text-white" />
+                        </div>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.label
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="flex flex-col items-center justify-center border-2 border-dashed border-zinc-300 rounded-lg p-6 cursor-pointer dark:border-zinc-600"
+                    >
+                      <Upload className="h-10 w-10 text-zinc-400 mb-2" />
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleImageUpload(e, "cover_image")}
+                        className="hidden"
+                      />
+                    </motion.label>
+                  )}
+                </AnimatePresence>
+                {(coverError || fieldState.error) && (
+                  <div className="text-red-500 text-xs text-center">
+                    {coverError || fieldState.error?.message}
+                  </div>
+                )}
               </div>
-            </motion.div>
-          ) : (
-            <motion.label
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="flex flex-col items-center justify-center border-2 border-dashed border-zinc-300 rounded-lg p-6 cursor-pointer dark:border-zinc-600"
-            >
-              <Upload className="h-10 w-10 text-zinc-400 mb-2" />
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={(e) => handleImageUpload(e, "cover_image")}
-                className="hidden"
-              />
-            </motion.label>
+            </FormItem>
           )}
-        </AnimatePresence>
-        {(coverError || fieldState.error) && (
-          <div className="text-red-500 text-xs text-center">
-            {coverError || fieldState.error?.message}
-          </div>
-        )}
-      </div>
-    </FormItem>
-  )}
-/>
-
+        />
       </div>
     </div>
   );
