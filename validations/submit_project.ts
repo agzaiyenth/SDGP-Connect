@@ -72,7 +72,7 @@ export const projectSubmissionSchema = z.object({
     slides_content: z.string().min(1, "Slide content is required"),
   })
 ).min(3, "You must upload at least 3 images")
- .max(5, "You can upload a maximum of 5 images")
+ .max(10, "You can upload a maximum of 10 images")
  .refine((slides) => slides.length >= 3, {
    message: "At least 3 images are required to proceed"
  }),

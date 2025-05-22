@@ -92,11 +92,6 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
   };
 
   const removeSlideImage = (index: number) => {
-    if (slidePreviews.length <= MIN_SLIDES) {
-      toast.error(`You must keep at least ${MIN_SLIDES} images`);
-      return;
-    }
-    
     setSlidePreviews(prev => prev.filter((_, i) => i !== index));
     setSlideFiles(prev => prev.filter((_, i) => i !== index));
   };
@@ -238,13 +233,9 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
                     type="button"
                     onClick={() => removeSlideImage(index)}
                     className="absolute top-1 right-1 p-1 bg-red-600 rounded-full text-white hover:bg-red-700 transition-opacity opacity-0 group-hover:opacity-100"
-                    disabled={slidePreviews.length <= MIN_SLIDES}
                   >
                     <X className="h-4 w-4" />
                   </Button>
-                  {slidePreviews.length <= MIN_SLIDES && (
-                    <div className="absolute inset-0 bg-black bg-opacity-20 rounded-lg pointer-events-none" />
-                  )}
                 </div>
               ))}
             </div>
