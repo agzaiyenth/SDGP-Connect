@@ -14,6 +14,7 @@ import { validateImageFile } from "./utils/validateImageFile";
 import { compressImageFile } from "./utils/compressImageFile";
 
 const MAX_SLIDES = 10;
+const MIN_SLIDES = 3;
 
 interface FormStep2Props {
   slideFiles: File[];
@@ -23,7 +24,7 @@ interface FormStep2Props {
 }
 
 const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews }: FormStep2Props) => {
-  const { control, setValue, watch } = useFormContext<ProjectSubmissionSchema>();
+  const { control, setValue, watch, setError, clearErrors } = useFormContext<ProjectSubmissionSchema>();
   const features = watch("projectDetails.features") || "";
   const [isPlaceholderVisible, setIsPlaceholderVisible] = useState(true);
 
@@ -34,7 +35,17 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
       slidePreviews.map((url) => ({ slides_content: url })),
       { shouldValidate: true }
     );
-  }, [slidePreviews, setValue]);
+
+    // Validate slide count
+    if (slidePreviews.length < MIN_SLIDES) {
+      setError("slides", {
+        type: "manual",
+        message: `You must upload at least ${MIN_SLIDES} images`
+      });
+    } else {
+      clearErrors("slides");
+    }
+  }, [slidePreviews, setValue, setError, clearErrors]);
 
   useEffect(() => {
     // Initialize slides array if it doesn't exist
@@ -46,18 +57,29 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
+    
     const fileArray = Array.from(files);
-    if (slidePreviews.length + fileArray.length > MAX_SLIDES) {
-      toast.error(`You can only upload a maximum of ${MAX_SLIDES} slides.`);
+    const remainingSlots = MAX_SLIDES - slidePreviews.length;
+    
+    if (fileArray.length > remainingSlots) {
+      toast.error(`You can only upload ${remainingSlots} more image${remainingSlots === 1 ? '' : 's'}. Maximum ${MAX_SLIDES} images allowed.`);
       return;
     }
+    
+    if (slidePreviews.length + fileArray.length > MAX_SLIDES) {
+      toast.error(`You can only upload a maximum of ${MAX_SLIDES} images.`);
+      return;
+    }
+    
     setIsPlaceholderVisible(false);
+    
     for (const file of fileArray) {
       const error = validateImageFile(file);
       if (error) {
         toast.error(error);
         continue;
       }
+      
       // Compress slide image before preview/upload
       const compressedFile = await compressImageFile(file, "slide");
       const reader = new FileReader();
@@ -70,9 +92,16 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
   };
 
   const removeSlideImage = (index: number) => {
+    if (slidePreviews.length <= MIN_SLIDES) {
+      toast.error(`You must keep at least ${MIN_SLIDES} images`);
+      return;
+    }
+    
     setSlidePreviews(prev => prev.filter((_, i) => i !== index));
     setSlideFiles(prev => prev.filter((_, i) => i !== index));
   };
+
+  const canUploadMore = slidePreviews.length < MAX_SLIDES;
 
   return (
     <div className="space-y-6">
@@ -145,7 +174,6 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
                     ul: { props: { className: 'list-disc pl-6 mb-4' } },
                     ol: { props: { className: 'list-decimal pl-6 mb-4' } },
                     li: { props: { className: 'mb-1' } }
-
                   }
                 }}>
                   {features || "*Your markdown preview will appear here...*"}
@@ -165,17 +193,41 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
         render={() => (
           <FormItem>
             <FormLabel>Featured Images<span className="text-red-500">*</span></FormLabel>
-            <div className="relative mt-4 p-6 border-2 border-dashed border-gray-300 rounded-xl w-full cursor-pointer hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800 transition-all duration-200">
-              <div className="flex flex-col items-center justify-center space-y-2 text-center">
-                <Upload className="h-10 w-10 text-primary mb-2" />
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Drag and drop your Featured Images here or click to browse</p>
-                <p className="text-xs text-gray-500 dark:text-gray-500">PNG, JPG, GIF - Up to {MAX_SLIDES} files</p>
-                <Input type="file" accept="image/*" multiple onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+            {canUploadMore && (
+              <div className="relative mt-4 p-6 border-2 border-dashed border-gray-300 rounded-xl w-full cursor-pointer hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800 transition-all duration-200">
+                <div className="flex flex-col items-center justify-center space-y-2 text-center">
+                  <Upload className="h-10 w-10 text-primary mb-2" />
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                    Drag and drop your Featured Images here or click to browse
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-500">
+                    PNG, JPG, GIF - {slidePreviews.length}/{MAX_SLIDES} images ({MAX_SLIDES - slidePreviews.length} remaining)
+                  </p>
+                  <Input 
+                    type="file" 
+                    accept="image/*" 
+                    multiple 
+                    onChange={handleFileChange} 
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+                  />
+                </div>
               </div>
-            </div>
+            )}
             <div className="text-xs font-normal text-muted-foreground mt-1">
-              Minimum 3 images required
+              <span className={slidePreviews.length < MIN_SLIDES ? "text-red-500 font-medium" : ""}>
+                Required: {MIN_SLIDES}-{MAX_SLIDES} images
+              </span>
+              {slidePreviews.length > 0 && (
+                <span className="ml-2">
+                  ({slidePreviews.length}/{MAX_SLIDES} uploaded)
+                </span>
+              )}
             </div>
+            {slidePreviews.length >= MAX_SLIDES && (
+              <div className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                Maximum number of images reached. Remove an image to upload a new one.
+              </div>
+            )}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-6">
               {slidePreviews.map((previewUrl, index) => (
                 <div key={index} className="relative group overflow-hidden rounded-lg shadow-md border dark:border-gray-700 transition-all hover:shadow-xl">
@@ -186,9 +238,13 @@ const FormStep2 = ({ slideFiles, setSlideFiles, slidePreviews, setSlidePreviews 
                     type="button"
                     onClick={() => removeSlideImage(index)}
                     className="absolute top-1 right-1 p-1 bg-red-600 rounded-full text-white hover:bg-red-700 transition-opacity opacity-0 group-hover:opacity-100"
+                    disabled={slidePreviews.length <= MIN_SLIDES}
                   >
                     <X className="h-4 w-4" />
                   </Button>
+                  {slidePreviews.length <= MIN_SLIDES && (
+                    <div className="absolute inset-0 bg-black bg-opacity-20 rounded-lg pointer-events-none" />
+                  )}
                 </div>
               ))}
             </div>
