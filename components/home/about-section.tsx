@@ -4,7 +4,7 @@ import { Hero7 } from "../modern-hero";
 const Data = {
   heading: "More than Just an academic module",
   description:
-    "SDGP Module has shaped the academic landscape by providing students with a unique opportunity to engage with real-world challenges. This module not only enhances their academic experience but also equips them with the skills and knowledge needed to make a positive impact in society.",
+    "SDGP is a core academic module at IIT that redefines student learning by immersing them in real-world challenges. Through a blend of innovation, collaboration, and hands-on experience, it goes beyond traditional classroom education equipping students with practical skills, critical thinking, and a problem-solving mindset to create meaningful impact in society.",
   button: {
     text: "Discover more",
     url: "/about",
