@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
 import { SocialTypeEnum } from "@prisma/client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import React from "react";
 
 const FormStep4 = () => {
   const { control, watch, setValue } = useFormContext<ProjectSubmissionSchema>();
@@ -13,6 +14,15 @@ const FormStep4 = () => {
   // Watch country code and phone number to combine them
   const countryCode = watch("projectDetails.country_code");
   const phoneNumber = watch("projectDetails.phone_number");
+  
+  // Initialize default country code immediately when component mounts
+  React.useEffect(() => {
+    console.log("Setting default country code to +94");
+    setValue("projectDetails.country_code", "+94", { 
+      shouldValidate: false,
+      shouldDirty: false 
+    });
+  }, [setValue]);
   
   // Use useFieldArray for handling the socialLinks array
   const { fields, append, remove } = useFieldArray({
@@ -27,13 +37,23 @@ const FormStep4 = () => {
 
   // Update the combined phone field whenever country code or phone number changes
   const updateCombinedPhone = (newCountryCode?: string, newPhoneNumber?: string) => {
-    const currentCountryCode = newCountryCode || countryCode || "";
+    const currentCountryCode = newCountryCode || countryCode || "+94";
     const currentPhoneNumber = newPhoneNumber || phoneNumber || "";
     
+    console.log("Updating combined phone:", { currentCountryCode, currentPhoneNumber });
+    
     if (currentCountryCode && currentPhoneNumber) {
-      setValue("projectDetails.team_phone", `${currentCountryCode}${currentPhoneNumber}`);
+      const combinedPhone = `${currentCountryCode}${currentPhoneNumber}`;
+      console.log("Setting team_phone to:", combinedPhone);
+      setValue("projectDetails.team_phone", combinedPhone, {
+        shouldValidate: false, // Don't validate immediately to avoid conflicts
+        shouldDirty: true
+      });
     } else {
-      setValue("projectDetails.team_phone", "");
+      setValue("projectDetails.team_phone", "", {
+        shouldValidate: false,
+        shouldDirty: true
+      });
     }
   };
 
@@ -69,7 +89,7 @@ const FormStep4 = () => {
           Enter your country code and phone number. They will be combined automatically.
         </FormDescription>
         
-        <div className="grid grid-cols-[120px_1fr] gap-4">
+        <div className="grid grid-cols-[120px_1fr] gap-4 items-start">
           {/* Country Code */}
           <FormField
             control={control}
@@ -82,7 +102,7 @@ const FormStep4 = () => {
                     type="text"
                     placeholder="+94"
                     {...field}
-                    value={field.value || ""}
+                    value={field.value || "+94"}
                     onChange={(e) => {
                       const value = e.target.value;
                       // Ensure it starts with + if user enters numbers
@@ -94,14 +114,16 @@ const FormStep4 = () => {
                       // Validate country code format on blur
                       const value = e.target.value;
                       if (value && !value.match(/^\+\d{1,4}$/)) {
-                        // If invalid format, clear the field
-                        field.onChange('');
-                        updateCombinedPhone('', phoneNumber);
+                        // If invalid format, set to default +94
+                        field.onChange('+94');
+                        updateCombinedPhone('+94', phoneNumber);
                       }
                     }}
                   />
                 </FormControl>
-                <FormMessage />
+                <div className="min-h-[1.25rem]">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
@@ -129,17 +151,19 @@ const FormStep4 = () => {
                     maxLength={10}
                   />
                 </FormControl>
-                <FormMessage />
+                <div className="min-h-[1.25rem]">
+                  <FormMessage />
+                </div>
               </FormItem>
             )}
           />
         </div>
 
         {/* Display Combined Phone Number */}
-        {countryCode && phoneNumber && (
+        {(countryCode || "+94") && phoneNumber && (
           <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-md">
             <p className="text-sm text-gray-600 dark:text-gray-400">Combined Phone Number:</p>
-            <p className="font-medium">{countryCode}{phoneNumber}</p>
+            <p className="font-medium">{countryCode || "+94"}{phoneNumber}</p>
           </div>
         )}
 

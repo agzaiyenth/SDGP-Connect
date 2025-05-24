@@ -36,13 +36,12 @@ export const projectSubmissionSchema = z.object({
       message: "Logo is required",
     }),
   }),
-
   projectDetails: z.object({
     problem_statement: z.string().min(1, "Problem statement is required"),
     solution: z.string().min(1, "Solution is required"),
     features: z.string().min(1, "Features are required"),
     team_email: z.string().email("Must be a valid email"),
-    team_phone: z.string().min(1, "Phone number is required"), 
+    team_phone: z.string().optional(), // This is just for storage, no validation
     country_code: z.string()
       .min(1, "Country code is required")
       .regex(/^\+\d{1,4}$/, "Country code must be in format +XX (1-4 digits)"),
@@ -51,20 +50,16 @@ export const projectSubmissionSchema = z.object({
       .max(10, "Phone number cannot exceed 10 digits")
       .regex(/^\d+$/, "Phone number must contain only digits"),
   }),
-
   status: z.object({
     status: projectStatusSchema,
   }),
-
   // Associations using proper enums
   domains: z.array(projectDomainSchema).min(1, "Select at least one domain"),
   projectTypes: z.array(projectTypeSchema).min(1, "Select at least one project type"),
   sdgGoals: z.array(sdgGoalSchema).optional(),
   techStack: z.array(techStackSchema).min(1, "Select at least one technology"),
-
   // Team members
   team: z.array(teamMemberSchema).min(1, "Add at least one team member"),
-
   // Social links
   socialLinks: z.array(
     z.object({
@@ -72,7 +67,6 @@ export const projectSubmissionSchema = z.object({
       url: z.string().url("Must be a valid URL"),
     })
   ).optional(),
-
   // Slides content
   slides: z.array(
     z.object({
