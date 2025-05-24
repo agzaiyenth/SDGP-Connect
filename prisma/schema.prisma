@@ -143,9 +143,8 @@ model User {
   role             Role
   password         String
   name             String            
-  // Relations to projects this user has approved/featured/rejected
+  // Relations to projects this user has approved/featured
   approvedProjects ProjectStatus[]   @relation("ApprovedBy")
-  rejectedProjects ProjectStatus[]   @relation("RejectedBy")
   featuredProjects ProjectMetadata[] @relation("FeaturedBy")
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
@@ -210,10 +209,6 @@ model ProjectStatus {
   approved_status    ProjectApprovalStatus @default(PENDING)
   rejected_reason    String?
   approved_at        DateTime?
-
-  // Links to the user who approved/rejected the project
-  rejected_by_userId String?
-  rejected_by        User?                 @relation("RejectedBy", fields: [rejected_by_userId], references: [user_id], onDelete: SetNull)
 
   // Links to the user who approved/rejected the project
   approved_by_userId String?

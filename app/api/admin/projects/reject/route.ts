@@ -101,7 +101,6 @@ export async function POST(request: NextRequest) {
       // fail silently
     }
 
-    console.log("Project rejected: by a"+userId);
     // 8) Return success
     return NextResponse.json({
       success: true,

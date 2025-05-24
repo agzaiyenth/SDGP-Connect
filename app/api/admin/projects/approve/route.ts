@@ -118,6 +118,7 @@ export async function POST(request: NextRequest) {
     console.error("Failed to send approval email:", err);
   }
 }
+
     return NextResponse.json({
       success: true,
       message: "Project approved successfully",
