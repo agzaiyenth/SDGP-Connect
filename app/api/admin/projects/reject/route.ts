@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
         data: {
           approved_status: ProjectApprovalStatus.REJECTED,
           rejected_reason: reason,
-          // approved_by_userId: userId,
+          approved_by_userId: userId,
           approved_at: new Date(),
         },
       }),
