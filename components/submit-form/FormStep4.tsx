@@ -138,7 +138,7 @@ const FormStep4 = () => {
                 <FormControl>
                   <Input
                     type="tel"
-                    placeholder="771234567"
+                    placeholder="0771234567"
                     {...field}
                     value={field.value || ""}
                     onChange={(e) => {

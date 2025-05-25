@@ -91,15 +91,18 @@ const Teamandsocial = ({ teamEmail, teamPhone, teamMembers, teamSocials, project
                                     rel="noopener noreferrer"
                                     className="no-underline"
                                 >
-                                    <Card className="p-4 flex items-center justify-between hover:bg-muted/40 hover:scale-[1.01] transition duration-150 group cursor-pointer">
-                                        <div className="flex items-center gap-3">
+                                    <Card className="py-4 pr-4 pl-0 flex items-center hover:bg-muted/40 hover:scale-[1.01] transition duration-150 group cursor-pointer w-full">
+                                        <div className="flex items-center gap-3 pl-4 flex-shrink-0">
                                             <Icon className="h-6 w-6 text-primary" />
                                             <span className="font-semibold text-lg">
                                                 {platform.label}
                                             </span>
                                         </div>
-                                        <ExternalLink className="h-5 w-5 text-muted-foreground group-hover:text-primary" />
+                                        <div className="flex-1 flex justify-center">
+                                            <ExternalLink className="h-5 w-5 text-muted-foreground group-hover:text-primary" />
+                                        </div>
                                     </Card>
+
                                 </Link>
                             );
                         })}
