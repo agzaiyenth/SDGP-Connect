@@ -17,7 +17,7 @@ const StatsSection = () => {
             <CardContent className="p-2">
               <div className="grid gap-6 sm:grid-cols-3">
                 <StatItem
-                  finalValue={1000}
+                  finalValue={10000}
                   icon={<User className="h-6 w-6" />}
                   platform="Students Enrolled"
                   suffix="+"

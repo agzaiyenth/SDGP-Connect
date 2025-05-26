@@ -20,7 +20,7 @@ export function AboutSection() {
           </div>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter max-w-3xl">
-            Crafting Code for a Sustainable Tomorrow
+            Crafting code for a sustainable tomorrow
           </h1>
 
           <p className="text-zinc-400 md:text-xl max-w-[700px] mt-4 mb-8">

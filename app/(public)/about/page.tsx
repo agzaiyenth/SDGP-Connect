@@ -15,9 +15,8 @@ const Page: React.FC<Props> = (props) => {
     return (
         <div className="">
             <Hero/>
-            <AboutSection/>
+            <ModuleTeam/>
             <StatsSection/>
-           <ModuleTeam/>
            <CTASection/>
                    
           
