@@ -58,6 +58,11 @@ const StatItem = ({
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef(null);
 
+  // Function to format number with commas
+  const formatNumber = (num: number) => {
+    return num.toLocaleString();
+  };
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -68,11 +73,9 @@ const StatItem = ({
       },
       { threshold: 0.1 }
     );
-
     if (ref.current) {
       observer.observe(ref.current);
     }
-
     return () => {
       if (ref.current) {
         observer.disconnect();
@@ -82,31 +85,29 @@ const StatItem = ({
 
   useEffect(() => {
     if (!isVisible) return;
-
-    const duration = 1000; 
-    const frameDuration = 500 / 60; 
+    const duration = 1000;
+    const frameDuration = 500 / 60;
     const totalFrames = Math.round(duration / frameDuration);
-    
+   
     const incrementPerFrame = finalValue / totalFrames;
-    
+   
     let frame = 0;
     const counter = setInterval(() => {
       frame++;
       const newValue = Math.min(Math.round(incrementPerFrame * frame), finalValue);
       setValue(newValue);
-      
+     
       if (frame === totalFrames) {
         clearInterval(counter);
       }
     }, frameDuration);
-
     return () => clearInterval(counter);
   }, [isVisible, finalValue]);
 
   return (
     <div ref={ref} className="flex flex-col items-center gap-2 text-center">
       <div className="flex items-center gap-1 text-2xl font-bold pb-2">
-        <span>{value}{suffix}</span>
+        <span>{formatNumber(value)}{suffix}</span>
       </div>
       <div className="flex flex-col items-center gap-1">
         {icon}
