@@ -5,20 +5,17 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 
 const teamMembers = [
-  // VL Hybrid lecturers
   {
-    //Banu, John, Kripa, Suresh, Kushan, Manul, Mithushan, Deshan, Pubudu, Mohanadas, Seyed, Vinodani, Asith, Thashin, Ahtshayan, Imasha 
     name: "Banuka Athuraliya",
     role: "Module Leader (VL Hybrid)",
     email: "banu.a@iit.ac.lk",
     linkedin: "https://www.linkedin.com/in/banuka-athuraliya/",
+    website: "http://www.banu.androdollar.com/",
     description:
       "Managing Director @ Andro Dollar Network (PVT) LTD | Tech YouTuber | Software Engineering, Marketing and Entrepreneurship Visiting Lecturer",
-    category: "Primary",
+    category: "Module Leader",
     image: "/assets/Banu.jpg",
-
   },
-  // VL Online lecturers
   {
     name: "John Sriskandarajah",
     role: "Visiting Lecturer (Online)",
@@ -58,7 +55,6 @@ const teamMembers = [
     category: "Primary",
     image: "/assets/kushan sir.png",
   },
-  // FT Hybrid lecturers
   {
     name: "Manul Singhe",
     role: "Full-Time Lecturer (Hybrid)",
@@ -89,7 +85,6 @@ const teamMembers = [
     category: "Primary",
     image: "/assets/deshan sir.png",
   },
-
   {
     name: "Pubudu Mihiranga",
     role: "Visiting Lecturer (Hybrid)",
@@ -100,8 +95,6 @@ const teamMembers = [
     category: "Primary",
     image: "/assets/pubudu.jpg",
   },
-
-
   {
     name: "Mohanadas Jananie",
     role: "Full-Time Lecturer (Hybrid)",
@@ -159,16 +152,20 @@ const teamMembers = [
     category: "Primary",
     image: "/assets/ahtshayan sir.png",
   },
-
-
 ];
 
 const ModuleTeam: React.FC = () => {
+  const moduleLeader = teamMembers.filter(
+    (member) => member.category === "Module Leader"
+  );
   const primaryMembers = teamMembers.filter(
     (member) => member.category === "Primary"
   );
+  const formerMembers = teamMembers.filter(
+    (member) => member.category === "Former"
+  );
 
-  const renderTeamSection = (members: typeof teamMembers) => (
+  const renderTeamSection = (members: typeof teamMembers, title?: string) => (
     <motion.div
       className="mb-16"
       initial={{ opacity: 0, y: 30 }}
@@ -176,7 +173,22 @@ const ModuleTeam: React.FC = () => {
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+      {title && (
+        <motion.h2
+          className="text-2xl md:text-3xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-300 to-gray-400"
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          {title}
+        </motion.h2>
+      )}
+      <div className={`grid gap-6 md:gap-8 ${
+        members.length === 1 
+          ? 'grid-cols-1 justify-items-center' 
+          : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+      }`}>
         {members.map((member, index) => (
           <motion.div
             key={index}
@@ -246,6 +258,30 @@ const ModuleTeam: React.FC = () => {
                   <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452z"></path>
                 </svg>
               </a>
+              {member.website && (
+                <a
+                  href={member.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 bg-gradient-to-r from-gray-800 to-black rounded-full hover:from-gray-700 hover:to-gray-900 transition-all duration-300 flex items-center border border-gray-700"
+                  title="Personal Website"
+                >
+                  <svg
+                    className="w-5 h-5 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 919-9"
+                    ></path>
+                  </svg>
+                </a>
+              )}
             </div>
 
             <div className="absolute inset-0 bg-gradient-to-br from-black/95 via-zinc-900/98 to-gray-800/95 backdrop-blur-sm p-6 flex flex-col opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-0 overflow-auto">
@@ -261,7 +297,7 @@ const ModuleTeam: React.FC = () => {
                 {member.description}
               </p>
 
-              <div className="mt-auto flex space-x-4 justify-center">
+              <div className="mt-auto flex flex-wrap gap-2 justify-center">
                 <a
                   href={`mailto:${member.email}`}
                   className="px-4 py-2 bg-gradient-to-r from-gray-800 to-black text-white rounded-full hover:from-gray-700 hover:to-gray-900 transition-all duration-300 flex items-center shine-button border border-gray-700"
@@ -298,6 +334,30 @@ const ModuleTeam: React.FC = () => {
                   </svg>
                   LinkedIn
                 </a>
+                {member.website && (
+                  <a
+                    href={member.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:from-blue-500 hover:to-purple-500 transition-all duration-300 flex items-center shine-button border border-blue-500"
+                  >
+                    <svg
+                      className="w-4 h-4 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+                      ></path>
+                    </svg>
+                    Website
+                  </a>
+                )}
               </div>
             </div>
           </motion.div>
@@ -328,7 +388,10 @@ const ModuleTeam: React.FC = () => {
         member for support and guidance.
       </motion.p>
 
-      {renderTeamSection(primaryMembers)}
+      {moduleLeader.length > 0 && renderTeamSection(moduleLeader, "Module Leader")}
+      {primaryMembers.length > 0 && renderTeamSection(primaryMembers, "Current Module Team")}
+      {formerMembers.length > 0 && renderTeamSection(formerMembers, "Former Module Team")}
+
       <style jsx global>{`
         @keyframes fadeIn {
           from {
