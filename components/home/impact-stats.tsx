@@ -29,9 +29,9 @@ export default function ImpactStats() {
       <div className="container mx-auto">
         <h2 className="text-3xl font-bold text-center mb-12">Our Impact</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 p-12">
           {stats.map((stat, i) => (
-            <div key={i} className="flex flex-col items-center text-center p-6 rounded-xl bg-muted">
+            <div key={i} className="flex flex-col items-center text-center p-6 rounded-xl bg-[#0c0a09] border border-muted/60 ">
               <div className="rounded-full bg-primary/10 p-4 mb-4">
                 <stat.icon className="h-8 w-8 text-primary" />
               </div>

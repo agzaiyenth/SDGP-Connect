@@ -95,7 +95,7 @@ export default function Featured() {
           {displayProjects.map((project, index) => (
             <SwiperSlide key={project?.id || index} className="px-1 sm:px-2 md:px-3 py-2">
               <Link href={`/project/${project?.id || "#"}`}>
-                <div className="project-card bg-[#161616] bg-opacity-70 backdrop-blur-lg border border-white/10 rounded-2xl overflow-hidden shadow-xl transition-all hover:scale-[1.02] hover:z-20 duration-300 w-[320px] sm:w-[360px] lg:w-[420px] mx-auto relative">
+                <div className="project-card bg-[#0c0a09] bg-opacity-70 backdrop-blur-lg border border-white/10 rounded-2xl overflow-hidden shadow-xl transition-all hover:scale-[1.02] hover:z-20 duration-300 w-[320px] sm:w-[360px] lg:w-[420px] mx-auto relative">
                   {/* Image */}
                   <div className="relative h-[200px] sm:h-[220px] lg:h-[260px] w-full overflow-hidden">
                     {project?.status && (
