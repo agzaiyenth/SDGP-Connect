@@ -152,6 +152,7 @@ const teamMembers = [
     category: "Primary",
     image: "/assets/ahtshayan sir.png",
   },
+  //former members
   {
   name: "Nuwan [LastName]",
   role: "Former Lecturer",
@@ -195,7 +196,7 @@ const teamMembers = [
   linkedin: "https://www.linkedin.com/in/sharmilan-somasundaram",
   description: "Former lecturer at IIT.",
   category: "Former",
-  image: "/assets/sharmilan somasundaram.png",
+  image: "/assets/shar.jpg",
 },
 ];
 
