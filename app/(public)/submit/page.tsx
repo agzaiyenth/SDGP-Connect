@@ -1,20 +1,38 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ProjectSubmissionForm from '../../../components/submit-form/SubmissionForm'
-import { MessageCircle } from 'lucide-react'
+import { MessageCircle, X } from 'lucide-react'
 
 const Page = () => {
   const [showPopup, setShowPopup] = useState(true)
   const [showTooltip, setShowTooltip] = useState(false)
+  const [showHelpPopup, setShowHelpPopup] = useState(false)
+  const [termsAccepted, setTermsAccepted] = useState(false)
 
   const handleAgree = () => {
     setShowPopup(false)
+    setTermsAccepted(true)
+  }
+
+  // Show help popup after 10 seconds of accepting terms
+  useEffect(() => {
+    if (termsAccepted) {
+      const timer = setTimeout(() => {
+        setShowHelpPopup(true)
+      }, 10000) 
+
+      return () => clearTimeout(timer)
+    }
+  }, [termsAccepted])
+
+  const closeHelpPopup = () => {
+    setShowHelpPopup(false)
   }
 
   return (
     <div className="min-h-screen bg-background relative">
-      {/* Popup Overlay */}
+      {/* Terms and Conditions Popup Overlay */}
       {showPopup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
           <div className="bg-[#0f0f0f] text-white p-6 md:p-8 rounded-2xl shadow-xl max-w-xl w-full max-h-[90vh] overflow-y-auto border border-neutral-700">
@@ -44,7 +62,37 @@ const Page = () => {
         </div>
       )}
 
-      {/* Main Content */}
+      {showHelpPopup && (
+        <div className="fixed bottom-20 right-4 z-40 max-w-[260px] animate-in slide-in-from-bottom-5 duration-700 ease-out">
+          <div className="relative bg-neutral-800 border border-neutral-700 rounded-lg p-3 shadow-xl">
+            <button
+              onClick={closeHelpPopup}
+              className="absolute top-2 right-2 w-5 h-5 rounded-full bg-neutral-700 hover:bg-neutral-600 flex items-center justify-center transition-colors duration-200"
+            >
+              <X className="w-3 h-3 text-neutral-300" />
+            </button>
+            
+            <div className="pr-5">
+              <h3 className="text-white text-sm font-medium mb-1">Need Help?</h3>
+              <p className="text-neutral-300 text-xs mb-2 whitespace-nowrap">
+                Having trouble? Chat with us on WhatsApp!
+              </p>
+              <a
+                href="https://wa.me/94766867362"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-xs bg-neutral-700 hover:bg-neutral-600 text-white px-3 py-1.5 rounded-md transition-colors duration-200"
+              >
+                <MessageCircle className="w-3 h-3" />
+                Chat Now
+              </a>
+            </div>
+            
+            <div className="absolute -bottom-2 right-6 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-neutral-800"></div>
+          </div>
+        </div>
+      )}
+
       <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="mx-auto max-w-5xl">
           <div className="mb-10 text-center">
@@ -58,23 +106,23 @@ const Page = () => {
           <ProjectSubmissionForm />
         </div>
       </div>
-      {/* Custom Help Button with Dark Theme Tooltip - Desktop Only */}
+
       <div
         className="fixed bottom-4 right-4 z-50 hidden md:flex flex-col items-end group"
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
       >
-        {/* Tooltip */}
-        <div
-          className={`mb-2 max-w-[200px] px-3 py-1.5 rounded-md bg-neutral-800 text-white text-xs text-center shadow-md transition-all duration-300 ease-out transform ${showTooltip
-              ? 'opacity-100 translate-y-0 scale-100'
-              : 'opacity-0 translate-y-2 scale-95 pointer-events-none'
-            }`}
-        >
-          Need help? Chat on WhatsApp
-        </div>
+        {!showHelpPopup && (
+          <div
+            className={`mb-2 max-w-[200px] px-3 py-1.5 rounded-md bg-neutral-800 text-white text-xs text-center shadow-md transition-all duration-300 ease-out transform ${showTooltip
+                ? 'opacity-100 translate-y-0 scale-100'
+                : 'opacity-0 translate-y-2 scale-95 pointer-events-none'
+              }`}
+          >
+            Need help? Chat on WhatsApp
+          </div>
+        )}
 
-        {/* Dark Theme Circle Button */}
         <a
           href="https://wa.me/94766867362"
           target="_blank"
