@@ -2,7 +2,7 @@ import { Users, Award, TrendingUp, Rocket } from "lucide-react"
 
 const stats = [
   {
-    title: "2400+",
+    title: "1000+",
     description: "Student Projects",
     icon: Users,
   },
@@ -17,7 +17,7 @@ const stats = [
     icon: TrendingUp,
   },
   {
-    title: "25+",
+    title: "50+",
     description: "Funded Startups",
     icon: Rocket,
   },
@@ -29,7 +29,7 @@ export default function ImpactStats() {
       <div className="container mx-auto">
         <h2 className="text-3xl font-bold text-center mb-12">Our Impact</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 p-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((stat, i) => (
             <div key={i} className="flex flex-col items-center text-center p-6 rounded-xl bg-[#0c0a09] border border-muted/60 ">
               <div className="rounded-full bg-primary/10 p-4 mb-4">
