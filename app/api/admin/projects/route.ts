@@ -48,8 +48,7 @@ export const GET = async (req: NextRequest) => {
     // Add search filter if provided
     if (search) {
       whereClause.OR = [
-        { metadata: { title: { contains: search } } },
-        { metadata: { subtitle: { contains: search } } }
+        { metadata: { title: { contains: search } } }
       ];
     }
 
