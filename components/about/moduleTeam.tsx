@@ -181,13 +181,13 @@ const teamMembers = [
   image: "/assets/rukshala.png",
 },
 {
-  name: "Prathishna [LastName]",
+  name: "Prathieshna Vekneswaran",
   role: "Former Lecturer",
-  email: "prathishna@example.com",
-  linkedin: "https://www.linkedin.com/in/prathishna-placeholder",
+  email: "prathieshnav@gmail.com",
+  linkedin: "https://www.linkedin.com/in/prathieshna",
   description: "Former lecturer at IIT.",
   category: "Former",
-  image: "/assets/prathishna.png",
+  image: "/assets/prat.jpg",
 },
 {
   name: "Sharmilan Somasundaram",
