@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "prisma migrate deploy && prisma generate && yarn build",
-    "start": "next start",
+    "start": "NODE_ENV=production node .next/standalone/server.js",
     "lint": "next lint",
     "seed": "node --loader ts-node/esm ./prisma/seed.ts"
   },
