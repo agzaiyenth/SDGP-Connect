@@ -15,7 +15,7 @@ import { useGetProjectsByApprovalStatus } from '@/hooks/project/useGetProjectsBy
 import { useToggleProjectFeature } from '@/hooks/project/useToggleProjectFeature';
 import { ApprovedProject, PendingProject, RejectedProject } from '@/types/project/response';
 import { ProjectApprovalStatus } from '@prisma/client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -35,6 +35,16 @@ export default function ProjectManagement() {
   const [currentTab, setCurrentTab] = useState<'pending' | 'approved' | 'rejected'>('pending');
   const [lastFetchedTime, setLastFetchedTime] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
+
+  // Debounce search query to avoid too many API calls
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   const {
     projects: pendingProjects,
@@ -46,7 +56,7 @@ export default function ProjectManagement() {
     totalPages: pendingTotalPages,
     fetchNextPage: fetchPendingNextPage,
     fetchPreviousPage: fetchPendingPreviousPage,
-  } = useGetProjectsByApprovalStatus<PendingProject>(ProjectApprovalStatus.PENDING);
+  } = useGetProjectsByApprovalStatus<PendingProject>(ProjectApprovalStatus.PENDING, debouncedSearchQuery);
 
   const {
     projects: approvedProjects,
@@ -58,7 +68,7 @@ export default function ProjectManagement() {
     totalPages: approvedTotalPages,
     fetchNextPage: fetchApprovedNextPage,
     fetchPreviousPage: fetchApprovedPreviousPage,
-  } = useGetProjectsByApprovalStatus<ApprovedProject>(ProjectApprovalStatus.APPROVED);
+  } = useGetProjectsByApprovalStatus<ApprovedProject>(ProjectApprovalStatus.APPROVED, debouncedSearchQuery);
 
   const {
     projects: rejectedProjects,
@@ -70,11 +80,12 @@ export default function ProjectManagement() {
     totalPages: rejectedTotalPages,
     fetchNextPage: fetchRejectedNextPage,
     fetchPreviousPage: fetchRejectedPreviousPage,
-  } = useGetProjectsByApprovalStatus<RejectedProject>(ProjectApprovalStatus.REJECTED);
-  // Reset selected projects when changing tabs
+  } = useGetProjectsByApprovalStatus<RejectedProject>(ProjectApprovalStatus.REJECTED, debouncedSearchQuery);
+
+  // Reset selected projects when changing tabs or search query
   useEffect(() => {
     setSelectedProjects([]);
-  }, [currentTab]);
+  }, [currentTab, debouncedSearchQuery]);
 
   // Initialize lastFetchedTime on client-side only
   useEffect(() => {
@@ -112,12 +123,11 @@ export default function ProjectManagement() {
     setRejectDialog(true);
   };
 
-
-
   const handleViewDetails = (project: any) => {
     setCurrentProject(project);
     setDetailsDialog(true);
   };
+
   const { toggleFeature, isLoading: isFeatureToggling } = useToggleProjectFeature({
     onSuccess: () => refreshApproved()
   });
@@ -128,10 +138,21 @@ export default function ProjectManagement() {
 
   const handleTabChange = (value: string) => {
     setCurrentTab(value as 'pending' | 'approved' | 'rejected');
+    // Clear search when switching tabs to avoid confusion
+    setSearchQuery('');
+    setDebouncedSearchQuery('');
+    
     if (value === 'pending') refreshPending();
     if (value === 'approved') refreshApproved();
     if (value === 'rejected') refreshRejected();
   };
+
+  const handleRefresh = useCallback(() => {
+    if (currentTab === 'pending') refreshPending();
+    if (currentTab === 'approved') refreshApproved();
+    if (currentTab === 'rejected') refreshRejected();
+    setLastFetchedTime(new Date().toLocaleTimeString());
+  }, [currentTab, refreshPending, refreshApproved, refreshRejected]);
 
   const renderError = (error: Error | null) => {
     if (!error) return null;
@@ -147,18 +168,24 @@ export default function ProjectManagement() {
   const renderEmptyState = (type: 'pending' | 'approved' | 'rejected') => {
     const config = {
       pending: {
-        title: 'No Pending Projects',
-        description: 'There are no projects waiting for review.',
-        icon: Inbox,
+        title: searchQuery ? 'No Matching Pending Projects' : 'No Pending Projects',
+        description: searchQuery 
+          ? `No pending projects found matching "${searchQuery}"`
+          : 'There are no projects waiting for review.',
+        icon: searchQuery ? FileX2 : Inbox,
       },
       approved: {
-        title: 'No Approved Projects',
-        description: 'No projects have been approved yet.',
+        title: searchQuery ? 'No Matching Approved Projects' : 'No Approved Projects',
+        description: searchQuery 
+          ? `No approved projects found matching "${searchQuery}"`
+          : 'No projects have been approved yet.',
         icon: FileX2,
       },
       rejected: {
-        title: 'No Rejected Projects',
-        description: 'No projects have been rejected.',
+        title: searchQuery ? 'No Matching Rejected Projects' : 'No Rejected Projects',
+        description: searchQuery 
+          ? `No rejected projects found matching "${searchQuery}"`
+          : 'No projects have been rejected.',
         icon: FileX2,
       },
     }[type];
@@ -174,17 +201,6 @@ export default function ProjectManagement() {
     );
   };
 
-  const filterProjectsByTitle = <T extends { title: string }>(projects: T[]): T[] => {
-    return projects.filter((project) =>
-      project.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  };
-
-  const filteredPendingProjects = filterProjectsByTitle(pendingProjects);
-  const filteredApprovedProjects = filterProjectsByTitle(approvedProjects);
-  const filteredRejectedProjects = filterProjectsByTitle(rejectedProjects);
-
-
   const renderContent = () => {
     if (currentTab === 'pending') {
       if (isPendingLoading) return <PendingProjectsTableSkeleton />;
@@ -192,7 +208,7 @@ export default function ProjectManagement() {
       if (isPendingEmpty) return renderEmptyState('pending');
       return (
         <PendingProjectsTable
-          projects={filteredPendingProjects}
+          projects={pendingProjects}
           selectedProjects={selectedProjects}
           onSelectProject={handleSelectProject}
           onSelectAll={handleSelectAll}
@@ -213,9 +229,9 @@ export default function ProjectManagement() {
       if (isApprovedEmpty) return renderEmptyState('approved');
       return (
         <ApprovedProjectsTable
-          projects={filteredApprovedProjects}
+          projects={approvedProjects}
           onViewDetails={handleViewDetails}
-           onToggleFeature={handleToggleFeature}
+          onToggleFeature={handleToggleFeature}
           onReject={handleReject}
           currentPage={approvedCurrentPage}
           totalPages={approvedTotalPages}
@@ -231,8 +247,7 @@ export default function ProjectManagement() {
       if (isRejectedEmpty) return renderEmptyState('rejected');
       return (
         <RejectedProjectsTable
-          projects={filteredRejectedProjects}
-
+          projects={rejectedProjects}
           onViewDetails={handleViewDetails}
           currentPage={rejectedCurrentPage}
           totalPages={rejectedTotalPages}
@@ -256,24 +271,35 @@ export default function ProjectManagement() {
           <TabsTrigger value="approved">Approved</TabsTrigger>
           <TabsTrigger value="rejected">Rejected</TabsTrigger>
         </TabsList>
+        
         <div className="my-4 flex flex-wrap gap-4 justify-between">
-          <Input
-            placeholder="Search projects..."
-            className="max-w-xs"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+          <div className="flex items-center gap-2">
+            <Input
+              placeholder="Search projects..."
+              className="max-w-xs"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            {searchQuery && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setSearchQuery('');
+                  setDebouncedSearchQuery('');
+                }}
+              >
+                Clear
+              </Button>
+            )}
+          </div>
 
           <div className="flex items-center gap-4">
             <Button
               variant="outline"
-              onClick={() => {
-                if (currentTab === 'pending') refreshPending();
-                if (currentTab === 'approved') refreshApproved();
-                if (currentTab === 'rejected') refreshRejected();
-                setLastFetchedTime(new Date().toLocaleTimeString());
-              }}
-            >Last Fetched: {lastFetchedTime}
+              onClick={handleRefresh}
+            >
+              Last Fetched: {lastFetchedTime}
               <RefreshCcw />
             </Button>
 
@@ -286,7 +312,6 @@ export default function ProjectManagement() {
               </Button>
             )}
           </div>
-
         </div>
 
         {renderContent()}
@@ -307,7 +332,9 @@ export default function ProjectManagement() {
           projectID={currentProject.id}
           onApproved={refreshPending}
         />
-      )}      {rejectDialog && currentProject && (
+      )}
+
+      {rejectDialog && currentProject && (
         <RejectDialog
           open={rejectDialog}
           onOpenChange={setRejectDialog}
@@ -317,7 +344,6 @@ export default function ProjectManagement() {
             refreshApproved();
           }}
         />
-
       )}
 
       {bulkApproveDialog && selectedProjects.length > 0 && (

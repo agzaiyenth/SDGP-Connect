@@ -16,7 +16,7 @@ export const GET = async (req: NextRequest) => {
 
   // Role-based authorization check
   const { role } = session.user;
-  if (!["ADMIN", "MODERATOR","DEVELOPER" ].includes(role)) {
+  if (!["ADMIN", "MODERATOR", "DEVELOPER"].includes(role)) {
     return NextResponse.json(
       { error: "Forbidden. You don't have permission to access this resource." },
       { status: 403 }
@@ -37,7 +37,7 @@ export const GET = async (req: NextRequest) => {
 
     // Build filter conditions
     const whereClause: any = {};
-    
+
     // If status is specified, filter by it
     if (statusType) {
       whereClause.status = {
@@ -48,8 +48,8 @@ export const GET = async (req: NextRequest) => {
     // Add search filter if provided
     if (search) {
       whereClause.OR = [
-        { metadata: { title: { contains: search, mode: 'insensitive' } } },
-        { metadata: { subtitle: { contains: search, mode: 'insensitive' } } }
+        { metadata: { title: { contains: search } } },
+        { metadata: { subtitle: { contains: search } } }
       ];
     }
 
@@ -64,20 +64,20 @@ export const GET = async (req: NextRequest) => {
     const projects = await prisma.projectContent.findMany({
       where: whereClause,
       take: limit,
-      skip: skip,      orderBy: statusType === ProjectApprovalStatus.APPROVED 
+      skip: skip, orderBy: statusType === ProjectApprovalStatus.APPROVED
         ? [
-            {
-              metadata: {
-                featured: 'desc'
-              }
-            },
-            {
-              updatedAt: 'desc'
+          {
+            metadata: {
+              featured: 'desc'
             }
-          ]
-        : {
-            updatedAt: 'desc'
           },
+          {
+            updatedAt: 'desc'
+          }
+        ]
+        : {
+          updatedAt: 'desc'
+        },
       include: {
         metadata: true,
         status: {
@@ -104,7 +104,7 @@ export const GET = async (req: NextRequest) => {
           status: project?.status?.status,
         };
       }
-      
+
       if (statusType === ProjectApprovalStatus.REJECTED) {
         return {
           id: project.metadata.project_id,
@@ -115,7 +115,7 @@ export const GET = async (req: NextRequest) => {
           rejectionReason: project?.status?.rejected_reason || '',
         };
       }
-      
+
       if (statusType === ProjectApprovalStatus.APPROVED) {
         return {
           id: project.metadata.project_id,
