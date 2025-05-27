@@ -34,7 +34,7 @@ export default function Featured() {
   const displayProjects = isLoading ? skeletonProjects : featuredProjects
 
   return (
-    <section className="py-[60px] sm:py-[100px] bg-[#0c0a09] relative -mt-[150px] overflow-hidden">
+    <section className="py-[60px] sm:py-[100px] bg-[#0c0a09] relative -mt-[150px] overflow-hidden mt-2">
       <style jsx global>{`
         @keyframes smoothGlow {
           0% {

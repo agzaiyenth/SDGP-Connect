@@ -32,7 +32,7 @@ export default function Hero() {
               </div>
 
               <h1 className="text-pretty text-4xl font-bold tracking-tight lg:text-5xl">
-                Welcome to <span className="text-primary">SDGP - CONNECT</span>
+                Welcome to <span className="text-primary">SDGP</span>
               </h1>
 
               <p className="text-base text-muted-foreground lg:text-lg">
