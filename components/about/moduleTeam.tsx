@@ -420,7 +420,7 @@ const ModuleTeam: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
       >
-        Meet Our Module Team
+        Meet our module team
       </motion.h1>
 
       <motion.p

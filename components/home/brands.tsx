@@ -86,10 +86,10 @@ export function Brands() {
       <div className="mx-auto mt-32 w-full max-w-7xl">
         <div className="text-center text-5xl text-foreground">
           <span className="text-blue-900 ">
-            Making Projects
+            Making projects
           </span>
           <br />
-          <span>Into Brands.</span>
+          <span>Into brands.</span>
         </div>
 
         <div className="relative mt-7 h-[100px] w-full">

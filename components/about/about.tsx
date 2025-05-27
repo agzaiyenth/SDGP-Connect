@@ -35,7 +35,7 @@ export function AboutSection() {
                 <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">Our Vision</span>
               </div>
 
-              <h3 className="text-xl font-bold mb-2 text-center">Tech for Global Good</h3>
+              <h3 className="text-xl font-bold mb-2 text-center">Tech for global good</h3>
 
               <p className="text-zinc-400 mb-4 flex-grow text-center">
                 To become a launchpad for socially-driven tech innovation, where young minds transform global challenges into digital opportunities, building a more sustainable and equitable future through software.
@@ -49,7 +49,7 @@ export function AboutSection() {
                 <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">Our Core Values</span>
               </div>
 
-              <h3 className="text-xl font-bold mb-2 text-center">Driven by Purpose</h3>
+              <h3 className="text-xl font-bold mb-2 text-center">Driven by purpose</h3>
 
               <p className="text-zinc-400 mb-4 flex-grow text-center">
                 We believe in innovation, collaboration, and meaningful impact. Our community thrives on solving real-world problems, learning continuously, and developing technology that serves humanity and the planet.
