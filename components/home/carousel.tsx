@@ -13,6 +13,7 @@ const images = [
   '/assets/innovex.jpg',
   '/assets/movemate1.jpg',
   '/assets/win.jpg',
+  '/assets/dialog-ino.jpg',
 ];
 
 export default function Carousel() {
