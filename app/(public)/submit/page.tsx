@@ -38,7 +38,8 @@ const Page = () => {
           <div className="bg-[#0f0f0f] text-white p-6 md:p-8 rounded-2xl shadow-xl max-w-xl w-full max-h-[90vh] overflow-y-auto border border-neutral-700">
             <h2 className="text-2xl font-bold mb-5 text-center text-white">Submission Instructions</h2>
             <ul className="list-disc pl-5 space-y-3 text-neutral-300 text-sm md:text-base">
-              <li>All submissions will be <strong>carefully reviewed</strong> and recorded.</li>
+              <li>All submissions will be <strong>carefully reviewed</strong> and approved/rejected.</li>
+              <li><strong>It might take 0 – 2 days</strong> to review each project.</li>
               <li><strong>Failure to submit</strong> your project may impact your academic marks.</li>
               <li>Any <strong>one member</strong> from the team should submit the form.</li>
               <li>Once submitted, <strong>you cannot edit</strong> it. Resubmit if you need to make changes.</li>
