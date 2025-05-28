@@ -57,7 +57,7 @@ export function AboutSection() {
                   We believe in innovation, collaboration, and meaningful impact. Our community thrives on solving real-world problems, learning continuously, and developing technology that serves humanity and the planet.
                 </p>
               </div>
-
+              
               {/* Mission Card */}
               <div className="flex flex-col p-6 border border-zinc-800 rounded-lg w-full max-w-sm h-full md:col-span-2 lg:col-span-1 md:max-w-none lg:max-w-sm md:mx-auto lg:mx-0">
                 <div className="flex items-center justify-center space-x-2 mb-4 pt-2">
@@ -69,7 +69,6 @@ export function AboutSection() {
                   To empower the next generation of socially-conscious developers by offering hands-on experience in building impactful full-stack applications that address real-world challenges aligned with the UN SDGs.
                 </p>
               </div>
-
             </div>
           </div>
         </div>

@@ -153,40 +153,41 @@ const teamMembers = [
     image: "/assets/ahtshayan sir.png",
   },
   //former members
+  /*
   {
   name: "Nuwan [LastName]",
   role: "Former Lecturer",
   email: "nuwan@example.com",
   linkedin: "https://www.linkedin.com/in/nuwan-placeholder",
   description: "Lecturer at IIT.",
-  category: "Primary",
+  category: "Former",
   image: "/assets/nuwan.png",
-},
+}, */
 {
   name: "Sulari Fernando",
   role: "Former Lecturer",
   email: "sulari.f@iit.ac.lk",
   linkedin: "https://www.linkedin.com/in/supun-sulari-fernando-ba40704b",
   description: "Lecturer at IIT.",
-  category: "Primary",
-  image: "/assets/sulari fernando.png",
-},
+  category: "Former",
+  image: "/assets/sul.jpg",
+}, /*
 {
   name: "Rukshala [LastName]",
   role: "Former Lecturer",
   email: "rukshala@example.com",
   linkedin: "https://www.linkedin.com/in/rukshala-placeholder",
   description: "Lecturer at IIT.",
-  category: "Primary",
+  category: "Former",
   image: "/assets/rukshala.png",
-},
+}, */
 {
   name: "Prathieshna Vekneswaran",
   role: "Former Lecturer",
   email: "prathieshnav@gmail.com",
   linkedin: "https://www.linkedin.com/in/prathieshna",
   description: "Lecturer at IIT.",
-  category: "Primary",
+  category: "Former",
   image: "/assets/prat.jpg",
 },
 {
@@ -195,7 +196,7 @@ const teamMembers = [
   email: "sharmilan.s@iit.ac.lk",
   linkedin: "https://www.linkedin.com/in/sharmilan-somasundaram",
   description: "Lecturer at IIT.",
-  category: "Primary",
+  category: "Former",
   image: "/assets/shar.jpg",
 },
 ];
