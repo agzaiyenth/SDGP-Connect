@@ -1,14 +1,15 @@
-import {Eye, Target,HeartHandshake } from "lucide-react"
+import {Eye, Target, HeartHandshake } from "lucide-react"
 import Image from "next/image"
 
 export function AboutSection() {
   return (
-    <section className="w-full py-12 md:py-14 lg:py-22  text-white">
-      <div className="container px-4 md:px-6">
+    <section className="w-full py-12 md:py-14 lg:py-22 text-white">
+      <div className="container mx-auto px-4 md:px-6 max-w-7xl">
         <div className="flex flex-col items-center text-center space-y-4">
+          {/* Logo Section */}
           <div className="relative w-24 h-24 mb-2">
             <div className="absolute inset-0 flex items-center justify-center bg-zinc-800 rounded-2xl">
-              <div className="w-12 h-12 text-white flex items-center justify-center ">
+              <div className="w-12 h-12 text-white flex items-center justify-center">
                 <Image
                   src="/assets/logo.png"
                   alt="Logo"
@@ -19,55 +20,56 @@ export function AboutSection() {
             </div>
           </div>
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter max-w-3xl">
+          {/* Heading */}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter max-w-4xl mx-auto">
             Crafting code for a sustainable tomorrow
           </h1>
 
-          <p className="text-zinc-400 md:text-xl max-w-[700px] mt-4 mb-8">
+          {/* Subtitle */}
+          <p className="text-zinc-400 text-base sm:text-lg md:text-xl max-w-[700px] mx-auto mt-4 mb-8">
             Build impactful tech solutions through teamwork, innovation, and purpose driven by SDGP and the UN SDGs.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mt-8">
-            {/* Vision */}
-            <div className="flex flex-col p-4 border border-zinc-800 rounded-lg">
-              <div className="inline-flex items-center space-x-2 mb-2 pt-6 self-center">
-                <Eye size={18} className="text-white" />
-                <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">Our Vision</span>
+          {/* Cards Grid */}
+          <div className="w-full max-w-6xl mx-auto mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+              
+              {/* Vision Card */}
+              <div className="flex flex-col p-6 border border-zinc-800 rounded-lg w-full max-w-sm h-full">
+                <div className="flex items-center justify-center space-x-2 mb-4 pt-2">
+                  <Eye size={18} className="text-white" />
+                  <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">Our Vision</span>
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-center">Tech for global good</h3>
+                <p className="text-zinc-400 text-center flex-grow leading-relaxed">
+                  To become a launchpad for socially-driven tech innovation, where young minds transform global challenges into digital opportunities, building a more sustainable and equitable future through software.
+                </p>
               </div>
 
-              <h3 className="text-xl font-bold mb-2 text-center">Tech for global good</h3>
-
-              <p className="text-zinc-400 mb-4 flex-grow text-center">
-                To become a launchpad for socially-driven tech innovation, where young minds transform global challenges into digital opportunities, building a more sustainable and equitable future through software.
-              </p>
-            </div>
-
-            {/* Core Values */}
-            <div className="flex flex-col p-4 border border-zinc-800 rounded-lg">
-              <div className="inline-flex items-center space-x-2 mb-2 pt-6 self-center">
-                <HeartHandshake size={18} className="text-white" />
-                <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">Our Core Values</span>
+              {/* Core Values Card */}
+              <div className="flex flex-col p-6 border border-zinc-800 rounded-lg w-full max-w-sm h-full">
+                <div className="flex items-center justify-center space-x-2 mb-4 pt-2">
+                  <HeartHandshake size={18} className="text-white" />
+                  <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">Our Core Values</span>
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-center">Driven by purpose</h3>
+                <p className="text-zinc-400 text-center flex-grow leading-relaxed">
+                  We believe in innovation, collaboration, and meaningful impact. Our community thrives on solving real-world problems, learning continuously, and developing technology that serves humanity and the planet.
+                </p>
               </div>
 
-              <h3 className="text-xl font-bold mb-2 text-center">Driven by purpose</h3>
-
-              <p className="text-zinc-400 mb-4 flex-grow text-center">
-                We believe in innovation, collaboration, and meaningful impact. Our community thrives on solving real-world problems, learning continuously, and developing technology that serves humanity and the planet.
-              </p>
-            </div>
-
-            {/* Mission */}
-            <div className="flex flex-col p-4 border border-zinc-800 rounded-lg">
-              <div className="inline-flex items-center space-x-2 mb-2 pt-6 self-center">
-                <Target size={18} className="text-white" />
-                <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">Our Mission</span>
+              {/* Mission Card */}
+              <div className="flex flex-col p-6 border border-zinc-800 rounded-lg w-full max-w-sm h-full md:col-span-2 lg:col-span-1 md:max-w-none lg:max-w-sm md:mx-auto lg:mx-0">
+                <div className="flex items-center justify-center space-x-2 mb-4 pt-2">
+                  <Target size={18} className="text-white" />
+                  <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">Our Mission</span>
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-center">Empowering Innovators</h3>
+                <p className="text-zinc-400 text-center flex-grow leading-relaxed">
+                  To empower the next generation of socially-conscious developers by offering hands-on experience in building impactful full-stack applications that address real-world challenges aligned with the UN SDGs.
+                </p>
               </div>
 
-              <h3 className="text-xl font-bold mb-2 text-center">Empowering Innovators</h3>
-
-              <p className="text-zinc-400 mb-4 flex-grow text-center">
-                To empower the next generation of socially-conscious developers by offering hands-on experience in building impactful full-stack applications that address real-world challenges aligned with the UN SDGs.
-              </p>
             </div>
           </div>
         </div>
