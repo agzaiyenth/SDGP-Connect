@@ -11,6 +11,7 @@ import useGetPendingProjectsCount from '@/hooks/dashboard/useGetPendingProjectsC
 import { Clock, Folder, Star, Laptop } from 'lucide-react';
 import useGetActivity from '@/hooks/dashboard/useGetActivity';
 import useIsMobile from '@/hooks/useIsMobile';
+import useGetCountByStatus from '@/hooks/dashboard/useGetCountByStatus';
 
 export default function DashboardPage() {
   // Use the mobile detection hook
@@ -18,22 +19,22 @@ export default function DashboardPage() {
 
   // Fetch real data using custom hooks
   const { count: totalCount, isLoading: isTotalLoading } = useGetTotalProjectsCount();
-  const { count: featuredCount, isLoading: isFeaturedLoading } = useGetFeaturedProjectsCount();
   const { count: pendingCount, isLoading: isPendingLoading } = useGetPendingProjectsCount();
+  const { statusCounts, isLoading:isApprovedLoading, error } = useGetCountByStatus();
   
   // Stats card data
   const stats = [
+    {
+      title: 'Approved Projects',
+      value: isApprovedLoading ? <LoadingSpinner /> : statusCounts?.approvedCount?.toString() || '0',
+      icon: <Star className="h-5 w-5" />,
+      isLoading: isApprovedLoading
+    },
     {
       title: 'Total Projects',
       value: isTotalLoading ? <LoadingSpinner /> : totalCount?.toString() || '0',
       icon: <Folder className="h-5 w-5" />,
       isLoading: isTotalLoading
-    },
-    {
-      title: 'Featured Projects',
-      value: isFeaturedLoading ? <LoadingSpinner /> : featuredCount?.toString() || '0',
-      icon: <Star className="h-5 w-5" />,
-      isLoading: isFeaturedLoading
     },
     {
       title: 'Pending Review',
