@@ -5,146 +5,186 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
-import { useToast } from "@/hooks/contact/use-toast"
-import { PhoneCall, Loader2, CheckCircle2 } from "lucide-react"
-import Link from "next/link"
-
-const formSchema = z.object({
-  fullName: z.string().min(2, { message: "Please enter your name." }),
-  email: z.string().email({ message: "Enter a valid email address." }),
-  company: z.string().optional(),
-  interest: z.string().min(5, { message: "Let us know your interest." }),
-  message: z.string().min(20, { message: "Please describe your inquiry." }),
-})
-
-type FormData = z.infer<typeof formSchema>
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { Loader2, CheckCircle2, Zap, Phone, Mail, ArrowRight } from "lucide-react"
 
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
-  const { toast } = useToast()
-
-  const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      fullName: "",
-      email: "",
-      company: "",
-      interest: "",
-      message: "",
-    },
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    company: "",
+    interest: "",
+    message: "",
   })
+  const [errors, setErrors] = useState<{[key: string]: string}>({})
 
-  const onSubmit = async (data: FormData) => {
+  const validateForm = () => {
+    const newErrors: {[key: string]: string} = {}
+    
+    if (!formData.fullName || formData.fullName.length < 2) {
+      newErrors.fullName = "Please enter your name."
+    }
+    
+    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Enter a valid email address."
+    }
+    
+    if (!formData.interest || formData.interest.length < 5) {
+      newErrors.interest = "Let us know your interest."
+    }
+    
+    if (!formData.message || formData.message.length < 20) {
+      newErrors.message = "Please describe your inquiry."
+    }
+    
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  const handleSubmit = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    
+    if (!validateForm()) return
+    
     setIsSubmitting(true)
     await new Promise((resolve) => setTimeout(resolve, 1500))
-    console.log(data)
+    console.log(formData)
     setIsSubmitting(false)
     setIsSuccess(true)
-    toast({
-      title: "Submission Received!",
-      description: "Thanks for reaching out. We'll be in touch soon.",
-    })
+  }
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: "" }))
+    }
+  }
+
+  const handleCall = () => {
+    window.open('tel:+94772345678', '_self')
+  }
+
+  const handleMail = () => {
+    window.open('mailto:contact@sdgp.lk?subject=Inquiry&body=Hello, I would like to get in touch regarding...', '_self')
   }
 
   return (
-    <section className="relative min-h-screen overflow-x-hidden overflow-y-auto px-auto px-10 bg-[#0a0a0a] text-white">
-      <div className="absolute inset-0 bg-[#0a0a0a] z-0" />
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 container">
-        <div className="space-y-6 mt-32 md:mt-12">
-          <h2 className="text-4xl md:text-5xl font-bold leading-tight">
-            Let’s Connect & Collaborate
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-xl">
-            Are you an investor, collaborator, or just curious about our module?
-            Whether you're exploring partnerships, investment opportunities, or talent discovery, we’re here to talk.
-          </p>
-          <Button size="lg" className="gap-3" asChild>
-            <a href="tel:+947777810612">
-              <PhoneCall className="w-5 h-5" /> Call Now
-            </a>
-          </Button>
-        </div>
+    <div className="h-screen w-full bg-[#0a0a0a] text-white overflow-hidden">
+      <div className="h-full max-w-7xl mx-auto px-8 flex items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 w-full h-full items-center">
+          
+          {/* Left Section - Title and Info */}
+          <div className="flex flex-col justify-center space-y-8">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-3 rounded-full bg-primary/10 px-5 py-2.5 w-fit">
+              <Zap className="size-5 text-primary" />
+              <span className="text-base font-medium">Contact Us</span>
+            </div>
 
-        <Card className="w-full max-w-2xl mx-auto bg-background">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            {/* Heading */}
+            <h1 className="text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
+              Let's Connect & <span className="text-primary">Collaborate</span>
+            </h1>
+
+            {/* Description */}
+            <p className="text-xl text-muted-foreground max-w-xl leading-relaxed">
+              Ready to explore partnerships, investments, or collaborations? We'd love to hear from you and discuss how we can work together.
+            </p>
+
+            {/* Buttons */}
+            <div className="mt-8 lg:mt-10 xl:mt-12 flex w-full flex-col justify-center gap-3 sm:gap-4 sm:flex-row lg:justify-start">
+              
+              {/* Call Button */}
+              <Button
+                variant="outline"
+                className="group relative w-full overflow-hidden sm:w-auto lg:text-base xl:text-lg"
+                size="lg"
+                onClick={handleCall}
+              >
+                <div className="absolute inset-0 bg-primary/10 transition-transform group-hover:translate-y-full" />
+                <Phone className="mr-2 size-4 lg:size-5" />
+                Call Us
+              </Button>
+
+              {/* Email Button */}
+              <Button
+                size="lg"
+                className="group w-full sm:w-auto lg:text-base xl:text-lg"
+                onClick={handleMail}
+              >
+                Email Us
+                <Mail className="ml-2 size-4 lg:size-5 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Right Section - Contact Form */}
+          <div className="flex items-center justify-center h-full">
+            <Card className="w-full max-w-lg bg-background border">
               <CardHeader>
                 <h3 className="text-2xl font-semibold">Get in Touch</h3>
               </CardHeader>
               <CardContent className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="fullName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Your Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="John Doe" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email Address</FormLabel>
-                      <FormControl>
-                        <Input type="email" placeholder="info@psycodelabs.lk" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="company"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Company / Organization</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Psycode Lab's" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="interest"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Interest</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Investment, collaboration, talent acquisition..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Message</FormLabel>
-                      <FormControl>
-                        <Textarea placeholder="Tell us more about how you'd like to collaborate..." rows={5} {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div>
+                  <label className="block text-sm font-medium mb-1">Your Name</label>
+                  <Input 
+                    placeholder="John Doe" 
+                    value={formData.fullName}
+                    onChange={(e) => handleInputChange('fullName', e.target.value)}
+                  />
+                  {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1">Email Address</label>
+                  <Input 
+                    type="email" 
+                    placeholder="info@psycodelabs.lk" 
+                    value={formData.email}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                  />
+                  {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1">Company / Organization</label>
+                  <Input 
+                    placeholder="Psycode Lab's" 
+                    value={formData.company}
+                    onChange={(e) => handleInputChange('company', e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1">Interest</label>
+                  <Input 
+                    placeholder="Investment, collaboration, talent acquisition..." 
+                    value={formData.interest}
+                    onChange={(e) => handleInputChange('interest', e.target.value)}
+                  />
+                  {errors.interest && <p className="text-red-500 text-sm mt-1">{errors.interest}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1">Message</label>
+                  <Textarea 
+                    placeholder="Tell us more about how you'd like to collaborate..." 
+                    rows={4} 
+                    value={formData.message}
+                    onChange={(e) => handleInputChange('message', e.target.value)}
+                    className="resize-none" 
+                  />
+                  {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
+                </div>
               </CardContent>
               <CardFooter className="flex flex-col items-start space-y-3 pt-4">
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
+                <Button 
+                  onClick={handleSubmit}
+                  className="w-full" 
+                  disabled={isSubmitting}
+                >
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending...
@@ -159,10 +199,10 @@ export default function Contact() {
                   </div>
                 )}
               </CardFooter>
-            </form>
-          </Form>
-        </Card>
+            </Card>
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
   )
 }
