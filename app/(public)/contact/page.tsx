@@ -1,5 +1,4 @@
 import Contact from "@/components/contact/contact-form"
-import { ContactTitle } from "@/components/contact/contactTitle"
 
 export default function Page() {
   return (
