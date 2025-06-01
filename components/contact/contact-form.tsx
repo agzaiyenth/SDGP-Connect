@@ -67,7 +67,7 @@ export default function Contact() {
   }
 
   const handleMail = () => {
-    window.open('mailto:contact@sdgp.lk?subject=Inquiry&body=Hello, I would like to get in touch regarding...', '_self')
+    window.open('mailto:banu.a@iit.ac.lk?subject=Inquiry&body=Hello, I would like to get in touch regarding...', '_self')
   }
 
   return (
