@@ -24,6 +24,7 @@ function ProjectsPageContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [showMobileFilters, setShowMobileFilters] = useState(false);
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
 
     const currentParams = useMemo((): ProjectQueryParams => ({
         page: parseInt(searchParams.get('page') || '1', 10),
@@ -39,6 +40,13 @@ function ProjectsPageContent() {
 
     // Use the hook with added infinite scroll capabilities
     const { projects, isLoading, error, meta, hasMore, loadMore } = useProjects(currentParams);
+
+    // Set initial load to false after first load completes
+    useEffect(() => {
+        if (!isLoading && projects && isInitialLoad) {
+            setIsInitialLoad(false);
+        }
+    }, [isLoading, projects, isInitialLoad]);
 
     const initialFilters = useMemo((): FilterState => ({
         status: currentParams.status || [],
@@ -83,7 +91,8 @@ function ProjectsPageContent() {
         router.push(`${window.location.pathname}?${params.toString()}`, { scroll: false });
     }, [router, searchParams]);
 
-    if (isLoading && (!projects || projects.length === 0)) {
+    // Show full page skeleton only on initial load
+    if (isInitialLoad && isLoading && (!projects || projects.length === 0)) {
         return <LoadingSkeleton />;
     }
 
@@ -94,7 +103,6 @@ function ProjectsPageContent() {
                 defaultTitle={currentParams.title ?? ""}
                 onSearch={handleSearch}
             />
-
 
             <div className="flex flex-col md:flex-row gap-6 mt-8">
                 {/* Mobile Filter Overlay */}
@@ -107,10 +115,8 @@ function ProjectsPageContent() {
                             </Button>
                         </div>
                         <div className="mb-6">
-
                             <FilterSidebar onFilterChange={handleFilterChange} initialFilters={initialFilters} />
                         </div>
-
                     </div>
                 )}
 
@@ -135,13 +141,12 @@ function ProjectsPageContent() {
     )
 }
 
-
 // Wrap the client component in Suspense for loading fallback
 const Page = () => {
     return (
-        <Suspense fallback={<LoadingSkeleton />}>
+        // <Suspense fallback={<LoadingSkeleton />}>
             <ProjectsPageContent />
-        </Suspense>
+        // </Suspense>
     );
 };
 
