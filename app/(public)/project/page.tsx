@@ -41,6 +41,7 @@ function ProjectsPageContent() {
     // Use the hook with added infinite scroll capabilities
     const { projects, isLoading, error, meta, hasMore, loadMore } = useProjects(currentParams);
 
+    // Set initial load to false after first load completes
     useEffect(() => {
         if (!isLoading && projects && isInitialLoad) {
             setIsInitialLoad(false);
@@ -143,12 +144,13 @@ function ProjectsPageContent() {
 // Wrap the client component in Suspense for loading fallback
 const Page = () => {
     return (
-        // <Suspense fallback={<LoadingSkeleton />}>
+        <Suspense fallback={<LoadingSkeleton />}>
             <ProjectsPageContent />
-        // </Suspense>
+        </Suspense>
     );
 };
 
+// Define a skeleton component for the fallback
 const LoadingSkeleton = () => (
     <div className="container mx-auto py-8 px-4">
         <Skeleton className="h-12 w-full mb-8" /> {/* Placeholder for SearchHeader */}
