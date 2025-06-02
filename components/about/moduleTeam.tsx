@@ -134,6 +134,15 @@ const teamMembers = [
     image: "/assets/asith sir.png",
   },
   {
+    name: "Imasha Ayeshka Jayasundara",
+    role: "Full-Time Lecturer (Hybrid)",
+    email: "ayeshka.j@iit.ac.lk",
+    linkedin: "https://www.linkedin.com/in/imashaayeshka-jayasundara/",
+    description: "IIT lecturer",
+    category: "Primary",
+    image: "/assets/imasha.jpg",
+  },
+  {
     name: "Thashin Rahuman",
     role: "Full-Time Lecturer (Hybrid)",
     email: "thashin.r@iit.ac.lk",
@@ -163,42 +172,42 @@ const teamMembers = [
   category: "Former",
   image: "/assets/nuwan.png",
 }, */
-{
-  name: "Sulari Fernando",
-  role: "Lecturer at IIT.",
-  email: "sulari.f@iit.ac.lk",
-  linkedin: "https://www.linkedin.com/in/supun-sulari-fernando-ba40704b",
-  description: "Software Engineer | Junior Accountant | Lecturer | MBA, Business Analytics | BSc in Computer Science",
-  category: "Former",
-  image: "/assets/sul.jpg",
-}, 
-{
-  name: "Rukshala Weerasinghe",
-  role: "Visiting Lecturer",
-  email: "rukshala@example.com",
-  linkedin: "https://www.linkedin.com/in/rukshalaw/",
-  description: "Product Manager | Certified ScrumMaster® | Visiting Lecturer",
-  category: "Former",
-  image: "/assets/rukshala.jpg",
-}, 
-{
-  name: "Prathieshna Vekneswaran",
-  role: "Lecturer at IIT.",
-  email: "prathieshnav@gmail.com",
-  linkedin: "https://www.linkedin.com/in/prathieshna",
-  description: "Freelance Android Developer | Educator",
-  category: "Former",
-  image: "/assets/prat.jpg",
-},
-{
-  name: "Sharmilan Somasundaram",
-  role: "Lecturer at IIT.",
-  email: "sharmilan.s@iit.ac.lk",
-  linkedin: "https://www.linkedin.com/in/sharmilan-somasundaram",
-  description: "Certified Blockchain Solution Architect | MSc Big Data Analytics | Researcher",
-  category: "Former",
-  image: "/assets/shar.jpg",
-},
+  {
+    name: "Sulari Fernando",
+    role: "Lecturer at IIT.",
+    email: "sulari.f@iit.ac.lk",
+    linkedin: "https://www.linkedin.com/in/supun-sulari-fernando-ba40704b",
+    description: "Software Engineer | Junior Accountant | Lecturer | MBA, Business Analytics | BSc in Computer Science",
+    category: "Former",
+    image: "/assets/sul.jpg",
+  },
+  {
+    name: "Rukshala Weerasinghe",
+    role: "Visiting Lecturer",
+    email: "rukshala@example.com",
+    linkedin: "https://www.linkedin.com/in/rukshalaw/",
+    description: "Product Manager | Certified ScrumMaster® | Visiting Lecturer",
+    category: "Former",
+    image: "/assets/rukshala.jpg",
+  },
+  {
+    name: "Prathieshna Vekneswaran",
+    role: "Lecturer at IIT.",
+    email: "prathieshnav@gmail.com",
+    linkedin: "https://www.linkedin.com/in/prathieshna",
+    description: "Freelance Android Developer | Educator",
+    category: "Former",
+    image: "/assets/prat.jpg",
+  },
+  {
+    name: "Sharmilan Somasundaram",
+    role: "Lecturer at IIT.",
+    email: "sharmilan.s@iit.ac.lk",
+    linkedin: "https://www.linkedin.com/in/sharmilan-somasundaram",
+    description: "Certified Blockchain Solution Architect | MSc Big Data Analytics | Researcher",
+    category: "Former",
+    image: "/assets/shar.jpg",
+  },
 ];
 
 const ModuleTeam: React.FC = () => {
@@ -231,11 +240,10 @@ const ModuleTeam: React.FC = () => {
           {title}
         </motion.h2>
       )}
-      <div className={`grid gap-6 md:gap-8 ${
-        members.length === 1 
-          ? 'grid-cols-1 justify-items-center' 
+      <div className={`grid gap-6 md:gap-8 ${members.length === 1
+          ? 'grid-cols-1 justify-items-center'
           : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
-      }`}>
+        }`}>
         {members.map((member, index) => (
           <motion.div
             key={index}
