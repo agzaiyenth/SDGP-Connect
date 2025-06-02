@@ -41,7 +41,6 @@ function ProjectsPageContent() {
     // Use the hook with added infinite scroll capabilities
     const { projects, isLoading, error, meta, hasMore, loadMore } = useProjects(currentParams);
 
-    // Set initial load to false after first load completes
     useEffect(() => {
         if (!isLoading && projects && isInitialLoad) {
             setIsInitialLoad(false);
@@ -150,7 +149,6 @@ const Page = () => {
     );
 };
 
-// Define a skeleton component for the fallback
 const LoadingSkeleton = () => (
     <div className="container mx-auto py-8 px-4">
         <Skeleton className="h-12 w-full mb-8" /> {/* Placeholder for SearchHeader */}

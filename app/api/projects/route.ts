@@ -61,7 +61,6 @@ export const GET = async (req: NextRequest) => {
     const titleFilter = title
       ? [
           { title:    { contains: title } },
-          { subtitle: { contains: title } },
         ]
       : [];
 
