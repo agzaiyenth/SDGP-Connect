@@ -13,41 +13,41 @@ const competitions = [
     id: "hackathon-2024",
     title: "Tech Innovation Hackathon 2024",
     description: "48-hour coding challenge focused on sustainable technology solutions",
-    date: "March 15-17, 2024",
+    date: "March 15-25, 2025",
     winnersCount: 6,
     image: '/assets/1.jpg',
     category: "Technology",
-    prize: "$50,000 Total Prize Pool",
+    prize: "500,000 Total Prize Pool",
   },
   {
     id: "design-challenge",
     title: "UI/UX Design Challenge",
     description: "Creative design competition for mobile app interfaces",
-    date: "February 20-22, 2024",
+    date: "February 20-25, 2025",
     winnersCount: 4,
     image: '/assets/4.jpg',
     category: "Design",
-    prize: "$25,000 Total Prize Pool",
+    prize: "250,000 Total Prize Pool",
   },
   {
     id: "startup-pitch",
     title: "Startup Pitch Competition",
     description: "Entrepreneurial teams pitch their innovative business ideas",
-    date: "January 10-12, 2024",
+    date: "January 10-25, 2024",
     winnersCount: 5,
     image: '/assets/3.jpg',
     category: "Business",
-    prize: "$75,000 Total Prize Pool",
+    prize: "750,000 Total Prize Pool",
   },
   {
     id: "ai-challenge",
     title: "AI & Machine Learning Challenge",
     description: "Teams compete to solve real-world problems using AI",
-    date: "April 5-7, 2024",
+    date: "April 5-25, 2024",
     winnersCount: 3,
     image:'/assets/2.jpg',
     category: "Artificial Intelligence",
-    prize: "$40,000 Total Prize Pool",
+    prize: "400,000 Total Prize Pool",
   },
 ]
 
@@ -60,7 +60,7 @@ export default function AwardsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black -ml-24">
 
       {/* Hero Section */}
       <section className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 3xl:px-24 relative overflow-hidden pt-20 sm:pt-24 md:pt-28 lg:pt-32 xl:pt-40 2xl:pt-48 pb-16 sm:pb-20 md:pb-24 lg:pb-32 xl:pb-40">
