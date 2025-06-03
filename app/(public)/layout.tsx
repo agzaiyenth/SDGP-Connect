@@ -1,12 +1,7 @@
-import { ThemeProvider } from "@/components/Providers/ThemeProvider";
-import { NavBar } from "@/components/NavBar";
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata } from "next";
 import "../globals.css";
-import { Toaster } from "sonner";
-import { CustomCursor } from "@/components/Cursor";
-import Footer from "@/components/Footer";
-import { Analytics } from "@vercel/analytics/next"
+import ClientLayout from "@/components/Clientlayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "SDGP",
     description: "Where Your Future is Shaped",
-    url: "https://sdgp.lk", 
+    url: "https://sdgp.lk",
     siteName: "SDGP",
     images: [
       {
@@ -53,27 +48,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/iconw.png" type="image/png" sizes="128x128" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Analytics />
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-        <Toaster />
-        <NavBar/>
-        <div className="md:mx-24">
-        {children}
-        </div>
-        <CustomCursor />
-        <Footer/>
-        </ThemeProvider>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ClientLayout>{children}</ClientLayout>
       </body>
-    
     </html>
- 
   );
 }
