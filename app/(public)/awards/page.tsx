@@ -60,7 +60,7 @@ export default function AwardsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black -ml-24">
 
       {/* Hero Section */}
       <section className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 relative overflow-hidden mt-28 md:mt-0 md:py-32 lg:py-40 xl:py-48">
