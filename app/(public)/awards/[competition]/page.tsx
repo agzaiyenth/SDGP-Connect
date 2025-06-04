@@ -2,7 +2,6 @@ import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 
-// Mock data for winners
 const competitionData = {
   "hackathon-2024": {
     title: "Tech Innovation Hackathon 2024",
