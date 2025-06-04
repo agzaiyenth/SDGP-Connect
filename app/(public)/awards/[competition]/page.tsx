@@ -104,7 +104,7 @@ export default function CompetitionPage({ params }: { params: { competition: str
 
   if (!competition) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center px-4 -ml-24 sm:ml-0">
+      <div className="min-h-screen bg-#0c0a09 flex items-center justify-center px-4 ">
         <div className="text-center">
           <h1 className="text-xl sm:text-2xl font-bold text-white mb-4">Competition Not Found</h1>
           <Link href="/awards" className="text-gray-400 hover:text-white transition-colors">
@@ -116,7 +116,7 @@ export default function CompetitionPage({ params }: { params: { competition: str
   }
 
   return (
-    <div className="min-h-screen bg-black -ml-24 sm:ml-0">
+    <div className="min-h-screen bg-#0c0a09 ">
       {/* Darker Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-60 sm:w-80 h-60 sm:h-80 bg-blue-900 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse"></div>
@@ -125,7 +125,7 @@ export default function CompetitionPage({ params }: { params: { competition: str
       </div>
 
       {/* Header */}
-      <div className="relative bg-gray-900/50 backdrop-blur-sm border-b border-gray-800">
+      <div className="relative bg-#0c0a09 backdrop-blur-sm border-b border-gray-800">
         <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 py-8 sm:py-12 md:py-16">
           <Link
             href="/awards"
