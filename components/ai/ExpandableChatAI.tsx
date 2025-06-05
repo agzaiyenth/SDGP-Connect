@@ -58,7 +58,7 @@ export function ExpandableChatAI() {
               />
               <ChatBubbleMessage variant={message.sender === "user" ? "sent" : "received"}>
                 {message.sender === "ai" ? (
-                  <MarkdownAnswer content={message.content} showThink={showThink} />
+                  <MarkdownAnswer content={message.content} />
                 ) : (
                   message.content
                 )}
