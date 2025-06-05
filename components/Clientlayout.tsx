@@ -13,12 +13,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-      <Analytics />
-      <Toaster />
       <NavBar />
       <div className="md:mx-24">{children}</div>
       {!isMobile && <CustomCursor />}
       <Footer />
+      <Analytics />
+      <Toaster />
     </ThemeProvider>
   );
 }
