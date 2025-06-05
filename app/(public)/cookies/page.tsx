@@ -288,9 +288,9 @@ const CookiePolicyPage = () => {
                         <h4 className="font-semibold text-foreground mb-3">Browser-Specific Instructions:</h4>
                         <div className="grid gap-3">
                           {section.browserInstructions.map((instruction, idx) => (
-                            <div key={idx} className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
-                              <span className="font-medium text-sm">{instruction.browser}</span>
-                              <span className="text-muted-foreground text-sm">{instruction.instructions}</span>
+                            <div key={idx} className="p-3 bg-muted/50 rounded-lg space-y-2">
+                              <div className="font-medium text-sm text-foreground">{instruction.browser}</div>
+                              <div className="text-muted-foreground text-sm break-words">{instruction.instructions}</div>
                             </div>
                           ))}
                         </div>
