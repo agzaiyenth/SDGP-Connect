@@ -285,7 +285,7 @@ const PrivacyPolicyPage = () => {
           </motion.div>
         </motion.div>
 
-        {/* Quick Navigation */}
+        {/* Quick Navigation - Mobile Responsive */}
         <motion.div 
           initial="hidden"
           animate="visible"
@@ -301,18 +301,18 @@ const PrivacyPolicyPage = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
                   {sections.slice(0, 8).map((section) => (
                     <Button
                       key={section.id}
                       variant="ghost"
                       size="sm"
                       asChild
-                      className="justify-start text-xs"
+                      className="justify-start text-left h-auto py-3 px-4 whitespace-normal"
                     >
-                      <a href={`#${section.id}`}>
-                        <section.icon className="w-3 h-3 mr-1" />
-                        {section.title}
+                      <a href={`#${section.id}`} className="flex items-start gap-2">
+                        <section.icon className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                        <span className="text-sm leading-tight">{section.title}</span>
                       </a>
                     </Button>
                   ))}
