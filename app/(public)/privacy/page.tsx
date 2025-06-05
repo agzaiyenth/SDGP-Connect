@@ -70,7 +70,6 @@ const PrivacyPolicyPage = () => {
       details: [
         "Essential Cookies: Required for login functionality and platform performance",
         "Analytics: Anonymized usage data to understand user behavior and improve services",
-        "Preferences: Settings and customization preferences for your account",
         "Browser Control: You can manage cookie settings through your browser preferences",
         "Third-Party Analytics: Google Analytics and similar services may collect anonymized data"
       ]
@@ -85,7 +84,6 @@ const PrivacyPolicyPage = () => {
         "Secure Storage: Data is stored on secured cloud infrastructure with encryption at rest",
         "Access Control: Strict access controls limit who can view sensitive information",
         "Regular Audits: We conduct security assessments and updates regularly",
-        "Incident Response: Procedures are in place to respond to potential security breaches",
         "Data Backup: Regular backups ensure data availability and recovery capabilities"
       ]
     },
@@ -99,8 +97,6 @@ const PrivacyPolicyPage = () => {
         "Correction: Request correction of inaccurate or incomplete information",
         "Deletion: Request removal of your personal data (subject to legal requirements)",
         "Withdrawal: Withdraw consent for data processing at any time",
-        "Portability: Request your data in a portable format for transfer to other services",
-        "Objection: Object to certain types of data processing",
         "Support: Contact our support team for privacy-related concerns"
       ]
     },
@@ -115,21 +111,6 @@ const PrivacyPolicyPage = () => {
         "Academic Records: May be retained longer for educational evaluation and verification purposes",
         "Technical Logs: Automatically deleted after a reasonable period unless required for security or legal purposes",
         "Inactive Accounts: Data from inactive accounts may be archived or deleted after extended periods of inactivity"
-      ]
-    },
-    {
-      id: "third-party-services",
-      title: "Third-Party Services",
-      icon: Server,
-      content: `We rely on trusted third-party services to operate our platform:`,
-      details: [
-        "Hosting: Vercel and cloud infrastructure providers for platform hosting",
-        "Analytics: Google Analytics for anonymized usage statistics",
-        "Email Services: Email delivery services for notifications and communications",
-        "Cloud Storage: Secure cloud storage for media files and data backups",
-        "Authentication: OAuth providers for secure login options",
-        "Payment Processing: Secure payment processors (if applicable)",
-        "Note: These services have their own privacy policies and may collect technical data"
       ]
     },
     {
