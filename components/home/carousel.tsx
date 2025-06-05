@@ -29,12 +29,14 @@ export default function Carousel() {
       >
         {duplicatedImages.map((image, index) => (
             <div key={index} className="flex-none relative rounded-lg overflow-hidden w-[400px] aspect-video">
-            <img
+            <Image
               src={image}
               alt={`Carousel image ${index + 1}`}
-            
               className="object-cover"
               sizes="(max-width: 400px) 100vw, 400px"
+              width={400}
+              height={225}
+              priority={index === 0} // Preload the first image for LCP
             />
             </div>
         ))}

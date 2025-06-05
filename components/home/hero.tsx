@@ -22,6 +22,7 @@ const Logo: React.FC = () => (
         className="h-48 w-48 -mb-26 -mt-14"
         width={88}
         height={88}
+        priority // Ensure logo is prioritized for LCP
       />
     </div>
    
