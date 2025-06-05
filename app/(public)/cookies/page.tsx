@@ -16,7 +16,7 @@ const CookiePolicyPage = () => {
       id: "introduction",
       title: "Introduction",
       icon: Cookie,
-      content: `This Cookie Policy explains how SDGP-Connect ("we", "our", or "us") uses cookies and similar technologies to recognize you when you visit our website. It outlines what these technologies are, why we use them, and your rights to control their use. This policy works alongside our Privacy Policy to ensure you understand how your data is handled.`
+      content: `This Cookie Policy explains how SDGP.LK ("we", "our", or "us") uses cookies and similar technologies to recognize you when you visit our website. It outlines what these technologies are, why we use them, and your rights to control their use. This policy works alongside our Privacy Policy to ensure you understand how your data is handled.`
     },
     {
       id: "what-are-cookies",
@@ -26,7 +26,7 @@ const CookiePolicyPage = () => {
       details: [
         "Session Cookies: Temporary cookies that are deleted when you close your browser",
         "Persistent Cookies: Remain on your device for a set period or until you delete them",
-        "First-Party Cookies: Set directly by SDGP-Connect",
+        "First-Party Cookies: Set directly by SDGP.LK",
         "Third-Party Cookies: Set by external services we use on our platform"
       ]
     },
@@ -34,7 +34,7 @@ const CookiePolicyPage = () => {
       id: "types-of-cookies",
       title: "Types of Cookies We Use",
       icon: Settings,
-      content: `We use different categories of cookies to provide you with the best possible experience on SDGP-Connect:`,
+      content: `We use different categories of cookies to provide you with the best possible experience on SDGP.LK:`,
       subcategories: [
         {
           title: "Essential Cookies",
@@ -133,7 +133,7 @@ const CookiePolicyPage = () => {
       id: "cookie-impact",
       title: "Impact of Disabling Cookies",
       icon: AlertTriangle,
-      content: `While you can disable cookies, please note that this may impact your experience on SDGP-Connect:`,
+      content: `While you can disable cookies, please note that this may impact your experience on SDGP.LK:`,
       details: [
         "Essential Functionality: Disabling essential cookies may prevent login and core platform features",
         "Personalization: Your preferences and customizations may not be saved",
@@ -209,7 +209,7 @@ const CookiePolicyPage = () => {
             variants={itemVariants}
             className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6"
           >
-            Learn how we use cookies to enhance your experience on SDGP-Connect and how you can control them.
+            Learn how we use cookies to enhance your experience on SDGP.LK and how you can control them.
           </motion.p>
 
           <motion.div variants={itemVariants}>
@@ -328,7 +328,7 @@ const CookiePolicyPage = () => {
                     <br />
                     Email: <a href="mailto:support@sdgp.lk" className="text-primary hover:underline">support@sdgp.lk</a>
                     <br />
-                    Platform: SDGP-Connect
+                    Platform: SDGP.LK
                   </div>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Button asChild size="lg" className="rounded-full">
