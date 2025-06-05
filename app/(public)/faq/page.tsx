@@ -19,8 +19,8 @@ const FAQPage = () => {
     id: 1,
     category: "General",
     icon: MessageCircle,
-    question: "What is SDGP-Connect?",
-    answer: "SDGP-Connect is a collaborative platform built to showcase and support sustainable development projects aligned with the UN Sustainable Development Goals (SDGs). It connects students, researchers, professionals, and institutions to foster innovation, learning, and action toward global impact.",
+    question: "What is SDGP.LK?",
+    answer: "SDGP.LK is a collaborative platform built to showcase and support sustainable development projects aligned with the UN Sustainable Development Goals (SDGs). It connects students, researchers, professionals, and institutions to foster innovation, learning, and action toward global impact.",
     tags: ["platform", "sdg", "about"]
   },
   {
@@ -35,8 +35,8 @@ const FAQPage = () => {
     id: 3,
     category: "General",
     icon: Users,
-    question: "Who can use SDGP-Connect?",
-    answer: "Anyone passionate about sustainability is welcome! Whether you're a student, educator, researcher, NGO, government agency, or tech enthusiast, SDGP-Connect is designed to support your engagement with meaningful projects and global goals.",
+    question: "Who can use SDGP.LK?",
+    answer: "Anyone passionate about sustainability is welcome! Whether you're a student, educator, researcher, NGO, government agency, or tech enthusiast, SDGP.LK is designed to support your engagement with meaningful projects and global goals.",
     tags: ["users", "eligibility", "access"]
   },
   {
@@ -44,7 +44,7 @@ const FAQPage = () => {
     category: "Platform",
     icon: HelpCircle,
     question: "Is there a cost to use the platform?",
-    answer: "No. SDGP-Connect is completely free to use. Our aim is to remove financial barriers to participation and promote open collaboration for sustainable development. We are supported by academic institutions, grants, and partnerships.",
+    answer: "No. SDGP.LK is completely free to use. Our aim is to remove financial barriers to participation and promote open collaboration for sustainable development. We are supported by academic institutions, grants, and partnerships.",
     tags: ["cost", "free", "pricing"]
   },
   {
@@ -60,7 +60,7 @@ const FAQPage = () => {
     category: "Projects",
     icon: BookOpen,
     question: "What types of projects are featured on the platform?",
-    answer: "SDGP-Connect features projects across all 17 SDGs—from climate action and education to clean energy, innovation, and public health. These projects span local initiatives and international collaborations and may involve academic research, community outreach, or technical solutions.",
+    answer: "SDGP.LK features projects across all 17 SDGs—from climate action and education to clean energy, innovation, and public health. These projects span local initiatives and international collaborations and may involve academic research, community outreach, or technical solutions.",
     tags: ["projects", "types", "sdgs", "categories"]
   },
   {
@@ -146,8 +146,8 @@ const FAQPage = () => {
     id: 17,
     category: "General",
     icon: Info,
-    question: "Who created SDGP-Connect?",
-    answer: "SDGP-Connect was designed and developed by PsycodeLabs, a creative technology studio known for crafting innovative digital experiences. From user experience to visual identity, the entire platform was thoughtfully built to support meaningful collaboration around sustainable development goals.",
+    question: "Who created SDGP.LK?",
+    answer: "SDGP.LK was designed and developed by PsycodeLabs, a creative technology studio known for crafting innovative digital experiences. From user experience to visual identity, the entire platform was thoughtfully built to support meaningful collaboration around sustainable development goals.",
     tags: ["creators", "design", "development", "psycodeLabs", "team", "zion", "Agzaiyenth"]
   }
 
@@ -217,7 +217,7 @@ const FAQPage = () => {
             variants={itemVariants}
             className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8"
           >
-            Find answers to common questions about SDGP-Connect, our platform features, and how to get the most out of your sustainable development journey.
+            Find answers to common questions about SDGP.LK, our platform features, and how to get the most out of your sustainable development journey.
           </motion.p>
 
           {/* Search Bar */}

@@ -16,7 +16,7 @@ const PrivacyPolicyPage = () => {
       id: "introduction",
       title: "Introduction",
       icon: Shield,
-      content: `This Privacy Policy explains how SDGP-Connect ("we", "our", or "us") collects, uses, stores, and protects the personal information of users who visit or interact with our platform. By using our platform, you consent to the practices described in this policy. SDGP-Connect is committed to protecting your privacy and ensuring transparency about our data practices.`
+      content: `This Privacy Policy explains how SDGP.LK ("we", "our", or "us") collects, uses, stores, and protects the personal information of users who visit or interact with our platform. By using our platform, you consent to the practices described in this policy. SDGP.LK is committed to protecting your privacy and ensuring transparency about our data practices.`
     },
     {
       id: "information-collected",
@@ -263,7 +263,7 @@ const PrivacyPolicyPage = () => {
                     <br />
                     Email: <a href="mailto:support@sdgp.lk" className="text-primary hover:underline">support@sdgp.lk</a>
                     <br />
-                    Platform: SDGP-Connect
+                    Platform: SDGP.LK
                   </div>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Button asChild size="lg" className="rounded-full">
