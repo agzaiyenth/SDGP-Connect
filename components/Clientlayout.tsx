@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import useIsMobile from "@/hooks/useIsMobile";
 import { ThemeProvider } from "@/components/Providers/ThemeProvider";
 import { Analytics } from "@vercel/analytics/next";
+import { ExpandableChatAI } from "@/components/ai/ExpandableChatAI";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
@@ -15,6 +16,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
       <NavBar />
       <div className="md:mx-24">{children}</div>
+      <ExpandableChatAI />
       {!isMobile && <CustomCursor />}
       <Footer />
       <Analytics />
