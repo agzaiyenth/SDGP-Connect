@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, ChevronUp, MessageCircle, Search, HelpCircle, Users, Upload, BookOpen, Mail, Zap, AlertCircle, Info } from 'lucide-react';
+import { ChevronDown, ChevronUp, MessageCircle, Search, HelpCircle, Users, Upload, BookOpen, Mail, Zap, AlertCircle, Info, AlertTriangle, GraduationCap } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -94,23 +94,62 @@ const FAQPage = () => {
     question: "Are there resources for learning about SDGs?",
     answer: "Yes, we provide curated learning materials including SDG guides, case studies, project reports, and links to UN documentation. These help students and professionals build SDG-aligned knowledge and impact strategies.",
     tags: ["learning", "resources", "education", "sdgs"]
-  },
-  {
+  },  {
     id: 11,
     category: "Project Submission",
     icon: AlertCircle,
-    question: "What are the project submission rules and restrictions?",
-    answer: `All projects undergo manual review and may be approved or rejected within 0–2 days. Edits are not allowed after submission. You must include a cover image, at least 3 gallery images, and a valid contact number and email. Submitting false information is considered an offense. If your project is rejected, read the feedback carefully and resubmit accurately. Submission may be tied to academic grading where applicable.`,
-    tags: ["rules", "instructions", "resubmission", "academic"]
+    question: "How long does the review process take?",
+    answer: "All submissions are carefully reviewed and approved or rejected. The review process typically takes 0-2 days. Please be patient as our team ensures each project meets our quality standards and platform guidelines.",
+    tags: ["review", "approval", "timeline", "processing"]
   },
   {
-  id: 12,
-  category: "General",
-  icon: Info,
-  question: "Who created SDGP-Connect?",
-  answer: "SDGP-Connect was designed and developed by PsycodeLabs, a creative technology studio known for crafting innovative digital experiences. From user experience to visual identity, the entire platform was thoughtfully built to support meaningful collaboration around sustainable development goals.",
-  tags: ["creators", "design", "development", "psycodeLabs", "team","zion","Agzaiyenth "]
-}
+    id: 12,
+    category: "Project Submission",
+    icon: Upload,
+    question: "Can I edit my project after submission?",
+    answer: "No, once submitted, you cannot edit your project. If you need to make changes, you'll need to resubmit the entire project with the correct information. Please review your submission carefully before submitting.",
+    tags: ["editing", "resubmission", "changes", "final"]
+  },
+  {
+    id: 13,
+    category: "Project Submission",
+    icon: Users,
+    question: "Do all team members need to submit separately?",
+    answer: "No, only one member from your team needs to submit the project form. However, make sure you have permission from all team members and that all their information is accurately included in the submission.",
+    tags: ["team", "group", "submission", "members"]
+  },
+  {
+    id: 14,
+    category: "Project Submission",
+    icon: MessageCircle,
+    question: "What happens after my project is approved or rejected?",
+    answer: "Approved projects will receive a confirmation email to the provided email address. If rejected, you'll receive feedback explaining the reasons. Read the feedback carefully and resubmit correctly if needed. After submission, you may review your entry on the platform.",
+    tags: ["approval", "rejection", "feedback", "confirmation"]
+  },
+  {
+    id: 15,
+    category: "Project Submission",
+    icon: AlertTriangle,
+    question: "What are the consequences of providing false information?",
+    answer: "Providing false information in your project submission is considered an offense and may result in rejection of your project, academic penalties (if applicable), and potential restrictions on future submissions. Always ensure all information is accurate and truthful.",
+    tags: ["false", "information", "offense", "academic", "consequences"]
+  },
+  {
+    id: 16,
+    category: "Project Submission",
+    icon: GraduationCap,
+    question: "How does submission affect my academic marks?",
+    answer: "Failure to submit your project may impact your academic marks if this platform is being used as part of your coursework. Contact your instructor or institution for specific grading criteria and submission requirements.",
+    tags: ["academic", "marks", "grading", "coursework", "failure"]
+  },
+  {
+    id: 17,
+    category: "General",
+    icon: Info,
+    question: "Who created SDGP-Connect?",
+    answer: "SDGP-Connect was designed and developed by PsycodeLabs, a creative technology studio known for crafting innovative digital experiences. From user experience to visual identity, the entire platform was thoughtfully built to support meaningful collaboration around sustainable development goals.",
+    tags: ["creators", "design", "development", "psycodeLabs", "team", "zion", "Agzaiyenth"]
+  }
 
 ];
 
