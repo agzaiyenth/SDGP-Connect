@@ -34,7 +34,5 @@ export async function POST(req: NextRequest) {
   }
 
   const data = await groqRes.json();
-  // For debugging: log the full response
-  console.log('GROQ API response:', JSON.stringify(data, null, 2));
   return NextResponse.json(data);
 }
