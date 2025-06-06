@@ -35,7 +35,7 @@ export function ExpandableChatAI() {
   return (
     <ExpandableChat size="lg" position="bottom-right" icon={<Bot className="h-6 w-6" />}>
       <ExpandableChatHeader className="flex-col text-center justify-center">
-        <h1 className="text-xl font-semibold">Chat with AI ✨</h1>
+        <h1 className="text-xl font-semibold">Chat with AI</h1>
         <p className="text-sm text-muted-foreground">
           Ask me anything about the platform or components
         </p>
