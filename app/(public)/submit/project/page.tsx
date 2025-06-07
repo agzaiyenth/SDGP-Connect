@@ -1,8 +1,9 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import ProjectSubmissionForm from '../../../components/submit-form/SubmissionForm'
+
 import { MessageCircle, X } from 'lucide-react'
+import ProjectSubmissionForm from '@/components/submit-form/SubmissionForm'
 
 const Page = () => {
   const [showPopup, setShowPopup] = useState(true)
