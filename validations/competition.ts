@@ -11,7 +11,7 @@ export const CompetitionTypeEnum = z.enum([
 export const competitionSchema = z.object({
   name: z.string().min(1, "Competition name is required").max(100, "Name cannot exceed 100 characters"),
   type: CompetitionTypeEnum,
-  description: z.string().min(1, "Description is required").min(50, "Description must be at least 50 characters"),
+  description: z.string().min(1, "Description is required").min(10, "Description must be at least 10 characters"),
   start_date: z.date({
     required_error: "Start date is required",
   }),

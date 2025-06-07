@@ -253,7 +253,6 @@ export default function CompForm() {
                   date={watchedStartDate}
                   onDateChange={(date) => setValue("start_date", date!)}
                   placeholder="Select start date"
-                  minDate={new Date()}
                 />
               </div>
               {errors.start_date && (
@@ -271,7 +270,6 @@ export default function CompForm() {
                   date={watchedEndDate}
                   onDateChange={(date) => setValue("end_date", date!)}
                   placeholder="Select end date"
-                  minDate={watchedStartDate || new Date()}
                 />
               </div>
               {errors.end_date && (

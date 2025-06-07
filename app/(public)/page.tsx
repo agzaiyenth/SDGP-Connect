@@ -19,7 +19,7 @@ export default function Home() {
       <Domains />
       <ImpactStats />
       <Brands/>
-      <ExpandableChatDemo />
+
     </div>
   )
 }

@@ -16,11 +16,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
       <NavBar />
       <div className="md:mx-24">{children}</div>
-      <ExpandableChatAI />
       {!isMobile && <CustomCursor />}
       <Footer />
       <Analytics />
       <Toaster />
+      <ExpandableChatAI />
     </ThemeProvider>
   );
 }
