@@ -1,9 +1,12 @@
 'use client'
 import React, { useState } from 'react'
+import Image from "next/image";
 import Stepper, { Step } from '@/components/Award/stepForm';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { AsyncSelect } from "@/components/ui/async-select";
 import { FlipText } from '@/components/magicui/flip-text';
 import { AuroraText } from '@/components/magicui/aurora-text';
+import { ItemDisplay } from '@/components/ui/item-display';
 
 type Props = {}
 
@@ -14,19 +17,92 @@ const page = (props: Props) => {
   const [awardName, setAwardName] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-
+  
   // Mock data (normally would come from API)
   const mockProjects = [
-    { id: "1", name: "Project Alpha" },
-    { id: "2", name: "Project Beta" },
-    { id: "3", name: "Project Gamma" }
+    { 
+      id: "1", 
+      name: "Project Alpha", 
+      image: "https://api.dicebear.com/7.x/shapes/svg?seed=ProjectAlpha", 
+      groupNumber: "Group 12", 
+      year: "2025" 
+    },
+    { 
+      id: "2", 
+      name: "Project Beta", 
+      image: "https://api.dicebear.com/7.x/shapes/svg?seed=ProjectBeta", 
+      groupNumber: "Group 07", 
+      year: "2025" 
+    },
+    { 
+      id: "3", 
+      name: "Project Gamma", 
+      image: "https://api.dicebear.com/7.x/shapes/svg?seed=ProjectGamma", 
+      groupNumber: "Group 15", 
+      year: "2024" 
+    }
+  ];
+  
+  // Format date to show month and year only
+  const formatDate = (date: Date): string => {
+    return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  };
+
+  // Generate a unique avatar for competitions (fallback for missing images)
+  const getAvatarUrl = (name: string) => {
+    return `https://api.dicebear.com/7.x/shapes/svg?seed=${encodeURIComponent(name)}`;
+  };
+
+  // Updated mock competitions data with images and dates
+  const mockCompetitions = [
+    { 
+      id: "1", 
+      name: "Annual Innovation Challenge",
+      image: getAvatarUrl("Annual Innovation Challenge"), 
+      startDate: new Date("2025-03-01"),
+      endDate: new Date("2025-06-30")
+    },
+    { 
+      id: "2", 
+      name: "Summer Code Fest",
+      image: getAvatarUrl("Summer Code Fest"), 
+      startDate: new Date("2025-07-01"),
+      endDate: new Date("2025-08-31")
+    },
+    { 
+      id: "3", 
+      name: "Tech for Good Hackathon",
+      image: getAvatarUrl("Tech for Good Hackathon"), 
+      startDate: new Date("2025-09-15"),
+      endDate: new Date("2025-10-15")
+    }
   ];
 
-  const mockCompetitions = [
-    { id: "1", name: "Annual Innovation Challenge" },
-    { id: "2", name: "Summer Code Fest" },
-    { id: "3", name: "Tech for Good Hackathon" }
-  ];
+  // Mock API call for competitions
+  const searchCompetitions = async (query?: string) => {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    if (!query) return mockCompetitions;
+
+    return mockCompetitions.filter(competition => 
+      competition.name.toLowerCase().includes(query.toLowerCase())
+    );
+  };
+
+  // Mock API call for projects
+  const searchProjects = async (query?: string) => {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    if (!query) return mockProjects;
+
+    return mockProjects.filter(project => 
+      project.name.toLowerCase().includes(query.toLowerCase()) ||
+      project.groupNumber.toLowerCase().includes(query.toLowerCase()) ||
+      project.year.toLowerCase().includes(query.toLowerCase())
+    );
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -71,22 +147,41 @@ const page = (props: Props) => {
           >
             <Step>
               <h2 className="text-xl font-semibold mb-4">Select Project</h2>
-              <p className="text-muted-foreground mb-6">Choose the project you want to award</p>
-              
-              <div className="mb-6">
+              <p className="text-muted-foreground mb-6">Choose the project you want to award</p>              <div className="mb-6">
                 <label className="block text-sm font-medium mb-2">Project</label>
-                <Select value={projectId} onValueChange={setProjectId}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a project" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {mockProjects.map(project => (
-                      <SelectItem key={project.id} value={project.id}>
-                        {project.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <AsyncSelect
+                  fetcher={searchProjects}
+                  renderOption={(project) => (
+                    <ItemDisplay 
+                      name={project.name}
+                      image={project.image}
+                      subtitle={`${project.groupNumber} | ${project.year}`}
+                      getFallbackImage={getAvatarUrl}
+                    />
+                  )}
+                  getOptionValue={(project) => project.id}
+                  getDisplayValue={(project) => (
+                    <ItemDisplay 
+                      name={project.name}
+                      image={project.image}
+                      getFallbackImage={getAvatarUrl}
+                      size="small"
+                    />
+                  )}
+                  notFound={<div className="py-6 text-center text-sm">No projects found</div>}
+                  loadingSkeleton={
+                    <div className="p-4 text-center">
+                      <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full mx-auto" />
+                      <p className="mt-2 text-sm text-muted-foreground">Loading projects...</p>
+                    </div>
+                  }                  label="Project"
+                  placeholder="Search projects..."
+                  value={projectId}
+                  onChange={setProjectId}
+                  width="100%"
+                  className="w-full"
+                  triggerClassName="w-full"
+                />
               </div>
             </Step>
             
@@ -96,18 +191,37 @@ const page = (props: Props) => {
               
               <div className="mb-6">
                 <label className="block text-sm font-medium mb-2">Competition</label>
-                <Select value={competitionId} onValueChange={setCompetitionId}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a competition" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {mockCompetitions.map(competition => (
-                      <SelectItem key={competition.id} value={competition.id}>
-                        {competition.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <AsyncSelect
+                  fetcher={searchCompetitions}                  renderOption={(competition) => (
+                    <ItemDisplay 
+                      name={competition.name}
+                      image={competition.image}
+                      subtitle={`${formatDate(competition.startDate)} - ${formatDate(competition.endDate)}`}
+                      getFallbackImage={getAvatarUrl}
+                    />
+                  )}
+                  getOptionValue={(competition) => competition.id}                  getDisplayValue={(competition) => (
+                    <ItemDisplay 
+                      name={competition.name}
+                      image={competition.image}
+                      getFallbackImage={getAvatarUrl}
+                      size="small"
+                    />
+                  )}
+                  notFound={<div className="py-6 text-center text-sm">No competitions found</div>}
+                  loadingSkeleton={
+                    <div className="p-4 text-center">
+                      <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full mx-auto" />
+                      <p className="mt-2 text-sm text-muted-foreground">Loading competitions...</p>
+                    </div>
+                  }                  label="Competition"
+                  placeholder="Search competitions..."
+                  value={competitionId}
+                  onChange={setCompetitionId}
+                  width="100%"
+                  className="w-full"
+                  triggerClassName="w-full"
+                />
               </div>
             </Step>
             
