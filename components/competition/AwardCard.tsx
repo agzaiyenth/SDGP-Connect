@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 interface AwardCardProps {
   winner: {
@@ -7,16 +8,17 @@ interface AwardCardProps {
     team: string
     sdgpYear: string
     cover: string
-    name: string
+    award: string
     description: string
-    image?: string
   }
 }
 
 export default function AwardCard({ winner }: AwardCardProps) {
+  const router = useRouter();
   return (
     <div
-      className="group relative bg-gray-900 backdrop-blur-sm rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-800 hover:border-gray-700 transition-all duration-500 hover:scale-[1.03] hover:shadow-2xl hover:shadow-blue-950/30 h-[380px] sm:h-[420px] md:h-[450px] flex flex-col"
+      className="group relative bg-gray-900 backdrop-blur-sm rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-800 hover:border-gray-700 transition-all duration-500 hover:scale-[1.03] hover:shadow-2xl hover:shadow-blue-950/30 h-[380px] sm:h-[420px] md:h-[450px] flex flex-col cursor-pointer"
+      onClick={() => router.push(`/project/${winner.id}`)}
     >
       {/* Subtle Blue Glow on Hover */}
       <div className="absolute inset-0 bg-blue-950 opacity-0 group-hover:opacity-15 transition-opacity duration-500 rounded-2xl sm:rounded-3xl"></div>
@@ -24,7 +26,7 @@ export default function AwardCard({ winner }: AwardCardProps) {
       {/* Team Image */}
       <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden flex-shrink-0">
         <Image
-          src={winner.cover || winner.image || '/assets/1.jpg'}
+          src={winner.cover}
           alt={winner.projectName}
           fill
           className="object-cover group-hover:scale-110 transition-transform duration-700"
@@ -35,7 +37,7 @@ export default function AwardCard({ winner }: AwardCardProps) {
         {/* Award Badge */}
         <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-10">
           <div className="bg-gray-800/90 backdrop-blur-sm border border-gray-700 px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 rounded-full shadow-lg">
-            <span className="font-bold text-xs sm:text-sm text-white">{winner.name}</span>
+            <span className="font-bold text-xs sm:text-sm text-white">{winner.award}</span>
           </div>
         </div>
         {/* Enhanced Hover Overlay - positioned at bottom */}

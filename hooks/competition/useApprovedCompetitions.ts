@@ -7,6 +7,7 @@ export interface ApprovedCompetition {
   description: string;
   logo: string | null;
   cover: string | null;
+type: string;
   startDate: string;
   endDate: string;
   winnersCount: number;

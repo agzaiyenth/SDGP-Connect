@@ -144,7 +144,7 @@ export default function AwardsPage() {
               startDate={competition.startDate}
               endDate={competition.endDate}
               logo={competition.logo || "/assets/placeholder.svg"}
-              viewLink={`/awards/${competition.id}`}
+              viewLink={`/competitions/${competition.id}`}
               description={competition.description}
               winnersCount={competition.winnersCount}
             />
