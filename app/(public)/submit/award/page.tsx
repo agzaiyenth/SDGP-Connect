@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from "next/image";
 import Stepper, { Step } from '@/components/Award/stepForm';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -7,6 +7,44 @@ import { AsyncSelect } from "@/components/ui/async-select";
 import { FlipText } from '@/components/magicui/flip-text';
 import { AuroraText } from '@/components/magicui/aurora-text';
 import { ItemDisplay } from '@/components/ui/item-display';
+import { useAwardSubmission } from '@/hooks/awards/useAwardSubmission';
+import { AwardSuccessCard } from '@/components/Award/AwardSuccessCard';
+import { useRouter } from 'next/navigation';
+
+// Types for the mapped data
+interface ProjectOption {
+  id: string;
+  name: string;
+  image: string;
+  groupNumber: string;
+  year: string;
+}
+
+interface CompetitionOption {
+  id: string;
+  name: string;
+  image: string;
+  startDate: string;
+  endDate: string;
+}
+
+// Utility functions
+const getAvatarUrl = (name: string): string => {
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff&size=128`;
+};
+
+const formatDate = (dateString: string): string => {
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric' 
+    });
+  } catch (error) {
+    return dateString;
+  }
+};
 
 type Props = {}
 
@@ -16,92 +54,62 @@ const page = (props: Props) => {
   const [competitionId, setCompetitionId] = useState("");
   const [awardName, setAwardName] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  
-  // Mock data (normally would come from API)
-  const mockProjects = [
-    { 
-      id: "1", 
-      name: "Project Alpha", 
-      image: "https://api.dicebear.com/7.x/shapes/svg?seed=ProjectAlpha", 
-      groupNumber: "Group 12", 
-      year: "2025" 
-    },
-    { 
-      id: "2", 
-      name: "Project Beta", 
-      image: "https://api.dicebear.com/7.x/shapes/svg?seed=ProjectBeta", 
-      groupNumber: "Group 07", 
-      year: "2025" 
-    },
-    { 
-      id: "3", 
-      name: "Project Gamma", 
-      image: "https://api.dicebear.com/7.x/shapes/svg?seed=ProjectGamma", 
-      groupNumber: "Group 15", 
-      year: "2024" 
+  const [imagePreview, setImagePreview] = useState<string | null>(null);  
+  const {
+    isSubmitting,
+    error,
+    success,
+    validationErrors,
+    submitAward,
+  } = useAwardSubmission();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (success) {
+      const timeout = setTimeout(() => {
+        router.push('/');
+      }, 3500);
+      return () => clearTimeout(timeout);
     }
-  ];
-  
-  // Format date to show month and year only
-  const formatDate = (date: Date): string => {
-    return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-  };
+  }, [success, router]);
 
-  // Generate a unique avatar for competitions (fallback for missing images)
-  const getAvatarUrl = (name: string) => {
-    return `https://api.dicebear.com/7.x/shapes/svg?seed=${encodeURIComponent(name)}`;
-  };
-
-  // Updated mock competitions data with images and dates
-  const mockCompetitions = [
-    { 
-      id: "1", 
-      name: "Annual Innovation Challenge",
-      image: getAvatarUrl("Annual Innovation Challenge"), 
-      startDate: new Date("2025-03-01"),
-      endDate: new Date("2025-06-30")
-    },
-    { 
-      id: "2", 
-      name: "Summer Code Fest",
-      image: getAvatarUrl("Summer Code Fest"), 
-      startDate: new Date("2025-07-01"),
-      endDate: new Date("2025-08-31")
-    },
-    { 
-      id: "3", 
-      name: "Tech for Good Hackathon",
-      image: getAvatarUrl("Tech for Good Hackathon"), 
-      startDate: new Date("2025-09-15"),
-      endDate: new Date("2025-10-15")
+  // Fetcher functions for AsyncSelect - these call the API directly
+  const searchProjects = async (query?: string): Promise<ProjectOption[]> => {
+    try {
+      const response = await fetch(`/api/projects/search?q=${encodeURIComponent(query || '')}&limit=5`);
+      if (!response.ok) throw new Error('Failed to fetch projects');
+      
+      const projects = await response.json();
+      return projects.map((project: any): ProjectOption => ({
+        id: project.project_id,
+        name: project.title,
+        image: project.logo || getAvatarUrl(project.title),
+        groupNumber: project.group_num,
+        year: project.sdgp_year
+      }));
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+      return [];
     }
-  ];
-
-  // Mock API call for competitions
-  const searchCompetitions = async (query?: string) => {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    if (!query) return mockCompetitions;
-
-    return mockCompetitions.filter(competition => 
-      competition.name.toLowerCase().includes(query.toLowerCase())
-    );
   };
 
-  // Mock API call for projects
-  const searchProjects = async (query?: string) => {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    if (!query) return mockProjects;
-
-    return mockProjects.filter(project => 
-      project.name.toLowerCase().includes(query.toLowerCase()) ||
-      project.groupNumber.toLowerCase().includes(query.toLowerCase()) ||
-      project.year.toLowerCase().includes(query.toLowerCase())
-    );
+  const searchCompetitions = async (query?: string): Promise<CompetitionOption[]> => {
+    try {
+      const response = await fetch(`/api/competition/search?q=${encodeURIComponent(query || '')}&limit=5`);
+      if (!response.ok) throw new Error('Failed to fetch competitions');
+      
+      const competitions = await response.json();
+      return competitions.map((competition: any): CompetitionOption => ({
+        id: competition.id,
+        name: competition.name,
+        image: competition.logo || getAvatarUrl(competition.name),
+        startDate: competition.start_date,
+        endDate: competition.end_date
+      }));
+    } catch (error) {
+      console.error('Error fetching competitions:', error);
+      return [];
+    }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,6 +138,21 @@ const page = (props: Props) => {
     reader.readAsDataURL(file);
   };
 
+  // Submission handler for the last step
+  const handleSubmit = async () => {
+    if (!projectId || !competitionId || !awardName || !imageFile) return;
+    await submitAward({
+      projectId,
+      competitionId,
+      awardName,
+      imageFile,
+    });
+  };
+
+  if (success) {
+    return <AwardSuccessCard />;
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-background">
       <div className="w-full max-w-4xl space-y-6">
@@ -141,17 +164,16 @@ const page = (props: Props) => {
             onStepChange={(step) => {
               console.log(step);
             }}
-            onFinalStepCompleted={() => console.log("All steps completed!")}
+            onFinalStepCompleted={handleSubmit}
             backButtonText="Previous"
             nextButtonText="Next"
           >
             <Step>
               <h2 className="text-xl font-semibold mb-4">Select Project</h2>
               <p className="text-muted-foreground mb-6">Choose the project you want to award</p>              <div className="mb-6">
-                <label className="block text-sm font-medium mb-2">Project</label>
-                <AsyncSelect
+                <label className="block text-sm font-medium mb-2">Project</label>                <AsyncSelect<ProjectOption>
                   fetcher={searchProjects}
-                  renderOption={(project) => (
+                  renderOption={(project: ProjectOption) => (
                     <ItemDisplay 
                       name={project.name}
                       image={project.image}
@@ -159,8 +181,8 @@ const page = (props: Props) => {
                       getFallbackImage={getAvatarUrl}
                     />
                   )}
-                  getOptionValue={(project) => project.id}
-                  getDisplayValue={(project) => (
+                  getOptionValue={(project: ProjectOption) => project.id}
+                  getDisplayValue={(project: ProjectOption) => (
                     <ItemDisplay 
                       name={project.name}
                       image={project.image}
@@ -168,16 +190,16 @@ const page = (props: Props) => {
                       size="small"
                     />
                   )}
-                  notFound={<div className="py-6 text-center text-sm">No projects found</div>}
+                  notFound={<div className="py-6 min-w-80 text-center text-sm">No projects found</div>}
                   loadingSkeleton={
-                    <div className="p-4 text-center">
+                    <div className="p-4 min-w-80 text-center">
                       <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full mx-auto" />
                       <p className="mt-2 text-sm text-muted-foreground">Loading projects...</p>
                     </div>
                   }                  label="Project"
                   placeholder="Search projects..."
                   value={projectId}
-                  onChange={setProjectId}
+                  onChange={val => setProjectId(val || "")}
                   width="100%"
                   className="w-full"
                   triggerClassName="w-full"
@@ -190,9 +212,8 @@ const page = (props: Props) => {
               <p className="text-muted-foreground mb-6">Choose which competition this award is for</p>
               
               <div className="mb-6">
-                <label className="block text-sm font-medium mb-2">Competition</label>
-                <AsyncSelect
-                  fetcher={searchCompetitions}                  renderOption={(competition) => (
+                <label className="block text-sm font-medium mb-2">Competition</label>                <AsyncSelect<CompetitionOption>
+                  fetcher={searchCompetitions}                  renderOption={(competition: CompetitionOption) => (
                     <ItemDisplay 
                       name={competition.name}
                       image={competition.image}
@@ -200,7 +221,7 @@ const page = (props: Props) => {
                       getFallbackImage={getAvatarUrl}
                     />
                   )}
-                  getOptionValue={(competition) => competition.id}                  getDisplayValue={(competition) => (
+                  getOptionValue={(competition: CompetitionOption) => competition.id}                  getDisplayValue={(competition: CompetitionOption) => (
                     <ItemDisplay 
                       name={competition.name}
                       image={competition.image}
@@ -217,7 +238,7 @@ const page = (props: Props) => {
                   }                  label="Competition"
                   placeholder="Search competitions..."
                   value={competitionId}
-                  onChange={setCompetitionId}
+                  onChange={val => setCompetitionId(val || "")}
                   width="100%"
                   className="w-full"
                   triggerClassName="w-full"
