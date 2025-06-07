@@ -22,6 +22,7 @@ enum AssociationType {
   PROJECT_DOMAIN
   PROJECT_SDG
   PROJECT_TECH
+  AWARD                
 }
 
 // Defines the different status states a project can be in.
@@ -120,12 +121,6 @@ enum TechStackEnum {
 
 }
 
-enum ProjectApprovalStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
-
 enum SocialTypeEnum {
   LINKEDIN
   TWITTER
@@ -134,6 +129,21 @@ enum SocialTypeEnum {
   YOUTUBE
   TIKTOK
 }
+
+enum ProjectApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+//  Aproval status used in competition and awards 
+// TODO: use this in project aproval too
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 
 // ===================== Models =====================
 
@@ -146,6 +156,11 @@ model User {
   // Relations to projects this user has approved/featured
   approvedProjects ProjectStatus[]   @relation("ApprovedBy")
   featuredProjects ProjectMetadata[] @relation("FeaturedBy")
+  acceptedAwards    Award[] @relation("AcceptedAwards")
+  rejectedAwards    Award[] @relation("RejectedAwards")
+  acceptedCompetitions Competition[] @relation("AcceptedCompetitions")
+  rejectedCompetitions Competition[] @relation("RejectedCompetitions")
+
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
 
@@ -163,6 +178,9 @@ model ProjectMetadata {
   cover_image        String?
   logo               String?
   featured           Boolean         @default(false)
+  awards             Award[]        @relation("ProjectAwards")
+
+
 
   // Links to the user who featured this project
   featured_by_userId String?
@@ -240,10 +258,14 @@ model ProjectAssociation {
   sdgGoal     SDGGoalEnum?
   techStack   TechStackEnum?
 
+  award_id    String?
+  award       Award?           @relation("AwardAssociation", fields: [award_id], references: [id], onDelete: SetNull)
+
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
 
   @@index([content_id], map: "project_association_index")
+  @@index([award_id])
 }
 
 // Stores individual slides related to a project
@@ -316,3 +338,67 @@ model ProjectDetails {
 
   @@index([content_id], map: "project_details_index")
 }
+
+// Competitions held on the platform, which can have multiple awards.
+// Each competition can be approved or rejected by a user.
+model Competition {
+  id               String         @id @default(uuid())
+  name             String
+  is_featured      Boolean        @default(false)
+  start_date       DateTime
+  end_date         DateTime
+  description      String         @db.LongText
+  type             String
+  logo             String?
+  cover_image      String?
+
+  approval_status  ApprovalStatus @default(PENDING)
+  accepted_by_id   String?
+  rejected_by_id   String?
+  rejected_reason  String?
+
+  accepted_by      User?          @relation("AcceptedCompetitions", fields: [accepted_by_id], references: [user_id], onDelete: SetNull)
+  rejected_by      User?          @relation("RejectedCompetitions", fields: [rejected_by_id], references: [user_id], onDelete: SetNull)
+
+  awards           Award[]
+
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([accepted_by_id])
+  @@index([rejected_by_id])
+}
+
+
+// Represents awards given in competitions. Each award is linked to a project and a competition.
+model Award {
+  id               String         @id @default(uuid())
+  name             String
+  image            String?
+
+  competition_id   String
+  competition      Competition    @relation(fields: [competition_id], references: [id], onDelete: Cascade)
+
+  project_id       String
+  project          ProjectMetadata @relation("ProjectAwards", fields: [project_id], references: [project_id], onDelete: Cascade)
+
+  associations     ProjectAssociation[] @relation("AwardAssociation")
+
+  approval_status  ApprovalStatus @default(PENDING)
+  accepted_by_id   String?
+  rejected_by_id   String?
+  rejected_reason  String?
+
+  accepted_by      User?          @relation("AcceptedAwards", fields: [accepted_by_id], references: [user_id], onDelete: SetNull)
+  rejected_by      User?          @relation("RejectedAwards", fields: [rejected_by_id], references: [user_id], onDelete: SetNull)
+
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([competition_id])
+  @@index([project_id])
+  @@index([accepted_by_id])
+  @@index([rejected_by_id])
+}
+
+
