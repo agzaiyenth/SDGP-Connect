@@ -59,7 +59,7 @@ const SuccessPage = ({ projectId }: SuccessPageProps) => {
           </Button>
         )}
         
-        <Button variant="outline" onClick={() => router.push('/submit')}>
+        <Button variant="outline" onClick={() => router.push('/submit/project')}>
           Submit Another Project
         </Button>
         
