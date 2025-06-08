@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Pagination, PaginationPrevious, PaginationNext } from '@/components/ui/pagination';
 import CompetitionDetailsDialog from '../dialogs/CompetitionDetailsDialog';
+import { RejectCompetitionDialog } from '../dialogs/RejectCompetitionDialog';
 
 interface Competition {
   id: string;
@@ -30,10 +31,17 @@ interface ApprovedCompetitionsTableProps {
 export default function ApprovedCompetitionsTable({ competitions, currentPage, totalPages, onNextPage, onPreviousPage }: ApprovedCompetitionsTableProps) {
   const [detailsOpen, setDetailsOpen] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState<string | null>(null);
+  const [rejectDialogOpen, setRejectDialogOpen] = React.useState(false);
+  const [selectedCompetition, setSelectedCompetition] = React.useState<Competition | null>(null);
 
   const handleViewDetails = (id: string) => {
     setSelectedId(id);
     setDetailsOpen(true);
+  };
+
+  const handleReject = (competition: Competition) => {
+    setSelectedCompetition(competition);
+    setRejectDialogOpen(true);
   };
 
   return (
@@ -70,8 +78,7 @@ export default function ApprovedCompetitionsTable({ competitions, currentPage, t
                 <div className="flex gap-2">
                   <Button size="sm" onClick={() => handleViewDetails(comp.id)}>
                     View Details
-                  </Button>
-                  <Button size="sm" variant="destructive">
+                  </Button>                  <Button size="sm" variant="destructive" onClick={() => handleReject(comp)}>
                     Reject
                   </Button>
                 </div>
@@ -83,9 +90,16 @@ export default function ApprovedCompetitionsTable({ competitions, currentPage, t
       <Pagination className="mt-4 flex justify-center items-center">
         {currentPage > 1 && <PaginationPrevious href="#" onClick={onPreviousPage} />}
         <span className="mx-2">Page {currentPage} of {totalPages}</span>
-        {currentPage < totalPages && <PaginationNext href="#" onClick={onNextPage} />}
-      </Pagination>
+        {currentPage < totalPages && <PaginationNext href="#" onClick={onNextPage} />}      </Pagination>
       <CompetitionDetailsDialog open={detailsOpen} onOpenChange={setDetailsOpen} competitionId={selectedId} />
+      {selectedCompetition && (
+        <RejectCompetitionDialog
+          open={rejectDialogOpen}
+          onOpenChange={setRejectDialogOpen}
+          competition={selectedCompetition}
+          onRejected={() => setSelectedCompetition(null)}
+        />
+      )}
     </div>
   );
 }

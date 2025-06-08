@@ -146,6 +146,7 @@ export default function CompetitionManagement() {
           totalPages={pendingTotalPages}
           onNextPage={fetchPendingNextPage}
           onPreviousPage={fetchPendingPreviousPage}
+          refresh={refreshPending} // pass refresh prop
         />
       );
     }

@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Pagination, PaginationPrevious, PaginationNext } from '@/components/ui/pagination';
 import CompetitionDetailsDialog from '../dialogs/CompetitionDetailsDialog';
+import { ApproveCompetitionDialog } from '../dialogs/ApproveCompetitionDialog';
+import { RejectCompetitionDialog } from '../dialogs/RejectCompetitionDialog';
 
 interface Competition {
   id: string;
@@ -24,15 +26,29 @@ interface PendingCompetitionsTableProps {
   totalPages: number;
   onNextPage: () => void;
   onPreviousPage: () => void;
+  refresh: () => void; // <-- add refresh prop
 }
 
-export default function PendingCompetitionsTable({ competitions, currentPage, totalPages, onNextPage, onPreviousPage }: PendingCompetitionsTableProps) {
+export default function PendingCompetitionsTable({ competitions, currentPage, totalPages, onNextPage, onPreviousPage, refresh }: PendingCompetitionsTableProps) {
   const [detailsOpen, setDetailsOpen] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState<string | null>(null);
+  const [approveDialogOpen, setApproveDialogOpen] = React.useState(false);
+  const [rejectDialogOpen, setRejectDialogOpen] = React.useState(false);
+  const [selectedCompetition, setSelectedCompetition] = React.useState<Competition | null>(null);
 
   const handleViewDetails = (id: string) => {
     setSelectedId(id);
     setDetailsOpen(true);
+  };
+
+  const handleApprove = (competition: Competition) => {
+    setSelectedCompetition(competition);
+    setApproveDialogOpen(true);
+  };
+
+  const handleReject = (competition: Competition) => {
+    setSelectedCompetition(competition);
+    setRejectDialogOpen(true);
   };
 
   return (
@@ -67,10 +83,10 @@ export default function PendingCompetitionsTable({ competitions, currentPage, to
                   <Button size="sm" onClick={() => handleViewDetails(comp.id)}>
                     View Details
                   </Button>
-                  <Button size="sm">
+                  <Button size="sm" onClick={() => handleApprove(comp)}>
                     Accept
                   </Button>
-                  <Button size="sm" variant="destructive">
+                  <Button size="sm" variant="destructive" onClick={() => handleReject(comp)}>
                     Reject
                   </Button>
                 </div>
@@ -85,6 +101,28 @@ export default function PendingCompetitionsTable({ competitions, currentPage, to
         {currentPage < totalPages && <PaginationNext href="#" onClick={onNextPage} />}
       </Pagination>
       <CompetitionDetailsDialog open={detailsOpen} onOpenChange={setDetailsOpen} competitionId={selectedId} />
+      {selectedCompetition && (
+        <>
+          <ApproveCompetitionDialog
+            open={approveDialogOpen}
+            onOpenChange={setApproveDialogOpen}
+            competitionId={selectedCompetition.id}
+            onApproved={() => {
+              setSelectedCompetition(null);
+              refresh(); // refresh after approve
+            }}
+          />
+          <RejectCompetitionDialog
+            open={rejectDialogOpen}
+            onOpenChange={setRejectDialogOpen}
+            competition={selectedCompetition}
+            onRejected={() => {
+              setSelectedCompetition(null);
+              refresh(); // refresh after reject
+            }}
+          />
+        </>
+      )}
     </div>
   );
 }
