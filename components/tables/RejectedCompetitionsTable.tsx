@@ -5,8 +5,38 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Pagination, PaginationPrevious, PaginationNext } from '@/components/ui/pagination';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import CompetitionDetailsDialog from '../dialogs/CompetitionDetailsDialog';
 
-export default function RejectedCompetitionsTable({ competitions, currentPage, totalPages, onNextPage, onPreviousPage }) {
+interface Competition {
+  id: string;
+  name: string;
+  start_date: string;
+  end_date: string;
+  description: string;
+  type: string;
+  cover_image?: string;
+  logo?: string;
+  rejected_by?: { name: string } | null;
+  rejected_reason?: string;
+}
+
+interface RejectedCompetitionsTableProps {
+  competitions: Competition[];
+  currentPage: number;
+  totalPages: number;
+  onNextPage: () => void;
+  onPreviousPage: () => void;
+}
+
+export default function RejectedCompetitionsTable({ competitions, currentPage, totalPages, onNextPage, onPreviousPage }: RejectedCompetitionsTableProps) {
+  const [detailsOpen, setDetailsOpen] = React.useState(false);
+  const [selectedId, setSelectedId] = React.useState<string | null>(null);
+
+  const handleViewDetails = (id: string) => {
+    setSelectedId(id);
+    setDetailsOpen(true);
+  };
+
   return (
     <div>
       <Table>
@@ -47,7 +77,7 @@ export default function RejectedCompetitionsTable({ competitions, currentPage, t
               </TableCell>
               <TableCell>
                 <div className="flex gap-2">
-                  <Button size="sm">
+                  <Button size="sm" onClick={() => handleViewDetails(comp.id)}>
                     View Details
                   </Button>
                   <Button size="sm" variant="destructive">
@@ -64,6 +94,7 @@ export default function RejectedCompetitionsTable({ competitions, currentPage, t
         <span className="mx-2">Page {currentPage} of {totalPages}</span>
         {currentPage < totalPages && <PaginationNext href="#" onClick={onNextPage} />}
       </Pagination>
+      <CompetitionDetailsDialog open={detailsOpen} onOpenChange={setDetailsOpen} competitionId={selectedId} />
     </div>
   );
 }

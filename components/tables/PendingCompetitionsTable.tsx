@@ -4,8 +4,37 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Pagination, PaginationPrevious, PaginationNext } from '@/components/ui/pagination';
+import CompetitionDetailsDialog from '../dialogs/CompetitionDetailsDialog';
 
-export default function PendingCompetitionsTable({ competitions, currentPage, totalPages, onNextPage, onPreviousPage }) {
+interface Competition {
+  id: string;
+  name: string;
+  start_date: string;
+  end_date: string;
+  description: string;
+  type: string;
+  cover_image?: string;
+  logo?: string;
+  // Add other fields as needed
+}
+
+interface PendingCompetitionsTableProps {
+  competitions: Competition[];
+  currentPage: number;
+  totalPages: number;
+  onNextPage: () => void;
+  onPreviousPage: () => void;
+}
+
+export default function PendingCompetitionsTable({ competitions, currentPage, totalPages, onNextPage, onPreviousPage }: PendingCompetitionsTableProps) {
+  const [detailsOpen, setDetailsOpen] = React.useState(false);
+  const [selectedId, setSelectedId] = React.useState<string | null>(null);
+
+  const handleViewDetails = (id: string) => {
+    setSelectedId(id);
+    setDetailsOpen(true);
+  };
+
   return (
     <div>
       <Table>
@@ -35,7 +64,7 @@ export default function PendingCompetitionsTable({ competitions, currentPage, to
               </TableCell>
               <TableCell>
                 <div className="flex gap-2">
-                  <Button size="sm">
+                  <Button size="sm" onClick={() => handleViewDetails(comp.id)}>
                     View Details
                   </Button>
                   <Button size="sm">
@@ -55,6 +84,7 @@ export default function PendingCompetitionsTable({ competitions, currentPage, to
         <span className="mx-2">Page {currentPage} of {totalPages}</span>
         {currentPage < totalPages && <PaginationNext href="#" onClick={onNextPage} />}
       </Pagination>
+      <CompetitionDetailsDialog open={detailsOpen} onOpenChange={setDetailsOpen} competitionId={selectedId} />
     </div>
   );
 }
