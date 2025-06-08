@@ -5,6 +5,9 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import PendingAwardsTable from '@/components/tables/PendingAwardsTable';
 import ApprovedAwardsTable from '@/components/tables/ApprovedAwardsTable';
 import RejectedAwardsTable from '@/components/tables/RejectedAwardsTable';
+import PendingAwardsTableSkeleton from '@/components/tables/skeletons/PendingAwardsTableSkeleton';
+import ApprovedAwardsTableSkeleton from '@/components/tables/skeletons/ApprovedAwardsTableSkeleton';
+import RejectedAwardsTableSkeleton from '@/components/tables/skeletons/RejectedAwardsTableSkeleton';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { RefreshCcw, AlertCircle, FileX2, Inbox } from 'lucide-react';
@@ -91,7 +94,7 @@ export default function AdminAwardsPage() {
 
   const renderContent = () => {
     if (currentTab === 'pending') {
-      if (pending.isLoading) return <div className="p-8 text-center">Loading...</div>;
+      if (pending.isLoading) return <PendingAwardsTableSkeleton />;
       if (pending.error) return renderError(pending.error);
       if (pending.isEmpty) return renderEmptyState('pending');
       return (
@@ -106,7 +109,7 @@ export default function AdminAwardsPage() {
       );
     }
     if (currentTab === 'approved') {
-      if (approved.isLoading) return <div className="p-8 text-center">Loading...</div>;
+      if (approved.isLoading) return <ApprovedAwardsTableSkeleton />;
       if (approved.error) return renderError(approved.error);
       if (approved.isEmpty) return renderEmptyState('approved');
       return (
@@ -121,7 +124,7 @@ export default function AdminAwardsPage() {
       );
     }
     if (currentTab === 'rejected') {
-      if (rejected.isLoading) return <div className="p-8 text-center">Loading...</div>;
+      if (rejected.isLoading) return <RejectedAwardsTableSkeleton />;
       if (rejected.error) return renderError(rejected.error);
       if (rejected.isEmpty) return renderEmptyState('rejected');
       return (

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
 import type { AdminAward } from '@/types/award';
 import AwardDetailsDialog from '../dialogs/AwardDetailsDialog';
 import ApproveAwardDialog from '../dialogs/ApproveAwardDialog';
@@ -16,10 +15,9 @@ interface PendingAwardsTableProps {
   onNextPage: () => void;
   onPreviousPage: () => void;
   refresh: () => void;
-  isLoading?: boolean;
 }
 
-export default function PendingAwardsTable({ awards, currentPage, totalPages, onNextPage, onPreviousPage, refresh, isLoading }: PendingAwardsTableProps) {
+export default function PendingAwardsTable({ awards, currentPage, totalPages, onNextPage, onPreviousPage, refresh }: PendingAwardsTableProps) {
   const [detailsOpen, setDetailsOpen] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState<string | null>(null);
   const [approveDialogOpen, setApproveDialogOpen] = React.useState(false);
@@ -71,40 +69,30 @@ export default function PendingAwardsTable({ awards, currentPage, totalPages, on
             <TableHead>Competition</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
-        </TableHeader>
-        <TableBody>
-          {isLoading
-            ? [...Array(5)].map((_, i) => (
-                <TableRow key={i}>
-                  <TableCell><Skeleton className="h-5 w-32" /></TableCell>
-                  <TableCell><Skeleton className="h-5 w-40" /></TableCell>
-                  <TableCell><Skeleton className="h-5 w-40" /></TableCell>
-                  <TableCell><Skeleton className="h-8 w-32" /></TableCell>
-                </TableRow>
-              ))
-            : awards.map((award: AdminAward) => (
-                <TableRow key={award.id}>
-                  <TableCell className="font-medium">{award.name}</TableCell>
-                  <TableCell>
-                    <div className="font-medium">{award.project.title}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {award.project.group_num} &bull; SDGP {award.project.sdgp_year}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="font-medium">{award.competition.name}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {formatShortDate(award.competition.start_date)} - {formatShortDate(award.competition.end_date)}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
-                      <Button size="sm" onClick={() => handleViewDetails(award.id)}>View Details</Button>                      <Button size="sm" onClick={() => handleApprove(award.id)}>Accept</Button>
-                      <Button size="sm" variant="destructive" onClick={() => handleReject(award.id)}>Reject</Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
+        </TableHeader>        <TableBody>
+          {awards.map((award: AdminAward) => (
+            <TableRow key={award.id}>
+              <TableCell className="font-medium">{award.name}</TableCell>
+              <TableCell>
+                <div className="font-medium">{award.project.title}</div>
+                <div className="text-xs text-muted-foreground">
+                  {award.project.group_num} &bull; SDGP {award.project.sdgp_year}
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="font-medium">{award.competition.name}</div>
+                <div className="text-xs text-muted-foreground">
+                  {formatShortDate(award.competition.start_date)} - {formatShortDate(award.competition.end_date)}
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="flex gap-2">
+                  <Button size="sm" onClick={() => handleViewDetails(award.id)}>View Details</Button>                      <Button size="sm" onClick={() => handleApprove(award.id)}>Accept</Button>
+                  <Button size="sm" variant="destructive" onClick={() => handleReject(award.id)}>Reject</Button>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
       <Pagination className="mt-4 flex justify-center items-center">
