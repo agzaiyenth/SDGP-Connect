@@ -81,17 +81,6 @@ export default function CompetitionCard({
             </div>
 
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded  flex items-center justify-center overflow-hidden">
-                  <Image
-                    src={logo}
-                    alt="Competition logo"
-                    width={32}
-                    height={32}
-                    className="object-contain w-8 h-8"
-                  />
-                </div>
-              </div>
               <span className="text-gray-400 group-hover:text-white transition-colors duration-300 flex items-center gap-1.5 text-xs">
                 View
                 <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
