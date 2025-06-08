@@ -4,9 +4,17 @@ import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '@
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { AdminAward } from '@/types/award';
+import AwardDetailsDialog from '../dialogs/AwardDetailsDialog';
 
 export default function PendingAwardsTable() {
   const { awards, isLoading } = usePendingAwards();
+  const [detailsOpen, setDetailsOpen] = React.useState(false);
+  const [selectedId, setSelectedId] = React.useState<string | null>(null);
+
+  function handleViewDetails(id: string) {
+    setSelectedId(id);
+    setDetailsOpen(true);
+  }
 
   function formatShortDate(dateStr: string) {
     if (!dateStr) return '';
@@ -56,7 +64,7 @@ export default function PendingAwardsTable() {
                   </TableCell>
                   <TableCell>
                     <div className="flex gap-2">
-                      <Button size="sm">View Details</Button>
+                      <Button size="sm" onClick={() => handleViewDetails(award.id)}>View Details</Button>
                       <Button size="sm">Accept</Button>
                       <Button size="sm" variant="destructive">Reject</Button>
                     </div>
@@ -65,6 +73,7 @@ export default function PendingAwardsTable() {
               ))}
         </TableBody>
       </Table>
+      <AwardDetailsDialog open={detailsOpen} onOpenChange={setDetailsOpen} awardId={selectedId} />
     </div>
   );
 }

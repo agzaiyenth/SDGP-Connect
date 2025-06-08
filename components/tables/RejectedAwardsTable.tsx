@@ -4,9 +4,17 @@ import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '@
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { AdminAward } from '@/types/award';
+import AwardDetailsDialog from '../dialogs/AwardDetailsDialog';
 
 export default function RejectedAwardsTable() {
   const { awards, isLoading } = useRejectedAwards();
+  const [detailsOpen, setDetailsOpen] = React.useState(false);
+  const [selectedId, setSelectedId] = React.useState<string | null>(null);
+
+  function handleViewDetails(id: string) {
+    setSelectedId(id);
+    setDetailsOpen(true);
+  }
 
   function formatShortDate(dateStr: string) {
     if (!dateStr) return '';
@@ -62,7 +70,7 @@ export default function RejectedAwardsTable() {
                   <TableCell>{award.rejected_reason || '-'}</TableCell>
                   <TableCell>
                     <div className="flex gap-2">
-                      <Button size="sm">View Details</Button>
+                      <Button size="sm" onClick={() => handleViewDetails(award.id)}>View Details</Button>
                       <Button size="sm" variant="destructive">Delete</Button>
                     </div>
                   </TableCell>
@@ -70,6 +78,7 @@ export default function RejectedAwardsTable() {
               ))}
         </TableBody>
       </Table>
+      <AwardDetailsDialog open={detailsOpen} onOpenChange={setDetailsOpen} awardId={selectedId} />
     </div>
   );
 }
