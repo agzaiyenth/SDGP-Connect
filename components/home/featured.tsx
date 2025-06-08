@@ -122,9 +122,17 @@ export default function Featured() {
                     <h3 className="text-lg sm:text-xl font-bold text-white leading-tight">
                       {project?.title || <div className="w-1/2 h-5 sm:h-6 bg-gray-700 rounded animate-pulse" />}
                     </h3>
-                    <p className="text-xs sm:text-sm text-white/70 line-clamp-3">
-                      {project?.subtitle || <div className="w-full h-3 sm:h-4 bg-gray-700 rounded animate-pulse" />}
-                    </p>
+                    
+                    {/* Fixed: Use conditional rendering instead of div inside p */}
+                    {project?.subtitle ? (
+                      <p className="text-xs sm:text-sm text-white/70 line-clamp-3">
+                        {project.subtitle}
+                      </p>
+                    ) : (
+                      <div className="text-xs sm:text-sm">
+                        <div className="w-full h-3 sm:h-4 bg-gray-700 rounded animate-pulse" />
+                      </div>
+                    )}
 
                     {/* Project types */}
                     <div className="mt-2 sm:mt-3 flex flex-wrap gap-1 sm:gap-2">
