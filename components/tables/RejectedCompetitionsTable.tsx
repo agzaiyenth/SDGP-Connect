@@ -6,6 +6,10 @@ import { Badge } from '@/components/ui/badge';
 import { Pagination, PaginationPrevious, PaginationNext } from '@/components/ui/pagination';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import CompetitionDetailsDialog from '../dialogs/CompetitionDetailsDialog';
+import DeleteCompetitionDialog from '../dialogs/DeleteCompetitionDialog';
+import { useGetCompetitionDeleteCount } from '@/hooks/competition/useGetCompetitionDeleteCount';
+import { useDeleteCompetition } from '@/hooks/competition/useDeleteCompetition';
+import { toast } from 'sonner';
 
 interface Competition {
   id: string;
@@ -26,15 +30,56 @@ interface RejectedCompetitionsTableProps {
   totalPages: number;
   onNextPage: () => void;
   onPreviousPage: () => void;
+  refresh?: () => void;
 }
 
-export default function RejectedCompetitionsTable({ competitions, currentPage, totalPages, onNextPage, onPreviousPage }: RejectedCompetitionsTableProps) {
+export default function RejectedCompetitionsTable({ competitions, currentPage, totalPages, onNextPage, onPreviousPage, refresh }: RejectedCompetitionsTableProps) {
   const [detailsOpen, setDetailsOpen] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState<string | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+  const [deleteId, setDeleteId] = React.useState<string | null>(null);
+  const [deleteName, setDeleteName] = React.useState<string | undefined>(undefined);
+  const [deleteAwardCount, setDeleteAwardCount] = React.useState<number | undefined>(undefined);
+
+  const { data: deleteCountData, fetchCount } = useGetCompetitionDeleteCount(deleteId || undefined);
+  const { deleteCompetition, loading: deleteLoading } = useDeleteCompetition({
+    onSuccess: () => {
+      setDeleteDialogOpen(false);
+      toast.success('Competition and related awards deleted successfully');
+      if (typeof refresh === 'function') refresh();
+    },
+    onError: () => {
+      toast.error('Failed to delete competition');
+    },
+  });
+
+  React.useEffect(() => {
+    if (deleteDialogOpen && deleteId) {
+      fetchCount();
+    }
+  }, [deleteDialogOpen, deleteId, fetchCount]);
+
+  React.useEffect(() => {
+    if (deleteCountData) {
+      setDeleteName(deleteCountData.name);
+      setDeleteAwardCount(deleteCountData.awardCount);
+    }
+  }, [deleteCountData]);
 
   const handleViewDetails = (id: string) => {
     setSelectedId(id);
     setDetailsOpen(true);
+  };
+
+  const handleDeleteClick = (id: string) => {
+    setDeleteId(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (deleteId) {
+      await deleteCompetition(deleteId);
+    }
   };
 
   return (
@@ -80,7 +125,7 @@ export default function RejectedCompetitionsTable({ competitions, currentPage, t
                   <Button size="sm" onClick={() => handleViewDetails(comp.id)}>
                     View Details
                   </Button>
-                  <Button size="sm" variant="destructive">
+                  <Button size="sm" variant="destructive" onClick={() => handleDeleteClick(comp.id)} disabled={deleteDialogOpen && deleteId === comp.id && (!deleteName || deleteAwardCount === undefined)}>
                     Delete
                   </Button>
                 </div>
@@ -95,6 +140,14 @@ export default function RejectedCompetitionsTable({ competitions, currentPage, t
         {currentPage < totalPages && <PaginationNext href="#" onClick={onNextPage} />}
       </Pagination>
       <CompetitionDetailsDialog open={detailsOpen} onOpenChange={setDetailsOpen} competitionId={selectedId} />
+      <DeleteCompetitionDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={handleConfirmDelete}
+        loading={deleteLoading}
+        competitionName={deleteName}
+        awardCount={deleteAwardCount}
+      />
     </div>
   );
 }
