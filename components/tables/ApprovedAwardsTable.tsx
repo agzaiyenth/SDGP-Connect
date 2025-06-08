@@ -1,19 +1,44 @@
 import React from 'react';
-import { useApprovedAwards } from '@/hooks/awards/useApprovedAwards';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { AdminAward } from '@/types/award';
 import AwardDetailsDialog from '../dialogs/AwardDetailsDialog';
+import RejectAwardDialog from '../dialogs/RejectAwardDialog';
+import { Pagination, PaginationPrevious, PaginationNext } from '@/components/ui/pagination';
+import { useAwardApprovalActions } from '@/hooks/awards/useAwardApprovalActions';
 
-export default function ApprovedAwardsTable() {
-  const { awards, isLoading } = useApprovedAwards();
+interface ApprovedAwardsTableProps {
+  awards: AdminAward[];
+  currentPage: number;
+  totalPages: number;
+  onNextPage: () => void;
+  onPreviousPage: () => void;
+  refresh: () => void;
+  isLoading?: boolean;
+}
+
+export default function ApprovedAwardsTable({ awards, currentPage, totalPages, onNextPage, onPreviousPage, refresh, isLoading }: ApprovedAwardsTableProps) {
   const [detailsOpen, setDetailsOpen] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState<string | null>(null);
+  const [rejectDialogOpen, setRejectDialogOpen] = React.useState(false);
+  const [rejectAwardId, setRejectAwardId] = React.useState<string | null>(null);
 
+  const { rejectAward, loading: actionLoading } = useAwardApprovalActions({
+    onSuccess: () => {
+      setRejectDialogOpen(false);
+      setRejectAwardId(null);
+      refresh();
+    },
+  });
   function handleViewDetails(id: string) {
     setSelectedId(id);
     setDetailsOpen(true);
+  }
+
+  function handleReject(id: string) {
+    setRejectAwardId(id);
+    setRejectDialogOpen(true);
   }
 
   function formatShortDate(dateStr: string) {
@@ -64,18 +89,27 @@ export default function ApprovedAwardsTable() {
                       {formatShortDate(award.competition.start_date)} - {formatShortDate(award.competition.end_date)}
                     </div>
                   </TableCell>
-                  <TableCell>{award.accepted_by?.name || '-'}</TableCell>
-                  <TableCell>
+                  <TableCell>{award.accepted_by?.name || '-'}</TableCell>                  <TableCell>
                     <div className="flex gap-2">
                       <Button size="sm" onClick={() => handleViewDetails(award.id)}>View Details</Button>
-                      <Button size="sm" variant="destructive">Reject</Button>
+                      <Button size="sm" variant="destructive" onClick={() => handleReject(award.id)}>Reject</Button>
                     </div>
                   </TableCell>
                 </TableRow>
               ))}
         </TableBody>
       </Table>
+      <Pagination className="mt-4 flex justify-center items-center">
+        {currentPage > 1 && <PaginationPrevious href="#" onClick={onPreviousPage} />}
+        <span className="mx-2">Page {currentPage} of {totalPages}</span>
+        {currentPage < totalPages && <PaginationNext href="#" onClick={onNextPage} />}      </Pagination>
       <AwardDetailsDialog open={detailsOpen} onOpenChange={setDetailsOpen} awardId={selectedId} />
+      <RejectAwardDialog
+        open={rejectDialogOpen}
+        onOpenChange={setRejectDialogOpen}
+        onConfirm={(reason) => rejectAwardId && rejectAward(rejectAwardId, reason)}
+        loading={actionLoading}
+      />
     </div>
   );
 }

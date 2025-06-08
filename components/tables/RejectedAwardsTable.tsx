@@ -1,19 +1,61 @@
 import React from 'react';
-import { useRejectedAwards } from '@/hooks/awards/useRejectedAwards';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { AdminAward } from '@/types/award';
 import AwardDetailsDialog from '../dialogs/AwardDetailsDialog';
+import DeleteAwardDialog from '../dialogs/DeleteAwardDialog';
+import { Pagination, PaginationPrevious, PaginationNext } from '@/components/ui/pagination';
+import { useAwardApprovalActions } from '@/hooks/awards/useAwardApprovalActions';
+import { toast } from 'sonner';
 
-export default function RejectedAwardsTable() {
-  const { awards, isLoading } = useRejectedAwards();
+interface RejectedAwardsTableProps {
+  awards: AdminAward[];
+  currentPage: number;
+  totalPages: number;
+  onNextPage: () => void;
+  onPreviousPage: () => void;
+  refresh: () => void;
+  isLoading?: boolean;
+}
+
+export default function RejectedAwardsTable({ awards, currentPage, totalPages, onNextPage, onPreviousPage, refresh, isLoading }: RejectedAwardsTableProps) {
   const [detailsOpen, setDetailsOpen] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState<string | null>(null);
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
+  const [deleteAwardId, setDeleteAwardId] = React.useState<string | null>(null);
 
+  const { deleteAward, loading: deleteLoading } = useAwardApprovalActions({
+    onSuccess: (action) => {
+      if (action === 'deleted') {
+        toast.success('Award deleted successfully');
+        refresh();
+        setDeleteOpen(false);
+        setDeleteAwardId(null);
+      }
+    },
+    onError: (error) => {
+      toast.error('Failed to delete award');
+      console.error('Delete award error:', error);
+    }
+  });
   function handleViewDetails(id: string) {
     setSelectedId(id);
     setDetailsOpen(true);
+  }
+
+  function handleDeleteClick(id: string) {
+    setDeleteAwardId(id);
+    setDeleteOpen(true);
+  }
+
+  async function handleDeleteConfirm() {
+    if (!deleteAwardId) return;
+    try {
+      await deleteAward(deleteAwardId);
+    } catch (error) {
+      // Error handling is done in the hook
+    }
   }
 
   function formatShortDate(dateStr: string) {
@@ -67,18 +109,34 @@ export default function RejectedAwardsTable() {
                     </div>
                   </TableCell>
                   <TableCell>{award.rejected_by?.name || '-'}</TableCell>
-                  <TableCell>{award.rejected_reason || '-'}</TableCell>
-                  <TableCell>
+                  <TableCell>{award.rejected_reason || '-'}</TableCell>                  <TableCell>
                     <div className="flex gap-2">
                       <Button size="sm" onClick={() => handleViewDetails(award.id)}>View Details</Button>
-                      <Button size="sm" variant="destructive">Delete</Button>
+                      <Button 
+                        size="sm" 
+                        variant="destructive" 
+                        onClick={() => handleDeleteClick(award.id)}
+                        disabled={deleteLoading}
+                      >
+                        Delete
+                      </Button>
                     </div>
                   </TableCell>
                 </TableRow>
               ))}
         </TableBody>
       </Table>
-      <AwardDetailsDialog open={detailsOpen} onOpenChange={setDetailsOpen} awardId={selectedId} />
+      <Pagination className="mt-4 flex justify-center items-center">
+        {currentPage > 1 && <PaginationPrevious href="#" onClick={onPreviousPage} />}
+        <span className="mx-2">Page {currentPage} of {totalPages}</span>
+        {currentPage < totalPages && <PaginationNext href="#" onClick={onNextPage} />}
+      </Pagination>      <AwardDetailsDialog open={detailsOpen} onOpenChange={setDetailsOpen} awardId={selectedId} />
+      <DeleteAwardDialog 
+        open={deleteOpen} 
+        onOpenChange={setDeleteOpen} 
+        onConfirm={handleDeleteConfirm}
+        loading={deleteLoading}
+      />
     </div>
   );
 }

@@ -1,7 +1,8 @@
 import { prisma } from "@/prisma/prismaClient";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, context: { params: { id: string } }) {
+  const { params } = await context;
   const { id } = params;
   if (!id) {
     return NextResponse.json({ error: "Award id is required" }, { status: 400 });
