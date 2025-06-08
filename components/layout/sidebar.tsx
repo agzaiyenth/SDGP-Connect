@@ -26,6 +26,11 @@ const sidebarItems = [
     href: '/admin/projects',
     icon: FolderKanban,
   },
+  {
+    title: 'Competitions',
+    href: '/admin/competitions',
+    icon: FolderKanban, // You may want to use a different icon
+  },
   // {
   //   title: 'Module Team',
   //   href: '/admin/team',
