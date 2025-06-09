@@ -22,6 +22,7 @@ const Logo: React.FC = () => (
         className="h-48 w-48 -mb-26 -mt-14"
         width={88}
         height={88}
+        priority // Ensure logo is prioritized for LCP
       />
     </div>
    
@@ -63,7 +64,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          Transforming Ideas Into Brands
+          Transforming Ideas Into brands
         </motion.p>
 
         <motion.div
@@ -74,12 +75,12 @@ export default function Hero() {
         >
           <Link href='/project'>
             <Button className="px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
-              Explore Projects
+              Explore projects
             </Button>
           </Link>
           <Link href='/about'>
             <Button className="px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-primary/30">
-              Learn More
+              Learn more
             </Button>
           </Link>
         </motion.div>

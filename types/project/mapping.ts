@@ -264,6 +264,7 @@ export const sdgGoals = [
       { value: "2025", label: "FT 24/25" ,type: "SDGP" },
       { value: "2026", label: "FT 25/26" ,type: "SDGP" },
       { value: "2027", label: "FT 26/27" ,type: "SDGP" },
+      { value: "I-24-sep", label: "Infoschol '24 Sep" ,type: "Infoschol" },
       { value: "I-25-jan", label: "Infoschol '25 Jan" ,type: "Infoschol" },
       { value: "I-25-sep", label: "Infoschol '25 Sep" ,type: "Infoschol" },
       

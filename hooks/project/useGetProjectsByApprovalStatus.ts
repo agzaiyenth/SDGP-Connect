@@ -28,6 +28,7 @@ interface UseGetProjectsByApprovalStatusReturn<T> {
 
 export function useGetProjectsByApprovalStatus<T extends PendingProject | ApprovedProject | RejectedProject>(
   statusType: ProjectApprovalStatus,
+  searchQuery: string = '',
   itemsPerPage: number = 10
 ): UseGetProjectsByApprovalStatusReturn<T> {
   const [projects, setProjects] = useState<T[]>([]);
@@ -37,18 +38,27 @@ export function useGetProjectsByApprovalStatus<T extends PendingProject | Approv
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [isEmpty, setIsEmpty] = useState(false);
+
   const fetchProjects = useCallback(async (page: number) => {
     setIsLoading(true);
     setError(null);
-
+    
     try {
+      // Build query parameters
+      const params: Record<string, any> = {
+        status: statusType,
+        page,
+        limit: itemsPerPage,
+      };
+
+      // Add search query if provided
+      if (searchQuery && searchQuery.trim()) {
+        params.search = searchQuery.trim();
+      }
+
       // Use the dedicated admin API endpoint for project approval management
       const response = await axios.get<PaginatedResponse<T>>(`/api/admin/projects`, {
-        params: {
-          status: statusType,
-          page,
-          limit: itemsPerPage,
-        },
+        params,
       });
 
       const { data, metadata } = response.data;
@@ -68,21 +78,27 @@ export function useGetProjectsByApprovalStatus<T extends PendingProject | Approv
       }
     } catch (err) {
       const axiosError = err as AxiosError;
-      const errorMessage = 
-        (axiosError.response?.data as { error?: string })?.error || 
-        axiosError.message || 
+      const errorMessage =
+        (axiosError.response?.data as { error?: string })?.error ||
+        axiosError.message ||
         'Failed to fetch projects';
       console.error('Error fetching projects:', errorMessage);
       setError(new Error(errorMessage));
       setIsEmpty(true);
+      // Reset projects array on error
+      setProjects([]);
+      setTotalPages(1);
+      setTotalItems(0);
     } finally {
       setIsLoading(false);
     }
-  }, [statusType, itemsPerPage]);
+  }, [statusType, searchQuery, itemsPerPage]);
 
+  // Reset to page 1 when search query changes
   useEffect(() => {
+    setCurrentPage(1);
     fetchProjects(1);
-  }, [statusType, fetchProjects]);
+  }, [statusType, searchQuery, fetchProjects]);
 
   const fetchNextPage = async () => {
     if (currentPage < totalPages) {

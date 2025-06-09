@@ -17,24 +17,14 @@ const teamMembers = [
     image: "/assets/Banu.jpg",
   },
   {
-    name: "John Sriskandarajah",
-    role: "Visiting Lecturer (Online)",
-    email: "john.s@iit.ac.lk",
-    linkedin: "https://www.linkedin.com/in/john-sriskandarajah/",
+    name: "Manul Singhe",
+    role: "Full-Time Lecturer (Hybrid)",
+    email: "manul.s@iit.ac.lk",
+    linkedin: "https://www.linkedin.com/in/manul-singhe/",
     description:
-      "CEO @ Telexar | Helping Businesses Scale with Offshore Teams | Resource Augmentation Specialist",
+      "Software Developer | Game Developer | Game Designer | Knight Owl Founder and CEO",
     category: "Primary",
-    image: "/assets/Johnsir.png",
-  },
-  {
-    name: "Krishnakripa Jayakumar",
-    role: "Visiting Lecturer (Online)",
-    email: "krishnakripa.j@iit.ac.lk",
-    linkedin: "https://www.linkedin.com/in/krishnakripa-jayakumar/",
-    description:
-      "Cybersecurity & Software Engineering Professional | Lecturer | Multiple Award Winner",
-    category: "Primary",
-    image: "/assets/kripa miss.png",
+    image: "/assets/manul sir.png",
   },
   {
     name: "Suresh Peiris",
@@ -56,14 +46,24 @@ const teamMembers = [
     image: "/assets/kushan sir.png",
   },
   {
-    name: "Manul Singhe",
-    role: "Full-Time Lecturer (Hybrid)",
-    email: "manul.s@iit.ac.lk",
-    linkedin: "https://www.linkedin.com/in/manul-singhe/",
+    name: "John Sriskandarajah",
+    role: "Visiting Lecturer (Online)",
+    email: "john.s@iit.ac.lk",
+    linkedin: "https://www.linkedin.com/in/john-sriskandarajah/",
     description:
-      "Software Developer | Game Developer | Game Designer | Knight Owl Founder and CEO",
+      "CEO @ Telexar | Helping Businesses Scale with Offshore Teams | Resource Augmentation Specialist",
     category: "Primary",
-    image: "/assets/manul sir.png",
+    image: "/assets/Johnsir.png",
+  },
+  {
+    name: "Krishnakripa Jayakumar",
+    role: "Visiting Lecturer (Online)",
+    email: "krishnakripa.j@iit.ac.lk",
+    linkedin: "https://www.linkedin.com/in/krishnakripa-jayakumar/",
+    description:
+      "Cybersecurity & Software Engineering Professional | Lecturer | Multiple Award Winner",
+    category: "Primary",
+    image: "/assets/kripa miss.png",
   },
   {
     name: "Mithushan Jalangan",
@@ -134,6 +134,15 @@ const teamMembers = [
     image: "/assets/asith sir.png",
   },
   {
+    name: "Imasha Ayeshka Jayasundara",
+    role: "Full-Time Lecturer (Hybrid)",
+    email: "ayeshka.j@iit.ac.lk",
+    linkedin: "https://www.linkedin.com/in/imashaayeshka-jayasundara/",
+    description: "IIT lecturer",
+    category: "Primary",
+    image: "/assets/imasha.jpg",
+  },
+  {
     name: "Thashin Rahuman",
     role: "Full-Time Lecturer (Hybrid)",
     email: "thashin.r@iit.ac.lk",
@@ -153,51 +162,52 @@ const teamMembers = [
     image: "/assets/ahtshayan sir.png",
   },
   //former members
+  /*
   {
   name: "Nuwan [LastName]",
   role: "Former Lecturer",
   email: "nuwan@example.com",
   linkedin: "https://www.linkedin.com/in/nuwan-placeholder",
-  description: "Former lecturer at IIT.",
+  description: "Lecturer at IIT.",
   category: "Former",
   image: "/assets/nuwan.png",
-},
-{
-  name: "Sulari Fernando",
-  role: "Former Lecturer",
-  email: "sulari.f@iit.ac.lk",
-  linkedin: "https://www.linkedin.com/in/supun-sulari-fernando-ba40704b",
-  description: "Former lecturer at IIT.",
-  category: "Former",
-  image: "/assets/sulari fernando.png",
-},
-{
-  name: "Rukshala [LastName]",
-  role: "Former Lecturer",
-  email: "rukshala@example.com",
-  linkedin: "https://www.linkedin.com/in/rukshala-placeholder",
-  description: "Former lecturer at IIT.",
-  category: "Former",
-  image: "/assets/rukshala.png",
-},
-{
-  name: "Prathishna [LastName]",
-  role: "Former Lecturer",
-  email: "prathishna@example.com",
-  linkedin: "https://www.linkedin.com/in/prathishna-placeholder",
-  description: "Former lecturer at IIT.",
-  category: "Former",
-  image: "/assets/prathishna.png",
-},
-{
-  name: "Sharmilan Somasundaram",
-  role: "Former Lecturer",
-  email: "sharmilan.s@iit.ac.lk",
-  linkedin: "https://www.linkedin.com/in/sharmilan-somasundaram",
-  description: "Former lecturer at IIT.",
-  category: "Former",
-  image: "/assets/shar.jpg",
-},
+}, */
+  {
+    name: "Sulari Fernando",
+    role: "Lecturer at IIT.",
+    email: "sulari.f@iit.ac.lk",
+    linkedin: "https://www.linkedin.com/in/supun-sulari-fernando-ba40704b",
+    description: "Software Engineer | Junior Accountant | Lecturer | MBA, Business Analytics | BSc in Computer Science",
+    category: "Former",
+    image: "/assets/sul.jpg",
+  },
+  {
+    name: "Rukshala Weerasinghe",
+    role: "Visiting Lecturer",
+    email: "rukshala@example.com",
+    linkedin: "https://www.linkedin.com/in/rukshalaw/",
+    description: "Product Manager | Certified ScrumMaster® | Visiting Lecturer",
+    category: "Former",
+    image: "/assets/rukshala.jpg",
+  },
+  {
+    name: "Prathieshna Vekneswaran",
+    role: "Lecturer at IIT.",
+    email: "prathieshnav@gmail.com",
+    linkedin: "https://www.linkedin.com/in/prathieshna",
+    description: "Freelance Android Developer | Educator",
+    category: "Former",
+    image: "/assets/prat.jpg",
+  },
+  {
+    name: "Sharmilan Somasundaram",
+    role: "Lecturer at IIT.",
+    email: "sharmilan.s@iit.ac.lk",
+    linkedin: "https://www.linkedin.com/in/sharmilan-somasundaram",
+    description: "Certified Blockchain Solution Architect | MSc Big Data Analytics | Researcher",
+    category: "Former",
+    image: "/assets/shar.jpg",
+  },
 ];
 
 const ModuleTeam: React.FC = () => {
@@ -230,11 +240,10 @@ const ModuleTeam: React.FC = () => {
           {title}
         </motion.h2>
       )}
-      <div className={`grid gap-6 md:gap-8 ${
-        members.length === 1 
-          ? 'grid-cols-1 justify-items-center' 
+      <div className={`grid gap-6 md:gap-8 ${members.length === 1
+          ? 'grid-cols-1 justify-items-center'
           : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
-      }`}>
+        }`}>
         {members.map((member, index) => (
           <motion.div
             key={index}
@@ -420,7 +429,7 @@ const ModuleTeam: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
       >
-        Meet Our Module Team
+        Meet our module team
       </motion.h1>
 
       <motion.p
