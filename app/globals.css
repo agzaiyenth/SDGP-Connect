@@ -43,7 +43,63 @@
   --radius-xl: calc(var(--radius) + 4px);
   --color-sparkles-color: var(----sparkles-color);
   --color-gradient-color: var(----gradient-color);
-}
+  @keyframes dashMove {
+  0% {
+    stroke-dashoffset: 0;
+    }
+  25% {
+    stroke-dashoffset: 300;
+    }
+  50% {
+    stroke-dashoffset: 600;
+    }
+  75% {
+    stroke-dashoffset: 900;
+    }
+  100% {
+    stroke-dashoffset: 1200;
+    }
+  }
+  @keyframes slideMask {
+  0% {
+    transform: translateX(-100%);
+    }
+  100% {
+    transform: translateX(300%);
+    }
+  }
+  --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
+  --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear
+;
+  @keyframes shimmer-slide {
+  to {
+    transform: translate(calc(100cqw - 100%), 0);}}
+  @keyframes spin-around {
+  0% {
+    transform: translateZ(0) rotate(0);}
+  15%, 35% {
+    transform: translateZ(0) rotate(90deg);}
+  65%, 85% {
+    transform: translateZ(0) rotate(270deg);}
+  100% {
+    transform: translateZ(0) rotate(360deg);}}
+  --animate-aurora: aurora 8s ease-in-out infinite alternate;
+  @keyframes aurora {
+  0% {
+    background-position: 0% 50%;
+    transform: rotate(-5deg) scale(0.9);}
+  25% {
+    background-position: 50% 100%;
+    transform: rotate(5deg) scale(1.1);}
+  50% {
+    background-position: 100% 50%;
+    transform: rotate(-3deg) scale(0.95);}
+  75% {
+    background-position: 50% 0%;
+    transform: rotate(3deg) scale(1.05);}
+  100% {
+    background-position: 0% 50%;
+    transform: rotate(-5deg) scale(0.9);}}}
 
 :root {
   --radius: 0.625rem;
@@ -133,7 +189,6 @@
   scrollbar-width: none; /* Firefox */
 }
 
-
 /* Custom animation for hover effects */
 .hover-slide::after {
   content: "";
@@ -145,10 +200,6 @@
   background-color: currentColor;
   transition: width 0.3s ease;
 }
-
-
-
-
 
 /* 
 .hover-slide:hover::after {
@@ -190,4 +241,71 @@
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Line Animation Styles */
+.line-background {
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 1;
+  fill: none;
+}
+
+.line-animation-path {
+  stroke: #2415aa;
+  stroke-width: 2;
+  fill: none;
+  stroke-dasharray: var(--path-length);
+  stroke-dashoffset: var(--path-length);
+  animation: drawLine 3s ease-in-out infinite;
+}
+
+.line-animation-path.reverse {
+  animation: drawLineReverse 3s ease-in-out infinite;
+}
+
+@keyframes drawLine {
+  0% {
+    stroke-dashoffset: var(--path-length);
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: calc(var(--path-length) * -1);
+  }
+}
+
+@keyframes drawLineReverse {
+  0% {
+    stroke-dashoffset: calc(var(--path-length) * -1);
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: var(--path-length);
+  }
+}
+
+/* Sliding mask animation for background stripes */
+.mask-rect {
+  animation: slideMask 4s ease-in-out infinite;
+  animation-delay: var(--animation-delay, 0s);
+}
+
+/* Stagger the animations for each line */
+.mask-rect:nth-child(1) {
+  --animation-delay: 0s;
+}
+
+.mask-rect:nth-child(2) {
+  --animation-delay: 1s;
+}
+
+.mask-rect:nth-child(3) {
+  --animation-delay: 2s;
+}
+
+.mask-rect:nth-child(4) {
+  --animation-delay: 3s;
 }
