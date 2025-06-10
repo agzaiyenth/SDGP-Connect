@@ -21,16 +21,21 @@ import { MarkdownAnswer } from "@/components/ai/MarkdownAnswer";
 export function ExpandableChatAI() {
   const { messages, isLoading, sendMessage, showThink, setShowThink } = useChat();
   const [input, setInput] = useState("");
-
+  
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
     sendMessage(input);
     setInput("");
   };
-
+  
   return (
-    <ExpandableChat size="lg" position="bottom-right" icon={<Bot className="h-6 w-6" />}>
+    <ExpandableChat 
+      size="lg" 
+      position="bottom-right" 
+      icon={<Bot className="h-6 w-6" />}
+      className="mb-16 md:mb-4"
+    >
       <ExpandableChatHeader className="flex-col text-center justify-center">
         <h1 className="text-xl font-semibold">Chat with AI</h1>
         <p className="text-sm text-muted-foreground">

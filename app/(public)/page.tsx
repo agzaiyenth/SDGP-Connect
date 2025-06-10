@@ -5,7 +5,6 @@ import Domains from "@/components/home/domains";
 import Featured from "@/components/home/featured";
 import Hero from "@/components/home/hero";
 import ImpactStats from "@/components/home/impact-stats";
-import { ExpandableChatDemo } from "@/components/ui/demo-expandable-chat";
 
 
 
@@ -19,7 +18,6 @@ export default function Home() {
       <Domains />
       <ImpactStats />
       <Brands/>
-
     </div>
   )
 }
