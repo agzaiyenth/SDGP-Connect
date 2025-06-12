@@ -41,8 +41,12 @@ export default function RejectAwardDialog({ open, onOpenChange, onConfirm, loadi
         />
         {error && <div className="text-destructive text-sm mb-2">{error}</div>}
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>Cancel</Button>
-          <Button variant="destructive" onClick={handleConfirm} loading={loading}>Reject</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>
+            Cancel
+          </Button>
+          <Button variant="destructive" onClick={handleConfirm} disabled={loading}>
+            {loading ? 'Rejecting...' : 'Reject'}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
