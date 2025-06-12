@@ -79,7 +79,7 @@ export default function CompetitionPage({ params }: { params: { competition: str
             <div key={`mobile-${winner.id}`} className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-4 border border-gray-800">
               <div className="flex items-start gap-3">
                 <div className="bg-gray-800 px-2 py-1 rounded-full flex-shrink-0">
-                  <span className="text-xs font-bold text-white">{winner.name}</span>
+                  <span className="text-xs font-bold text-white">{winner.award}</span>
                 </div>
                 <div>
                   <h4 className="font-bold text-white text-sm mb-1">{winner.projectName}</h4>
