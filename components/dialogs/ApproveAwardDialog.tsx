@@ -20,8 +20,12 @@ export default function ApproveAwardDialog({ open, onOpenChange, onConfirm, load
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>Cancel</Button>
-          <Button onClick={onConfirm} loading={loading}>Approve</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>
+            Cancel
+          </Button>
+          <Button onClick={onConfirm} disabled={loading}>
+            {loading ? 'Approving...' : 'Approve'}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
