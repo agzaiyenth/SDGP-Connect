@@ -13,7 +13,7 @@ export default function CompetitionPage({ params }: { params: { competition: str
 
   if (isAwardsLoading || isCompetitionLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-stone-950">
+      <div className="min-h-screen flex items-center justify-center">
         <svg className="animate-spin h-12 w-12 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
@@ -21,22 +21,14 @@ export default function CompetitionPage({ params }: { params: { competition: str
       </div>
     )
   }
-
   if (awardsError || competitionError) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-red-500">
-        Failed to load awards or competition info.
-      </div>
-    )
+    return <div className="min-h-screen flex items-center justify-center text-red-500">Failed to load awards or competition info.</div>
   }
 
   return (
-    <div className="min-h-screen bg-stone-950">
+    <div className="min-h-screen">
       {/* Header */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/10 to-indigo-900/20"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/5 via-transparent to-transparent"></div>
-        
         <div className="relative container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 py-12 sm:py-16 md:py-20 lg:py-24">
           <Link
             href="/competitions"
@@ -86,17 +78,12 @@ export default function CompetitionPage({ params }: { params: { competition: str
       {/* Winners Grid */}
       <div className="relative container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 py-12 sm:py-16 md:py-20">
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4">
-            Competition Winners
-          </h2>
-          <p className="text-sm sm:text-base text-gray-400">
-            Hover over each team to see their project details
-          </p>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4">Competition Winners</h2>
+          <p className="text-sm sm:text-base text-gray-400">Hover over each team to see their project details</p>
         </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-7xl mx-auto">
           {awards.map((winner) => (
-            <div key={winner.id} className="bg-black border border-white rounded-lg overflow-hidden">
+            <div key={winner.id} className="bg-b border border-white rounded-lg overflow-hidden">
               <AwardCard winner={winner} />
             </div>
           ))}
@@ -113,9 +100,7 @@ export default function CompetitionPage({ params }: { params: { competition: str
                 </div>
                 <div>
                   <h4 className="font-bold text-white text-sm mb-1">{winner.projectName}</h4>
-                  <h5 className="font-medium text-gray-300 text-xs mb-2">
-                    Team {winner.team} | SDGP {winner.sdgpYear}
-                  </h5>
+                  <h5 className="font-medium text-gray-300 text-xs mb-2">Team {winner.team} | SDGP {winner.sdgpYear}</h5>
                   <p className="text-gray-400 text-xs leading-relaxed">{winner.description}</p>
                 </div>
               </div>
