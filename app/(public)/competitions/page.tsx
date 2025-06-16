@@ -183,14 +183,14 @@ export default function AwardsPage() {
             {!hasMore && !isLoading && competitions.length > 0 && (
             <div className="text-center">
               <div className="inline-flex items-center gap-2 rounded-full bg-gray-800/50 border border-gray-700 px-6 py-3">
-              <span className="text-gray-400">🎉 You've seen all competitions!</span>
+              <span className="text-gray-400">You've seen all competitions!</span>
               </div>
             </div>
             )}
             {error && (
             <div className="text-center">
               <div className="inline-flex items-center gap-2 rounded-full bg-red-900/20 border border-red-700 px-6 py-3">
-              <span className="text-red-400">⚠️ {error}</span>
+              <span className="text-red-400"> {error}</span>
               </div>
             </div>
             )}
