@@ -139,39 +139,38 @@ export default function AwardsPage() {
             Explore our competitive events and discover the innovative solutions that are shaping the future
             </p>
           </div>
-
-          {/* Individual Competitions Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 lg:gap-8">
-            {competitions.map((competition, index) => (
-            <div 
-              key={competition.id}
-              className="transform transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02]"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <div className="relative group">
-              {/* Glow effect */}
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl blur opacity-0 group-hover:opacity-75 transition duration-300" />
-              
-              <div className="relative">
-                <CompetitionCard
-                key={competition.id}
-                id={competition.id}
-                title={competition.name}
-                cover={competition.cover || "/assets/placeholder.svg"}
-                type={competition.type || ""}
-                startDate={competition.startDate}
-                endDate={competition.endDate}
-                logo={competition.logo || "/assets/placeholder.svg"}
-                viewLink={`/competitions/${competition.id}`}
-                description={competition.description}
-                winnersCount={competition.winnersCount}
-                />
-              </div>
-              </div>
+            {/* Individual Competitions Grid */}
+            <div className="bg-#0c0a09 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 lg:gap-8">
+              {competitions.map((competition, index) => (
+                <div 
+                  key={competition.id}
+                  className="transform transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02] cursor-pointer"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                  onClick={() => router.push(`/competitions/${competition.id}`)}
+                >
+                  <div className="bg-#0c0a09 border border-white rounded-xl">
+                    <CompetitionCard 
+                      key={competition.id}
+                      id={competition.id}
+                      title={competition.name}
+                      cover={competition.cover || "/assets/placeholder.svg"}
+                      type={competition.type || ""}
+                      startDate={competition.startDate}
+                      endDate={competition.endDate}
+                      logo={competition.logo || "/assets/placeholder.svg"}
+                      viewLink={`/competitions/${competition.id}`}
+                      description={competition.description ? 
+                        (competition.description.length > 80 ? 
+                        `${competition.description.substring(0, 80)}...` : 
+                        competition.description) : 
+                        ""}
+                      winnersCount={competition.winnersCount}
+                      showTruncated={true}
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
-            ))}
-          </div>
-
           {/* Enhanced Loading */}
           <div ref={loaderRef} className="flex justify-center py-12">
             {isLoading && (
