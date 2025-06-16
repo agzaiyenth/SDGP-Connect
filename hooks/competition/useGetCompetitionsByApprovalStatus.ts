@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { ApprovalStatus } from "@prisma/client";
 
-export function useGetCompetitionsByApprovalStatus(status, searchQuery) {
+export function useGetCompetitionsByApprovalStatus(
+  status: ApprovalStatus,
+  searchQuery?: string
+) {
   const [competitions, setCompetitions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<Error | null>(null);
   const [isEmpty, setIsEmpty] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -27,7 +30,7 @@ export function useGetCompetitionsByApprovalStatus(status, searchQuery) {
         setTotalPages(data.totalPages);
         setIsEmpty(data.competitions.length === 0);
       } catch (e) {
-        setError(e);
+        setError(e as Error);
       } finally {
         setIsLoading(false);
       }
@@ -40,9 +43,11 @@ export function useGetCompetitionsByApprovalStatus(status, searchQuery) {
   }, [fetchCompetitions]);
 
   const refresh = () => fetchCompetitions(currentPage);
+
   const fetchNextPage = () => {
     if (currentPage < totalPages) fetchCompetitions(currentPage + 1);
   };
+
   const fetchPreviousPage = () => {
     if (currentPage > 1) fetchCompetitions(currentPage - 1);
   };

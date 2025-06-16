@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/prisma/prismaClient';
+import {prisma} from '@/prisma/prismaClient';
 
 export async function GET() {
   const awards = await prisma.award.findMany({
-    where: { approvalStatus: 'REJECTED' },
+    where: { approval_status: 'REJECTED' },
     include: {
       project: true,
       competition: true,
-      rejectedBy: true,
+      rejected_by: true,
     },
     orderBy: { createdAt: 'desc' },
   });

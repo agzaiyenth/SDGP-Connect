@@ -1,3 +1,4 @@
+// DeleteCompetitionDialog.tsx
 import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -11,7 +12,14 @@ interface DeleteCompetitionDialogProps {
   awardCount?: number;
 }
 
-export default function DeleteCompetitionDialog({ open, onOpenChange, onConfirm, loading, competitionName, awardCount }: DeleteCompetitionDialogProps) {
+export default function DeleteCompetitionDialog({ 
+  open, 
+  onOpenChange, 
+  onConfirm, 
+  loading, 
+  competitionName, 
+  awardCount 
+}: DeleteCompetitionDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -34,8 +42,12 @@ export default function DeleteCompetitionDialog({ open, onOpenChange, onConfirm,
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>Cancel</Button>
-          <Button variant="destructive" onClick={onConfirm} loading={loading}>Delete</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>
+            Cancel
+          </Button>
+          <Button variant="destructive" onClick={onConfirm} disabled={loading}>
+            {loading ? 'Deleting...' : 'Delete'}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

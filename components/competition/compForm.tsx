@@ -198,7 +198,9 @@ export default function CompForm() {
 
   if (showSuccess) {
     return <CompetitionSuccessPage competitionName={submittedCompetitionName} />;
-  }  return (
+  }
+
+  return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-background">
       <div className="w-full max-w-4xl space-y-6">
         {/* Competition Form */}
@@ -208,137 +210,142 @@ export default function CompForm() {
           </h3>
           <p className="text-muted-foreground mb-6">
             Create a new competition for the SDGP platform
-          </p>          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-6">
-            {/* Competition Name */}
-            <div className="col-span-full">
-              <Label htmlFor="name" className="text-sm font-medium text-foreground">
-                Competition Name <span className="text-red-500">*</span>
-              </Label>
-              <Input
-                {...register("name")}
-                type="text"
-                id="name"
-                placeholder="Expo Awards - 2025"
-                className="mt-2"
-              />
-              {errors.name && (
-                <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
-              )}
-            </div>
+          </p>
 
-            {/* Description */}
-            <div className="col-span-full">
-              <Label htmlFor="description" className="text-sm font-medium text-foreground">
-                Description <span className="text-red-500">*</span>
-              </Label>
-              <Textarea
-                {...register("description")}
-                id="description"
-                placeholder="Describe your competition, its goals, rules, and what participants can expect..."
-                className="mt-2 min-h-[120px]"
-              />
-              {errors.description && (
-                <p className="text-sm text-red-500 mt-1">{errors.description.message}</p>
-              )}
-            </div>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-6">
+              {/* Competition Name */}
+              <div className="col-span-full">
+                <Label htmlFor="name" className="text-sm font-medium text-foreground">
+                  Competition Name <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  {...register("name")}
+                  type="text"
+                  id="name"
+                  placeholder="Expo Awards - 2025"
+                  className="mt-2"
+                />
+                {errors.name && (
+                  <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
+                )}
+              </div>
 
-            {/* Start Date */}
-            <div className="col-span-full sm:col-span-3">
-              <Label className="text-sm font-medium text-foreground">
-                Start Date <span className="text-red-500">*</span>
-              </Label>
-              <div className="mt-2">
-                <DatePicker
-                  date={watchedStartDate}
-                  onDateChange={(date) => setValue("start_date", date!)}
-                  placeholder="Select start date"
+              {/* Description */}
+              <div className="col-span-full">
+                <Label htmlFor="description" className="text-sm font-medium text-foreground">
+                  Description <span className="text-red-500">*</span>
+                </Label>
+                <Textarea
+                  {...register("description")}
+                  id="description"
+                  placeholder="Describe your competition, its goals, rules, and what participants can expect..."
+                  className="mt-2 min-h-[120px]"
+                />
+                {errors.description && (
+                  <p className="text-sm text-red-500 mt-1">{errors.description.message}</p>
+                )}
+              </div>
+
+              {/* Start Date */}
+              <div className="col-span-full sm:col-span-3">
+                <Label className="text-sm font-medium text-foreground">
+                  Start Date <span className="text-red-500">*</span>
+                </Label>
+                <div className="mt-2">
+                  <DatePicker
+                    date={watchedStartDate}
+                    onDateChange={(date) => setValue("start_date", date!)}
+                    placeholder="Select start date"
+                  />
+                </div>
+                {errors.start_date && (
+                  <p className="text-sm text-red-500 mt-1">{errors.start_date.message}</p>
+                )}
+              </div>
+
+              {/* End Date */}
+              <div className="col-span-full sm:col-span-3">
+                <Label className="text-sm font-medium text-foreground">
+                  End Date <span className="text-red-500">*</span>
+                </Label>
+                <div className="mt-2">
+                  <DatePicker
+                    date={watchedEndDate}
+                    onDateChange={(date) => setValue("end_date", date!)}
+                    placeholder="Select end date"
+                  />
+                </div>
+                {errors.end_date && (
+                  <p className="text-sm text-red-500 mt-1">{errors.end_date.message}</p>
+                )}
+              </div>
+
+              {/* Competition Type */}
+              <div className="col-span-full">
+                <Label htmlFor="type" className="text-sm font-medium text-foreground">
+                  Competition Type <span className="text-red-500">*</span>
+                </Label>
+                <Select onValueChange={(value) => setValue("type", value as any)}>
+                  <SelectTrigger className="mt-2" id="type">
+                    <SelectValue placeholder="Select competition type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="HACKATHON">Hackathon</SelectItem>
+                    <SelectItem value="IDEATHON">Ideathon</SelectItem>
+                    <SelectItem value="EXPO">Expo</SelectItem>
+                    <SelectItem value="WORKSHOP">Workshop</SelectItem>
+                  </SelectContent>
+                </Select>
+                {errors.type && (
+                  <p className="text-sm text-red-500 mt-1">{errors.type.message}</p>
+                )}
+              </div>
+
+              {/* Logo Upload */}
+              <div className="col-span-full sm:col-span-3">
+                <FileUpload
+                  label="Competition Logo"
+                  onFileSelect={(file) => setValue("logo", file!)}
+                  selectedFile={watch("logo")}
+                  error={errors.logo?.message ? String(errors.logo.message) : undefined}
                 />
               </div>
-              {errors.start_date && (
-                <p className="text-sm text-red-500 mt-1">{errors.start_date.message}</p>
-              )}
-            </div>
 
-            {/* End Date */}
-            <div className="col-span-full sm:col-span-3">
-              <Label className="text-sm font-medium text-foreground">
-                End Date <span className="text-red-500">*</span>
-              </Label>
-              <div className="mt-2">
-                <DatePicker
-                  date={watchedEndDate}
-                  onDateChange={(date) => setValue("end_date", date!)}
-                  placeholder="Select end date"
+              {/* Cover Image Upload */}
+              <div className="col-span-full sm:col-span-3">
+                <FileUpload
+                  label="Cover Image"
+                  onFileSelect={(file) => setValue("cover_image", file!)}
+                  selectedFile={watch("cover_image")}
+                  error={errors.cover_image?.message ? String(errors.cover_image.message) : undefined}
                 />
               </div>
-              {errors.end_date && (
-                <p className="text-sm text-red-500 mt-1">{errors.end_date.message}</p>
-              )}
             </div>
 
-            {/* Competition Type */}
-            <div className="col-span-full">
-              <Label htmlFor="type" className="text-sm font-medium text-foreground">
-                Competition Type <span className="text-red-500">*</span>
-              </Label>
-              <Select onValueChange={(value) => setValue("type", value as any)}>
-                <SelectTrigger className="mt-2" id="type">
-                  <SelectValue placeholder="Select competition type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="HACKATHON">Hackathon</SelectItem>
-                  <SelectItem value="IDEATHON">Ideathon</SelectItem>
-                  <SelectItem value="EXPO">Expo</SelectItem>
-                  <SelectItem value="WORKSHOP">Workshop</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.type && (
-                <p className="text-sm text-red-500 mt-1">{errors.type.message}</p>
-              )}
+            <Separator className="my-6" />
+            
+            <div className="flex items-center justify-end space-x-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.push("/")}
+                disabled={isSubmitting}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  "Submit Competition"
+                )}
+              </Button>
             </div>
-
-            {/* Logo Upload */}
-            <div className="col-span-full sm:col-span-3">
-              <FileUpload
-                label="Competition Logo"
-                onFileSelect={(file) => setValue("logo", file!)}
-                selectedFile={watch("logo")}
-                error={errors.logo?.message}
-              />
-            </div>
-
-            {/* Cover Image Upload */}
-            <div className="col-span-full sm:col-span-3">
-              <FileUpload
-                label="Cover Image"
-                onFileSelect={(file) => setValue("cover_image", file!)}
-                selectedFile={watch("cover_image")}
-                error={errors.cover_image?.message}
-              />
-            </div>
-          </div>          <Separator className="my-6" />
-          
-          <div className="flex items-center justify-end space-x-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => router.push("/")}
-              disabled={isSubmitting}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Submitting...
-                </>
-              ) : (
-                "Submit Competition"
-              )}
-            </Button>
-          </div>        </form>
+          </form>
         </div>
 
         {/* Guidelines Card */}

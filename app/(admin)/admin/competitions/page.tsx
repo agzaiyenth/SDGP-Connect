@@ -18,8 +18,15 @@ import RejectedCompetitionsTableSkeleton from "@/components/tables/skeletons/Rej
 import RejectedCompetitionsTable from "@/components/tables/RejectedCompetitionsTable";
 import { ApprovalStatus } from "@prisma/client";
 
+// Type definitions
+type TabType = "pending" | "approved" | "rejected";
+
+interface ErrorType {
+  message: string;
+}
+
 export default function CompetitionManagement() {
-  const [currentTab, setCurrentTab] = useState("pending");
+  const [currentTab, setCurrentTab] = useState<TabType>("pending");
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [lastFetchedTime, setLastFetchedTime] = useState("");
@@ -71,13 +78,14 @@ export default function CompetitionManagement() {
     setLastFetchedTime(new Date().toLocaleTimeString());
   }, []);
 
-  const handleTabChange = (value) => {
-    setCurrentTab(value);
+  const handleTabChange = (value: string) => {
+    const tabValue = value as TabType;
+    setCurrentTab(tabValue);
     setSearchQuery("");
     setDebouncedSearchQuery("");
-    if (value === "pending") refreshPending();
-    if (value === "approved") refreshApproved();
-    if (value === "rejected") refreshRejected();
+    if (tabValue === "pending") refreshPending();
+    if (tabValue === "approved") refreshApproved();
+    if (tabValue === "rejected") refreshRejected();
   };
 
   const handleRefresh = () => {
@@ -87,7 +95,7 @@ export default function CompetitionManagement() {
     setLastFetchedTime(new Date().toLocaleTimeString());
   };
 
-  const renderError = (error) => {
+  const renderError = (error: ErrorType | null) => {
     if (!error) return null;
     return (
       <Alert variant="destructive" className="mb-4">
@@ -98,7 +106,7 @@ export default function CompetitionManagement() {
     );
   };
 
-  const renderEmptyState = (type) => {
+  const renderEmptyState = (type: TabType) => {
     const config = {
       pending: {
         title: searchQuery ? "No Matching Pending Competitions" : "No Pending Competitions",
@@ -121,14 +129,16 @@ export default function CompetitionManagement() {
           : "No competitions have been rejected.",
         icon: FileX2,
       },
-    }[type];
+    };
+
+    const selectedConfig = config[type];
 
     return (
       <div className="flex justify-center items-center p-8">
         <EmptyState
-          title={config.title}
-          description={config.description}
-          icons={[config.icon]}
+          title={selectedConfig.title}
+          description={selectedConfig.description}
+          icons={[selectedConfig.icon]}
         />
       </div>
     );

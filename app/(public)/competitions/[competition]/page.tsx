@@ -34,29 +34,59 @@ export default function CompetitionPage({ params }: { params: { competition: str
         <div className="absolute top-1/2 left-1/2 w-60 sm:w-80 h-60 sm:h-80 bg-blue-900 rounded-full mix-blend-multiply filter blur-xl opacity-8 animate-pulse" style={{ animationDelay: '4s' }}></div>
       </div>
 
-
       {/* Header */}
-      <div className="relative bg-#0c0a09 backdrop-blur-sm border-b border-gray-800">
-        <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 py-8 sm:py-12 md:py-16">
+      <div className="relative overflow-hidden">
+        {/* Enhanced background with gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/10 to-indigo-900/20"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/5 via-transparent to-transparent"></div>
+        
+        <div className="relative container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 py-12 sm:py-16 md:py-20 lg:py-24">
           <Link
             href="/competitions"
-            className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-6 sm:mb-8 transition-all duration-300 hover:translate-x-1 text-sm sm:text-base"
+            className="inline-flex items-center gap-2 text-gray-400 hover:text-blue-400 mb-8 sm:mb-12 transition-all duration-300 hover:translate-x-1 text-sm sm:text-base group"
           >
-            <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4" />
-            Back to Awards
+            <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:-translate-x-1" />
+            <span className="font-medium">Back to Awards</span>
           </Link>
 
-          <div className="text-center">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-3 sm:mb-4 leading-tight">
-              {competition?.title || "Competition Title"}
-            </h1>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-400 mb-2 max-w-4xl mx-auto">
-              {competition?.description || "Competition description goes here. It should be a brief and engaging summary of the competition's focus and goals."}
-            </p>
-            <p className="text-xs sm:text-sm md:text-base text-gray-500">
-              {competition?.startDate && competition?.endDate ? `Date: ${competition.startDate} - ${competition.endDate}` : ""}
-            </p>
+          <div className="text-center max-w-6xl mx-auto">
+            {/* Main title */}
+            <div className="relative mb-6 sm:mb-8">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-blue-200 mb-4 leading-tight tracking-tight">
+                {competition?.title || "Competition Title"}
+              </h1>
+              <div className="absolute -top-2 -left-2 w-8 h-8 bg-blue-500/20 rounded-full blur-lg"></div>
+              <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-purple-500/20 rounded-full blur-lg"></div>
+            </div>
+
+            {/* Description */}
+            <div className="relative mb-8 sm:mb-10">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 leading-relaxed max-w-4xl mx-auto font-light">
+                {competition?.description || "Competition description goes here. It should be a brief and engaging summary of the competition's focus and goals."}
+              </p>
+            </div>
+
+            {/* Date */}
+            {competition?.startDate && competition?.endDate && (
+              <div className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-900/30 to-purple-900/30 backdrop-blur-sm border border-blue-500/20 rounded-full px-6 py-3 sm:px-8 sm:py-4">
+                <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                <span className="text-sm sm:text-base md:text-lg font-medium text-blue-100 tracking-wide">
+                  {new Date(competition.startDate).toLocaleDateString('en-GB', { 
+                    day: 'numeric', 
+                    month: 'long', 
+                    year: 'numeric' 
+                  })} - {new Date(competition.endDate).toLocaleDateString('en-GB', { 
+                    day: 'numeric', 
+                    month: 'long', 
+                    year: 'numeric' 
+                  })}
+                </span>
+                <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+              </div>
+            )}
           </div>
+          <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-blue-400 rounded-full opacity-60 animate-ping"></div>
+          <div className="absolute top-3/4 right-1/4 w-1 h-1 bg-purple-400 rounded-full opacity-60 animate-ping" style={{ animationDelay: '2s' }}></div>
         </div>
       </div>
 
@@ -79,7 +109,7 @@ export default function CompetitionPage({ params }: { params: { competition: str
             <div key={`mobile-${winner.id}`} className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-4 border border-gray-800">
               <div className="flex items-start gap-3">
                 <div className="bg-gray-800 px-2 py-1 rounded-full flex-shrink-0">
-                  <span className="text-xs font-bold text-white">{winner.name}</span>
+                  <span className="text-xs font-bold text-white">{winner.award}</span>
                 </div>
                 <div>
                   <h4 className="font-bold text-white text-sm mb-1">{winner.projectName}</h4>
