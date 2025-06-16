@@ -122,40 +122,84 @@ export default function AwardsPage() {
                 </div>
               </div>
             </div>
+            </div>
           </div>
-        </div>
-      </section>
+          </section>
 
-      {/* Competitions Grid */}
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-12 sm:py-16 lg:py-20">
-        <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4">All Competitions</h2>
-          <p className="text-base text-gray-400">Explore our competitive events and their winners</p>
-        </div>
-        {/* Responsive Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 lg:gap-8">
-          {competitions.map((competition) => (
-            <CompetitionCard
+          {/* Competitions Grid */}
+          <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-12 sm:py-16 lg:py-20">
+          <div className="text-center mb-12 sm:mb-16">
+            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 px-6 py-2 mb-6">
+            <span className="text-sm font-medium text-blue-300">Featured Events</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent mb-4">
+            All Competitions
+            </h2>
+            <p className="text-base lg:text-lg text-gray-400 max-w-2xl mx-auto">
+            Explore our competitive events and discover the innovative solutions that are shaping the future
+            </p>
+          </div>
+
+          {/* Individual Competitions Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 lg:gap-8">
+            {competitions.map((competition, index) => (
+            <div 
               key={competition.id}
-              id={competition.id}
-              title={competition.name}
-              cover={competition.cover || "/assets/placeholder.svg"}
-              type={competition.type || ""}
-              startDate={competition.startDate}
-              endDate={competition.endDate}
-              logo={competition.logo || "/assets/placeholder.svg"}
-              viewLink={`/competitions/${competition.id}`}
-              description={competition.description}
-              winnersCount={competition.winnersCount}
-            />
-          ))}
+              className="transform transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02]"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <div className="relative group">
+              {/* Glow effect */}
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl blur opacity-0 group-hover:opacity-75 transition duration-300" />
+              
+              <div className="relative">
+                <CompetitionCard
+                key={competition.id}
+                id={competition.id}
+                title={competition.name}
+                cover={competition.cover || "/assets/placeholder.svg"}
+                type={competition.type || ""}
+                startDate={competition.startDate}
+                endDate={competition.endDate}
+                logo={competition.logo || "/assets/placeholder.svg"}
+                viewLink={`/competitions/${competition.id}`}
+                description={competition.description}
+                winnersCount={competition.winnersCount}
+                />
+              </div>
+              </div>
+            </div>
+            ))}
+          </div>
+
+          {/* Enhanced Loading */}
+          <div ref={loaderRef} className="flex justify-center py-12">
+            {isLoading && (
+            <div className="flex flex-col items-center gap-4">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+              <span className="text-gray-400 animate-pulse">Loading more competitions...</span>
+            </div>
+            )}
+            {!hasMore && !isLoading && competitions.length > 0 && (
+            <div className="text-center">
+              <div className="inline-flex items-center gap-2 rounded-full bg-gray-800/50 border border-gray-700 px-6 py-3">
+              <span className="text-gray-400">🎉 You've seen all competitions!</span>
+              </div>
+            </div>
+            )}
+            {error && (
+            <div className="text-center">
+              <div className="inline-flex items-center gap-2 rounded-full bg-red-900/20 border border-red-700 px-6 py-3">
+              <span className="text-red-400">⚠️ {error}</span>
+              </div>
+            </div>
+            )}
+          </div>
+
+          {/* Add some visual flair with background elements */}
+          <div className="absolute top-0 left-1/4 w-72 h-72 bg-blue-600/5 rounded-full blur-3xl -z-10" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-600/5 rounded-full blur-3xl -z-10" />
         </div>
-        <div ref={loaderRef} className="flex justify-center py-8">
-          {isLoading && <span className="text-gray-400">Loading...</span>}
-          {!hasMore && !isLoading && <span className="text-gray-500">No more competitions</span>}
-          {error && <span className="text-red-500">{error}</span>}
-        </div>
-      </div>
     </div>
   )
 }
