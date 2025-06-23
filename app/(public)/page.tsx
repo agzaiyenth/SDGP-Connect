@@ -20,7 +20,6 @@ export default function Home() {
       <Hero />
       <About />
       <AboutSection/>
-      <Featured/>
       <Domains />
       <ImpactStats />
       <Brands/>
