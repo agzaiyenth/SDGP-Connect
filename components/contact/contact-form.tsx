@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-import { Loader2, CheckCircle2, Zap, Phone, Mail, ArrowRight } from "lucide-react"
+import { Loader2, CheckCircle2, Zap, Phone, Mail,MapPin } from "lucide-react"
 
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -92,9 +91,16 @@ export default function Contact() {
             <p className="text-xl text-muted-foreground max-w-xl leading-relaxed">
               Ready to explore partnerships, investments, or collaborations? We'd love to hear from you and discuss how we can work together.
             </p>
-
+            {/* Address */}
+            <div className="flex items-center space-x-1">
+              <MapPin className="" />
+              <span className="opacity-80">
+              Address: 57 Ramakrishna Rd, Colombo 00600
+              </span>
+            </div>
+           
             {/* Buttons */}
-            <div className="mt-8 lg:mt-10 xl:mt-12 flex w-full flex-col justify-center gap-3 sm:gap-4 sm:flex-row lg:justify-start">
+            <div className=" flex w-full flex-col justify-center gap-3 sm:gap-4 sm:flex-row lg:justify-start">
               
               {/* Call Button */}
               <Button
@@ -105,7 +111,7 @@ export default function Contact() {
               >
                 <div className="absolute inset-0 bg-primary/10 transition-transform group-hover:translate-y-full" />
                 <Phone className="mr-2 size-4 lg:size-5" />
-                Call Us
+                Call Us -  (+94) 772345678
               </Button>
 
               {/* Email Button */}
@@ -114,12 +120,15 @@ export default function Contact() {
                 className="group w-full sm:w-auto lg:text-base xl:text-lg"
                 onClick={handleMail}
               >
-                Email Us
+                Email Us - sdgp@iit.ac.lk
                 <Mail className="ml-2 size-4 lg:size-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>
-          </div>
 
+            
+
+
+          </div>
           {/* Right Section - Contact Form */}
           <div className="flex items-center justify-center h-full">
             <Card className="w-full max-w-lg bg-background border">
