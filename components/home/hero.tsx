@@ -29,7 +29,7 @@ const Logo: React.FC = () => (
   </motion.div>
 )
 const BadgeComponent: React.FC = () => (
-  <div className="fixed top-5 right-4 z-50 shadow-lg rounded-lg overflow-hidden">
+  <div className="fixed top-35 right-15 z-50 shadow-lg rounded-lg overflow-hidden">
     <a 
       href="https://ebadge.bestweb.lk/api/v1/clicked/sdgp.lk/BestWeb/2025/Rate_Us"
       target="_blank"
