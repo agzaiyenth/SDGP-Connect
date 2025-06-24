@@ -92,8 +92,8 @@ export default function Contact() {
               Ready to explore partnerships, investments, or collaborations? We'd love to hear from you and discuss how we can work together.
             </p>
             {/* Address */}
-            <div className="flex items-center space-x-1">
-              <MapPin className="" />
+            <div className="flex items-center space-x-1 pl-2">
+              <MapPin className="opacity-80" />
               <span className="opacity-80">
               Address: 57 Ramakrishna Rd, Colombo 00600
               </span>
