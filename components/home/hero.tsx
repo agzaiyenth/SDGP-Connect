@@ -1,13 +1,13 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { ChevronDown, Mouse } from 'lucide-react';
-import ThreeScene from './three-scene';
-import Carousel from './carousel';
-import { Button } from '../ui/button';
-import Link from 'next/link';
-import Image from "next/image"
 import { useLanguage } from '@/hooks/LanguageProvider';
+import { motion } from 'framer-motion';
+import { Mouse } from 'lucide-react';
+import Image from "next/image";
+import Link from 'next/link';
+import { Button } from '../ui/button';
+import Carousel from './carousel';
+import ThreeScene from './three-scene';
 
 const Logo: React.FC = () => (
   <motion.div 
