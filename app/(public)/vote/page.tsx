@@ -55,10 +55,10 @@ const mockProjects = [
 	},
 ];
 
-
 export default function VoteProjectsPage() {
 	const [projects, setProjects] = useState(mockProjects);
 	const [votedId, setVotedId] = useState(1); // Assume user voted for project 1
+	const [search, setSearch] = useState("");
 
 	const handleVote = (id: number) => {
 		setVotedId(id);
@@ -80,7 +80,6 @@ export default function VoteProjectsPage() {
 							Vote for your favorite project! Discover innovative solutions and
 							help your favorite team win.
 						</p>
-					
 					</div>
 					{/* Podium */}
 					<div className="flex items-end gap-2 md:gap-4 w-full md:w-auto justify-center md:justify-end">
@@ -124,11 +123,26 @@ export default function VoteProjectsPage() {
 			
 			</div>
             <div className="max-w-3xl mx-auto  shadow-lg p-6 md:p-10">
-				
+				{/* Search Bar */}
+				<div className="mb-6">
+					<input
+						type="text"
+						placeholder="Search projects..."
+						className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
+						value={search}
+						onChange={e => setSearch(e.target.value)}
+					/>
+				</div>
 
 				{/* Project List */}
 				<div className="flex flex-col gap-4">
-					{projects.map((project, idx) => (
+					{projects
+						.filter((project) =>
+							project.title.toLowerCase().includes(search.toLowerCase()) ||
+							project.subtitle.toLowerCase().includes(search.toLowerCase()) ||
+							project.tags.some((tag) => tag.toLowerCase().includes(search.toLowerCase()))
+						)
+						.map((project, idx) => (
 						<div
 							key={project.id}
 							className={`flex items-center bg-muted rounded-xl shadow-sm px-4 py-3 gap-4 border border-border relative transition-colors ${
