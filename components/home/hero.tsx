@@ -10,8 +10,8 @@ import Image from "next/image"
 
 const Logo: React.FC = () => (
   <motion.div 
-    initial={{ scale: 0.8, opacity: 0 }}
-    animate={{ scale: 1, opacity: 1 }}
+    initial={{ scale: 1.8, opacity: 0 }}
+    animate={{ scale: 2, opacity: 1 }}
     transition={{ duration: 0.5 }}
     className="mb-10 flex justify-center items-center "
   >
@@ -19,7 +19,7 @@ const Logo: React.FC = () => (
       <Image
         src="/iconw.svg"
         alt="Logoipsum"
-        className="h-48 w-48 -mb-26 -mt-14"
+        className="h-48 w-48 -mb-17 -mt-12"
         width={88}
         height={88}
         priority // Ensure logo is prioritized for LCP
@@ -28,11 +28,30 @@ const Logo: React.FC = () => (
    
   </motion.div>
 )
+const BadgeComponent: React.FC = () => (
+  <div className="fixed top-5 right-4 z-50 shadow-lg rounded-lg overflow-hidden">
+    <a 
+      href="https://ebadge.bestweb.lk/api/v1/clicked/sdgp.lk/BestWeb/2025/Rate_Us"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img 
+        src="https://ebadge.bestweb.lk/eBadgeSystem/domainNames/sdgp.lk/BestWeb/2025/Rate_Us/image.png" 
+        alt="BestWeb Badge" 
+        width={150} 
+        height={150}
+        className="transition-transform hover:scale-105"
+      />
+    </a>
+  </div>
+)
+
 
 export default function Hero() {
   return (
     <section className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden perspective-1000 ">
       <ThreeScene />
+      <BadgeComponent />
 
       <motion.div
         className="relative z-10 text-center max-w-7xl px-6 flex-1 flex flex-col items-center justify-center"
