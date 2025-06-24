@@ -5,7 +5,7 @@
 <xsl:template match="/">
 <html lang="en">
 <head>
-    <title>SDGP Connect - XML Sitemap</title>
+    <title>SDGP.LK - XML Sitemap</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <style>
@@ -19,7 +19,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg,rgb(5, 11, 36) 0%,rgb(15, 15, 15) 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -180,7 +180,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🗺️ SDGP Connect Sitemap</h1>
+            <h1>🗺️ SDGP.LK Sitemap</h1>
             <p>Discover all pages and content on our platform</p>
         </div>
         
@@ -242,7 +242,7 @@
         </div>
         
         <div class="footer">
-            <p>© 2025 SDGP Connect - Generated on <xsl:value-of select="sitemap:urlset/sitemap:url[1]/sitemap:lastmod"/></p>
+            <p>© 2025 SDGP.LK - Generated on <xsl:value-of select="sitemap:urlset/sitemap:url[1]/sitemap:lastmod"/></p>
         </div>
     </div>
 </body>
