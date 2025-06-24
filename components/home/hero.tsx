@@ -7,6 +7,7 @@ import Carousel from './carousel';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import Image from "next/image"
+import { useLanguage } from '@/hooks/LanguageProvider';
 
 const Logo: React.FC = () => (
   <motion.div 
@@ -30,6 +31,7 @@ const Logo: React.FC = () => (
 )
 
 export default function Hero() {
+   const { t } = useLanguage();
   return (
     <section className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden perspective-1000 ">
       <ThreeScene />
@@ -39,14 +41,13 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-      >
-        <motion.div
+      >        <motion.div
           className="inline-block px-6 py-2 mb-4 text-sm font-medium tracking-wider text-white bg-[#2a5298]/20 rounded-full border border-[#2a5298]/30"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          Innovative • Creative • Impactful
+          {t.home_hero_badge_text}
         </motion.div>
 
         <motion.h1
@@ -64,7 +65,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          Transforming Ideas Into brands
+          {t.home_hero_tagline}
         </motion.p>
 
         <motion.div
@@ -72,15 +73,14 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-        >
-          <Link href='/project'>
+        >          <Link href='/project'>
             <Button className="px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
-              Explore projects
+              {t.home_hero_button_explore}
             </Button>
           </Link>
           <Link href='/about'>
             <Button className="px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-primary/30">
-              Learn more
+              {t.home_hero_button_learn}
             </Button>
           </Link>
         </motion.div>
@@ -95,9 +95,8 @@ export default function Hero() {
         >
           <div className=" w-10 h-12 rounded-full bg-[#27272e]/80 flex items-center justify-center mb-2 animate-bounce border border-[#27272e]/90">
             <Mouse className="w-5 h-5 text-[#ffffff]" />
-          </div>
-          <span className="text-sm text-[#ffffff]/80 tracking-wider">
-            Scroll to discover
+          </div>          <span className="text-sm text-[#ffffff]/80 tracking-wider">
+            {t.home_hero_scroll_text}
           </span>
         </motion.div>
       </motion.div>
