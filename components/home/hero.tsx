@@ -7,6 +7,7 @@ import Carousel from './carousel';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import Image from "next/image"
+import { useState, useEffect } from 'react';
 
 const Logo: React.FC = () => (
   <motion.div 
@@ -45,7 +46,57 @@ const BadgeComponent: React.FC = () => (
     </a>
   </div>
 )
+interface MorphingTextProps {
+  texts: string[];
+  className?: string;
+}
 
+const MorphingText: React.FC<MorphingTextProps> = ({ texts, className }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [displayText, setDisplayText] = useState(texts[0]);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsAnimating(true);
+      setTimeout(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % texts.length);
+        setDisplayText(texts[(currentIndex + 1) % texts.length]);
+        setIsAnimating(false);
+      }, 500);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [currentIndex, texts]);
+
+  return (
+    <div className={className}>
+      <motion.span
+      key={currentIndex}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4 }}
+      className="inline-block"
+      >
+      {displayText.split('').map((char, index) => (
+        <motion.span
+        key={index}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ 
+          duration: 0.1, 
+          delay: index * 0.05,
+          ease: "easeInOut" 
+        }}
+        >
+        {char}
+        </motion.span>
+      ))}
+      </motion.span>
+    </div>
+  );
+};
 
 export default function Hero() {
   return (
@@ -77,14 +128,22 @@ export default function Hero() {
           <Logo/>
         </motion.h1>
 
-        <motion.p
-          className="text-xl md:text-2xl text-foreground/80 mb-12"
+        <motion.div
+          className="mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          Transforming Ideas Into brands
-        </motion.p>
+          <MorphingText 
+            texts={[
+              "Transforming Ideas Into Brands",
+              "Crafting Digital Experiences",
+              "Building Tomorrow's Solutions",
+              "Creating Innovative Designs"
+            ]} 
+            className="text-xl md:text-2xl text-foreground/80"
+          />
+        </motion.div>
 
         <motion.div
           className="flex justify-center gap-5 -mt-4"
