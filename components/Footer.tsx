@@ -14,7 +14,6 @@ const {
   logoClassName,
   companyUrl,
   sections,
-  copyrightText
 } = footerItem;
 export default function Footer () {
   const currentYear = new Date().getFullYear()
@@ -23,7 +22,7 @@ export default function Footer () {
     <footer className="border-t">
       <div className="container  pt-8 md:pt-12 ">
         <div className="grid grid-cols-2 px-10 md:px-40 gap-8 md:grid-cols-5">
-          <div className="col-span-2 md:col-span-1">
+          <div className=" flex flex-col items-start gap-4">
             <a
               href={companyUrl}
               target="_blank"
@@ -38,6 +37,9 @@ export default function Footer () {
                 className={logoClassName}
               />
             
+            </a>
+            <a href="https://ebadge.bestweb.lk/api/v1/clicked/sdgp.lk/BestWeb/2025/Rate_Us">
+              <img src="https://ebadge.bestweb.lk/eBadgeSystem/domainNames/sdgp.lk/BestWeb/2025/Rate_Us/image.png" alt="logo" width="150" height="150" />
             </a>
           </div>
           {sections.map((section, index) => (
