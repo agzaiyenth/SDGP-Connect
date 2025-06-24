@@ -1,8 +1,8 @@
 export const footerItem = {
   logoSrc : "/iconw.svg",
   logoAlt : "SDGP",
-  logoWidth : 52,
-  logoHeight : 52,
+  logoWidth : 48,
+  logoHeight : 48,
   logoClassName : "size-8 light:invert",
   companyUrl : "/",
   sections : [
