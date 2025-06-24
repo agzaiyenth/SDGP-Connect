@@ -19,10 +19,10 @@ export default function Footer () {
   const currentYear = new Date().getFullYear()
   return (
     <>
-    <footer className="border-t">
-      <div className="container  pt-8 md:pt-12 ">
+    <footer className="border-t flex justify-center w-full">
+      <div className="container mx-auto  pt-8 md:pt-12 ">
         <div className="grid grid-cols-2 px-10 md:px-40 gap-8 md:grid-cols-5">
-          <div className=" flex flex-col items-start gap-4">
+          <div className=" flex flex-col gap-4">
             {/* <a
               href={companyUrl}
               target="_blank"
@@ -69,7 +69,7 @@ export default function Footer () {
     </footer>
     {/* TODO: REMOVE THIS */}
     <footer id="xy47_beta" className="text-center text-sm text-gray-500 pb-4">
-      Built ♥ by <strong><a href="https://www.psycodelabs.lk" className="hover:text-gray-700">Psycode Lab's</a></strong>
+      Built by <strong><a href="https://www.psycodelabs.lk" className="hover:text-gray-700">Psycode Lab's</a></strong>
     </footer>
     </>
   );
