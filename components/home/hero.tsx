@@ -19,11 +19,11 @@ const Logo: React.FC = () => (
     <div className="relative">
       <Image
         src="/iconw.svg"
-        alt="Logoipsum"
+        alt="SDGP Logo"
         className="h-48 w-48 -mb-17 -mt-12"
         width={88}
         height={88}
-        priority // Ensure logo is prioritized for LCP
+        priority 
       />
     </div>
    
@@ -91,9 +91,6 @@ const MorphingText: React.FC<MorphingTextProps> = ({ texts, className }) => {
         ))}
       </span>
       </h1>
-      <p className="text-lg text-center text-transparent" style={{ color: 'rgba(0,0,0,0.05)' }}>
-        Empowering your digital journey with creativity, technology, and innovation.
-      </p>
     </div>
   );
 };
@@ -141,7 +138,7 @@ export default function Hero() {
               "Building Tomorrow's Solutions",
               "Creating Innovative Designs"
             ]} 
-            className="text-xl md:text-2xl text-foreground/80 -mb-20 "
+            className="text-xl md:text-2xl text-foreground/80 -mb-8 w-120 "
           />
         </motion.div>
 
