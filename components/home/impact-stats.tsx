@@ -17,8 +17,8 @@ const stats = [
     icon: TrendingUp,
   },
   {
-    title: "50+",
-    description: "Funded Startups",
+    title: "75+",
+    description: "Startups Invested",
     icon: Rocket,
   },
 ]
