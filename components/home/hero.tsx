@@ -141,7 +141,7 @@ export default function Hero() {
               "Building Tomorrow's Solutions",
               "Creating Innovative Designs"
             ]} 
-            className="text-xl md:text-2xl text-foreground/80"
+            className="text-xl md:text-2xl text-foreground/80 -mb-20 "
           />
         </motion.div>
 
