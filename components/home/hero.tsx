@@ -30,7 +30,7 @@ const Logo: React.FC = () => (
   </motion.div>
 )
 const BadgeComponent: React.FC = () => (
-  <div className="fixed top-35 right-15 z-50 shadow-lg rounded-lg overflow-hidden">
+  <div className="fixed z-50 shadow-lg rounded-lg overflow-hidden top-8 right-8 md:top-27 md:right-12">
     <a 
       href="https://ebadge.bestweb.lk/api/v1/clicked/sdgp.lk/BestWeb/2025/Rate_Us"
       target="_blank"
@@ -39,9 +39,9 @@ const BadgeComponent: React.FC = () => (
       <img 
         src="https://ebadge.bestweb.lk/eBadgeSystem/domainNames/sdgp.lk/BestWeb/2025/Rate_Us/image.png" 
         alt="BestWeb Badge" 
-        width={150} 
-        height={150}
-        className="transition-transform hover:scale-105"
+        width={120} 
+        height={120}
+        className="transition-transform hover:scale-105 w-24 h-24 md:w-36 md:h-36"
       />
     </a>
   </div>
@@ -91,7 +91,7 @@ const MorphingText: React.FC<MorphingTextProps> = ({ texts, className }) => {
         ))}
       </span>
       </h1>
-      <p className="text-lg text-center text-foreground/70">
+      <p className="text-lg text-center text-transparent" style={{ color: 'rgba(0,0,0,0.05)' }}>
         Empowering your digital journey with creativity, technology, and innovation.
       </p>
     </div>
