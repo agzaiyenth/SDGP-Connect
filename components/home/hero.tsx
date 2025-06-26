@@ -142,7 +142,7 @@ export default function Hero() {
           />
         </motion.div>
 
-        <motion.div
+        {/* <motion.div
           className="flex justify-center gap-5 -mt-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -168,7 +168,47 @@ export default function Hero() {
               </Button>
           </a>
 
-        </motion.div>
+        </motion.div> */}
+
+        
+
+<motion.div
+  className="flex flex-col sm:flex-row justify-center gap-5 -mt-1"
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.8 }}
+>
+  <div className="flex-1">
+    <Link href="/project">
+      <Button className="w-full px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
+        Explore projects
+      </Button>
+    </Link>
+  </div>
+  <div className="flex-1">
+    <Link href="/about">
+      <Button className="w-full px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-primary/30">
+        Learn more
+      </Button>
+    </Link>
+  </div>
+  <div className="flex-1">
+    <a
+      href="https://www.iit.ac.lk/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <Button className="w-full px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
+        Visit Our Campus
+      </Button>
+    </a>
+  </div>
+</motion.div>
+
+
+
+
+
 
         <Carousel />
 
