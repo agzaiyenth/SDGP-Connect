@@ -10,18 +10,23 @@ import { Brands } from "@/components/home/brands";
 import Domains from "@/components/home/domains";
 import Hero from "@/components/home/hero";
 import ImpactStats from "@/components/home/impact-stats";
+import LanguageToggle from '@/components/LanguageToggle';
+import { LanguageProvider } from '@/hooks/LanguageProvider';
 
 
 
 export default function Home() {
   return (
-    <div className="flex flex-col gap-12 pb-12">
-      <Hero />
-      <About />
-      <AboutSection/>
-      <Domains />
-      <ImpactStats />
-      <Brands/>
-    </div>
+    <LanguageProvider>
+      <LanguageToggle />
+      <div className="flex flex-col gap-12 pb-12">
+        <Hero />
+        <About />
+        <AboutSection/>
+        <Domains />
+        <ImpactStats />
+        <Brands/>
+      </div>
+    </LanguageProvider>
   )
 }
