@@ -153,11 +153,21 @@ export default function Hero() {
               Explore projects
             </Button>
           </Link>
-          <Link href='/about'>
+          <Link href='/about'>            
             <Button className="px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-primary/30">
               Learn more
             </Button>
           </Link>
+          <a
+              href="https://www.iit.ac.lk/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button className="px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
+                Visit Our Campus
+              </Button>
+          </a>
+
         </motion.div>
 
         <Carousel />
