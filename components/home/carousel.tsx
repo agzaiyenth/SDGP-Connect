@@ -24,7 +24,7 @@ export default function Carousel() {
       <motion.div
         className="carousel-track flex gap-4"
         animate={{ x: ['0%', '-50%'] }}
-        transition={{ duration: 40, ease: 'linear', repeat: Infinity }}
+        transition={{ duration: 17, ease: 'linear', repeat: Infinity }}
       >
         {duplicatedImages.map((image, index) => (
             <div key={index} className="flex-none relative rounded-lg overflow-hidden w-[400px] aspect-video">
