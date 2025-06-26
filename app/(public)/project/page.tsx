@@ -122,7 +122,11 @@ function ProjectsPageContent() {
 
                 {/* Desktop Filter Sidebar */}
                 <div className="hidden md:block w-64 lg:w-72 flex-shrink-0">
-                    <FilterSidebar onFilterChange={handleFilterChange} initialFilters={initialFilters} />
+                    <div className="sticky top-0">
+                        <FilterSidebar onFilterChange={handleFilterChange} initialFilters={initialFilters} />
+                    </div>
+        
+                    
                 </div>
 
                 <div className="flex-1">

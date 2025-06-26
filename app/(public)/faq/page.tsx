@@ -25,11 +25,11 @@ const FAQPage = () => {
   },
   {
     id: 2,
-    category: "Project Submission",
-    icon: Upload,
-    question: "How can I submit a project?",
-    answer: `To submit a project, go to the 'Submit Project' section in the menu and complete the form with all required details. Make sure to include your project's cover image, a minimum of 3 gallery images, contact number, and email. Only one member per team should submit. Once submitted, your project will be reviewed within 0–2 days. Edits are not allowed post-submission, but you may resubmit if needed. Approved projects receive a confirmation email.`,
-    tags: ["submit", "project", "form", "instructions", "cover image"]
+    category: "General",
+    icon: Info,
+    question: "Who can submit projects on SDGP.LK?",
+    answer: "Informatics Institute of Technology students only.",
+    tags: ["submission", "iit", "students", "eligibility"]
   },
   {
     id: 3,
@@ -149,6 +149,14 @@ const FAQPage = () => {
     question: "Who created SDGP.LK?",
     answer: "SDGP.LK was designed and developed by Psycode Lab's, a creative technology studio known for crafting innovative digital experiences. From user experience to visual identity, the entire platform was thoughtfully built to support meaningful collaboration around sustainable development goals.",
     tags: ["creators", "design", "development", "psycodLab's", "team", "zion", "Agzaiyenth"]
+  }, 
+  {
+    id: 18,
+    category: "Project Submission",
+    icon: Upload,
+    question: "How can I submit a project?",
+    answer: `To submit a project, go to the 'Submit Project' section in the menu and complete the form with all required details. Make sure to include your project's cover image, a minimum of 3 gallery images, contact number, and email. Only one member per team should submit. Once submitted, your project will be reviewed within 0–2 days. Edits are not allowed post-submission, but you may resubmit if needed. Approved projects receive a confirmation email.`,
+    tags: ["submit", "project", "form", "instructions", "cover image"]
   }
 
 ];

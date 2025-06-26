@@ -111,7 +111,7 @@ const teamMembers = [
     email: "ruzaik.s@iit.ac.lk",
     linkedin: "https://www.linkedin.com/in/seyed-ruzaik/",
     description: "Software Developer | Tech Blogger | Assistant Lecturer",
-    category: "Primary",
+    category: "Former",
     image: "/assets/rusaik sir.png",
   },
   {
@@ -121,7 +121,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/vinodani-thilakarathne/",
     description:
       "Guides students in requirements gathering and business analysis for software projects.",
-    category: "Primary",
+    category: "Former",
     image: "/assets/image.png",
   },
   {
@@ -148,7 +148,7 @@ const teamMembers = [
     email: "thashin.r@iit.ac.lk",
     linkedin: "https://www.linkedin.com/in/thashin-rahuman/",
     description: "Software Engineer | Blockchain | React JS/ NodeJS | GO",
-    category: "Primary",
+    category: "Former",
     image: "/assets/thashin sir.png",
   },
   {
@@ -174,7 +174,7 @@ const teamMembers = [
 }, */
   {
     name: "Sulari Fernando",
-    role: "Lecturer at IIT.",
+    role: "Visiting Lecturer",
     email: "sulari.f@iit.ac.lk",
     linkedin: "https://www.linkedin.com/in/supun-sulari-fernando-ba40704b",
     description: "Software Engineer | Junior Accountant | Lecturer | MBA, Business Analytics | BSc in Computer Science",
@@ -192,7 +192,7 @@ const teamMembers = [
   },
   {
     name: "Prathieshna Vekneswaran",
-    role: "Lecturer at IIT.",
+    role: "Visiting Lecturer",
     email: "prathieshnav@gmail.com",
     linkedin: "https://www.linkedin.com/in/prathieshna",
     description: "Freelance Android Developer | Educator",
@@ -201,7 +201,7 @@ const teamMembers = [
   },
   {
     name: "Sharmilan Somasundaram",
-    role: "Lecturer at IIT.",
+    role: "Visiting Lecturer",
     email: "sharmilan.s@iit.ac.lk",
     linkedin: "https://www.linkedin.com/in/sharmilan-somasundaram",
     description: "Certified Blockchain Solution Architect | MSc Big Data Analytics | Researcher",

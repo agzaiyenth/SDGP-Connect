@@ -4,7 +4,6 @@
 // Dissemination of any information or reproduction of any material contained
 // herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
 // You may not alter or remove any copyright or other notice from copies of this content.
-
 import { Geist, Geist_Mono } from "next/font/google";
 import type { Metadata } from "next";
 import "../globals.css";

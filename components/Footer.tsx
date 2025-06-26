@@ -1,34 +1,78 @@
-import Link from 'next/link';
+import Link from "next/link";
+import Image from "next/image";
+import { footerItem } from "@/data/footerItems";
 
-export default function Footer() {
-    const currentYear = new Date().getFullYear()
-    return (
-        <footer className="w-full mt-auto">
-            <div className="max-w-7xl mx-auto px-4">
-                <div className="h-px bg-gradient-to-r from-transparent via-gray-800 to-transparent opacity-70"></div>
-                <div className="py-6 pb-20 md:pb-6 text-center text-sm text-gray-400">
-                    {/* Quick Links */}
-                    <div className="flex justify-center gap-6 mb-4">
-                        <Link href="/faq" className="hover:text-gray-300 transition-colors">
-                            FAQ
-                        </Link>
-                        <Link href="/privacy" className="hover:text-gray-300 transition-colors">
-                            Privacy Policy
-                        </Link>
-                        <Link href="/cookies" className="hover:text-gray-300 transition-colors">
-                            Cookie Policy
-                        </Link>
-                        <Link href="/contact" className="hover:text-gray-300 transition-colors">
-                            Support
-                        </Link>
-                    </div>
-                   
-                    {/* Copyright */}
-                    <div>
-                        Copyright © {currentYear} - <a href="http://skillverse.lk" className="hover:text-gray-300 transition-colors">SkillVerse (PVT) LTD</a> - All Rights Reserved
-                    </div>
-                </div>
-            </div>
-        </footer>
-    )
+interface NavLink {
+  label: string;
+  href: string;
 }
+const {
+  logoSrc,
+  logoAlt,
+  logoWidth,
+  logoHeight,
+  logoClassName,
+  companyUrl,
+  sections,
+} = footerItem;
+export default function Footer () {
+  const currentYear = new Date().getFullYear()
+  return (
+    <>
+    <footer className="border-t flex justify-center w-full">
+      <div className="container mx-auto  pt-8 md:pt-12 ">
+        <div className="grid grid-cols-2 px-10 md:px-40 gap-8 md:grid-cols-5">
+          <div className=" flex flex-col gap-4 col-span-2 md:col-span-1 justify-center items-center">
+            {/* <a
+              href={companyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2"
+            >
+              <Image
+                src={logoSrc}
+                alt={logoAlt}
+                width={logoWidth}
+                height={logoHeight}
+                className={logoClassName}
+              />
+            
+            </a> */}
+            <a href="https://ebadge.bestweb.lk/api/v1/clicked/sdgp.lk/BestWeb/2025/Rate_Us">
+              <img src="https://ebadge.bestweb.lk/eBadgeSystem/domainNames/sdgp.lk/BestWeb/2025/Rate_Us/image.png" alt="logo" width="150" height="150" />
+            </a>
+          </div>
+          {sections.map((section, index) => (
+            <div key={index}>
+              <h3 className="mb-3 font-semibold">{section.title}</h3>
+              <ul className="space-y-2">
+                {section.links.map((link, linkIndex) => (
+                  <li key={linkIndex}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-muted-foreground hover:text-foreground"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+         <div className="mt-8 border-t border-secondary-foreground/10 pt-8 text-center flex md:gap-4 gap-2 flex-col md:flex-row justify-center items-center">
+          <p className="text-center text-sm text-gray-500 pb-4"> Copyright © {currentYear} - <a href="http://IIT.ac.lk" className="text-center text-sm text-gray-500 pb-4">IIT (PVT) LTD</a></p>
+          <p className="text-center text-sm text-gray-500 pb-4 md:block hidden">|</p>
+          <p className="text-center text-sm text-gray-500 pb-4"> Mentored By - <a href="http://skillverse.lk" className="text-center text-sm text-gray-500 pb-4">SkillVerse (PVT) LTD</a></p>
+        </div>
+      </div>
+    </footer>
+    {/* TODO: REMOVE THIS */}
+    <footer id="xy47_beta" className="text-center text-sm text-gray-500 md:pb-4 pb-24">
+      Built by <strong><a href="https://www.psycodelabs.lk" className="hover:text-gray-700">Psycode Lab's</a></strong>
+    </footer>
+    </>
+  );
+};
+
+
