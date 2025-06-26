@@ -15,16 +15,16 @@ const Logo: React.FC = () => (
     initial={{ scale: 1.8, opacity: 0 }}
     animate={{ scale: 2, opacity: 1 }}
     transition={{ duration: 0.5 }}
-    className="mb-10 flex justify-center items-center "
+    className="mb-6 md:mb-10 flex justify-center items-center"
   >
     <div className="relative">
       <Image
         src="/iconw.svg"
         alt="SDGP Logo"
-        className="h-48 w-48 -mb-17 -mt-12"
+        className="h-24 w-24 sm:h-32 sm:w-32 md:h-48 md:w-48 -mb-6 sm:-mb-8 md:-mb-17 -mt-4 sm:-mt-6 md:-mt-12"
         width={88}
         height={88}
-        priority 
+        priority
       />
     </div>
    
@@ -33,7 +33,7 @@ const Logo: React.FC = () => (
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden perspective-1000 ">
+    <section className="min-h-screen w-full flex flex-col items-center justify-center overflow-hidden perspective-1000 ">
       <ThreeScene />
       <BadgeComponent />
 
