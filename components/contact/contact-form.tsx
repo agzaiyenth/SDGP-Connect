@@ -112,6 +112,7 @@ export default function Contact() {
                 <div className="absolute inset-0 bg-primary/10 transition-transform group-hover:translate-y-full" />
                 <Phone className="mr-2 size-4 lg:size-5" />
                 Call Us -  (+94) 777781061
+
               </Button>
 
               {/* Email Button */}
