@@ -1,6 +1,6 @@
-import React from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
 
 const BadgeComponent: React.FC = () => (
   <div className="fixed z-50 shadow-lg rounded-lg overflow-hidden top-5 right-5 md:top-10 md:right-10">
@@ -16,6 +16,7 @@ const BadgeComponent: React.FC = () => (
         height={144}
         sizes="(max-width: 768px) 96px, 144px"
         className="transition-transform hover:scale-105 w-24 h-24 md:w-36 md:h-36"
+        priority
       />
     </Link>
   </div>

@@ -35,7 +35,7 @@ export default function Carousel() {
               sizes="(max-width: 400px) 100vw, 400px"
               width={400}
               height={225}
-              priority={index === 0} // Preload the first image for LCP
+              priority
             />
             </div>
         ))}

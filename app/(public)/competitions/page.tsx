@@ -1,13 +1,13 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from "react"
-import Image from "next/image"
-import { Play, ArrowRight } from "lucide-react"
+import CompetitionCard from "@/components/competition/CompetitionCard"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-import { useRouter } from "next/navigation"
-import CompetitionCard from "@/components/competition/CompetitionCard"
 import { useApprovedCompetitions } from "@/hooks/competition/useApprovedCompetitions"
+import { ArrowRight, Play } from "lucide-react"
+import Image from "next/image"
+import { useRouter } from "next/navigation"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 export default function AwardsPage() {
   const [videoOpen, setVideoOpen] = useState(false)

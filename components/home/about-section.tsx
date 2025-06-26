@@ -21,7 +21,7 @@ const Data = {
         alt: "Avatar 2",
       },
       {
-        
+
         src: "/home/about-logo/lexi.png",
         alt: "Avatar 3",
       },

@@ -2,8 +2,9 @@ import Contact from "@/components/contact/contact-form"
 
 export default function Page() {
   return (
-  <div className="flex flex-col items-center justify-center text-white pb-24">
+    <div className="flex flex-col items-center justify-center text-white pb-24">
 
-    <Contact />
+      <Contact />
 
-  </div>)}
+    </div>)
+}
