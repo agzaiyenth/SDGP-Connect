@@ -11,7 +11,7 @@ export function AboutSection() {
             <div className="absolute inset-0 flex items-center justify-center bg-zinc-800 rounded-2xl">
               <div className="w-12 h-12 text-white flex items-center justify-center">
                 <Image
-                  src="/assets/logo.png"
+                  src="/assets/logo.webp"
                   alt="Logo"
                   width={120}
                   height={80}
@@ -40,7 +40,7 @@ export function AboutSection() {
                   <Eye size={18} className="text-white" />
                   <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">Our Vision</span>
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-center">Tech for global good</h3>
+                <p className="text-xl font-bold mb-3 text-center">Tech for global good</p>
                 <p className="text-zinc-400 text-center flex-grow leading-relaxed">
                   To become a launchpad for socially-driven tech innovation, where young minds transform global challenges into digital opportunities, building a more sustainable and equitable future through software.
                 </p>

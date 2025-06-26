@@ -17,12 +17,12 @@ const Data = {
         alt: "Avatar 1",
       },
       {
-        src: "/home/about-logo/amor.png",
+        src: "/home/about-logo/amor.webp",
         alt: "Avatar 2",
       },
       {
-        
-        src: "/home/about-logo/lexi.png",
+
+        src: "/home/about-logo/lexi.webp",
         alt: "Avatar 3",
       },
       {
@@ -30,7 +30,7 @@ const Data = {
         alt: "Avatar 4",
       },
       {
-        src: "/assets/spark.png",
+        src: "/assets/spark.webp",
         alt: "Avatar 4",
       },
       {

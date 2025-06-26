@@ -8,8 +8,6 @@ const useUploadImageToBlob = () => {
     const formData = new FormData();
     formData.append('image', file);
   
-    console.log('Uploading file:', file);
-    console.log('FormData:', formData);
     
     const response = await axios.post('/api/upload', formData, {
       headers: {
@@ -23,7 +21,6 @@ const useUploadImageToBlob = () => {
       },
     });
   
-    console.log('Upload response:', response);
     return response.data.url;
   };
   

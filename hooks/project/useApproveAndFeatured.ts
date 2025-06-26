@@ -26,13 +26,12 @@ export function useApproveAndFeatured(options?: UseApproveAndFeaturedOptions) {
     featured: boolean = false,
     details?: { title: string; groupNumber: string; teamEmail: string }
   ) => {
-    console.log('Approving project:', { projectId, featured });
+  
     setIsLoading(true);
     setError(null);
 
     try {
-      console.log('Sending approval request to API');
-      const response = await axios.post('/api/admin/projects/approve', {
+    const response = await axios.post('/api/admin/projects/approve', {
         projectId: String(projectId),
         featured,
         title: details?.title,
@@ -40,11 +39,10 @@ export function useApproveAndFeatured(options?: UseApproveAndFeaturedOptions) {
         teamEmail: details?.teamEmail,
       });
 
-      console.log('API response received:', response);
+      
       setIsLoading(false);
       
       if (response.status === 200) {
-        console.log('Project approved successfully');
         toast.success('Project approved successfully', {
           description: featured ? 'Project has been approved and featured' : 'Project has been approved',
         });
@@ -75,7 +73,6 @@ export function useApproveAndFeatured(options?: UseApproveAndFeaturedOptions) {
       // Handle conflict case (project already approved)
       if (err.response?.status === 409) {
         const conflictData = err.response.data;
-        console.log('Project already approved:', conflictData);
         const errorMessage = conflictData.error || 'This project has already been approved';
         
         setError(new Error(errorMessage));

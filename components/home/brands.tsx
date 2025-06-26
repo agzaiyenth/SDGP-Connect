@@ -1,8 +1,7 @@
 'use client'
-import { Sparkles } from "@/components/ui/sparkles"
-import { useTheme } from "next-themes"
 import { InfiniteSlider } from '@/components/ui/infinite-slider'
 import { ProgressiveBlur } from '@/components/ui/progressive-blur'
+import { Sparkles } from "@/components/ui/sparkles"
 
 
 //sample logos
@@ -85,7 +84,7 @@ export function Brands() {
     <div className="w-full overflow-hidden ">
       <div className="mx-auto mt-32 w-full max-w-7xl">
         <div className="text-center text-5xl text-foreground">
-          <span className="text-blue-900 ">
+          <span className="text-blue-300 ">
             Making projects
           </span>
           <br />

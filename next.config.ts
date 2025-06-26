@@ -3,7 +3,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  /* config options here */
+  modern: true, 
+  productionBrowserSourceMaps: true,
   images: {
     unoptimized: true,
     remotePatterns: [
