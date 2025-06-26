@@ -97,18 +97,6 @@ export default function Hero() {
         </motion.div>
 
         <Carousel />
-
-        <motion.div
-          className="absolute bottom-2 left-1/2 -translate-x-1/2 flex flex-col items-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-        >
-          <div className=" w-10 h-12 rounded-full bg-[#27272e]/80 flex items-center justify-center animate-bounce border border-[#27272e]/90">
-            <Mouse className="w-5 h-5 text-[#ffffff]" />
-          </div>
-         
-        </motion.div>
       </motion.div>
     </section>
   );
