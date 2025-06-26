@@ -11,7 +11,7 @@ export function AboutSection() {
             <div className="absolute inset-0 flex items-center justify-center bg-zinc-800 rounded-2xl">
               <div className="w-12 h-12 text-white flex items-center justify-center">
                 <Image
-                  src="/assets/logo.png"
+                  src="/assets/logo.webp"
                   alt="Logo"
                   width={120}
                   height={80}

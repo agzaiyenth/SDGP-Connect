@@ -107,7 +107,7 @@ export default function AwardsPage() {
               <div className="absolute -inset-4 -z-10 rounded-2xl bg-blue-950/10 blur-sm" />
               <div className="relative overflow-hidden rounded-xl h-[280px] sm:h-[320px] lg:h-[400px]">
                 <Image
-                  src='/assets/1.jpg'
+                  src='/assets/1.webp'
                   alt="Competition winners celebrating their achievements"
                   fill
                   className="object-cover shadow-lg transition-transform hover:scale-[1.02] border border-gray-700"
