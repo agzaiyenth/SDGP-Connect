@@ -42,7 +42,7 @@ export async function POST(request: Request) {
         }
       });
 
-      console.log(`Created ProjectMetadata with project_id: ${projectMetadata.project_id}`);
+   
 
       // 2. Create ProjectContent - This links to ProjectMetadata via project_id
       const projectContent = await tx.projectContent.create({
@@ -51,7 +51,6 @@ export async function POST(request: Request) {
         }
       });
 
-      console.log(`Created ProjectContent with content_id: ${projectContent.content_id}`);
 
       // 3. Create ProjectDetails - Links to ProjectContent via content_id
       await tx.projectDetails.create({

@@ -158,9 +158,7 @@ const page = (props: Props) => {
         </h1>
         <Stepper
           initialStep={1}
-          onStepChange={(step) => {
-            console.log(step);
-          }}
+         
           onFinalStepCompleted={handleSubmit}
           backButtonText="Previous"
           nextButtonText="Next"
