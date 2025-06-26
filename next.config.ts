@@ -4,6 +4,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   modern: true, 
+  productionBrowserSourceMaps: true,
   images: {
     unoptimized: true,
     remotePatterns: [
