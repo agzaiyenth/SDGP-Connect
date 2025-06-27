@@ -6,6 +6,7 @@ import ThreeScene from './three-scene';
 import Carousel from './carousel';
 import { Button } from '../ui/button';
 import Link from 'next/link';
+import MorphingText from './Morphing';
 import Image from "next/image"
 import { useLanguage } from '@/hooks/LanguageProvider';
 
@@ -47,17 +48,34 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          {t.home_hero_badge_text}
+          {t.home_hero_badge}
         </motion.div>
 
-        <motion.h1
-          className="text-6xl md:text-7xl font-bold mb-3 bg-gradient-to-r from-[#2a5298] via-[#9bb9ec] to-[#2a5298] bg-clip-text text-transparent "
+       <motion.h1
+          className="text-6xl md:text-7xl font-bold  bg-gradient-to-r from-[#2a5298] via-[#9bb9ec] to-[#2a5298] bg-clip-text text-transparent "
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <Logo/>
+          <Logo />
         </motion.h1>
+
+        <motion.div
+          className=""
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          <MorphingText
+            texts={[
+                t.home_hero_morphingtext1,
+                t.home_hero_morphingtext2,
+                t.home_hero_morphingtext3,
+                t.home_hero_morphingtext4
+            ]}
+            className="text-xl md:text-2xl text-foreground/80  w-120 "
+          />
+        </motion.div>
 
         <motion.p
           className="text-xl md:text-2xl text-foreground/80 mb-12"
@@ -75,14 +93,23 @@ export default function Hero() {
           transition={{ delay: 0.8 }}
         >          <Link href='/project'>
             <Button className="px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
-              {t.home_hero_button_explore}
+              {t.home_hero_button1}
             </Button>
           </Link>
           <Link href='/about'>
             <Button className="px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-primary/30">
-              {t.home_hero_button_learn}
+              {t.home_hero_button2}
             </Button>
           </Link>
+          <a
+            href="https://www.iit.ac.lk/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button className="px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
+              {t.home_hero_button3}
+            </Button>
+          </a>
         </motion.div>
 
         <Carousel />
