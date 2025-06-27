@@ -13,7 +13,7 @@ const Data = {
     count: 250,
     avatars: [
       {
-        src: "/home/about-logo/raspberry.jpg",
+        src: "/home/about-logo/raspberry.webp",
         alt: "Avatar 1",
       },
       {
@@ -26,7 +26,7 @@ const Data = {
         alt: "Avatar 3",
       },
       {
-        src: "/home/about-logo/sealanka.jpg",
+        src: "/home/about-logo/sealanka.webp",
         alt: "Avatar 4",
       },
       {
@@ -34,7 +34,7 @@ const Data = {
         alt: "Avatar 4",
       },
       {
-        src: "/home/about-logo/movemate.jpg",
+        src: "/home/about-logo/movemate.webp",
         alt: "Avatar 5",
       },
     ],
