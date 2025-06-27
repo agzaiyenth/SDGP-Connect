@@ -1,4 +1,4 @@
-import { Users, Award, TrendingUp, Rocket } from "lucide-react"
+import { Award, Rocket, TrendingUp, Users } from "lucide-react"
 
 const stats = [
   {
@@ -17,8 +17,8 @@ const stats = [
     icon: TrendingUp,
   },
   {
-    title: "50+",
-    description: "Funded Startups",
+    title: "75+",
+    description: "Startups Invested",
     icon: Rocket,
   },
 ]

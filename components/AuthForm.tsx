@@ -141,7 +141,6 @@ const LoginForm: React.FC = () => {
         redirect: false
       });
 
-      console.log("SignIn Response:", result); // LOG
 
       if (result?.error) {
         setError(result.error);

@@ -1,17 +1,16 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Mouse } from 'lucide-react';
-import ThreeScene from './three-scene';
-import Carousel from './carousel';
-import BadgeComponent from './bestWebBadge';
-import { Button } from '../ui/button';
+import Image from "next/image";
 import Link from 'next/link';
-import Image from "next/image"
+import { Button } from '../ui/button';
+import BadgeComponent from './bestWebBadge';
+import Carousel from './carousel';
 import MorphingText from './Morphing';
+import ThreeScene from './three-scene';
 
 const Logo: React.FC = () => (
-  <motion.div 
+  <motion.div
     initial={{ scale: 1.8, opacity: 0 }}
     animate={{ scale: 2, opacity: 1 }}
     transition={{ duration: 0.5 }}
@@ -27,7 +26,7 @@ const Logo: React.FC = () => (
         priority
       />
     </div>
-   
+
   </motion.div>
 )
 
@@ -58,7 +57,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <Logo/>
+          <Logo />
         </motion.h1>
 
         <motion.div
@@ -67,45 +66,50 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <MorphingText 
+          <MorphingText
             texts={[
               "Transforming Ideas Into Brands",
               "Crafting Digital Experiences",
               "Building Tomorrow's Solutions",
               "Creating Innovative Designs"
-            ]} 
+            ]}
             className="text-xl md:text-2xl text-foreground/80  w-120 "
           />
         </motion.div>
 
         <motion.div
-          className="flex justify-center gap-5 -mt-4"
+          className="flex flex-col sm:flex-row justify-center gap-5 -mt-1"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-        >
-          <Link href='/project'>
-            <Button className="px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
-              Explore projects
-            </Button>
-          </Link>
-          <Link href='/about'>            
-            <Button className="px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-primary/30">
-              Learn more
-            </Button>
-          </Link>
-          <a
+          >
+          <div className="flex-1">
+            <Link href="/project">
+              <Button className="w-full px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
+                  Explore projects
+              </Button>
+            </Link>
+          </div>
+          <div className="flex-1">
+            <Link href="/about">
+              <Button className="w-full px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-primary/30">
+                Learn more
+              </Button>
+            </Link>
+          </div>
+          <div className="flex-1">
+            <a
               href="https://www.iit.ac.lk/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button className="px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
+              <Button className="w-full px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
                 Visit Our Campus
               </Button>
-          </a>
-
-        </motion.div>
-
+            </a>
+          </div>
+          </motion.div>
+          
         <Carousel />
       </motion.div>
     </section>

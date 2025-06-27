@@ -4,7 +4,6 @@
 // Dissemination of any information or reproduction of any material contained
 // herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
 // You may not alter or remove any copyright or other notice from copies of this content.
-import { AboutSection } from '@/components/about/about';
 import { CTASection } from '@/components/about/cta';
 import Hero from '@/components/about/hero';
 import ModuleTeam from '@/components/about/moduleTeam';
@@ -13,19 +12,19 @@ import StatsSection from '@/components/about/stats';
 import React from 'react';
 
 interface Props {
-    
+
 }
 
 const Page: React.FC<Props> = (props) => {
-    
+
     return (
         <div className="">
-            <Hero/>
-            <ModuleTeam/>
-            <StatsSection/>
-           <CTASection/>
-                   
-          
+            <Hero />
+            <ModuleTeam />
+            <StatsSection />
+            <CTASection />
+
+
         </div>
     );
 };
