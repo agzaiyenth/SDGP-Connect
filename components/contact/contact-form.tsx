@@ -62,7 +62,7 @@ export default function Contact() {
   }
 
   const handleCall = () => {
-    window.open('tel:+94772345678', '_self')
+    window.open('tel:+94777781061', '_self')
   }
 
   const handleMail = () => {
@@ -95,7 +95,7 @@ export default function Contact() {
             <div className="flex items-center space-x-1 pl-2">
               <MapPin className="opacity-80" />
               <span className="opacity-80">
-              Address: 57 Ramakrishna Rd, Colombo 00600
+              IIT Address: 57 Ramakrishna Rd, Colombo 00600
               </span>
             </div>
            
@@ -111,7 +111,7 @@ export default function Contact() {
               >
                 <div className="absolute inset-0 bg-primary/10 transition-transform group-hover:translate-y-full" />
                 <Phone className="mr-2 size-4 lg:size-5" />
-                Call Us -  (+94) 772345678
+                Call Us -  (+94) 777781061
               </Button>
 
               {/* Email Button */}
@@ -120,8 +120,8 @@ export default function Contact() {
                 className="group w-full sm:w-auto lg:text-base xl:text-lg"
                 onClick={handleMail}
               >
-                Email Us - sdgp@iit.ac.lk
                 <Mail className="ml-2 size-4 lg:size-5 transition-transform group-hover:translate-x-1" />
+                Email Us - sdgp@iit.ac.lk
               </Button>
             </div>
 

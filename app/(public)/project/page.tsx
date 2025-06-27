@@ -1,15 +1,14 @@
 "use client"
 
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Suspense } from "react";
-import ProjectExplorer from "@/components/projects/project-explorer";
 import FilterSidebar from "@/components/projects/filter-sidebar";
+import ProjectExplorer from "@/components/projects/project-explorer";
 import SearchHeader from "@/components/projects/search-header";
-import { Skeleton } from "@/components/ui/skeleton";
-import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ProjectQueryParams, useProjects } from "@/hooks/project/useGetProjects";
+import { X } from "lucide-react";
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 
 interface FilterState {
     status: string[];
@@ -125,8 +124,8 @@ function ProjectsPageContent() {
                     <div className="sticky top-0">
                         <FilterSidebar onFilterChange={handleFilterChange} initialFilters={initialFilters} />
                     </div>
-        
-                    
+
+
                 </div>
 
                 <div className="flex-1">
