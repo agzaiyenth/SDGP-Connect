@@ -18,8 +18,6 @@ export const GET = async (req: NextRequest) => {
       whereCondition.title = { contains: query };
     }
 
-    // Debug: log the whereCondition
-    console.log('Project search whereCondition:', JSON.stringify(whereCondition));
 
     // Build query options with explicit empty where
 const findOptions: any = {

@@ -53,6 +53,9 @@ const ExpandableChat: React.FC<ExpandableChatProps> = ({
   return (
     <div
       className={cn(`fixed ${chatConfig.positions[position]} z-50`, className)}
+      aria-label="AI chat dialog"
+      role="dialog"
+      {...(isOpen ? { "aria-modal": "true" } : {})}
       {...props}
     >
       <div
@@ -64,6 +67,8 @@ const ExpandableChat: React.FC<ExpandableChatProps> = ({
           isOpen ? chatConfig.states.open : chatConfig.states.closed,
           className,
         )}
+        tabIndex={isOpen ? 0 : -1}
+        aria-label="Chat window"
       >
         {children}
         <Button
@@ -71,14 +76,18 @@ const ExpandableChat: React.FC<ExpandableChatProps> = ({
           size="icon"
           className="absolute top-2 right-2 sm:hidden"
           onClick={toggleChat}
+          aria-label="Close chat"
         >
-          <X className="h-4 w-4" />
+          <X className="h-4 w-4" aria-hidden="true" />
         </Button>
       </div>
       <ExpandableChatToggle
         icon={icon}
         isOpen={isOpen}
         toggleChat={toggleChat}
+        aria-label={isOpen ? "Close chat" : "Open chat"}
+        aria-expanded={isOpen}
+        aria-controls="expandable-chat-window"
       />
     </div>
   );
@@ -139,9 +148,9 @@ const ExpandableChatToggle: React.FC<ExpandableChatToggleProps> = ({
     
     {/* Icon */}
     {isOpen ? (
-      <X className="h-6 w-6 relative z-10" />
+      <X className="h-6 w-6 relative z-10" aria-hidden="true" />
     ) : (
-      icon || <MessageCircle className="h-6 w-6 relative z-10" />
+      icon || <MessageCircle className="h-6 w-6 relative z-10" aria-hidden="true" />
     )}
     
     {/* Bottom gradient line */}

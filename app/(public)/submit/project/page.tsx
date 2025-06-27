@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
-import { MessageCircle, X } from 'lucide-react'
 import ProjectSubmissionForm from '@/components/submit-form/SubmissionForm'
+import { MessageCircle, X } from 'lucide-react'
 
 const Page = () => {
   const [showPopup, setShowPopup] = useState(true)
@@ -21,7 +21,7 @@ const Page = () => {
     if (termsAccepted) {
       const timer = setTimeout(() => {
         setShowHelpPopup(true)
-      }, 10000) 
+      }, 10000)
 
       return () => clearTimeout(timer)
     }
@@ -73,7 +73,7 @@ const Page = () => {
             >
               <X className="w-3 h-3 text-neutral-300" />
             </button>
-            
+
             <div className="pr-5">
               <h3 className="text-white text-sm font-medium mb-1">Need Help?</h3>
               <p className="text-neutral-300 text-xs mb-2 whitespace-nowrap">
@@ -89,7 +89,7 @@ const Page = () => {
                 Chat Now
               </a>
             </div>
-            
+
             <div className="absolute -bottom-2 right-6 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-neutral-800"></div>
           </div>
         </div>
@@ -117,8 +117,8 @@ const Page = () => {
         {!showHelpPopup && (
           <div
             className={`mb-2 max-w-[200px] px-3 py-1.5 rounded-md bg-neutral-800 text-white text-xs text-center shadow-md transition-all duration-300 ease-out transform ${showTooltip
-                ? 'opacity-100 translate-y-0 scale-100'
-                : 'opacity-0 translate-y-2 scale-95 pointer-events-none'
+              ? 'opacity-100 translate-y-0 scale-100'
+              : 'opacity-0 translate-y-2 scale-95 pointer-events-none'
               }`}
           >
             Need help? Chat on WhatsApp

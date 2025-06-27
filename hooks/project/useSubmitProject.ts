@@ -84,8 +84,7 @@ export const useSubmitProject = () => {
       return null;
     }
 
-    // Log the image to ensure it's a valid file before proceeding
-    console.log(`Uploading image for ${identifier}:`, image);
+  
 
     // Validate the image
     const validation = validateImage(image);
@@ -149,7 +148,7 @@ export const useSubmitProject = () => {
   };
 
   const submitProject = async (data: ProjectSubmissionSchema): Promise<SubmitProjectResponse> => {
-    console.log('Project submission data:', data);
+
 
     setError(null);
     setWarning(null);
@@ -254,8 +253,7 @@ export const useSubmitProject = () => {
       try {
         // Submit to API using axios
         const response = await axios.post<SubmitProjectResponse>(`/api/projects/submit`, sanitizedData);
-        console.log('Submitting project:', sanitizedData);
-        console.log('API response:', response.data);
+     
         setIsSubmitting(false);
         return response.data;
       } catch (err: any) {
