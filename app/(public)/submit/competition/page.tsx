@@ -1,5 +1,4 @@
 import CompForm from '@/components/competition/compForm'
-import React from 'react'
 
 type Props = {}
 

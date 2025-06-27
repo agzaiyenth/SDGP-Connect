@@ -2,9 +2,9 @@
 
 import { ShimmerButton } from '@/components/magicui/shimmer-button';
 import SpotlightCard from '@/components/ui/spotlightCards';
-import { Award, Rocket, Star, Trophy } from 'lucide-react';
+import { Award, Rocket, Trophy } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect } from 'react'
+import { useEffect } from 'react';
 
 
 const Page = () => {

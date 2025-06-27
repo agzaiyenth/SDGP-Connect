@@ -135,7 +135,7 @@ const ProjectSubmissionForm = () => {
     if (!isValid) {
       // Get the current errors to provide more specific feedback
       const errors = methods.formState.errors;
-      console.log("Validation errors:", errors);
+
 
       toast.error("Please complete all required fields", {
         description: "Check the highlighted fields and ensure all required information is provided.",

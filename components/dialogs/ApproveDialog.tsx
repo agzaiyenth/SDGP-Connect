@@ -22,7 +22,7 @@ const ApproveDialog = ({ open, onOpenChange, projectID, onApproved }: ApproveDia
   const [conflictInfo, setConflictInfo] = useState<any>(null);
   const [showSuccessState, setShowSuccessState] = useState(false);
   
-  console.log('ApproveDialog rendered for projectID:', projectID);
+
   
   // Reset state when dialog opens/closes
   useEffect(() => {
@@ -34,7 +34,7 @@ const ApproveDialog = ({ open, onOpenChange, projectID, onApproved }: ApproveDia
   
   const { approveProject, isLoading, error } = useApproveAndFeatured({
     onSuccess: () => {
-      console.log('Approval successful, showing success state');
+
       setShowSuccessState(true);
       
       // Delay closing the dialog to show the success state
@@ -46,7 +46,6 @@ const ApproveDialog = ({ open, onOpenChange, projectID, onApproved }: ApproveDia
       }, 1500);
     },
     onAlreadyApproved: (data) => {
-      console.log('Project already approved, setting conflict info:', data);
       setConflictInfo(data);
     },
     onError: (error) => {

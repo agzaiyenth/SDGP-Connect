@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
   const userId = session.user.id;
 
   try {
-    console.log("Approve API called by user:", userId);
+   
 
     const { projectId, featured, title, groupNumber, teamEmail } = await request.json();
     if (!projectId) {
@@ -80,10 +80,6 @@ export async function POST(request: NextRequest) {
       where: { user_id: userId }
     });
 
-    if (!user) {
-      console.log(`Warning: User ${userId} not found in database`);
-    }
-
     // Update status with the session.user.id, but only if user exists
     const updatedStatus = await prisma.projectStatus.update({
       where: { content_id: projectContent.content_id },
@@ -106,14 +102,13 @@ export async function POST(request: NextRequest) {
     }
 
    if (teamEmail && title && groupNumber) {
-  console.log("Trying to send email to", teamEmail);
   try {
     await sendEmail({
       to: teamEmail,
       subject: `Your SDGP project "${title}" has been approved!`,
       html: approvedTemplate({ group_num: groupNumber, title, projectId }),
     });
-    console.log(`Email sent to ${teamEmail} for project ${projectId}`);
+
   } catch (err) {
     console.error("Failed to send approval email:", err);
   }
