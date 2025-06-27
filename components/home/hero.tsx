@@ -8,7 +8,7 @@ import BadgeComponent from './bestWebBadge';
 import Carousel from './carousel';
 import MorphingText from './Morphing';
 import ThreeScene from './three-scene';
-import { useLanguage } from "@/hooks/useLanguage";
+import { useLanguage } from "@/hooks/LanguageProvider";
 
 const Logo: React.FC = () => (
   <motion.div

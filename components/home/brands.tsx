@@ -1,6 +1,6 @@
 'use client'
 
-import { useLanguage } from "@/hooks/useLanguage";
+import { useLanguage } from "@/hooks/LanguageProvider";
 import { InfiniteSlider } from '@/components/ui/infinite-slider'
 import { ProgressiveBlur } from '@/components/ui/progressive-blur'
 import { Sparkles } from "@/components/ui/sparkles"

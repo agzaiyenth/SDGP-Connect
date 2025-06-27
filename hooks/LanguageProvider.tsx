@@ -16,18 +16,26 @@ const LanguageContext = createContext<LanguageContextProps | undefined>(undefine
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<string>(defaultLang);
   const [t, setT] = useState<Record<string, string>>({});
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem(LANG_KEY);
     if (stored && supportedLangs.includes(stored)) {
       setLang(stored);
+    } else {
+      setLang(defaultLang);
     }
+    setIsLoaded(true);
   }, []);
-
+  
   useEffect(() => {
-    import(`../locales/${lang}.json`).then((mod) => setT(mod.default || mod));
-    localStorage.setItem(LANG_KEY, lang);
-  }, [lang]);
+    if (isLoaded) {
+      import(`../locales/${lang}.json`)
+        .then((mod) => setT(mod.default || mod))
+        .catch(() => setT({}));
+      localStorage.setItem(LANG_KEY, lang);
+    }
+  }, [lang, isLoaded]);
 
   const changeLanguage = (l: string) => {
     if (supportedLangs.includes(l)) setLang(l);

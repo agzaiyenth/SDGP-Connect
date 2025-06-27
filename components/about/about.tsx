@@ -1,7 +1,7 @@
 'use client'
 import { Eye, Target, HeartHandshake } from "lucide-react"
 import Image from "next/image"
-import { useLanguage } from "@/hooks/useLanguage";
+import { useLanguage } from "@/hooks/LanguageProvider";
 
 function getNested(obj: any, path: string[], fallback: any = undefined) {
   return path.reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : fallback), obj);

@@ -1,6 +1,6 @@
 "use client"
 import { Hero7 } from "../modern-hero";
-import { useLanguage } from "@/hooks/useLanguage";
+import { useLanguage } from "@/hooks/LanguageProvider";
 
 function getNested(obj: any, path: string[], fallback: any = undefined) {
   return path.reduce(
