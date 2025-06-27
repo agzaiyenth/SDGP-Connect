@@ -1,47 +1,67 @@
 {
-  
-  "home_hero_badge": "Innovative • Creative • Impactful",
-  "home_hero_morphingtext1": "Transforming Ideas Into Brands",
-  "home_hero_morphingtext2": "Crafting Digital Experiences",
-  "home_hero_morphingtext3": "Building Tomorrow's Solutions",
-  "home_hero_morphingtext4": "Creating Innovative Designs",
-  "home_hero_ExploreButton": "Explore projects",
-  "home_hero_LearnMoreButton": "Learn more",
-  "home_hero_CampusButton": "Visit Our Campus",
-
-  "hero_cta_heading": "More than just an academic module",
-  "hero_cta_description": "SDGP is a core academic module at IIT that redefines student learning by immersing them in real-world challenges. Through a blend of innovation, collaboration, and hands-on experience, it goes beyond traditional classroom education equipping students with practical skills, critical thinking, and a problem-solving mindset to create meaningful impact in society.",
-  "hero_cta_button": "Discover more",
-
-  "home_about_heading": "Crafting code for a sustainable tomorrow",
-  "home_about_description": "Build impactful tech solutions through teamwork, innovation, and purpose driven by SDGP and the UN SDGs.",
-  "home_about_visionCard_title": "Our Vision",
-  "home_about_visionCard_subTitle": "Tech for global good",
-  "home_about_visionCard_description": "To become a launchpad for socially-driven tech innovation, where young minds transform global challenges into digital opportunities, building a more sustainable and equitable future through software.",
-  "home_about_valuesCard_title": "Our Core Values",
-  "home_about_valuesCard_subTitle": "Driven by purpose",
-  "home_about_valuesCard_description": "We believe in innovation, collaboration, and meaningful impact. Our community thrives on solving real-world problems, learning continuously, and developing technology that serves humanity and the planet.",
-  "home_about_missionCard_title": "Our Mission",
-  "home_about_missionCard_subTitle": "Empowering Innovators",
-  "home_about_missionCard_description": "To empower the next generation of socially-conscious developers by offering hands-on experience in building impactful full-stack applications that address real-world challenges aligned with the UN SDGs.",
- 
-
-  "home_domains_badge": "Project domains",
-  "home_domains_heading": "Explore key Innovation domains",
-  "home_domains_description": "Discover a wide range of technology domains driving the future — from AI and Blockchain to Sustainability and Gaming. These categories represent where impactful ideas and projects come to life.",
-  "home_domains_button": "View projects of all domains",
-
-
-  "home_impact_stats_title": "Our Impact",
-  "home_impact_stat_1_title": "1000+",
-  "home_impact_stat_1_description": "Student Projects",
-  "home_impact_stat_2_title": "100+",
-  "home_impact_stat_2_description": "Industry Partners",
-  "home_impact_stat_3_title": "15+",
-  "home_impact_stat_3_description": "SDGs Addressed",
-  "home_impact_stat_4_title": "50+",
-  "home_impact_stat_4_description": "Startups Invested",
-
-  "home_brand_word1": "Making Projects",
-  "home_brand_word2": "Into brands"
+  "home": {
+    "hero": {
+      "badge": "Innovative • Creative • Impactful",
+      "morphingtext1": "Transforming Ideas Into Brands",
+      "morphingtext2": "Crafting Digital Experiences",
+      "morphingtext3": "Building Tomorrow's Solutions",
+      "morphingtext4": "Creating Innovative Designs",
+      "explore_button": "Explore projects",
+      "learn_more_button": "Learn more",
+      "campus_button": "Visit Our Campus"
+    },
+    "cta": {
+      "heading": "More than just an academic module",
+      "description": "SDGP is a core academic module at IIT that redefines student learning by immersing them in real-world challenges. Through a blend of innovation, collaboration, and hands-on experience, it goes beyond traditional classroom education equipping students with practical skills, critical thinking, and a problem-solving mindset to create meaningful impact in society.",
+      "button": "Discover more"
+    },
+    "about": {
+      "heading": "Crafting code for a sustainable tomorrow",
+      "description": "Build impactful tech solutions through teamwork, innovation, and purpose driven by SDGP and the UN SDGs.",
+      "vision_card": {
+        "title": "Our Vision",
+        "sub_title": "Tech for global good",
+        "description": "To become a launchpad for socially-driven tech innovation, where young minds transform global challenges into digital opportunities, building a more sustainable and equitable future through software."
+      },
+      "values_card": {
+        "title": "Our Core Values",
+        "sub_title": "Driven by purpose",
+        "description": "We believe in innovation, collaboration, and meaningful impact. Our community thrives on solving real-world problems, learning continuously, and developing technology that serves humanity and the planet."
+      },
+      "mission_card": {
+        "title": "Our Mission",
+        "sub_title": "Empowering Innovators",
+        "description": "To empower the next generation of socially-conscious developers by offering hands-on experience in building impactful full-stack applications that address real-world challenges aligned with the UN SDGs."
+      }
+    },
+    "domains": {
+      "badge": "Project domains",
+      "heading": "Explore key Innovation domains",
+      "description": "Discover a wide range of technology domains driving the future — from AI and Blockchain to Sustainability and Gaming. These categories represent where impactful ideas and projects come to life.",
+      "button": "View projects of all domains"
+    },
+    "impact_stats": {
+      "title": "Our Impact",
+      "stat_1": {
+        "title": "1000+",
+        "description": "Student Projects"
+      },
+      "stat_2": {
+        "title": "100+",
+        "description": "Industry Partners"
+      },
+      "stat_3": {
+        "title": "15+",
+        "description": "SDGs Addressed"
+      },
+      "stat_4": {
+        "title": "50+",
+        "description": "Startups Invested"
+      }
+    },
+    "brand": {
+      "word1": "Making Projects",
+      "word2": "Into brands"
+    }
+  }
 }
