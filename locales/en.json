@@ -1,7 +1,33 @@
 {
-  "home_hero_tagline": "Transforming Ideas Into brands",
-  "home_hero_badge_text": "Innovative • Creative • Impactful",
-  "home_hero_button_explore": "Explore projects",
-  "home_hero_button_learn": "Learn more",
-  "home_hero_scroll_text": "Scroll to discover"
+  "hero_about_section_heading": "More than just an academic module",
+  "hero_about_section_description": "SDGP is a core academic module at IIT that redefines student learning by immersing them in real-world challenges. Through a blend of innovation, collaboration, and hands-on experience, it goes beyond traditional classroom education equipping students with practical skills, critical thinking, and a problem-solving mindset to create meaningful impact in society.",
+  "hero_about_section_button": "Discover more",
+
+  "home_domains_badge": "Project domains",
+  "home_domains_heading": "Explore key Innovation domains",
+  "home_domains_description": "Discover a wide range of technology domains driving the future — from AI and Blockchain to Sustainability and Gaming. These categories represent where impactful ideas and projects come to life.",
+  "home_domains_button": "View projects of all domains",
+
+  "home_hero_badge": "Innovative • Creative • Impactful",
+  "home_hero_morphingtext1": "Transforming Ideas Into Brands",
+  "home_hero_morphingtext2": "Crafting Digital Experiences",
+  "home_hero_morphingtext3": "Building Tomorrow's Solutions",
+  "home_hero_morphingtext4": "Creating Innovative Designs",
+  "home_hero_button1": "Explore projects",
+  "home_hero_button2": "Learn more",
+  "home_hero_button3": "Visit Our Campus",
+
+  "hero_featured_title": "Featured Projects",
+  "hero_featured_status_label": "status",
+  "hero_featured_button": "View All Projects",
+
+  "hero_impact_stats_title": "Our Impact",
+  "hero_impact_stat_1_title": "1000+",
+  "hero_impact_stat_1_description": "Student Projects",
+  "hero_impact_stat_2_title": "100+",
+  "hero_impact_stat_2_description": "Industry Partners",
+  "hero_impact_stat_3_title": "15+",
+  "hero_impact_stat_3_description": "SDGs Addressed",
+  "hero_impact_stat_4_title": "50+",
+  "hero_impact_stat_4_description": "Funded Startups"
 }
