@@ -1,4 +1,4 @@
-import { Users, Award, TrendingUp, Rocket } from "lucide-react"
+import { Award, Rocket, TrendingUp, Users } from "lucide-react"
 
 const stats = [
   {

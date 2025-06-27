@@ -1,11 +1,10 @@
 "use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Cookie, Settings, BarChart3, Shield, Users, Server, Mail, FileText, AlertTriangle, Globe, Eye, Lock } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { motion } from 'framer-motion';
+import { AlertTriangle, BarChart3, Cookie, Eye, FileText, Globe, Lock, Mail, Server, Settings, Shield, Users } from 'lucide-react';
 import Link from 'next/link';
 
 const CookiePolicyPage = () => {
@@ -167,10 +166,10 @@ const CookiePolicyPage = () => {
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
+      transition: {
         duration: 0.6,
         staggerChildren: 0.1
       }
@@ -186,7 +185,7 @@ const CookiePolicyPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         {/* Header Section */}
-        <motion.div 
+        <motion.div
           initial="hidden"
           animate="visible"
           variants={containerVariants}
@@ -197,15 +196,15 @@ const CookiePolicyPage = () => {
               <Cookie className="w-8 h-8" />
             </div>
           </motion.div>
-          
-          <motion.h1 
+
+          <motion.h1
             variants={itemVariants}
             className="text-4xl md:text-5xl font-bold tracking-tight mb-4 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent"
           >
             Cookie Policy
           </motion.h1>
-          
-          <motion.p 
+
+          <motion.p
             variants={itemVariants}
             className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6"
           >
@@ -220,7 +219,7 @@ const CookiePolicyPage = () => {
         </motion.div>
 
         {/* Policy Sections */}
-        <motion.div 
+        <motion.div
           initial="hidden"
           animate="visible"
           variants={containerVariants}
@@ -246,7 +245,7 @@ const CookiePolicyPage = () => {
                     <p className="text-muted-foreground leading-relaxed mb-4">
                       {section.content}
                     </p>
-                    
+
                     {/* Regular details list */}
                     {section.details && (
                       <ul className="space-y-2 mb-4">
@@ -304,7 +303,7 @@ const CookiePolicyPage = () => {
         </motion.div>
 
         {/* Contact Section */}
-        <motion.div 
+        <motion.div
           initial="hidden"
           animate="visible"
           variants={containerVariants}
@@ -357,7 +356,7 @@ const CookiePolicyPage = () => {
         </motion.div>
 
         {/* Quick Navigation */}
-        <motion.div 
+        <motion.div
           initial="hidden"
           animate="visible"
           variants={containerVariants}

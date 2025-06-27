@@ -14,7 +14,7 @@ const teamMembers = [
     description:
       "Managing Director @ Andro Dollar Network (PVT) LTD | Tech YouTuber | Software Engineering, Marketing and Entrepreneurship Visiting Lecturer",
     category: "Module Leader",
-    image: "/assets/Banu.jpg",
+    image: "/assets/Banu.webp",
   },
   {
     name: "Manul Singhe",
@@ -24,7 +24,7 @@ const teamMembers = [
     description:
       "Software Developer | Game Developer | Game Designer | Knight Owl Founder and CEO",
     category: "Primary",
-    image: "/assets/manul sir.png",
+    image: "/assets/manul sir.webp",
   },
   {
     name: "Suresh Peiris",
@@ -34,7 +34,7 @@ const teamMembers = [
     description:
       "Co Founder - Inforwaves | Organizer - GDG Sri Lanka | Visiting Lecturer - IIT | Cloud Researcher | National Award Winner",
     category: "Primary",
-    image: "/assets/suresh.jpg",
+    image: "/assets/suresh.webp",
   },
   {
     name: "Kushan Bhareti",
@@ -43,7 +43,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/kushan-bhareti/",
     description: "Co-founder of Inforwaves | Visiting Lecturer at IIT",
     category: "Primary",
-    image: "/assets/kushan sir.png",
+    image: "/assets/kushan sir.webp",
   },
   {
     name: "John Sriskandarajah",
@@ -53,7 +53,7 @@ const teamMembers = [
     description:
       "CEO @ Telexar | Helping Businesses Scale with Offshore Teams | Resource Augmentation Specialist",
     category: "Primary",
-    image: "/assets/Johnsir.png",
+    image: "/assets/Johnsir.webp",
   },
   {
     name: "Krishnakripa Jayakumar",
@@ -63,7 +63,7 @@ const teamMembers = [
     description:
       "Cybersecurity & Software Engineering Professional | Lecturer | Multiple Award Winner",
     category: "Primary",
-    image: "/assets/kripa miss.png",
+    image: "/assets/kripa miss.webp",
   },
   {
     name: "Mithushan Jalangan",
@@ -73,7 +73,7 @@ const teamMembers = [
     description:
       "I help founders build better software | Product Engineer | Full stack Web/AI | asyncdot & shopbook.lk - Co-founder",
     category: "Primary",
-    image: "/assets/Mithushan sir.png",
+    image: "/assets/Mithushan sir.webp",
   },
   {
     name: "Deshan Sumanathilaka",
@@ -83,7 +83,7 @@ const teamMembers = [
     description:
       "PhD Candidate at Swansea University / Visiting Lecturer at IIT / Youtuber-Tutor at DS-IT Academy",
     category: "Primary",
-    image: "/assets/deshan sir.png",
+    image: "/assets/deshan sir.webp",
   },
   {
     name: "Pubudu Mihiranga",
@@ -93,7 +93,7 @@ const teamMembers = [
     description:
       "Brings industry experience in software architecture and system design.",
     category: "Primary",
-    image: "/assets/pubudu.jpg",
+    image: "/assets/pubudu.webp",
   },
   {
     name: "Mohanadas Jananie",
@@ -103,7 +103,7 @@ const teamMembers = [
     description:
       "Focuses on software testing practices and quality assurance in group projects.",
     category: "Primary",
-    image: "/assets/janani miss.png",
+    image: "/assets/janani miss.webp",
   },
   {
     name: "Seyed Ruzaik",
@@ -112,7 +112,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/seyed-ruzaik/",
     description: "Software Developer | Tech Blogger | Assistant Lecturer",
     category: "Former",
-    image: "/assets/rusaik sir.png",
+    image: "/assets/rusaik sir.webp",
   },
   {
     name: "Vinodani Thilakarathne",
@@ -122,7 +122,7 @@ const teamMembers = [
     description:
       "Guides students in requirements gathering and business analysis for software projects.",
     category: "Former",
-    image: "/assets/image.png",
+    image: "/assets/image.webp",
   },
   {
     name: "Asith Pallemulla",
@@ -131,7 +131,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/asith-pallemulla/",
     description: "Expert in back-end development and systems integration.",
     category: "Primary",
-    image: "/assets/asith sir.png",
+    image: "/assets/asith sir.webp",
   },
   {
     name: "Imasha Ayeshka Jayasundara",
@@ -140,7 +140,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/imashaayeshka-jayasundara/",
     description: "IIT lecturer",
     category: "Primary",
-    image: "/assets/imasha.jpg",
+    image: "/assets/imasha.webp",
   },
   {
     name: "Thashin Rahuman",
@@ -149,7 +149,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/thashin-rahuman/",
     description: "Software Engineer | Blockchain | React JS/ NodeJS | GO",
     category: "Former",
-    image: "/assets/thashin sir.png",
+    image: "/assets/thashin sir.webp",
   },
   {
     name: "Ahtshayan Udayasanthiran",
@@ -159,7 +159,7 @@ const teamMembers = [
     description:
       "Focuses on software development lifecycle and project documentation.",
     category: "Primary",
-    image: "/assets/ahtshayan sir.png",
+    image: "/assets/ahtshayan sir.webp",
   },
   //former members
   /*
@@ -170,7 +170,7 @@ const teamMembers = [
   linkedin: "https://www.linkedin.com/in/nuwan-placeholder",
   description: "Lecturer at IIT.",
   category: "Former",
-  image: "/assets/nuwan.png",
+  image: "/assets/nuwan.webp",
 }, */
   {
     name: "Sulari Fernando",
@@ -179,7 +179,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/supun-sulari-fernando-ba40704b",
     description: "Software Engineer | Junior Accountant | Lecturer | MBA, Business Analytics | BSc in Computer Science",
     category: "Former",
-    image: "/assets/sul.jpg",
+    image: "/assets/sul.webp",
   },
   {
     name: "Rukshala Weerasinghe",
@@ -188,7 +188,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/rukshalaw/",
     description: "Product Manager | Certified ScrumMaster® | Visiting Lecturer",
     category: "Former",
-    image: "/assets/rukshala.jpg",
+    image: "/assets/rukshala.webp",
   },
   {
     name: "Prathieshna Vekneswaran",
@@ -197,7 +197,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/prathieshna",
     description: "Freelance Android Developer | Educator",
     category: "Former",
-    image: "/assets/prat.jpg",
+    image: "/assets/prat.webp",
   },
   {
     name: "Sharmilan Somasundaram",
@@ -206,7 +206,7 @@ const teamMembers = [
     linkedin: "https://www.linkedin.com/in/sharmilan-somasundaram",
     description: "Certified Blockchain Solution Architect | MSc Big Data Analytics | Researcher",
     category: "Former",
-    image: "/assets/shar.jpg",
+    image: "/assets/shar.webp",
   },
 ];
 

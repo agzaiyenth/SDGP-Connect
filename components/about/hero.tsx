@@ -91,7 +91,7 @@ export default function Hero() {
             <div className="absolute -inset-4 -z-10 rounded-2xl bg-dark/10 blur-sm" />
             <div className="relative overflow-hidden rounded-xl">
               <Image
-                src="/assets/3.jpg"
+                src="/assets/3.webp"
                 alt="Students who won dialog Innovative challenge"
                 className="w-full object-cover shadow-lg transition-transform hover:scale-[1.02] border border-gray-600"
                 height={800}

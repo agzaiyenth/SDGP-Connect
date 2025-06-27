@@ -1,10 +1,9 @@
 "use client";
 
-import AutoScroll from "embla-carousel-auto-scroll";
-import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Globe, Icon, Layers3 } from "lucide-react";
+import AutoScroll from "embla-carousel-auto-scroll";
+import { ArrowRight, Layers3 } from "lucide-react";
 
 import {
   Carousel,
@@ -12,8 +11,8 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import { projectDomainsOptions } from "@/types/project/mapping";
-import React from "react";
 import Link from "next/link";
+import React from "react";
 
 
 
