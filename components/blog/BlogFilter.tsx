@@ -3,7 +3,7 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { blogCategories } from "@/data/blogData";
+import { getAllCategories } from "@/lib/blog-utils";
 
 interface BlogFilterProps {
   activeCategory: string;
@@ -11,9 +11,11 @@ interface BlogFilterProps {
 }
 
 export function BlogFilter({ activeCategory, onCategoryChange }: BlogFilterProps) {
+  const categories = getAllCategories();
+
   return (
     <div className="flex flex-wrap gap-2 justify-center mb-8">
-      {blogCategories.map((category) => (
+      {categories.map((category) => (
         <Badge
           key={category}
           variant={activeCategory === category ? "default" : "outline"}

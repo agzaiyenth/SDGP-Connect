@@ -2,18 +2,21 @@
 
 "use client";
 
-import { useState } from "react";
-import { BlogPost } from "@/data/blogData";
+import { useState, useEffect, useMemo } from "react";
+import { BlogPost } from "@/types/blog";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { BlogFilter } from "@/components/blog/BlogFilter";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { FeaturedBlogCard } from "@/components/blog/FeaturedBlogCard";
 import Link from "next/link";
+import { useGetAllPosts } from "@/hooks/blogs/useGetAllPosts";
+import { formatCategoryForApi } from "@/lib/blog-utils";
 
 interface BlogContentProps {
-  initialPosts: BlogPost[];
-  featuredPosts: BlogPost[];
+  // Optional props for SSR data, but we'll use hooks for real-time data
+  initialPosts?: BlogPost[];
+  featuredPosts?: BlogPost[];
 }
 
 /**
@@ -24,32 +27,52 @@ interface BlogContentProps {
  * - Category filtering
  * - Dynamic post rendering
  * - State management
- * 
- * @param initialPosts - All blog posts passed from the server component
- * @param featuredPosts - Featured blog posts for highlighting
+ * - Real-time data fetching from API
  */
-export function BlogContent({ initialPosts, featuredPosts }: BlogContentProps) {
+export function BlogContent({ initialPosts = [], featuredPosts: initialFeaturedPosts = [] }: BlogContentProps) {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  // Use hooks to fetch real data
+  const { allPosts, featuredPosts, isLoading, error, hasMore, loadMore } = useGetAllPosts({
+    category: formatCategoryForApi(activeCategory),
+    search: searchQuery || undefined,
+    limit: 9, // For infinite scroll
+  });
 
-  // Filter posts based on category
-  const getPostsByCategory = (category: string): BlogPost[] => {
-    if (category === "All") return initialPosts;
-    return initialPosts.filter(post => post.category === category);
-  };
+  // Filter posts based on search and category
+  const filteredPosts = useMemo(() => {
+    let posts = allPosts;
+    
+    // If we have search query, the API already filtered
+    if (!searchQuery && activeCategory !== "All") {
+      posts = allPosts.filter(post => {
+        const categoryFormatted = formatCategoryForApi(activeCategory);
+        return post.category === categoryFormatted;
+      });
+    }
+    
+    return posts;
+  }, [allPosts, activeCategory, searchQuery]);  // Separate featured and regular posts for display
+  // When there are search/category filters, show all posts including featured ones
+  // When on main page, featured posts are excluded from allPosts via API
+  const regularPosts = filteredPosts;
 
-  const filteredPosts = getPostsByCategory(activeCategory);
-  
-  // Filter posts based on search query
-  const searchFilteredPosts = filteredPosts.filter(post =>
-    post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
-    post.author.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  // Separate featured and regular posts for display
-  const regularPosts = searchFilteredPosts.filter(post => !post.featured);
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Error Loading Posts</h2>
+          <p className="text-muted-foreground mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -90,9 +113,8 @@ export function BlogContent({ initialPosts, featuredPosts }: BlogContentProps) {
 
           {/* Search Results Info */}
           {searchQuery && (
-            <div className="text-center mb-8">
-              <p className="text-muted-foreground">
-                Found {searchFilteredPosts.length} article{searchFilteredPosts.length !== 1 ? 's' : ''} 
+            <div className="text-center mb-8">              <p className="text-muted-foreground">
+                Found {filteredPosts.length} article{filteredPosts.length !== 1 ? 's' : ''} 
                 {searchQuery && ` for "${searchQuery}"`}
               </p>
             </div>          )}          {/* Featured Posts Section */}
@@ -102,10 +124,10 @@ export function BlogContent({ initialPosts, featuredPosts }: BlogContentProps) {
                 {/* Left Side - Title Section */}
                 <div className="flex flex-col justify-center lg:pr-12 mb-8 lg:mb-0">
                   <h2 className="text-5xl font-extrabold mb-6 leading-tight text-white text-left">
-                    AI Frontiers
+                    Featured Projects
                   </h2>
                   <p className="text-lg text-muted-foreground mb-8 text-left">
-                    Discover breakthroughs in AI and TensorFlow applications.
+                    Discover our featured articles that highlight innovative solutions and impactful stories from our community.
                   </p>
                   <Link href="/blog/create" className="inline-flex items-center text-primary font-semibold hover:underline">
                   <button className="inline-flex items-center px-6 py-3 bg-white text-black rounded-lg hover:bg-gray-100 transition-colors font-semibold text-base shadow text-left w-fit">
@@ -121,19 +143,43 @@ export function BlogContent({ initialPosts, featuredPosts }: BlogContentProps) {
                 </div>
               </div>
             </div>
-          )}
-
-          {/* Regular Posts Section */}
-          {searchFilteredPosts.length > 0 ? (
+          )}          {/* Regular Posts Section */}
+          {isLoading ? (
+            <div className="text-center py-16">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+              <p className="mt-4 text-muted-foreground">Loading articles...</p>
+            </div>
+          ) : filteredPosts.length > 0 ? (
             <div>
               {!searchQuery && activeCategory === "All" && featuredPosts.length > 0 && (
-                <h2 className="text-5xl font-extrabold mb-8 text-center  mb-6 leading-tight">Latest Articles</h2>
-              )}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-                {(searchQuery || activeCategory !== "All" ? searchFilteredPosts : regularPosts).map((post) => (
-                  <div className="h-full  flex"><BlogCard key={post.id} post={post} className="flex-1 h-full" /></div>
+                <h2 className="text-5xl font-extrabold mb-8 text-center leading-tight">Latest Articles</h2>
+              )}              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                {(searchQuery || activeCategory !== "All" ? filteredPosts : regularPosts).map((post: BlogPost) => (
+                  <div key={post.id} className="h-full flex">
+                    <BlogCard post={post} className="flex-1 h-full" />
+                  </div>
                 ))}
               </div>
+              
+              {/* Load More Button for Infinite Scroll */}
+              {hasMore && !searchQuery && activeCategory === "All" && (
+                <div className="text-center mt-12">
+                  <button
+                    onClick={loadMore}
+                    disabled={isLoading}
+                    className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isLoading ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground mr-2"></div>
+                        Loading...
+                      </>
+                    ) : (
+                      'Load More Articles'
+                    )}
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             /* No Results */

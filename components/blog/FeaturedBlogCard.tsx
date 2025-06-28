@@ -1,10 +1,15 @@
-import { BlogPost } from "@/data/blogData";
+import { BlogPost } from "@/types/blog";
+import { getDisplayFromEnum, formatDateForDisplay, calculateReadTime } from "@/lib/blog-utils";
 
 interface FeaturedBlogCardProps {
   post: BlogPost;
 }
 
 export function FeaturedBlogCard({ post }: FeaturedBlogCardProps) {
+  const readTime = calculateReadTime(post.content);
+  const categoryDisplay = getDisplayFromEnum(post.category);
+  const formattedDate = formatDateForDisplay(post.publishedAt);
+
   return (
     <div
       className="bg-black/95 border border-gray-800 rounded-3xl overflow-hidden cursor-pointer transition-all duration-300 hover:border-gray-700 flex flex-col"
@@ -25,11 +30,9 @@ export function FeaturedBlogCard({ post }: FeaturedBlogCardProps) {
         {/* Category and Read Time - positioned at bottom left of image */}
         <div className="absolute bottom-4 left-4 flex items-center gap-3">
           <span className="bg-black text-white font-semibold text-xs px-3 py-1.5 rounded-full">
-            {post.category}
+            {categoryDisplay}
           </span>
-          <span className="text-white text-xs font-medium bg-black/60 px-3 py-1.5 rounded-full">
-            {post.readTime} min read
-          </span>
+          
         </div>
       </div>
       {/* Content Section */}
@@ -45,13 +48,21 @@ export function FeaturedBlogCard({ post }: FeaturedBlogCardProps) {
         {/* Author and Date */}
         <div className="flex items-center">
           <div className="w-10 h-10 bg-gray-600 rounded-full flex items-center justify-center mr-3">
-            <span className="text-white font-semibold text-sm">
-              {post.author.charAt(0).toUpperCase()}
-            </span>
+            {post.author?.avatarUrl ? (
+              <img 
+                src={post.author.avatarUrl} 
+                alt={post.author.name}
+                className="w-full h-full rounded-full object-cover"
+              />
+            ) : (
+              <span className="text-white font-semibold text-sm">
+                {post.author?.name?.charAt(0).toUpperCase() || 'A'}
+              </span>
+            )}
           </div>
           <div className="flex flex-col">
-            <span className="text-white font-semibold text-sm">{post.author}</span>
-            <span className="text-gray-500 text-xs">{new Date(post.publishedAt).toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+            <span className="text-white font-semibold text-sm">{post.author?.name || 'Anonymous'}</span>
+            <span className="text-gray-500 text-xs">{formattedDate}</span>
           </div>
         </div>
       </div>

@@ -23,24 +23,14 @@ import {
   BluetoothSearchingIcon,
 } from "lucide-react";
 import { notFound } from "next/navigation";
-import { getPostById, getRecentPosts } from "@/data/blogData";
 import { useState } from "react";
+import { useGetPostById } from "@/hooks/blogs/useGetPostById";
+import { useGetRecentPosts } from "@/hooks/blogs/useGetRecentPosts";
+import { getDisplayFromEnum, formatDateForDisplay, calculateReadTime } from "@/lib/blog-utils";
 
 export default function BlogPostPage({ params }: { params: { id: string } }) {
-  const post = getPostById(params.id);
-
-  if (!post) {
-    notFound();
-  }
-
-  const recentPosts = getRecentPosts().filter((p) => p.id !== post.id);
-
-  const formattedDate = new Date(post.publishedAt).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
+  const { post, isLoading, error } = useGetPostById(params.id);
+  const { posts: recentPosts } = useGetRecentPosts({ limit: 3 });
   const [copySuccess, setCopySuccess] = useState(false);
 
   const handleCopyLink = () => {
@@ -50,12 +40,37 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
     });
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (error || !post) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Article Not Found</h1>
+          <p className="text-muted-foreground mb-4">The article you're looking for doesn't exist.</p>
+          <Link href="/blog">
+            <Button>Back to Blog</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const formattedDate = formatDateForDisplay(post.publishedAt);
+  const readTime = calculateReadTime(post.content);
+  const categoryDisplay = getDisplayFromEnum(post.category);
+
   return (
     <section className="py-16 flex justify-center items-center">
       <div className="container ">
         <div className="relative mb-12 h-[600px] overflow-hidden">
-          <Image
-            src={post.imageUrl}
+          <Image            src={post.imageUrl || '/placeholder.svg'}
             alt="Blog post cover image"
             width={1200}
             height={600}
@@ -63,30 +78,23 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
           />
           <div className="absolute inset-0 flex flex-col justify-end rounded-lg bg-gradient-to-r from-black/70 to-black/30 p-8 text-white">
             <h1 className="mb-4 text-5xl font-bold leading-tight">{post.title}</h1>
-            <div className="mb-4 flex items-center  space-x-4">
-              <Avatar className="size-12 ring-2 ring-primary ring-offset-2 ring-offset-background">
-                <AvatarImage src={post.authorAvatar || '/default-avatar.png'} alt={post.author} />
-                <AvatarFallback>{post.author[0]}</AvatarFallback>
+            <div className="mb-4 flex items-center  space-x-4">              <Avatar className="size-12 ring-2 ring-primary ring-offset-2 ring-offset-background">
+                <AvatarImage src={post.author?.avatarUrl || '/default-avatar.png'} alt={post.author?.name || 'Author'} />
+                <AvatarFallback>{post.author?.name?.[0] || 'A'}</AvatarFallback>
               </Avatar>
               <div className="">
-                <p className="text-xl font-semibold">{post.author}</p>
-                <p className="text-sm opacity-75">{post.authorRole || 'Contributor'}</p>
+                <p className="text-xl font-semibold">{post.author?.name || 'Anonymous'}</p>
+                <p className="text-sm opacity-75">Contributor</p>
               </div>
             </div>
             <div className="mb-4 flex items-center text-sm">
-              <CalendarIcon className="mr-2 size-5" />
-              <time dateTime={post.publishedAt} className="mr-4">
+              <CalendarIcon className="mr-2 size-5" />              <time dateTime={post.publishedAt.toString()} className="mr-4">
                 {formattedDate}
               </time>
-              <ClockIcon className="mr-2 size-5" />
-              <span>{post.readTime} min read</span>
-            </div>
-            <div className="flex flex-wrap  gap-2">
-              {post.tags.map((tag) => (
-                <Badge key={tag} variant="secondary">
-                  {tag}
-                </Badge>
-              ))}
+            </div>            <div className="flex flex-wrap gap-2">
+              <Badge variant="secondary" className="bg-background/10 text-white hover:bg-background/20">
+                {categoryDisplay}
+              </Badge>
             </div>
           </div>
         </div>
@@ -175,74 +183,97 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
                 <CardHeader>
                   <CardTitle>About the Author</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="flex items-center space-x-4">
+                <CardContent>                  <div className="flex items-center space-x-4">
                     <Avatar className="size-10 ring-2 ring-primary ring-offset-2 ring-offset-background">
-                      <AvatarImage src={post.authorAvatar || '/default-avatar.png'} alt={post.author} />
-                      <AvatarFallback>{post.author[0]}</AvatarFallback>
+                      <AvatarImage src={post.author?.avatarUrl || '/default-avatar.png'} alt={post.author?.name || 'Author'} />
+                      <AvatarFallback>{post.author?.name?.[0] || 'A'}</AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className="text-sm font-medium">{post.author}</p>
+                      <p className="text-sm font-medium">{post.author?.name || 'Anonymous'}</p>
                       <p className="text-sm text-muted-foreground">
-                        {post.authorRole || 'Contributor'}
+                        Contributor
                       </p>
                     </div>
-                  </div>
-                  <Separator className="my-4" />
+                  </div>                  <Separator className="my-4" />
                   <ul className="space-y-2">
-                    <li className="flex items-center space-x-2">
-                      <InstagramIcon className="size-4" />
-                      <Link
-                        href="https://www.instagram.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm hover:underline"
-                      >
-                        Instagram
-                      </Link>
-                    </li>
-                    <li className="flex items-center space-x-2">
-                      <FacebookIcon className="size-4" />
-                      <Link
-                        href="https://www.facebook.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm hover:underline"
-                      >
-                        Facebook
-                      </Link>
-                    </li>
-                    <li className="flex items-center space-x-2">
-                      <XIcon className="size-4" />
-                      <Link
-                        href="https://www.x.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm hover:underline"
-                      >
-                        X
-                      </Link>
-                    </li>
-                    <li className="flex items-center space-x-2">
-                      <SunMediumIcon className="size-4" />
-                      <Link
-                        href="https://www.medium.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm hover:underline"
-                      >
-                        Medium
-                      </Link>
-                    </li>
-                    <li className="flex items-center space-x-2">
-                      <BluetoothSearchingIcon className="size-4" />
-                      <Link
-                        href={`/blog/${post.id}`}
-                        className="text-sm hover:underline"
-                      >
-                        Blog Post
-                      </Link>
-                    </li>
+                    {post.author?.instagram && (
+                      <li className="flex items-center space-x-2">
+                        <InstagramIcon className="size-4" />
+                        <Link
+                          href={post.author.instagram}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm hover:underline"
+                        >
+                          Instagram
+                        </Link>
+                      </li>
+                    )}
+                    {post.author?.facebook && (
+                      <li className="flex items-center space-x-2">
+                        <FacebookIcon className="size-4" />
+                        <Link
+                          href={post.author.facebook}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm hover:underline"
+                        >
+                          Facebook
+                        </Link>
+                      </li>
+                    )}
+                    {post.author?.twitter && (
+                      <li className="flex items-center space-x-2">
+                        <XIcon className="size-4" />
+                        <Link
+                          href={post.author.twitter}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm hover:underline"
+                        >
+                          X
+                        </Link>
+                      </li>
+                    )}
+                    {post.author?.medium && (
+                      <li className="flex items-center space-x-2">
+                        <SunMediumIcon className="size-4" />
+                        <Link
+                          href={post.author.medium}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm hover:underline"
+                        >
+                          Medium
+                        </Link>
+                      </li>
+                    )}
+                    {post.author?.linkedin && (
+                      <li className="flex items-center space-x-2">
+                        <LinkedinIcon className="size-4" />
+                        <Link
+                          href={post.author.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm hover:underline"
+                        >
+                          LinkedIn
+                        </Link>
+                      </li>
+                    )}
+                    {post.author?.website && (
+                      <li className="flex items-center space-x-2">
+                        <BluetoothSearchingIcon className="size-4" />
+                        <Link
+                          href={post.author.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm hover:underline"
+                        >
+                          Website
+                        </Link>
+                      </li>
+                    )}
                   </ul>
                 </CardContent>
               </Card>
@@ -250,9 +281,8 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
                 <CardHeader>
                   <CardTitle>Related Articles</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
-                    {recentPosts.map((relatedPost) => (
+                <CardContent>                  <ul className="space-y-2">
+                    {recentPosts.filter((relatedPost) => relatedPost.id !== post.id).slice(0, 5).map((relatedPost) => (
                       <li key={relatedPost.id}>
                         <Link
                           href={`/blog/${relatedPost.id}`}

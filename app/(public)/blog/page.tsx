@@ -30,21 +30,15 @@ export const metadata: Metadata = {
 };
 
 
-import { blogPosts, getFeaturedPosts } from "@/data/blogData";
 import { BlogContent } from "@/components/blog/BlogContent";
 
-
 export default async function BlogPage() {
-  // Server-side data fetching - can be made async for database calls in the future
-  const allPosts = blogPosts;
-  const featuredPosts = getFeaturedPosts();
-
+  // The BlogContent component now handles all data fetching via hooks
+  // No need to fetch data here since we're using client-side hooks for real-time updates
+  
   return (
     <div className="min-h-screen bg-background">
-      <BlogContent 
-        initialPosts={allPosts}
-        featuredPosts={featuredPosts}
-      />
+      <BlogContent />
     </div>
   );
 }

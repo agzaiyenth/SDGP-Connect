@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { BlogPost } from "@/data/blogData";
+import { BlogPost } from "@/types/blog";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, User } from "lucide-react";
+import { getDisplayFromEnum, formatDateForDisplay, calculateReadTime } from "@/lib/blog-utils";
 
 interface BlogCardProps {
   post: BlogPost;
@@ -12,11 +13,9 @@ interface BlogCardProps {
 }
 
 export function BlogCard({ post, className = "" }: BlogCardProps) {
-  const formattedDate = new Date(post.publishedAt).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const formattedDate = formatDateForDisplay(post.publishedAt);
+  const readTime = calculateReadTime(post.content);
+  const categoryDisplay = getDisplayFromEnum(post.category);
 
   return (
     <div className={`group transition-all duration-300 hover:shadow-lg ${className}`}> 
@@ -24,7 +23,7 @@ export function BlogCard({ post, className = "" }: BlogCardProps) {
         <div className="w-full flex justify-start mb-4">
           <div className="max-w-[60%] w-full aspect-video bg-muted rounded-xl overflow-hidden flex items-center justify-center relative">
             <Image
-              src={post.imageUrl}
+              src={post.imageUrl || '/placeholder.svg'}
               alt={post.title}
               width={400}
               height={225}
@@ -36,7 +35,7 @@ export function BlogCard({ post, className = "" }: BlogCardProps) {
               variant="secondary" 
               className="absolute top-4 left-4 bg-background/80 backdrop-blur-sm"
             >
-              {post.category}
+              {categoryDisplay}
             </Badge>
           </div>
         </div>
@@ -50,14 +49,14 @@ export function BlogCard({ post, className = "" }: BlogCardProps) {
         </Link>
         <div className="flex items-center gap-3 mt-3">
           <Image
-            src={'/user.png'}
-            alt={post.author}
+            src={post.author?.avatarUrl || '/user.png'}
+            alt={post.author?.name || 'Author'}
             width={32}
             height={32}
             className="rounded-full object-cover border border-border"
           />
           <div className="flex flex-col leading-tight">
-            <span className="font-medium text-foreground text-base">{post.author}</span>
+            <span className="font-medium text-foreground text-base">{post.author?.name || 'Anonymous'}</span>
             <span className="text-xs text-muted-foreground">{formattedDate}</span>
           </div>
           <Link href={`/blog/${post.id}`} target="_blank" rel="noopener noreferrer" className="ml-2 flex items-center justify-center w-10 h-10 rounded-full border border-border bg-background hover:bg-muted transition-colors">
