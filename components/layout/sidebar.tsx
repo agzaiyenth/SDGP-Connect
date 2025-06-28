@@ -6,6 +6,7 @@ import {
   Users,
   FolderKanban,
   Users2,
+  BookOpen,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -25,6 +26,11 @@ const sidebarItems = [
     title: 'Project Overview',
     href: '/admin/projects',
     icon: FolderKanban,
+  },
+  {
+    title: 'Blog Management',
+    href: '/admin/blogs',
+    icon: BookOpen,
   },
   {
     title: 'Competitions',
