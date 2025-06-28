@@ -124,11 +124,11 @@ export function BlogContent({ initialPosts, featuredPosts }: BlogContentProps) {
           {searchFilteredPosts.length > 0 ? (
             <div>
               {!searchQuery && activeCategory === "All" && featuredPosts.length > 0 && (
-                <h2 className="text-3xl font-bold mb-8 text-center">Latest Articles</h2>
+                <h2 className="text-5xl font-extrabold mb-8 text-center  mb-6 leading-tight">Latest Articles</h2>
               )}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                 {(searchQuery || activeCategory !== "All" ? searchFilteredPosts : regularPosts).map((post) => (
-                  <BlogCard key={post.id} post={post} />
+                  <div className="h-full  flex"><BlogCard key={post.id} post={post} className="flex-1 h-full" /></div>
                 ))}
               </div>
             </div>
