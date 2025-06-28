@@ -43,6 +43,7 @@
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.8.1",
     "@vercel/analytics": "^1.5.0",
+    "@vercel/speed-insights": "^1.2.0",
     "axios": "^1.8.4",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
@@ -110,7 +111,6 @@
     "typescript": "^5.8.2"
   },
   "resolutions": {
-  "@radix-ui/react-slot": "1.2.3"
-}
-
+    "@radix-ui/react-slot": "1.2.3"
+  }
 }
