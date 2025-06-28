@@ -6,7 +6,6 @@
 // You may not alter or remove any copyright or other notice from copies of this content.
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
@@ -15,10 +14,25 @@ import Carousel from "./carousel";
 import MorphingText from "./Morphing";
 import { useLanguage } from "@/hooks/LanguageProvider";
 import dynamic from "next/dynamic";
+
+// Lazy-load motion components
+const MotionDiv = dynamic(() =>
+  import('framer-motion').then((mod) => mod.motion.div), {
+    ssr: false,
+  }
+);
+
+const MotionH1 = dynamic(() =>
+  import('framer-motion').then((mod) => mod.motion.h1), {
+    ssr: false,
+  }
+);
+
 const ThreeScene = dynamic(() => import("./three-scene"), { ssr: false });
 
+
 const Logo: React.FC = () => (
-  <motion.div
+  <MotionDiv
     initial={{ scale: 1.8, opacity: 0 }}
     animate={{ scale: 2, opacity: 1 }}
     transition={{ duration: 0.5 }}
@@ -39,7 +53,7 @@ const Logo: React.FC = () => (
         priority
       />
     </div>
-  </motion.div>
+  </MotionDiv>
 );
 
 function getNested(obj: any, path: string[], fallback: any = undefined) {
@@ -52,43 +66,36 @@ function getNested(obj: any, path: string[], fallback: any = undefined) {
 export default function Hero() {
   const { t } = useLanguage();
   const homeHero = getNested(t, ["home", "hero"], {});
-  console.log("Debug - Current texts:", {
-  text1: homeHero.morphingtext1,
-  text2: homeHero.morphingtext2, 
-  text3: homeHero.morphingtext3,
-  text4: homeHero.badge
-
-});
-  return (
+ ;  return (
     <section className="min-h-screen w-full flex flex-col items-center justify-center overflow-hidden perspective-1000 ">
       <ThreeScene />
       <BadgeComponent />
 
-      <motion.div
+      <MotionDiv
         className="relative z-10 text-center max-w-7xl px-6 flex-1 flex flex-col gap-5 items-center justify-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
-        <motion.div
+        <MotionDiv
           className="inline-block px-6 py-2 mb-2 text-sm font-medium tracking-wider text-white bg-[#2a5298]/20 rounded-full border border-[#2a5298]/30"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
           {homeHero.badge || "Innovative • Creative • Impactful"}
-        </motion.div>
+        </MotionDiv>
 
-        <motion.h1
+        <MotionH1
           className="text-6xl md:text-7xl font-bold  bg-gradient-to-r from-[#2a5298] via-[#9bb9ec] to-[#2a5298] bg-clip-text text-transparent "
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
           <Logo />
-        </motion.h1>
+        </MotionH1>
 
-        <motion.div
+        <MotionDiv
           className=""
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -104,9 +111,9 @@ export default function Hero() {
             ]}
             className="text-xl md:text-2xl text-foreground/80  w-120 "
           />
-        </motion.div>
+        </MotionDiv>
 
-        <motion.div
+        <MotionDiv
           className="flex flex-col sm:flex-row justify-center gap-5 -mt-1"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -137,10 +144,10 @@ export default function Hero() {
               </Button>
             </a>
           </div>
-        </motion.div>
+        </MotionDiv>
 
         <Carousel />
-      </motion.div>
+      </MotionDiv>
     </section>
   );
 }

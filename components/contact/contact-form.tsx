@@ -55,7 +55,7 @@ export default function Contact() {
     
     setIsSubmitting(true)
     await new Promise((resolve) => setTimeout(resolve, 1500))
-    console.log(formData)
+    
     setIsSubmitting(false)
     setIsSuccess(true)
   }
