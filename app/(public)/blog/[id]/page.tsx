@@ -17,6 +17,10 @@ import {
   LinkedinIcon,
   CopyIcon,
   CheckIcon,
+  InstagramIcon,
+  XIcon,
+  SunMediumIcon,
+  BluetoothSearchingIcon,
 } from "lucide-react";
 import { notFound } from "next/navigation";
 import { getPostById, getRecentPosts } from "@/data/blogData";
@@ -89,7 +93,7 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
         <div className="grid gap-12 md:grid-cols-12 md:gap-8">
           <div className="md:col-span-8 lg:col-span-9">
             <article
-              className="prose prose-lg max-w-none dark:prose-invert text-center"
+              className="prose prose-lg max-w-none dark:prose-invert"
               dangerouslySetInnerHTML={{ __html: post.content && post.content.trim() !== '' ? `
                 <h2>The Evolution of Frameworks</h2>
                 <h3>Chapter 1: The Web Development Renaissance</h3>
@@ -185,7 +189,61 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
                     </div>
                   </div>
                   <Separator className="my-4" />
-                  <p className="text-sm">{post.authorBio || 'No bio available.'}</p>
+                  <ul className="space-y-2">
+                    <li className="flex items-center space-x-2">
+                      <InstagramIcon className="size-4" />
+                      <Link
+                        href="https://www.instagram.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm hover:underline"
+                      >
+                        Instagram
+                      </Link>
+                    </li>
+                    <li className="flex items-center space-x-2">
+                      <FacebookIcon className="size-4" />
+                      <Link
+                        href="https://www.facebook.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm hover:underline"
+                      >
+                        Facebook
+                      </Link>
+                    </li>
+                    <li className="flex items-center space-x-2">
+                      <XIcon className="size-4" />
+                      <Link
+                        href="https://www.x.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm hover:underline"
+                      >
+                        X
+                      </Link>
+                    </li>
+                    <li className="flex items-center space-x-2">
+                      <SunMediumIcon className="size-4" />
+                      <Link
+                        href="https://www.medium.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm hover:underline"
+                      >
+                        Medium
+                      </Link>
+                    </li>
+                    <li className="flex items-center space-x-2">
+                      <BluetoothSearchingIcon className="size-4" />
+                      <Link
+                        href={`/blog/${post.id}`}
+                        className="text-sm hover:underline"
+                      >
+                        Blog Post
+                      </Link>
+                    </li>
+                  </ul>
                 </CardContent>
               </Card>
               <Card>
