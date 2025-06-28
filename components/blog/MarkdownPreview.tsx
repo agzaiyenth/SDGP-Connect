@@ -19,12 +19,16 @@ const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({ content, className = 
       .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
       
       // Code blocks
-      .replace(/```([^`]+)```/g, '<pre class="bg-gray-100 p-3 rounded text-sm overflow-x-auto my-2"><code>$1</code></pre>')
-      .replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1 py-0.5 rounded text-sm">$1</code>')
+      .replace(/```([^`]+)```/g, '<pre class="bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm overflow-x-auto my-2"><code>$1</code></pre>')
+      .replace(/`([^`]+)`/g, '<code class="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm">$1</code>')
+      
+      // Images (must come before links to avoid conflicts)
+      .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="max-w-full h-auto rounded-lg my-4" />')
       
       // Links
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">$1</a>')
-        // Lists
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="underline hover:no-underline" target="_blank" rel="noopener noreferrer">$1</a>')
+        
+      // Lists
       .replace(/^- (.*)/gm, '<li class="ml-4">$1</li>')
       .replace(/(<li.*<\/li>)/g, '<ul class="list-disc mb-2">$1</ul>')
       

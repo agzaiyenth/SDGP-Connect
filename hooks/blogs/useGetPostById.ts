@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { BlogPost } from '@/types/blog';
 
 interface UseGetPostByIdReturn {
@@ -13,7 +13,7 @@ export const useGetPostById = (id: string): UseGetPostByIdReturn => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchPostById = async () => {
+  const fetchPostById = useCallback(async () => {
     if (!id) {
       setIsLoading(false);
       return;
@@ -40,11 +40,11 @@ export const useGetPostById = (id: string): UseGetPostByIdReturn => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     fetchPostById();
-  }, [id]);
+  }, [fetchPostById]);
 
   return {
     post,

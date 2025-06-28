@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { BlogPost } from '@/types/blog';
 
 interface UseGetRecentPostsOptions {
@@ -17,12 +17,14 @@ export const useGetRecentPosts = (options: UseGetRecentPostsOptions = {}): UseGe
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchRecentPosts = async () => {
+  const { limit } = options;
+
+  const fetchRecentPosts = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);      const params = new URLSearchParams();
       params.append('page', '1');
-      params.append('limit', (options.limit || 9).toString());
+      params.append('limit', (limit || 9).toString());
 
       const response = await fetch(`/api/blogs?${params}`);
       if (!response.ok) {
@@ -41,11 +43,11 @@ export const useGetRecentPosts = (options: UseGetRecentPostsOptions = {}): UseGe
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [limit]);
 
   useEffect(() => {
     fetchRecentPosts();
-  }, [options.limit]);
+  }, [fetchRecentPosts]);
 
   return {
     posts,

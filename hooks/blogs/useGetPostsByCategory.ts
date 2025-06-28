@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { BlogPost } from '@/types/blog';
 
 interface UseGetPostsByCategoryOptions {
@@ -19,23 +19,25 @@ export const useGetPostsByCategory = (options: UseGetPostsByCategoryOptions = {}
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchPostsByCategory = async () => {
+  const { category, limit, search } = options;
+
+  const fetchPostsByCategory = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
 
       const params = new URLSearchParams();
       
-      if (options.category && options.category !== "All") {
-        params.append('category', options.category);
+      if (category && category !== "All") {
+        params.append('category', category);
       }
       
-      if (options.limit) {
-        params.append('limit', options.limit.toString());
+      if (limit) {
+        params.append('limit', limit.toString());
       }
       
-      if (options.search) {
-        params.append('search', options.search);
+      if (search) {
+        params.append('search', search);
       }
 
       const response = await fetch(`/api/blogs?${params}`);
@@ -55,11 +57,11 @@ export const useGetPostsByCategory = (options: UseGetPostsByCategoryOptions = {}
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [category, limit, search]);
 
   useEffect(() => {
     fetchPostsByCategory();
-  }, [options.category, options.limit, options.search]);
+  }, [fetchPostsByCategory]);
 
   return {
     posts,

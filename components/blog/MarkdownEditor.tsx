@@ -14,7 +14,8 @@ import {
   Heading1,
   Heading2,
   Heading3,
-  Minus
+  Minus,
+  Image
 } from "lucide-react";
 
 interface MarkdownEditorProps {
@@ -100,11 +101,15 @@ export default function MarkdownEditor({ value, onChange, placeholder, className
       icon: Code,
       title: "Inline Code",
       action: () => insertText("`", "`", "code"),
-    },
-    {
+    },    {
       icon: Link,
       title: "Link",
       action: () => insertText("[", "](url)", "link text"),
+    },
+    {
+      icon: Image,
+      title: "Image",
+      action: () => insertText("![", "](image-url)", "alt text"),
     },
     {
       icon: List,
