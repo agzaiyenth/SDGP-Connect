@@ -13,23 +13,28 @@ import {
 import { projectDomainsOptions } from "@/types/project/mapping";
 import Link from "next/link";
 import React from "react";
+import { useLanguage } from "@/hooks/LanguageProvider";
 
-
+function getNested(obj: any, path: string[], fallback: any = undefined) {
+  return path.reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : fallback), obj);
+}
 
 export default function Domains() {
+  const { t } = useLanguage();
+  const domains = getNested(t, ['home', 'domains'], {});
   return (
     <section className="bg-background py-24">
       <div className="">
         <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
           <Badge className="mb-6 inline-flex items-center gap-1.5 bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary">
             <Layers3 className="h-4 w-4" />
-            Project domains
+            {domains.badge || "Project domains"}
           </Badge>
           <h2 className="mb-6 text-pretty text-3xl font-bold tracking-tight lg:text-4xl">
-            Explore key Innovation domains
+            {domains.heading || "Explore key Innovation domains"}
           </h2>
           <p className="mb-10 text-lg text-muted-foreground">
-            Discover a wide range of technology domains driving the future — from AI and Blockchain to Sustainability and Gaming. These categories represent where impactful ideas and projects come to life.
+            {domains.description || "Discover a wide range of technology domains driving the future — from AI and Blockchain to Sustainability and Gaming. These categories represent where impactful ideas and projects come to life."}
           </p>
         </div>
 
@@ -82,7 +87,7 @@ export default function Domains() {
         <div className="mt-12 flex justify-center">
           <Link href="/project" >
             <Button variant="outline" className="group" size="lg">
-              View projects of all domains
+              {domains.button || "View projects of all domains"}
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </Link>

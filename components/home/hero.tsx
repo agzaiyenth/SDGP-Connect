@@ -8,6 +8,7 @@ import BadgeComponent from './bestWebBadge';
 import Carousel from './carousel';
 import MorphingText from './Morphing';
 import ThreeScene from './three-scene';
+import { useLanguage } from "@/hooks/LanguageProvider";
 
 const Logo: React.FC = () => (
   <motion.div
@@ -30,7 +31,14 @@ const Logo: React.FC = () => (
   </motion.div>
 )
 
+function getNested(obj: any, path: string[], fallback: any = undefined) {
+  return path.reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : fallback), obj);
+}
+
 export default function Hero() {
+  const { t } = useLanguage();
+  // Defensive: t may be a flat object, or nested, or string map
+  const homeHero = getNested(t, ['home', 'hero'], {});
   return (
     <section className="min-h-screen w-full flex flex-col items-center justify-center overflow-hidden perspective-1000 ">
       <ThreeScene />
@@ -48,7 +56,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          Innovative • Creative • Impactful
+          {homeHero.badge || "Innovative • Creative • Impactful"}
         </motion.div>
 
         <motion.h1
@@ -68,10 +76,10 @@ export default function Hero() {
         >
           <MorphingText
             texts={[
-              "Transforming Ideas Into Brands",
-              "Crafting Digital Experiences",
-              "Building Tomorrow's Solutions",
-              "Creating Innovative Designs"
+              homeHero.morphingtext1 || "Transforming Ideas Into Brands",
+              homeHero.morphingtext2 || "Crafting Digital Experiences",
+              homeHero.morphingtext3 || "Building Tomorrow's Solutions",
+              homeHero.morphingtext4 || "Creating Innovative Designs"
             ]}
             className="text-xl md:text-2xl text-foreground/80  w-120 "
           />
@@ -86,14 +94,14 @@ export default function Hero() {
           <div className="flex-1">
             <Link href="/project">
               <Button className="w-full px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
-                  Explore projects
+                  {homeHero.explore_button || "Explore projects"}
               </Button>
             </Link>
           </div>
           <div className="flex-1">
             <Link href="/about">
               <Button className="w-full px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-primary/30">
-                Learn more
+                {homeHero.learn_more_button || "Learn more"}
               </Button>
             </Link>
           </div>
@@ -104,7 +112,7 @@ export default function Hero() {
               rel="noopener noreferrer"
             >
               <Button className="w-full px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
-                Visit Our Campus
+                {homeHero.campus_button || "Visit Our Campus"}
               </Button>
             </a>
           </div>

@@ -60,13 +60,15 @@ export default function Footer() {
             ))}
           </div>
           <div className="mt-8 border-t border-secondary-foreground/10 pt-8 text-center flex md:gap-4 gap-2 flex-col md:flex-row justify-center items-center">
-            <p className="text-center text-sm text-gray-200 pb-4"> Copyright © {currentYear} - <a href="http://IIT.ac.lk" className="text-center text-sm text-gray-200 pb-4">Informatics Institute of Technology (PVT) LTD</a></p>
+            <p className="text-center text-sm text-gray-200 pb-4"> Copyright © {currentYear} - <strong><a href="http://IIT.ac.lk" className="text-center text-sm text-gray-200 pb-4">Informatics Institute of Technology (PVT) LTD</a></strong></p>
             <p className="text-center text-sm text-gray-200 pb-4 md:block hidden">|</p>
-           <p className="text-center text-sm text-gray-200 pb-4"> Built by <strong><a href="https://www.psycodelabs.lk" className="hover:text-gray-400" >Psycode Lab's</a></strong></p>
-           <p className="text-center text-sm text-gray-200 pb-4 md:block hidden">|</p>
-            <p className="text-center text-sm text-gray-200 pb-4"> Mentored By - <a href="http://skillverse.lk" className="text-center text-sm text-gray-200 pb-4">SkillVerse (PVT) LTD</a></p>
+            <p className="text-center text-sm text-gray-200 pb-4"> Mentored By - <strong><a href="http://skillverse.lk" className="text-center text-sm text-gray-200 pb-4">SkillVerse (PVT) LTD</a></strong></p>
           </div>
         </div>
+      </footer>
+      {/* !Do not remove this , @zionashirwada Want's it this way and do not , do not change this ,.............................. */}
+      <footer id="xy47_beta" className="text-center text-sm text-gray-200 md:pb-4 pb-24">
+        Built by <strong><a href="https://www.psycodelabs.lk" className="hover:text-gray-400">Psycode Lab's</a></strong>
       </footer>
     </>
   );
