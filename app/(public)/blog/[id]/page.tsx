@@ -26,12 +26,14 @@ import { notFound } from "next/navigation";
 import { useState } from "react";
 import { useGetPostById } from "@/hooks/blogs/useGetPostById";
 import { useGetRecentPosts } from "@/hooks/blogs/useGetRecentPosts";
+import { useGetPostsByCategory } from "@/hooks/blogs/useGetPostsByCategory";
 import { getDisplayFromEnum, formatDateForDisplay, calculateReadTime } from "@/lib/blog-utils";
 import ReactMarkdown from "react-markdown";
 
 export default function BlogPostPage({ params }: { params: { id: string } }) {
   const { post, isLoading, error } = useGetPostById(params.id);
   const { posts: recentPosts } = useGetRecentPosts({ limit: 3 });
+  const { posts: relatedPosts } = useGetPostsByCategory({ category: post?.category, limit: 10 });
   const [copySuccess, setCopySuccess] = useState(false);
 
   const handleCopyLink = () => {
@@ -243,17 +245,21 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
                 <CardHeader>
                   <CardTitle>Related Articles</CardTitle>
                 </CardHeader>
-                <CardContent>                  <ul className="space-y-2">
-                    {recentPosts.filter((relatedPost) => relatedPost.id !== post.id).slice(0, 5).map((relatedPost) => (
-                      <li key={relatedPost.id}>
-                        <Link
-                          href={`/blog/${relatedPost.id}`}
-                          className="text-sm hover:underline"
-                        >
-                          {relatedPost.title}
-                        </Link>
-                      </li>
-                    ))}
+                <CardContent>
+                  <ul className="space-y-2">
+                    {relatedPosts
+                      .filter((relatedPost) => relatedPost.id !== post.id)
+                      .slice(0, 10)
+                      .map((relatedPost) => (
+                        <li key={relatedPost.id}>
+                          <Link
+                            href={`/blog/${relatedPost.id}`}
+                            className="text-sm hover:underline"
+                          >
+                            {relatedPost.title}
+                          </Link>
+                        </li>
+                      ))}
                   </ul>
                 </CardContent>
               </Card>
