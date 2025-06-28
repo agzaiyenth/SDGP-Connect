@@ -63,8 +63,6 @@ export function useGetProjectsByApprovalStatus<T extends PendingProject | Approv
 
       const { data, metadata } = response.data;
 
-      // Log the response for debugging
-      console.log('API Response:', response.data);
 
       // Check if the response contains data and metadata
       if (data && Array.isArray(data) && metadata) {

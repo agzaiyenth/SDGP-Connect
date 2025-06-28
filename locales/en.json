@@ -1,0 +1,67 @@
+{
+  "home": {
+    "hero": {
+      "badge": "Innovative • Creative • Impactful",
+      "morphing_text1": "Transforming Ideas Into Brands",
+      "morphing_text2": "Crafting Digital Experiences",
+      "morphing_text3": "Building Tomorrow's Solutions",
+      "morphing_text4": "Creating Innovative Designs",
+      "explore_button": "Explore projects",
+      "learn_more_button": "Learn more",
+      "campus_button": "Visit IIT"
+    },
+    "cta": {
+      "heading": "More than just an academic module",
+      "description": "SDGP is a core academic module at IIT that redefines student learning by immersing them in real-world challenges. Through a blend of innovation, collaboration, and hands-on experience, it goes beyond traditional classroom education equipping students with practical skills, critical thinking, and a problem-solving mindset to create meaningful impact in society.",
+      "button": "Discover more"
+    },
+    "about": {
+      "heading": "Crafting code for a sustainable tomorrow",
+      "description": "Build impactful tech solutions through teamwork, innovation, and purpose driven by SDGP and the UN SDGs.",
+      "vision_card": {
+        "title": "Our Vision",
+        "sub_title": "Tech for global good",
+        "description": "To become a launchpad for socially-driven tech innovation, where young minds transform global challenges into digital opportunities, building a more sustainable and equitable future through software."
+      },
+      "values_card": {
+        "title": "Our Core Values",
+        "sub_title": "Driven by purpose",
+        "description": "We believe in innovation, collaboration, and meaningful impact. Our community thrives on solving real-world problems, learning continuously, and developing technology that serves humanity and the planet."
+      },
+      "mission_card": {
+        "title": "Our Mission",
+        "sub_title": "Empowering Innovators",
+        "description": "To empower the next generation of socially-conscious developers by offering hands-on experience in building impactful full-stack applications that address real-world challenges aligned with the UN SDGs."
+      }
+    },
+    "domains": {
+      "badge": "Project domains",
+      "heading": "Explore key Innovation domains",
+      "description": "Discover a wide range of technology domains driving the future — from AI and Blockchain to Sustainability and Gaming. These categories represent where impactful ideas and projects come to life.",
+      "button": "View projects of all domains"
+    },
+    "impact_stats": {
+      "title": "Our Impact",
+      "stat_1": {
+        "title": "1000+",
+        "description": "Student Projects"
+      },
+      "stat_2": {
+        "title": "100+",
+        "description": "Industry Partners"
+      },
+      "stat_3": {
+        "title": "15+",
+        "description": "SDGs Addressed"
+      },
+      "stat_4": {
+        "title": "50+",
+        "description": "Startups Invested"
+      }
+    },
+    "brand": {
+      "word1": "Making Projects",
+      "word2": "Into brands"
+    }
+  }
+}

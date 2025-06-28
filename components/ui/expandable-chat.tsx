@@ -1,3 +1,9 @@
+// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
+//
+// This software is the property of Psycode Lab's. and its suppliers, if any.
+// Dissemination of any information or reproduction of any material contained
+// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
+// You may not alter or remove any copyright or other notice from copies of this content.
 "use client";
 
 import React, { useRef, useState } from "react";
@@ -53,6 +59,9 @@ const ExpandableChat: React.FC<ExpandableChatProps> = ({
   return (
     <div
       className={cn(`fixed ${chatConfig.positions[position]} z-50`, className)}
+      aria-label="AI chat dialog"
+      role="dialog"
+      {...(isOpen ? { "aria-modal": "true" } : {})}
       {...props}
     >
       <div
@@ -64,6 +73,8 @@ const ExpandableChat: React.FC<ExpandableChatProps> = ({
           isOpen ? chatConfig.states.open : chatConfig.states.closed,
           className,
         )}
+        tabIndex={isOpen ? 0 : -1}
+        aria-label="Chat window"
       >
         {children}
         <Button
@@ -71,14 +82,18 @@ const ExpandableChat: React.FC<ExpandableChatProps> = ({
           size="icon"
           className="absolute top-2 right-2 sm:hidden"
           onClick={toggleChat}
+          aria-label="Close chat"
         >
-          <X className="h-4 w-4" />
+          <X className="h-4 w-4" aria-hidden="true" />
         </Button>
       </div>
       <ExpandableChatToggle
         icon={icon}
         isOpen={isOpen}
         toggleChat={toggleChat}
+        aria-label={isOpen ? "Close chat" : "Open chat"}
+        aria-expanded={isOpen}
+        aria-controls="expandable-chat-window"
       />
     </div>
   );
@@ -126,21 +141,30 @@ const ExpandableChatToggle: React.FC<ExpandableChatToggleProps> = ({
   toggleChat,
   ...props
 }) => (
-  <Button
-    variant="default"
+  <button
     onClick={toggleChat}
     className={cn(
-      "w-14 h-14 rounded-full shadow-md flex items-center justify-center hover:shadow-lg hover:shadow-black/30 transition-all duration-300",
+      "relative group w-14 h-14 rounded-full bg-blue-500/5 hover:bg-blue-500/10 border border-blue-500/20 hover:border-blue-500/40 flex items-center justify-center shadow-md hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 text-foreground",
       className,
     )}
     {...props}
   >
+    {/* Top gradient line */}
+    <span className="absolute h-px opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out inset-x-0 top-0 bg-gradient-to-r w-2/7 mx-auto from-transparent via-blue-500 to-transparent" />
+    
+    {/* Icon */}
     {isOpen ? (
-      <X className="h-6 w-6" />
+      <X className="h-6 w-6 relative z-10" aria-hidden="true" />
     ) : (
-      icon || <MessageCircle className="h-6 w-6" />
+      icon || <MessageCircle className="h-6 w-6 relative z-10" aria-hidden="true" />
     )}
-  </Button>
+    
+    {/* Bottom gradient line */}
+    <span className="absolute group-hover:opacity-30 transition-all duration-500 ease-in-out inset-x-0 h-px -bottom-px bg-gradient-to-r w-2/7 mx-auto from-transparent via-blue-500 to-transparent" />
+    
+    {/* Glow effect */}
+    <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-20 transition-all duration-300 bg-gradient-to-r from-blue-500/20 via-blue-400/20 to-blue-500/20 blur-sm" />
+  </button>
 );
 
 ExpandableChatToggle.displayName = "ExpandableChatToggle";

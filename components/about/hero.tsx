@@ -7,9 +7,11 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Play, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { Zap } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function Hero() {
   const [videoOpen, setVideoOpen] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const router = useRouter();
 
   const handleClick = () => {
@@ -84,16 +86,24 @@ export default function Hero() {
                 <ArrowRight className="ml-2 size-4 lg:size-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>
-          </div>
-
-          {/* Image Section */}
+          </div>          {/* Image Section */}
           <div className="relative order-first lg:order-last">
             <div className="absolute -inset-4 -z-10 rounded-2xl bg-dark/10 blur-sm" />
-            <div className="relative overflow-hidden rounded-xl">
+            <div className="relative overflow-hidden rounded-xl">              {/* Skeleton */}
+              <div 
+                className={cn(
+                  "absolute inset-0 bg-gradient-to-r from-muted via-muted/50 to-muted animate-pulse rounded-xl h-[400px]",
+                  imageLoaded && "opacity-0"
+                )}
+              />
+              
               <Image
-                src="/assets/3.jpg"
+                src="/assets/3.webp"
                 alt="Students who won dialog Innovative challenge"
-                className="w-full object-cover shadow-lg transition-transform hover:scale-[1.02] border border-gray-600"
+                className={cn(
+                  "w-full object-cover shadow-lg transition-all duration-500 hover:scale-[1.02] border border-gray-600",
+                  imageLoaded ? "opacity-100" : "opacity-0"
+                )}
                 height={800}
                 width={800}
                 style={{ 
@@ -101,11 +111,16 @@ export default function Hero() {
                   height: "400px"
                 }}
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 45vw, 40vw"
-                priority
+                loading="lazy"
+                onLoad={() => setImageLoaded(true)}
+                onError={() => setImageLoaded(true)}
               />
               
-              {/* Overlay Badge */}
-              <div className="absolute bottom-3 left-3 lg:bottom-4 lg:left-4 xl:bottom-6 xl:left-6 rounded-lg bg-background/95 backdrop-blur-sm p-3 lg:p-4 xl:p-5 shadow-lg border">
+              {/* Overlay Badge - only show when image is loaded */}
+              <div className={cn(
+                "absolute bottom-3 left-3 lg:bottom-4 lg:left-4 xl:bottom-6 xl:left-6 rounded-lg bg-background/95 backdrop-blur-sm p-3 lg:p-4 xl:p-5 shadow-lg border transition-opacity duration-500",
+                imageLoaded ? "opacity-100" : "opacity-0"
+              )}>
                 <p className="font-semibold text-sm lg:text-base xl:text-lg">Dialog Innovation</p>
                 <p className="text-xs lg:text-sm xl:text-base text-muted-foreground">
                   Winner 2024

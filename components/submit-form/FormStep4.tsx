@@ -17,7 +17,7 @@ const FormStep4 = () => {
   
   // Initialize default country code immediately when component mounts
   React.useEffect(() => {
-    console.log("Setting default country code to +94");
+
     setValue("projectDetails.country_code", "+94", { 
       shouldValidate: false,
       shouldDirty: false 
@@ -127,11 +127,10 @@ const FormStep4 = () => {
     const currentCountryCode = newCountryCode || countryCode || "+94";
     const currentPhoneNumber = newPhoneNumber || phoneNumber || "";
     
-    console.log("Updating combined phone:", { currentCountryCode, currentPhoneNumber });
+   
     
     if (currentCountryCode && currentPhoneNumber) {
       const combinedPhone = `${currentCountryCode}${currentPhoneNumber}`;
-      console.log("Setting team_phone to:", combinedPhone);
       setValue("projectDetails.team_phone", combinedPhone, {
         shouldValidate: false, // Don't validate immediately to avoid conflicts
         shouldDirty: true

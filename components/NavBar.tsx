@@ -1,13 +1,12 @@
 'use client';
+import { sidebarItems } from '@/data/NavBarItems';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ThemeToggle } from './ThemeToggle';
-import { sidebarItems } from '@/data/NavBarItems';
 
 export function NavBar() {
   const pathname = usePathname();
-  
+
   return (
     <aside
       className={cn(
@@ -40,8 +39,13 @@ export function NavBar() {
                 // Ensure consistent sizing on mobile
                 'min-w-[44px] flex items-center justify-center'
               )}
+              aria-current={isActive ? 'page' : undefined}
+              tabIndex={0}
             >
+              {/* Visually hidden text for screen readers */}
+              <span className="sr-only">{item.label}</span>
               <Icon
+                aria-label={item.label}
                 className={cn(
                   'w-5 h-5 md:w-6 md:h-6 transition-colors',
                   isActive ? 'text-primary' : 'text-muted-foreground'
@@ -62,7 +66,7 @@ export function NavBar() {
             </Link>
           );
         })}
-        
+
         {/* Theme toggle - commented out but keeping the structure */}
         {/* <div className="mt-2 border-t pt-4 w-full justify-center md:justify-start md:block hidden">
           <ThemeToggle />

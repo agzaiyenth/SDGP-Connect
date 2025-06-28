@@ -1,3 +1,9 @@
+// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
+//
+// This software is the property of Psycode Lab's. and its suppliers, if any.
+// Dissemination of any information or reproduction of any material contained
+// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
+// You may not alter or remove any copyright or other notice from copies of this content.
 "use client";
 import { useState, FormEvent } from "react";
 import { Bot, Paperclip, Mic, CornerDownLeft } from "lucide-react";
@@ -43,7 +49,7 @@ export function ExpandableChatAI() {
         </p>
       </ExpandableChatHeader>
       <ExpandableChatBody>
-        <ChatMessageList>
+        <ChatMessageList aria-label="Chat messages" aria-live="polite">
           {messages.map((message) => (
             <ChatBubble
               key={message.id}
@@ -54,9 +60,10 @@ export function ExpandableChatAI() {
                 src={
                   message.sender === "user"
                     ? "/user.png"
-                    : "/iconw.png"
+                    : "/iconw.svg"
                 }
                 fallback={message.sender === "user" ? "US" : "AI"}
+                aria-label={message.sender === "user" ? "User avatar" : "AI avatar"}
               />
               <ChatBubbleMessage variant={message.sender === "user" ? "sent" : "received"}>
                 {message.sender === "ai" ? (
@@ -69,7 +76,7 @@ export function ExpandableChatAI() {
           ))}
           {isLoading && (
             <ChatBubble variant="received">
-              <ChatBubbleAvatar className="h-8 w-8 shrink-0" src="/iconw.png" fallback="AI" />
+              <ChatBubbleAvatar className="h-8 w-8 shrink-0" src="/iconw.svg" fallback="AI" aria-label="AI avatar" />
               <ChatBubbleMessage isLoading />
             </ChatBubble>
           )}
@@ -79,17 +86,20 @@ export function ExpandableChatAI() {
         <form
           onSubmit={handleSubmit}
           className="relative rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring p-1"
+          role="form"
+          aria-label="Send a message to the AI chat"
         >
           <ChatInput
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message..."
             className="min-h-12 resize-none rounded-lg bg-background border-0 p-3 shadow-none focus-visible:ring-0"
+            aria-label="Type your message"
           />
           <div className="flex items-center p-3 pt-0 justify-between">
-            <Button type="submit" size="sm" className="ml-auto gap-1.5">
+            <Button type="submit" size="sm" className="ml-auto gap-1.5" aria-label="Send message">
               Send Message
-              <CornerDownLeft className="size-3.5" />
+              <CornerDownLeft className="size-3.5" aria-hidden="true" />
             </Button>
           </div>
         </form>
@@ -100,6 +110,7 @@ export function ExpandableChatAI() {
             target="_blank"
             rel="noopener noreferrer"
             className="underline hover:text-primary"
+            aria-label="Visit Psycode Labs website"
           >
             Psycode Labs
           </a>

@@ -1,11 +1,16 @@
+// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
+//
+// This software is the property of Psycode Lab's. and its suppliers, if any.
+// Dissemination of any information or reproduction of any material contained
+// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
+// You may not alter or remove any copyright or other notice from copies of this content.
 "use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Shield, Lock, Eye, Users, Cookie, Server, Mail, FileText, Clock, Globe, AlertTriangle, Settings } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { motion } from 'framer-motion';
+import { AlertTriangle, Clock, Cookie, Eye, FileText, Globe, Lock, Mail, Settings, Shield, Users } from 'lucide-react';
 import Link from 'next/link';
 
 const PrivacyPolicyPage = () => {
@@ -123,10 +128,10 @@ const PrivacyPolicyPage = () => {
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
+      transition: {
         duration: 0.6,
         staggerChildren: 0.1
       }
@@ -142,7 +147,7 @@ const PrivacyPolicyPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         {/* Header Section */}
-        <motion.div 
+        <motion.div
           initial="hidden"
           animate="visible"
           variants={containerVariants}
@@ -153,15 +158,15 @@ const PrivacyPolicyPage = () => {
               <Shield className="w-8 h-8" />
             </div>
           </motion.div>
-          
-          <motion.h1 
+
+          <motion.h1
             variants={itemVariants}
             className="text-4xl md:text-5xl font-bold tracking-tight mb-4 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent"
           >
             Privacy Policy
           </motion.h1>
-          
-          <motion.p 
+
+          <motion.p
             variants={itemVariants}
             className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6"
           >
@@ -176,7 +181,7 @@ const PrivacyPolicyPage = () => {
         </motion.div>
 
         {/* Policy Sections */}
-        <motion.div 
+        <motion.div
           initial="hidden"
           animate="visible"
           variants={containerVariants}
@@ -220,7 +225,7 @@ const PrivacyPolicyPage = () => {
         </motion.div>
 
         {/* Contact Section */}
-        <motion.div 
+        <motion.div
           initial="hidden"
           animate="visible"
           variants={containerVariants}
@@ -267,7 +272,7 @@ const PrivacyPolicyPage = () => {
         </motion.div>
 
         {/* Quick Navigation - Mobile Responsive */}
-        <motion.div 
+        <motion.div
           initial="hidden"
           animate="visible"
           variants={containerVariants}
