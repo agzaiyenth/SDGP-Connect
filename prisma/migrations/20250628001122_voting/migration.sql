@@ -1,0 +1,13 @@
+CREATE TABLE `ProjectVote` (
+  `id` VARCHAR(191) NOT NULL PRIMARY KEY,
+  `voterIp` VARCHAR(191) NOT NULL UNIQUE,
+  `projectId` VARCHAR(191) NOT NULL,
+
+  `voteChangeCount` INT NOT NULL DEFAULT 0,
+  `createdAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  INDEX `idx_projectId` (`projectId`),
+
+  CONSTRAINT `fk_project_vote_project` FOREIGN KEY (`projectId`) REFERENCES `ProjectMetadata`(`project_id`) ON DELETE CASCADE
+);
