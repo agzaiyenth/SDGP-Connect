@@ -1,7 +1,7 @@
 import { IProjectAssociation } from "@/types/project/type";
 import React from "react";
 import { Card } from "../ui/card";
-import { sdgGoals, projectTypeOptions } from "@/types/project/mapping";
+import { sdgGoals, projectTypeOptions } from "@/lib/types/mapping";
 import { AssociationType } from "@/types/prisma-types";
 import ProjectTypeCard from "../project-type-card";
 import TechCard from "../techcard";
