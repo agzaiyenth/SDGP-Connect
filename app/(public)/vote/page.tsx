@@ -82,12 +82,11 @@ export default function VoteProjectsPage() {
 	const handleVote = async (projectId: string) => {
 		// Clear any previous errors
 		clearError();
-		
 		const result = await castVote(projectId);
 		if (result?.success) {
 			// Only refresh vote status to avoid constant API calls
 			refetchVoteStatus();
-			
+			refresh(); // Refresh the project list
 			// Show success toast
 			toast({
 				title: "Vote Cast Successfully!",
@@ -136,6 +135,21 @@ export default function VoteProjectsPage() {
 		// Show preloader only during initial data loading (no search, not after initial load)
 	if (!isInitialDataLoaded && !debouncedSearch) {
 		return <Preloader onComplete={() => setIsInitialDataLoaded(true)} />;
+	}
+
+	// Always show the voted project at the top of the list (if present)
+	let displayProjects = projects;
+	if (voteStatus?.votedProjectId) {
+		const votedIdx = projects.findIndex(p => p.id === voteStatus.votedProjectId);
+		if (votedIdx !== -1) {
+			const votedProject = projects[votedIdx];
+			displayProjects = [votedProject, ...projects.slice(0, votedIdx), ...projects.slice(votedIdx + 1)];
+		}
+	}
+
+	// Helper: show '-' for projects with 0 votes
+	function getDisplayRank(project: any) {
+		return project.voteCount === 0 ? '-' : project.globalRank;
 	}
 
 	return (
@@ -279,7 +293,7 @@ export default function VoteProjectsPage() {
 
 				{/* Project List */}
 				<div className="flex flex-col gap-4">
-					{projects.map((project, idx) => {
+					{displayProjects.map((project, idx) => {
 						const isVoted = voteStatus?.votedProjectId === project.id;
 						
 						return (
@@ -296,7 +310,7 @@ export default function VoteProjectsPage() {
 									{project.globalRank === 3 && <span className="text-2xl">🥉</span>}
 									{project.globalRank > 3 && (
 										<span className="font-bold text-lg text-muted-foreground">
-											{project.globalRank}
+											{getDisplayRank(project)}
 										</span>
 									)}
 								</div>
