@@ -9,6 +9,8 @@ import { BlogFilter } from "@/components/blog/BlogFilter";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { FeaturedBlogCard } from "@/components/blog/FeaturedBlogCard";
+import { FeaturedBlogCardSkeleton } from "@/components/blog/FeaturedBlogCardSkeleton";
+import { BlogCardSkeleton } from "@/components/blog/BlogCardSkeleton";
 import Link from "next/link";
 import { useGetAllPosts } from "@/hooks/blogs/useGetAllPosts";
 import { formatCategoryForApi } from "@/lib/blog-utils";
@@ -118,7 +120,7 @@ export function BlogContent({ initialPosts = [], featuredPosts: initialFeaturedP
                 {searchQuery && ` for "${searchQuery}"`}
               </p>
             </div>          )}          {/* Featured Posts Section */}
-          {!searchQuery && activeCategory === "All" && featuredPosts.length > 0 && (
+          {!searchQuery && activeCategory === "All" && (
             <div className="mb-16">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
                 {/* Left Side - Title Section */}
@@ -135,25 +137,41 @@ export function BlogContent({ initialPosts = [], featuredPosts: initialFeaturedP
                     <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
                   </button>
                     </Link>
-                </div>                {/* Right Side - Featured Project Cards */}
+                </div>                
+                {/* Right Side - Featured Project Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
-                  {featuredPosts.slice(0, 2).map((post) => (
-                    <FeaturedBlogCard key={post.id} post={post} />
-                  ))}
+                  {isLoading ? (
+                    <>
+                      <FeaturedBlogCardSkeleton />
+                      <FeaturedBlogCardSkeleton />
+                    </>
+                  ) : (
+                    featuredPosts.slice(0, 2).map((post) => (
+                      <FeaturedBlogCard key={post.id} post={post} />
+                    ))
+                  )}
                 </div>
               </div>
             </div>
           )}          {/* Regular Posts Section */}
           {isLoading ? (
-            <div className="text-center py-16">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-              <p className="mt-4 text-muted-foreground">Loading articles...</p>
+            <div>
+              {!searchQuery && activeCategory === "All" && (
+                <h2 className="text-5xl font-extrabold mb-8 text-center leading-tight">Latest Articles</h2>
+              )}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <div key={index} className="h-full flex">
+                    <BlogCardSkeleton />
+                  </div>
+                ))}
+              </div>
             </div>
           ) : filteredPosts.length > 0 ? (
             <div>
               {!searchQuery && activeCategory === "All" && featuredPosts.length > 0 && (
                 <h2 className="text-5xl font-extrabold mb-8 text-center leading-tight">Latest Articles</h2>
-              )}              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+              )}<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                 {(searchQuery || activeCategory !== "All" ? filteredPosts : regularPosts).map((post: BlogPost) => (
                   <div key={post.id} className="h-full flex">
                     <BlogCard post={post} className="flex-1 h-full" />
