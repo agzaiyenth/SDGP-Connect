@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/prisma/prismaClient";
 import { ProjectApprovalStatus, AssociationType } from "@prisma/client";
+import { sanitizeIP, extractIPFromForwarded, getIPStatus } from "@/lib/ip-utils";
 
 export const GET = async (req: NextRequest) => {
   try {
@@ -145,19 +146,60 @@ export const GET = async (req: NextRequest) => {
 
 export const POST = async (req: NextRequest) => {
   try {
-    const { projectId } = await req.json();
+    const { projectId, clientIP } = await req.json();
 
     if (!projectId) {
       return NextResponse.json(
         { error: "Project ID is required" },
         { status: 400 }
       );
-    }    // Get the user's IP address for vote tracking
-    const forwarded = req.headers.get("x-forwarded-for");
-    const realIp = req.headers.get("x-real-ip");
-    const ip = forwarded ? forwarded.split(",")[0] : realIp || "unknown";
+    }    // Get the user's IP address for vote tracking with multiple fallback methods
+    let ip = sanitizeIP(clientIP);
+    
+    // If client didn't provide valid IP, try to extract from headers
+    if (ip === 'unknown') {
+      // Try various header sources in order of reliability
+      const cfConnectingIp = req.headers.get("cf-connecting-ip"); // Cloudflare
+      const xRealIp = req.headers.get("x-real-ip");
+      const xForwardedFor = req.headers.get("x-forwarded-for");
+      const xClientIp = req.headers.get("x-client-ip");
+      const xClusterClientIp = req.headers.get("x-cluster-client-ip");
+      const forwarded = req.headers.get("forwarded");
 
-    // Check if project exists and is approved
+      if (cfConnectingIp) {
+        // Cloudflare provides the most reliable IP
+        ip = sanitizeIP(cfConnectingIp);
+      } else if (xRealIp) {
+        // x-real-ip is usually set by reverse proxies
+        ip = sanitizeIP(xRealIp);
+      } else if (xForwardedFor) {
+        // x-forwarded-for can contain multiple IPs, take the first one
+        ip = extractIPFromForwarded(xForwardedFor);
+      } else if (xClientIp) {
+        ip = sanitizeIP(xClientIp);
+      } else if (xClusterClientIp) {
+        ip = sanitizeIP(xClusterClientIp);
+      } else if (forwarded) {
+        // Parse the forwarded header (format: for=192.0.2.60;proto=http;by=203.0.113.43)
+        const forMatch = forwarded.match(/for=([^;,\s]+)/);
+        if (forMatch) {
+          ip = sanitizeIP(forMatch[1].replace(/"/g, '')); // Remove quotes if present
+        }
+      }
+    }
+
+    // Log IP detection for debugging (remove in production)
+    const ipStatus = getIPStatus(ip);
+    console.log('IP Detection Debug:', {
+      clientProvided: clientIP,
+      finalIP: ip,
+      status: ipStatus,
+      headers: {
+        'cf-connecting-ip': req.headers.get("cf-connecting-ip"),
+        'x-real-ip': req.headers.get("x-real-ip"),
+        'x-forwarded-for': req.headers.get("x-forwarded-for"),
+      }
+    });    // Check if project exists and is approved
     const project = await prisma.projectMetadata.findFirst({
       where: {
         project_id: projectId,
@@ -216,7 +258,8 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json({
       success: true,
       message: existingVote ? "Vote updated successfully" : "Vote cast successfully",
-      voteCount
+      voteCount,
+      voterIP: ip // Return the IP used for voting (for debugging, remove in production)
     });
 
   } catch (error) {

@@ -26,4 +26,5 @@ export interface VoteResponse {
   success: boolean;
   message: string;
   voteCount?: number;
+  voterIP?: string; // Optional field for debugging purposes
 }

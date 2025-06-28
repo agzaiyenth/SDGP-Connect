@@ -7,8 +7,11 @@ import { Input } from "@/components/ui/input";
 import { CheckCircle2, Star, Search, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { NumberTicker } from "@/components/ui/number-ticker";
+import { Toast, ToastTitle, ToastDescription, ToastClose, ToastProvider } from "@/components/ui/toast";
 import { useVoteProjects, useVoteStats, useCastVote, useVoteStatus } from "@/hooks/project";
 import { useDebounce } from "@/hooks/use-debounce";
+import { useToast } from "@/hooks/contact/use-toast";
+import IPStatusComponent from "@/components/IPStatusComponent";
 import Preloader from "./preloader";
 
 // Contest end date and time
@@ -23,14 +26,15 @@ export default function VoteProjectsPage() {
 		seconds: 0
 	});
 	const [isInitialDataLoaded, setIsInitialDataLoaded] = useState(false);
-
 	// Debounce search input
 	const debouncedSearch = useDebounce(search, 500);
-
+		// Toast for notifications
+	const { toast, toasts, dismiss } = useToast();
+	
 	// Hooks for voting functionality
 	const { stats, isLoading: statsLoading } = useVoteStats();
 	const { status: voteStatus, refetch: refetchVoteStatus } = useVoteStatus();
-	const { castVote, isLoading: castingVote } = useCastVote();
+	const { castVote, isLoading: castingVote, error: voteError, clearError } = useCastVote();
 	const { 
 		projects, 
 		isLoading: projectsLoading, 
@@ -42,12 +46,15 @@ export default function VoteProjectsPage() {
 		title: debouncedSearch || undefined,
 		limit: 10
 	});
-
 	// Check if initial data is loaded
 	useEffect(() => {
 		// Only check for initial load when there's no search (initial page load)
+		// Wait for both stats and projects to be loaded
 		if (!debouncedSearch && !statsLoading && !projectsLoading && stats && projects.length > 0) {
-			setIsInitialDataLoaded(true);
+			// Add a small delay to ensure all data is properly rendered
+			setTimeout(() => {
+				setIsInitialDataLoaded(true);
+			}, 500);
 		}
 	}, [statsLoading, projectsLoading, stats, projects, debouncedSearch]);
 
@@ -71,13 +78,28 @@ export default function VoteProjectsPage() {
 
 		return () => clearInterval(timer);
 	}, []);
-
 	const handleVote = async (projectId: string) => {
+		// Clear any previous errors
+		clearError();
+		
 		const result = await castVote(projectId);
 		if (result?.success) {
 			// Only refresh vote status to avoid constant API calls
 			refetchVoteStatus();
-			// Don't refresh the entire projects list to prevent API spam
+			
+			// Show success toast
+			toast({
+				title: "Vote Cast Successfully!",
+				description: result.message,
+				variant: "default"
+			});
+		} else if (voteError) {
+			// Show error toast
+			toast({
+				title: "Failed to Cast Vote",
+				description: voteError,
+				variant: "destructive"
+			});
 		}
 	};
 	// Infinite scroll handler
@@ -110,9 +132,9 @@ export default function VoteProjectsPage() {
 				timeout = setTimeout(later, wait);
 			}
 		};	}
-	
-	// Show preloader during initial data loading
-	if (!isInitialDataLoaded) {
+		// Show preloader during initial data loading
+	// Keep showing preloader until we have both stats and initial projects loaded
+	if (!isInitialDataLoaded || statsLoading || (projectsLoading && projects.length === 0)) {
 		return <Preloader onComplete={() => setIsInitialDataLoaded(true)} />;
 	}
 
@@ -364,15 +386,34 @@ export default function VoteProjectsPage() {
 							)}
 						</Button>
 					</div>
-				)}
-
-				{/* No projects found */}
+				)}				{/* No projects found */}
 				{!projectsLoading && projects.length === 0 && !error && (
 					<div className="text-center py-8">
 						<p className="text-muted-foreground">No projects found.</p>
 					</div>
 				)}
 			</div>
+					{/* Toast Provider for notifications */}
+			<ToastProvider>
+				{toasts.map((toastItem) => (
+					<Toast
+						key={toastItem.id}
+						variant={toastItem.variant}
+						visible={toastItem.visible}
+					>
+						<div className="grid gap-1">
+							<ToastTitle>{toastItem.title}</ToastTitle>
+							<ToastDescription>{toastItem.description}</ToastDescription>
+						</div>
+						<ToastClose onClick={() => dismiss(toastItem.id)} />
+					</Toast>
+				))}
+			</ToastProvider>
+			
+			{/* IP Status Component - only show in development */}
+			{process.env.NODE_ENV === 'development' && (
+				<IPStatusComponent />
+			)}
 		</div>
 	);
 }
