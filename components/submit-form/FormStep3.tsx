@@ -1,8 +1,8 @@
 import { FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
-import { projectStatusOptions, projectTypeOptions, sdgGoals, techStackOptions } from "@/types/project/mapping";
+import { projectStatusOptions, projectTypeOptions, sdgGoals, techStackOptions } from "@/lib/types/mapping";
 import { ProjectSubmissionSchema } from "@/validations/submit_project";
-import { ProjectDomainEnum } from "@prisma/client";
+import { ProjectDomainEnum } from "@/types/prisma-types";
 import { useFormContext } from "react-hook-form";
 import { MultiSelect } from "../ui/Multi-Select";
 

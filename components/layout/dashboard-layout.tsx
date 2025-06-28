@@ -24,9 +24,9 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
   // Show mobile message if on mobile device
   if (isMobile) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-full bg-background">
         <Navbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
-        <div className="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center pt-16">
+        <div className="flex flex-col min-h-screen items-center justify-center  px-4 text-center pt-16">
           <Laptop className="h-16 w-16 mb-4 text-primary" />
           <h2 className="text-2xl font-bold tracking-tight mb-2">Desktop View Required</h2>
           <p className="text-muted-foreground mb-4">
@@ -50,7 +50,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
         <Sidebar isOpen={sidebarOpen} />
         <main
           className={cn(
-            'flex-1 overflow-y-auto p-6 transition-all duration-300 ease-in-out',
+            'flex-1 overflow-y-auto p-6 transition-all min-h-screen duration-300 ease-in-out',
             sidebarOpen ? 'ml-64' : 'ml-20'
           )}
         >

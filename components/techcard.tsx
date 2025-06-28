@@ -1,6 +1,6 @@
 import React from 'react';
 import { IProjectAssociation } from "@/types/project/type";
-import { techStackOptions } from "@/types/project/mapping";
+import { techStackOptions } from "@/lib/types/mapping";
 import { Button } from './ui/button';
 
 interface TechCardProps {

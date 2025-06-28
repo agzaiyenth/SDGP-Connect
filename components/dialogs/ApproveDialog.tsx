@@ -58,7 +58,7 @@ const ApproveDialog = ({ open, onOpenChange, projectID, onApproved }: ApproveDia
   const { project, isLoading: isProjectLoading } = useGetProjectDetailsByID(projectID);
 
   const handleApprove = async () => {
-    console.log('Approve button clicked for project:', projectID);
+   
     try {
       if (!project) {
         toast.error('Project details not loaded.');
