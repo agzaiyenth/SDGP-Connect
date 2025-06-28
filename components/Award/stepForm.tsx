@@ -6,6 +6,7 @@ import React, {
   useLayoutEffect,
   HTMLAttributes,
   ReactNode,
+  useEffect,
 } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { ShinyButton } from "../magicui/shiny-button";
@@ -219,11 +220,18 @@ function SlideTransition({
 }: SlideTransitionProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  useLayoutEffect(() => {
-    if (containerRef.current) {
-      onHeightReady(containerRef.current.offsetHeight);
-    }
-  }, [children, onHeightReady]);
+ useEffect(() => {
+  const el = containerRef.current;
+  if (!el) return;
+
+  const resizeObserver = new ResizeObserver(() => {
+    onHeightReady(el.offsetHeight);
+  });
+
+  resizeObserver.observe(el);
+  return () => resizeObserver.disconnect();
+}, [onHeightReady]);
+
 
   return (
     <motion.div
