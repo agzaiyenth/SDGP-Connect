@@ -54,7 +54,7 @@ export default function BlogCreatePage() {
   const [uploadProgress, setUploadProgress] = useState(0);
 
   // Hooks
-  const { checkAuthor, author: foundAuthor, isLoading: checkingAuthor } = useCheckAuthor();
+  const { checkAuthor, author: foundAuthor, isLoading: checkingAuthor, error: hookError } = useCheckAuthor();
   const { createAuthor, isLoading: creatingAuthor } = useCreateAuthor();
   const { createBlog, isLoading: creatingBlog, success, error: submitError } = useCreateBlog();
   const { uploadImage, isLoading: uploadingImage } = useUploadImageToBlob();
@@ -101,7 +101,6 @@ export default function BlogCreatePage() {
   };  // Step 1: Author Email Verification
   const handleEmailVerification = async () => {
     setErrors({}); // Clear any previous errors
-    
     // Validate email format first
     try {
       blogAuthorSchema.pick({ email: true }).parse({ email: formData.author.email });
@@ -109,7 +108,6 @@ export default function BlogCreatePage() {
       setErrors({ authorEmail: "Please enter a valid email address" });
       return;
     }
-
     try {
       const author = await checkAuthor(formData.author.email);
       if (author) {
@@ -125,7 +123,8 @@ export default function BlogCreatePage() {
           found: true,
           verified: true,
         });
-      } else {
+      } else if (!hookError) {
+        // Not found, but no error (404)
         updateAuthor({ 
           found: false, 
           verified: true,
@@ -139,9 +138,11 @@ export default function BlogCreatePage() {
           medium: "",
           website: "",
         });
+      } else if (hookError) {
+        setErrors({ authorEmail: hookError });
       }
-    } catch (error) {
-      setErrors({ authorEmail: "Failed to verify email. Please try again." });
+    } catch (e) {
+      setErrors({ authorEmail: hookError || "Failed to verify email. Please try again." });
     }
   };
 
@@ -343,6 +344,9 @@ export default function BlogCreatePage() {
                 </div>
                 {errors.authorEmail && (
                   <p className="text-sm text-red-500">{errors.authorEmail}</p>
+                )}
+                {hookError && !errors.authorEmail && (
+                  <p className="text-sm text-red-500">{hookError}</p>
                 )}
               </div>
 

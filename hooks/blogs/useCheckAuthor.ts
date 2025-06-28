@@ -23,7 +23,7 @@ export function useCheckAuthor() {
   const checkAuthor = async (email: string): Promise<BlogAuthor | null> => {
     setIsLoading(true);
     setError(null);
-    
+    setAuthor(null);
     try {
       const response = await fetch('/api/blogs/author/check', {
         method: 'POST',
@@ -32,13 +32,26 @@ export function useCheckAuthor() {
       });
 
       if (!response.ok) {
+        let errorMsg = 'Failed to check author';
+        let errorJson: any = null;
+        try {
+          errorJson = await response.json();
+        } catch {}
         if (response.status === 404) {
           setAuthor(null);
           setIsLoading(false);
           return null;
+        } else if (response.status === 400) {
+          errorMsg = errorJson?.message || 'Invalid request data';
+        } else if (response.status === 500) {
+          errorMsg = errorJson?.message || 'Internal server error';
+        } else {
+          errorMsg = errorJson?.message || errorMsg;
         }
-        const errorText = await response.text();
-        throw new Error(errorText || 'Failed to check author');
+        setError(errorMsg);
+        setIsLoading(false);
+        setAuthor(null);
+        return null;
       }
 
       const foundAuthor = await response.json();
@@ -46,8 +59,9 @@ export function useCheckAuthor() {
       setIsLoading(false);
       return foundAuthor;
     } catch (err: any) {
-      setError(err.message || 'Failed to check author');
+      setError('Network error. Please try again.');
       setIsLoading(false);
+      setAuthor(null);
       return null;
     }
   };
