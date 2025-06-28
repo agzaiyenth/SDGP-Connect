@@ -26,6 +26,7 @@ export async function GET(
             linkedin: true,
             medium: true,
             website: true,
+            createdAt: true, // Include author's createdAt field
           }
         }
       }
@@ -55,7 +56,7 @@ export async function GET(
       rejectedReason: post.rejectedReason,
       createdAt: post.createdAt,
       updatedAt: post.updatedAt,
-      author: post.author
+      author: post.author // This will now include createdAt
     };
 
     return NextResponse.json({

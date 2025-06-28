@@ -9,8 +9,8 @@ export type BlogAuthor = {
   linkedin: string | null;
   medium: string | null;
   website: string | null;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: string | Date; // Make createdAt optional and allow string for API
+  updatedAt?: string | Date;
 };
 
 export type BlogPost = {

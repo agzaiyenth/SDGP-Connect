@@ -85,7 +85,11 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
               </Avatar>
               <div className="">
                 <p className="text-xl font-semibold">{post.author?.name || 'Anonymous'}</p>
-                <p className="text-sm opacity-75">Contributor</p>
+                <p className="text-sm opacity-75"> {post.author?.createdAt ? (
+                          <>since {formatDateForDisplay(post.author.createdAt)}</>
+                        ) : (
+                          'Contributor'
+                        )}</p>
               </div>
             </div>
             <div className="mb-4 flex items-center text-sm">
@@ -139,13 +143,17 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
                 </CardHeader>
                 <CardContent>                  <div className="flex items-center space-x-4">
                     <Avatar className="size-10 ring-2 ring-primary ring-offset-2 ring-offset-background">
-                      <AvatarImage src={post.author?.avatarUrl || '/default-avatar.png'} alt={post.author?.name || 'Author'} />
+                      <AvatarImage src={post.author?.avatarUrl|| ""} alt={post.author?.name || 'Author'} />
                       <AvatarFallback>{post.author?.name?.[0] || 'A'}</AvatarFallback>
                     </Avatar>
                     <div>
                       <p className="text-sm font-medium">{post.author?.name || 'Anonymous'}</p>
                       <p className="text-sm text-muted-foreground">
-                        Contributor
+                        {post.author?.createdAt ? (
+                          <>since {formatDateForDisplay(post.author.createdAt)}</>
+                        ) : (
+                          'Contributor'
+                        )}
                       </p>
                     </div>
                   </div>                  <Separator className="my-4" />

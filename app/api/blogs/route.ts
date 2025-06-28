@@ -55,6 +55,7 @@ export async function GET(request: NextRequest) {
             linkedin: true,
             medium: true,
             website: true,
+            createdAt: true // <-- Add this line for recent posts too
           }
         }
       },
