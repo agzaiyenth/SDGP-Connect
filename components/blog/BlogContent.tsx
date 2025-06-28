@@ -12,7 +12,8 @@ import { FeaturedBlogCard } from "@/components/blog/FeaturedBlogCard";
 import { FeaturedBlogCardSkeleton } from "@/components/blog/FeaturedBlogCardSkeleton";
 import { BlogCardSkeleton } from "@/components/blog/BlogCardSkeleton";
 import Link from "next/link";
-import { useGetAllPosts } from "@/hooks/blogs/useGetAllPosts";
+import { useGetAllBlogs } from "@/hooks/blogs/useGetAllBlogs";
+import { useGetFeaturedPosts } from "@/hooks/blogs/useGetFeaturedPosts";
 import { formatCategoryForApi } from "@/lib/blog-utils";
 
 interface BlogContentProps {
@@ -34,11 +35,20 @@ interface BlogContentProps {
 export function BlogContent({ initialPosts = [], featuredPosts: initialFeaturedPosts = [] }: BlogContentProps) {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  // Use hooks to fetch real data
-  const { allPosts, featuredPosts, isLoading, error, hasMore, loadMore } = useGetAllPosts({
-    category: formatCategoryForApi(activeCategory),
+  
+  // Memoize the category to avoid infinite re-renders
+  const formattedCategory = useMemo(() => formatCategoryForApi(activeCategory), [activeCategory]);
+  
+  // Use separate hooks for featured and all posts
+  const { featuredPosts, isLoading: isFeaturedLoading, error: featuredError } = useGetFeaturedPosts({
+    limit: 2
+  });
+  
+  const { posts: allPosts, isLoading, isLoadingMore, error, hasMore, loadMore } = useGetAllBlogs({
+    category: formattedCategory,
     search: searchQuery || undefined,
-    limit: 9, // For infinite scroll
+    limit: 9,
+    excludeFeatured: !searchQuery && activeCategory === "All" // Exclude featured only on main page
   });
 
   // Filter posts based on search and category
@@ -47,24 +57,23 @@ export function BlogContent({ initialPosts = [], featuredPosts: initialFeaturedP
     
     // If we have search query, the API already filtered
     if (!searchQuery && activeCategory !== "All") {
-      posts = allPosts.filter(post => {
+      posts = allPosts.filter((post: BlogPost) => {
         const categoryFormatted = formatCategoryForApi(activeCategory);
         return post.category === categoryFormatted;
       });
     }
     
     return posts;
-  }, [allPosts, activeCategory, searchQuery]);  // Separate featured and regular posts for display
+  }, [allPosts, activeCategory, searchQuery]);// Separate featured and regular posts for display
   // When there are search/category filters, show all posts including featured ones
   // When on main page, featured posts are excluded from allPosts via API
   const regularPosts = filteredPosts;
-
-  if (error) {
+  if (error || featuredError) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">Error Loading Posts</h2>
-          <p className="text-muted-foreground mb-4">{error}</p>
+          <p className="text-muted-foreground mb-4">{error || featuredError}</p>
           <button 
             onClick={() => window.location.reload()} 
             className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
@@ -120,7 +129,7 @@ export function BlogContent({ initialPosts = [], featuredPosts: initialFeaturedP
                 {searchQuery && ` for "${searchQuery}"`}
               </p>
             </div>          )}          {/* Featured Posts Section */}
-          {!searchQuery && activeCategory === "All" && (
+          {!searchQuery && activeCategory === "All" && (isFeaturedLoading || featuredPosts.length > 0) && (
             <div className="mb-16">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
                 {/* Left Side - Title Section */}
@@ -137,16 +146,15 @@ export function BlogContent({ initialPosts = [], featuredPosts: initialFeaturedP
                     <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
                   </button>
                     </Link>
-                </div>                
-                {/* Right Side - Featured Project Cards */}
+                </div>                  {/* Right Side - Featured Project Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
-                  {isLoading ? (
+                  {isFeaturedLoading ? (
                     <>
                       <FeaturedBlogCardSkeleton />
                       <FeaturedBlogCardSkeleton />
                     </>
                   ) : (
-                    featuredPosts.slice(0, 2).map((post) => (
+                    featuredPosts.slice(0, 2).map((post: BlogPost) => (
                       <FeaturedBlogCard key={post.id} post={post} />
                     ))
                   )}
@@ -178,16 +186,15 @@ export function BlogContent({ initialPosts = [], featuredPosts: initialFeaturedP
                   </div>
                 ))}
               </div>
-              
-              {/* Load More Button for Infinite Scroll */}
+                {/* Load More Button for Infinite Scroll */}
               {hasMore && !searchQuery && activeCategory === "All" && (
                 <div className="text-center mt-12">
                   <button
                     onClick={loadMore}
-                    disabled={isLoading}
+                    disabled={isLoadingMore}
                     className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {isLoading ? (
+                    {isLoadingMore ? (
                       <>
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground mr-2"></div>
                         Loading...
