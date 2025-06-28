@@ -1,21 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, Star } from "lucide-react";
 import Image from "next/image";
+import { NumberTicker } from "@/components/ui/number-ticker";
+
+// Contest end date and time
+const CONTEST_END_DATE = new Date("2025-12-31T23:59:59");
 
 // Mock data for projects
-const mockProjects = [
-	{
+const mockProjects = [	{
 		id: 1,
 		title: "LEXi",
 		subtitle: "An AI-powered personal learning assistant.",
 		coverImage: "./LEXi/icon.png",
 		tags: ["AI", "Education"],
 		votes: 1432,
-		voted: true,
+		voted: false,
 	},
 	{
 		id: 2,
@@ -57,11 +60,36 @@ const mockProjects = [
 
 export default function VoteProjectsPage() {
 	const [projects, setProjects] = useState(mockProjects);
-	const [votedId, setVotedId] = useState(1); // Assume user voted for project 1
 	const [search, setSearch] = useState("");
+	const [timeLeft, setTimeLeft] = useState({
+		days: 0,
+		hours: 0,
+		minutes: 0,
+		seconds: 0
+	});
+
+	// Countdown timer effect
+	useEffect(() => {
+		const timer = setInterval(() => {
+			const now = new Date().getTime();
+			const distance = CONTEST_END_DATE.getTime() - now;
+
+			if (distance > 0) {
+				const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+				const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+				const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+				const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+				setTimeLeft({ days, hours, minutes, seconds });
+			} else {
+				setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+			}
+		}, 1000);
+
+		return () => clearInterval(timer);
+	}, []);
 
 	const handleVote = (id: number) => {
-		setVotedId(id);
 		setProjects((prev) =>
 			prev.map((p) => ({ ...p, voted: p.id === id }))
 		);
@@ -69,59 +97,111 @@ export default function VoteProjectsPage() {
 
 	return (
 		<div className="min-h-screen bg-background py-10 px-2">
-			<div className="max-w-3xl mx-auto bg-card rounded-2xl shadow-lg p-6 md:p-10 border border-border">
+			<div className="max-w-7xl flex justify-between items-center mx-auto rounded-2xl  p-6 md:p-4 ">				
 				{/* Header */}
-				<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-					<div>
-						<h1 className="text-3xl font-bold mb-1 flex items-center gap-2 text-foreground">
-							The best projects
+				<div className="text-center mb-8">
+					{/* Title Section */}
+					<div className="mb-6">
+						<h1 className="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+							Voting LeaderBoard
 						</h1>
-						<p className="text-muted-foreground text-sm max-w-xl">
-							Vote for your favorite project! Discover innovative solutions and
-							help your favorite team win.
+						<p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+							Vote for your favorite project! Discover innovative solutions and help your favorite team win.
 						</p>
 					</div>
-					{/* Podium */}
-					<div className="flex items-end gap-2 md:gap-4 w-full md:w-auto justify-center md:justify-end">
+
+					{/* Stats and Countdown Row */}
+					<div className="flex flex-col md:flex-row justify-center items-center gap-8 mb-8">
+						{/* Total Votes */}
+						<div className="text-center">
+							<div className="text-5xl md:text-6xl font-bold text-primary mb-2">
+								<NumberTicker value={projects.reduce((total, project) => total + project.votes, 0)} />
+							</div>
+							<div className="text-sm text-muted-foreground font-medium">
+								Total Votes Cast
+							</div>
+						</div>
+
+						{/* Divider */}
+						<div className="hidden md:block w-px h-16 bg-border"></div>						{/* Countdown */}
+						<div className="text-center">							<div className="text-2xl md:text-3xl font-bold text-destructive mb-2 font-mono">
+								{timeLeft.days > 0 && (
+									<span className="inline-block mx-1">
+										{String(timeLeft.days).padStart(2, '0')}d
+									</span>
+								)}
+								<span className="inline-block mx-1">
+									{String(timeLeft.hours).padStart(2, '0')}H
+								</span>
+								<span className="inline-block mx-1">
+									{String(timeLeft.minutes).padStart(2, '0')}M
+								</span>
+								<span className="inline-block mx-1">
+									{String(timeLeft.seconds).padStart(2, '0')}S
+								</span>
+							</div><div className="text-sm text-muted-foreground font-medium">
+								Voting ends on Dec 31, 2025
+							</div>
+						</div>
+					</div>
+
+					
+				</div>
+	{/* Podium */}
+					<div className="flex items-center justify-center gap-4 md:gap-6">
 						{[1, 0, 2].map((idx, i) => (
 							<div
 								key={projects[idx].id}
-								className={`flex flex-col items-center justify-end ${
-									i === 1 ? "scale-110 z-10" : "opacity-80"
+								className={`flex flex-col items-center justify-end transition-transform hover:scale-105 ${
+									i === 1 ? "scale-110 z-10" : "opacity-90"
 								}`}
 							>
+								{/* Project Image */}
 								<div
-									className={`rounded-full border-4 border-background shadow-lg overflow-hidden w-16 h-16 md:w-20 md:h-20 mb-2 bg-muted`}
+									className={`rounded-full border-4 border-background shadow-xl overflow-hidden mb-3 bg-muted ${
+										i === 1 ? "w-24 h-24 md:w-28 md:h-28" : "w-20 h-20 md:w-24 md:h-24"
+									}`}
 								>
 									<Image
 										src={projects[idx].coverImage}
 										alt={projects[idx].title}
-										width={80}
-										height={80}
+										width={112}
+										height={112}
 										className="object-cover w-full h-full"
 									/>
 								</div>
+								
+								{/* Position Badge */}
 								<div
-									className={`font-bold text-lg md:text-xl ${
+									className={`rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center font-bold text-lg md:text-xl mb-2 ${
 										i === 1
-											? "text-yellow-500"
+											? "bg-yellow-500 text-white shadow-lg"
 											: i === 0
-											? "text-gray-500"
-											: "text-orange-400"
+											? "bg-gray-400 text-white shadow-md"
+											: "bg-orange-400 text-white shadow-md"
 									}`}
 								>
 									{i === 1 ? "1" : i === 0 ? "2" : "3"}
 								</div>
-								<div className="text-xs text-muted-foreground text-center max-w-[80px] truncate">
-									{projects[idx].title}
+								
+								{/* Project Info */}
+								<div className="text-center">
+									<div className="font-semibold text-sm md:text-base text-foreground mb-1 max-w-[100px] truncate">
+										{projects[idx].title}
+									</div>
+									<div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
+										<Star className="w-3 h-3 text-blue-500" />
+										<span className="font-medium">
+											{projects[idx].votes.toLocaleString()}
+										</span>
+									</div>
 								</div>
 							</div>
 						))}
 					</div>
-				</div>
-
 			
 			</div>
+		
             <div className="max-w-3xl mx-auto  shadow-lg p-6 md:p-10">
 				{/* Search Bar */}
 				<div className="mb-6">
