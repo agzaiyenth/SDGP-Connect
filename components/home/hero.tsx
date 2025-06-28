@@ -52,6 +52,13 @@ function getNested(obj: any, path: string[], fallback: any = undefined) {
 export default function Hero() {
   const { t } = useLanguage();
   const homeHero = getNested(t, ["home", "hero"], {});
+  console.log("Debug - Current texts:", {
+  text1: homeHero.morphingtext1,
+  text2: homeHero.morphingtext2, 
+  text3: homeHero.morphingtext3,
+  text4: homeHero.badge
+
+});
   return (
     <section className="min-h-screen w-full flex flex-col items-center justify-center overflow-hidden perspective-1000 ">
       <ThreeScene />
@@ -87,12 +94,13 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
+          
           <MorphingText
             texts={[
-              homeHero.morphingtext1 || "Transforming Ideas Into Brands",
-              homeHero.morphingtext2 || "Crafting Digital Experiences",
-              homeHero.morphingtext3 || "Building Tomorrow's Solutions",
-              homeHero.morphingtext4 || "Creating Innovative Designs",
+              homeHero.morphing_text1 || "Transforming Ideas Into Brands",
+              homeHero.morphing_text2 || "Crafting Digital Experiences",
+              homeHero.morphing_text3 || "Building Tomorrow's Solutions",
+              homeHero.morphing_text4 || "Creating Innovative Designs",
             ]}
             className="text-xl md:text-2xl text-foreground/80  w-120 "
           />
@@ -125,7 +133,7 @@ export default function Hero() {
               rel="noopener noreferrer"
             >
               <Button className="w-full px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
-                {homeHero.campus_button || "Visit IIT"}
+                {homeHero.campus_button|| "Visit IIT"}
               </Button>
             </a>
           </div>

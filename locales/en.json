@@ -2,13 +2,13 @@
   "home": {
     "hero": {
       "badge": "Innovative • Creative • Impactful",
-      "morphingtext1": "Transforming Ideas Into Brands",
-      "morphingtext2": "Crafting Digital Experiences",
-      "morphingtext3": "Building Tomorrow's Solutions",
-      "morphingtext4": "Creating Innovative Designs",
+      "morphing_text1": "Transforming Ideas Into Brands",
+      "morphing_text2": "Crafting Digital Experiences",
+      "morphing_text3": "Building Tomorrow's Solutions",
+      "morphing_text4": "Creating Innovative Designs",
       "explore_button": "Explore projects",
       "learn_more_button": "Learn more",
-      "campus_button": "Visit Our Campus"
+      "campus_button": "Visit IIT"
     },
     "cta": {
       "heading": "More than just an academic module",
