@@ -1,14 +1,21 @@
-'use client';
+// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
+//
+// This software is the property of Psycode Lab's. and its suppliers, if any.
+// Dissemination of any information or reproduction of any material contained
+// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
+// You may not alter or remove any copyright or other notice from copies of this content.
+"use client";
 
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 import Image from "next/image";
-import Link from 'next/link';
-import { Button } from '../ui/button';
-import BadgeComponent from './bestWebBadge';
-import Carousel from './carousel';
-import MorphingText from './Morphing';
-import ThreeScene from './three-scene';
+import Link from "next/link";
+import { Button } from "../ui/button";
+import BadgeComponent from "./bestWebBadge";
+import Carousel from "./carousel";
+import MorphingText from "./Morphing";
 import { useLanguage } from "@/hooks/LanguageProvider";
+import dynamic from "next/dynamic";
+const ThreeScene = dynamic(() => import("./three-scene"), { ssr: false });
 
 const Logo: React.FC = () => (
   <motion.div
@@ -22,23 +29,36 @@ const Logo: React.FC = () => (
         src="/iconw.svg"
         alt="SDGP Logo"
         className="h-24 w-24 sm:h-32 sm:w-32 md:h-48 md:w-48 -mb-6 sm:-mb-8 md:-mb-17 -mt-4 sm:-mt-6 md:-mt-12"
+        style={{
+          WebkitTransform: "translateZ(0)",
+          imageRendering: "crisp-edges",
+          shapeRendering: "crispEdges",
+        }}
         width={88}
         height={88}
         priority
       />
     </div>
-
   </motion.div>
-)
+);
 
 function getNested(obj: any, path: string[], fallback: any = undefined) {
-  return path.reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : fallback), obj);
+  return path.reduce(
+    (acc, key) => (acc && acc[key] !== undefined ? acc[key] : fallback),
+    obj
+  );
 }
 
 export default function Hero() {
   const { t } = useLanguage();
-  // Defensive: t may be a flat object, or nested, or string map
-  const homeHero = getNested(t, ['home', 'hero'], {});
+  const homeHero = getNested(t, ["home", "hero"], {});
+  console.log("Debug - Current texts:", {
+  text1: homeHero.morphingtext1,
+  text2: homeHero.morphingtext2, 
+  text3: homeHero.morphingtext3,
+  text4: homeHero.badge
+
+});
   return (
     <section className="min-h-screen w-full flex flex-col items-center justify-center overflow-hidden perspective-1000 ">
       <ThreeScene />
@@ -74,12 +94,13 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
+          
           <MorphingText
             texts={[
-              homeHero.morphingtext1 || "Transforming Ideas Into Brands",
-              homeHero.morphingtext2 || "Crafting Digital Experiences",
-              homeHero.morphingtext3 || "Building Tomorrow's Solutions",
-              homeHero.morphingtext4 || "Creating Innovative Designs"
+              homeHero.morphing_text1 || "Transforming Ideas Into Brands",
+              homeHero.morphing_text2 || "Crafting Digital Experiences",
+              homeHero.morphing_text3 || "Building Tomorrow's Solutions",
+              homeHero.morphing_text4 || "Creating Innovative Designs",
             ]}
             className="text-xl md:text-2xl text-foreground/80  w-120 "
           />
@@ -90,11 +111,11 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          >
+        >
           <div className="flex-1">
             <Link href="/project">
               <Button className="w-full px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
-                  {homeHero.explore_button || "Explore projects"}
+                {homeHero.explore_button || "Explore projects"}
               </Button>
             </Link>
           </div>
@@ -112,12 +133,12 @@ export default function Hero() {
               rel="noopener noreferrer"
             >
               <Button className="w-full px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
-                {homeHero.campus_button || "Visit Our Campus"}
+                {homeHero.campus_button|| "Visit IIT"}
               </Button>
             </a>
           </div>
-          </motion.div>
-          
+        </motion.div>
+
         <Carousel />
       </motion.div>
     </section>

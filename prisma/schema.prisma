@@ -161,6 +161,10 @@ model User {
   acceptedCompetitions Competition[] @relation("AcceptedCompetitions")
   rejectedCompetitions Competition[] @relation("RejectedCompetitions")
 
+  approvedBlogPosts BlogPost[] @relation("BlogPostsApprovedBy")
+  rejectedBlogPosts BlogPost[] @relation("BlogPostsRejectedBy")
+
+
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
 
@@ -399,6 +403,62 @@ model Award {
   @@index([project_id])
   @@index([accepted_by_id])
   @@index([rejected_by_id])
+}
+
+// Blog model and author 
+// Blog author is not a user , it has its own model
+model BlogPost {
+  id             String             @id @default(uuid())
+  title          String
+  excerpt        String
+  content        String             @db.LongText
+  imageUrl       String?
+  publishedAt    DateTime           @default(now())
+
+  // Author relation (standalone table)
+  authorId       String
+  author         BlogAuthor         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  // Category from ProjectDomainEnum
+  category       ProjectDomainEnum
+
+  // Moderation + Status
+  featured       Boolean            @default(false)
+  approved       Boolean            @default(false)
+
+  approvedById   String?
+  approvedBy     User?              @relation("BlogPostsApprovedBy", fields: [approvedById], references: [user_id], onDelete: SetNull)
+
+  rejectedById   String?
+  rejectedBy     User?              @relation("BlogPostsRejectedBy", fields: [rejectedById], references: [user_id], onDelete: SetNull)
+
+  rejectedReason String?
+
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  @@index([authorId])
+  @@index([publishedAt])
+  @@index([approvedById])
+  @@index([rejectedById])
+}
+
+model BlogAuthor {
+  id         String      @id @default(uuid())
+  name       String
+  email      String      @unique
+  avatarUrl  String?
+  instagram  String?
+  twitter    String?
+  facebook   String?
+  linkedin   String?
+  medium     String?
+  website    String?
+
+  posts      BlogPost[]
+
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 }
 
 

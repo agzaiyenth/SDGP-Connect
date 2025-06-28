@@ -1,3 +1,9 @@
+// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
+//
+// This software is the property of Psycode Lab's. and its suppliers, if any.
+// Dissemination of any information or reproduction of any material contained
+// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
+// You may not alter or remove any copyright or other notice from copies of this content.
 import { footerItem } from "@/data/footerItems";
 import Link from "next/link";
 
@@ -60,9 +66,9 @@ export default function Footer() {
             ))}
           </div>
           <div className="mt-8 border-t border-secondary-foreground/10 pt-8 text-center flex md:gap-4 gap-2 flex-col md:flex-row justify-center items-center">
-            <p className="text-center text-sm text-gray-200 pb-4"> Copyright © {currentYear} - <a href="http://IIT.ac.lk" className="text-center text-sm text-gray-200 pb-4">Informatics Institute of Technology (PVT) LTD</a></p>
+            <p className="text-center text-sm text-gray-200 pb-4"> Copyright © {currentYear} - <strong><a href="http://IIT.ac.lk" className="text-center text-sm text-gray-200 pb-4">Informatics Institute of Technology (PVT) LTD</a></strong></p>
             <p className="text-center text-sm text-gray-200 pb-4 md:block hidden">|</p>
-            <p className="text-center text-sm text-gray-200 pb-4"> Mentored By - <a href="http://skillverse.lk" className="text-center text-sm text-gray-200 pb-4">SkillVerse (PVT) LTD</a></p>
+            <p className="text-center text-sm text-gray-200 pb-4"> Mentored By - <strong><a href="http://skillverse.lk" className="text-center text-sm text-gray-200 pb-4">SkillVerse (PVT) LTD</a></strong></p>
           </div>
         </div>
       </footer>

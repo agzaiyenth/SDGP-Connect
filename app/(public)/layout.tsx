@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   title: "SDGP",
   description: "Where Your Future is Shaped",
   icons: {
-    icon: "/iconw.png",
+    icon: "/iconw.svg",
   },
   openGraph: {
     title: "SDGP",
@@ -56,7 +56,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/iconw.png" type="image/png" sizes="128x128" />
+        <link rel="icon" href="/iconw.svg" type="image/png" sizes="128x128" />
         <link
           rel="preload"
           href="/iconw.svg"

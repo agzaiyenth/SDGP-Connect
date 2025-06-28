@@ -1,3 +1,9 @@
+/*/ Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
+//
+// This software is the property of Psycode Lab's. and its suppliers, if any.
+// Dissemination of any information or reproduction of any material contained
+// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
+// You may not alter or remove any copyright or other notice from copies of this content. */
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -201,6 +207,7 @@
   transition: width 0.3s ease;
 }
 
+
 /* 
 .hover-slide:hover::after {
   width: 100%;
@@ -308,4 +315,22 @@
 
 .mask-rect:nth-child(4) {
   --animation-delay: 3s;
+}
+
+/* Custom prose styles for blog content */
+.prose a {
+  color: inherit !important;
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+}
+
+.prose a:hover {
+  text-decoration: none;
+}
+
+.prose img {
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  max-width: 100%;
+  height: auto;
 }

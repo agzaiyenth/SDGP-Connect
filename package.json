@@ -4,12 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "seed": "node --loader ts-node/esm ./prisma/seed.ts",
-    "vercel-build": "prisma migrate deploy && prisma generate && yarn build"
+    "vercel-build": "prisma generate && yarn build"
   },
   "dependencies": {
     "@azure/storage-blob": "^12.27.0",
