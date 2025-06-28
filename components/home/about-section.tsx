@@ -65,7 +65,7 @@ function About() {
       count: 250,
       avatars: [
         {
-          src: "/home/about-logo/raspberry.jpg",
+          src: "/home/about-logo/raspberry.webp",
           alt: "Avatar 1",
         },
         {
