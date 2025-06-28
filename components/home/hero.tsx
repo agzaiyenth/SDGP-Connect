@@ -7,7 +7,8 @@ import { Button } from '../ui/button';
 import BadgeComponent from './bestWebBadge';
 import Carousel from './carousel';
 import MorphingText from './Morphing';
-import ThreeScene from './three-scene';
+import dynamic from 'next/dynamic';
+const ThreeScene = dynamic(() => import('./three-scene'), { ssr: false });
 
 const Logo: React.FC = () => (
   <motion.div
