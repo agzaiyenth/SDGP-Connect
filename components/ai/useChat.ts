@@ -6,11 +6,9 @@ export interface ChatMessage {
   sender: "user" | "ai";
 }
 
-// Comprehensive sanitization function to detect and block prompt injection attempts
 const sanitizeInput = (input: string): { isValid: boolean; sanitized: string } => {
   const lowercaseInput = input.toLowerCase();
   
-  // Comprehensive suspicious patterns for prompt injection detection
   const suspiciousPatterns = [
     // Role override attempts
     'disregard', 'ignore', 'forget', 'override', 'replace', 'bypass',
@@ -43,37 +41,28 @@ const sanitizeInput = (input: string): { isValid: boolean; sanitized: string } =
     'switch to', 'transform into', 'become a', 'turn into'
   ];
   
-  // Check for suspicious patterns
   const hasSuspiciousContent = suspiciousPatterns.some(pattern => 
     lowercaseInput.includes(pattern)
   );
   
-  // Check for prompt structure indicators (role-based format)
   const hasPromptStructure = /^\s*(system|user|assistant|human|ai)\s*[:]/i.test(input);
   
-  // Check for multiple consecutive newlines (potential prompt stuffing)
   const hasExcessiveNewlines = (input.match(/\n{3,}/g) || []).length > 0;
   
-  // Check for very long inputs that might contain hidden instructions
   const isTooLong = input.length > 2000;
   
-  // Check for excessive special characters (potential obfuscation)
   const specialCharCount = (input.match(/[^a-zA-Z0-9\s.,!?\-'"]/g) || []).length;
   const specialCharRatio = specialCharCount / input.length;
   const hasExcessiveSpecialChars = specialCharRatio > 0.3 && input.length > 20;
   
-  // Check for repeated characters (potential obfuscation)
   const hasRepeatedChars = /(.)\1{10,}/.test(input);
   
-  // Check for base64-like patterns (potential encoded instructions)
   const hasBase64Pattern = /[A-Za-z0-9+/]{20,}={0,2}/.test(input) && input.length > 50;
   
-  // Check for XML/HTML-like tags that might be instruction markers
   const hasInstructionTags = /<[^>]*instructions?[^>]*>/i.test(input) || 
                             /<[^>]*prompt[^>]*>/i.test(input) ||
                             /<[^>]*system[^>]*>/i.test(input);
   
-  // Check for unicode manipulation attempts
   const hasUnicodeManipulation = /[\u200B-\u200D\uFEFF]/.test(input);
   
   if (hasSuspiciousContent || hasPromptStructure || hasExcessiveNewlines || 
@@ -81,7 +70,7 @@ const sanitizeInput = (input: string): { isValid: boolean; sanitized: string } =
       hasBase64Pattern || hasInstructionTags || hasUnicodeManipulation) {
     return { 
       isValid: false, 
-      sanitized: "Good try, better luck next time! 😎 PsycodeLabs products don't break so easily. For genuine support, contact support@sdgp.lk" 
+      sanitized: "Good try, better luck next time! 😎 Psycode Lab's products don't break so easily. For genuine support, contact support@sdgp.lk" 
     };
   }
   
@@ -97,7 +86,7 @@ const sanitizeInput = (input: string): { isValid: boolean; sanitized: string } =
   if (sanitized.length === 0) {
     return { 
       isValid: false, 
-      sanitized: "I didn't understand that. Please ask me about SDGP-Connect features or contact support@sdgp.lk for help." 
+      sanitized: "I didn't understand that. Please ask me about SDGP.lk features or contact support@sdgp.lk for help." 
     };
   }
   
