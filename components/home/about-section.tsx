@@ -77,7 +77,7 @@ function About() {
           alt: "Avatar 3",
         },
         {
-          src: "/home/about-logo/sealanka.jpg",
+          src: "/home/about-logo/sealanka.webp",
           alt: "Avatar 4",
         },
         {
@@ -85,7 +85,7 @@ function About() {
           alt: "Avatar 4",
         },
         {
-          src: "/home/about-logo/movemate.jpg",
+          src: "/home/about-logo/movemate.webp",
           alt: "Avatar 5",
         },
       ],
