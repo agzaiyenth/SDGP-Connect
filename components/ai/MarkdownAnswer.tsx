@@ -4,15 +4,16 @@
 // Dissemination of any information or reproduction of any material contained
 // herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
 // You may not alter or remove any copyright or other notice from copies of this content.
+
 import React from 'react';
 
 interface MarkdownAnswerProps {
   content: string;
 }
 
-const parseMarkdown = (text: string): JSX.Element => {
+const parseMarkdown = (text: string): React.ReactElement => {
   const lines = text.split('\n');
-  const elements: JSX.Element[] = [];
+  const elements: React.ReactElement[] = [];
   let currentList: string[] = [];
   let listKey = 0;
 
@@ -83,7 +84,7 @@ export function MarkdownAnswer({ content }: MarkdownAnswerProps) {
   const thinkMatch = content.match(/<think>([\s\S]*?)<\/think>/);
   const think = thinkMatch ? thinkMatch[1].trim() : null;
   const mainContent = thinkMatch ? content.replace(thinkMatch[0], "") : content;
-  
+
   return (
     <div className="prose max-w-none">
       {parseMarkdown(mainContent)}
