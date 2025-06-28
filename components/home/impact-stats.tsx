@@ -1,33 +1,40 @@
+'use client'
 import { Award, Rocket, TrendingUp, Users } from "lucide-react"
+import { useLanguage } from "@/hooks/LanguageProvider";
 
-const stats = [
-  {
-    title: "1000+",
-    description: "Student Projects",
-    icon: Users,
-  },
-  {
-    title: "100+",
-    description: "Industry Partners",
-    icon: Award,
-  },
-  {
-    title: "15+",
-    description: "SDGs Addressed",
-    icon: TrendingUp,
-  },
-  {
-    title: "75+",
-    description: "Startups Invested",
-    icon: Rocket,
-  },
-]
+function getNested(obj: any, path: string[], fallback: any = undefined) {
+  return path.reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : fallback), obj);
+}
 
 export default function ImpactStats() {
+  const { t } = useLanguage();
+  const impact = getNested(t, ['home', 'impact_stats'], {});
+  const stats = [
+    {
+      title: impact.stat_1?.title || "1000+",
+      description: impact.stat_1?.description || "Student Projects",
+      icon: Users,
+    },
+    {
+      title: impact.stat_2?.title || "100+",
+      description: impact.stat_2?.description || "Industry Partners",
+      icon: Award,
+    },
+    {
+      title: impact.stat_3?.title || "15+",
+      description: impact.stat_3?.description || "SDGs Addressed",
+      icon: TrendingUp,
+    },
+    {
+      title: impact.stat_4?.title || "75+",
+      description: impact.stat_4?.description || "Startups Invested",
+      icon: Rocket,
+    },
+  ];
   return (
     <section className="py-12 px-4 bg-dark text-white">
       <div className="container mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-12">Our Impact</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">{impact.title || "Our Impact"}</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((stat, i) => (

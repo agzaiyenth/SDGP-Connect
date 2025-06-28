@@ -1,3 +1,9 @@
+// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
+//
+// This software is the property of Psycode Lab's. and its suppliers, if any.
+// Dissemination of any information or reproduction of any material contained
+// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
+// You may not alter or remove any copyright or other notice from copies of this content.
 "use client";
 import { useState, FormEvent } from "react";
 import { Bot, Paperclip, Mic, CornerDownLeft } from "lucide-react";
@@ -54,7 +60,7 @@ export function ExpandableChatAI() {
                 src={
                   message.sender === "user"
                     ? "/user.png"
-                    : "/iconw.png"
+                    : "/iconw.svg"
                 }
                 fallback={message.sender === "user" ? "US" : "AI"}
                 aria-label={message.sender === "user" ? "User avatar" : "AI avatar"}
@@ -70,7 +76,7 @@ export function ExpandableChatAI() {
           ))}
           {isLoading && (
             <ChatBubble variant="received">
-              <ChatBubbleAvatar className="h-8 w-8 shrink-0" src="/iconw.png" fallback="AI" aria-label="AI avatar" />
+              <ChatBubbleAvatar className="h-8 w-8 shrink-0" src="/iconw.svg" fallback="AI" aria-label="AI avatar" />
               <ChatBubbleMessage isLoading />
             </ChatBubble>
           )}
