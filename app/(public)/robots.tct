@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /admin
+
+# Sitemap location
+Sitemap: https://sdgp.lk/sitemap.xml
