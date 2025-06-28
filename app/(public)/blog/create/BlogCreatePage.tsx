@@ -148,13 +148,11 @@ export default function BlogCreatePage() {
 
   const handleAuthorRegister = async () => {
     setErrors({});
-    
     // Validate author data
-    try {
-      blogAuthorSchema.parse(formData.author);
-    } catch (error: any) {
+    const result = blogAuthorSchema.safeParse(formData.author);
+    if (!result.success) {
       const fieldErrors: Record<string, string> = {};
-      error.errors?.forEach((err: any) => {
+      result.error.errors?.forEach((err: any) => {
         if (err.path) {
           fieldErrors[err.path[0]] = err.message;
         }
@@ -162,22 +160,32 @@ export default function BlogCreatePage() {
       setErrors(fieldErrors);
       return;
     }
-
     if (!formData.author.name) {
       setErrors({ authorName: "Name is required" });
       return;
     }
-
-    setStep(1);
+    // Create author and update state with id
+    try {
+      const created = await createAuthor(formData.author);
+      if (created && created.id) {
+        updateAuthor({ found: true, verified: true, ...created });
+        setStep(1);
+      } else {
+        setErrors({ submit: "Failed to create author. Please try again." });
+      }
+    } catch (e: any) {
+      setErrors({ submit: e?.message || "Failed to create author. Please try again." });
+    }
   };
 
-  // Check if all required author fields are filled
+  // Check if all required author fields are filled and valid
   const isAuthorFormComplete = () => {
     if (formData.author.found) {
       return true; // If author exists, we're good to go
     }
-    // If new author, check required fields
-    return formData.author.name.trim() !== "";
+    // If new author, check required fields and validation
+    const result = blogAuthorSchema.safeParse(formData.author);
+    return result.success;
   };
 
   // Step 2: Metadata
@@ -371,8 +379,8 @@ export default function BlogCreatePage() {
                       />
                     )}
                     <div>
-                      <div className="font-semibold">{foundAuthor.name}</div>
-                      <div className="text-sm text-muted-foreground">{foundAuthor.email}</div>
+                      <div className="font-semibold text-black">{foundAuthor.name}</div>
+                      <div className="text-sm text-gray-900">{foundAuthor.email}</div>
                     </div>
                   </div>
                 </div>
@@ -407,6 +415,9 @@ export default function BlogCreatePage() {
                   {errors.authorName && (
                     <p className="text-sm text-red-500">{errors.authorName}</p>
                   )}
+                  {errors.name && (
+                    <p className="text-sm text-red-500">{errors.name}</p>
+                  )}
                   
                   <Label htmlFor="author-avatar">Avatar Image (optional)</Label>
                   <div className="flex items-center space-x-2">
@@ -431,27 +442,53 @@ export default function BlogCreatePage() {
                   <Label htmlFor="author-instagram">Instagram (optional)</Label>
                   <Input
                     id="author-instagram"
-                    placeholder="@yourhandle or URL"
+                    placeholder="Instagram URL or @handle"
                     value={formData.author.instagram}
                     onChange={(e) => updateAuthor({ instagram: e.target.value })}
                   />
-                  
+                  {errors.instagram && (
+                    <p className="text-sm text-red-500">{errors.instagram}</p>
+                  )}
                   <Label htmlFor="author-twitter">Twitter (optional)</Label>
                   <Input
                     id="author-twitter"
-                    placeholder="@yourhandle or URL"
+                    placeholder="Twitter URL or @handle"
                     value={formData.author.twitter}
                     onChange={(e) => updateAuthor({ twitter: e.target.value })}
                   />
-                  
+                  {errors.twitter && (
+                    <p className="text-sm text-red-500">{errors.twitter}</p>
+                  )}
+                  <Label htmlFor="author-facebook">Facebook (optional)</Label>
+                  <Input
+                    id="author-facebook"
+                    placeholder="Facebook URL or @handle"
+                    value={formData.author.facebook}
+                    onChange={(e) => updateAuthor({ facebook: e.target.value })}
+                  />
+                  {errors.facebook && (
+                    <p className="text-sm text-red-500">{errors.facebook}</p>
+                  )}
                   <Label htmlFor="author-linkedin">LinkedIn (optional)</Label>
                   <Input
                     id="author-linkedin"
-                    placeholder="LinkedIn URL"
+                    placeholder="LinkedIn URL or @handle"
                     value={formData.author.linkedin}
                     onChange={(e) => updateAuthor({ linkedin: e.target.value })}
                   />
-                  
+                  {errors.linkedin && (
+                    <p className="text-sm text-red-500">{errors.linkedin}</p>
+                  )}
+                  <Label htmlFor="author-medium">Medium (optional)</Label>
+                  <Input
+                    id="author-medium"
+                    placeholder="Medium URL or @handle"
+                    value={formData.author.medium}
+                    onChange={(e) => updateAuthor({ medium: e.target.value })}
+                  />
+                  {errors.medium && (
+                    <p className="text-sm text-red-500">{errors.medium}</p>
+                  )}
                   <Label htmlFor="author-website">Website (optional)</Label>
                   <Input
                     id="author-website"
@@ -459,6 +496,9 @@ export default function BlogCreatePage() {
                     value={formData.author.website}
                     onChange={(e) => updateAuthor({ website: e.target.value })}
                   />
+                  {errors.website && (
+                    <p className="text-sm text-red-500">{errors.website}</p>
+                  )}
                 </div>
               )}
             </div>
@@ -667,14 +707,16 @@ export default function BlogCreatePage() {
             </div>
           )}          {/* Navigation */}
           <div className="flex justify-between pt-6">
-            <Button
-              variant="outline"
-              onClick={() => setStep((prev) => Math.max(0, prev - 1))}
-              disabled={step === 0}
-              className="flex items-center"
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" /> Back
-            </Button>
+            {/* Remove Back button on first step */}
+            {step > 0 && (
+              <Button
+                variant="outline"
+                onClick={() => setStep((prev) => Math.max(0, prev - 1))}
+                className="flex items-center"
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" /> Back
+              </Button>
+            )}
             
             {/* Step 0: Only show Next button if email is verified */}
             {step === 0 && formData.author.verified && (
@@ -689,7 +731,11 @@ export default function BlogCreatePage() {
                 className="flex items-center"
                 disabled={!isAuthorFormComplete() || creatingAuthor || uploadingImage}
               >
-                {creatingAuthor ? "Creating..." : "Next"} <ArrowRight className="ml-2 h-4 w-4" />
+                {creatingAuthor ? (
+                  <>
+                    <span className="animate-spin mr-2">⏳</span> Creating...
+                  </>
+                ) : "Next"} <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             )}
             

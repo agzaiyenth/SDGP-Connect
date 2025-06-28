@@ -1,17 +1,47 @@
 import { z } from "zod";
 import { ProjectDomainEnum } from "@prisma/client";
 
+// Helper to normalize social URLs
+function normalizeUrl(url: string, type: string): string {
+  if (!url) return "";
+  let trimmed = url.trim();
+  // Remove leading @ for handles
+  trimmed = trimmed.replace(/^@/, "");
+  // Add protocol if missing
+  if (!/^https?:\/\//i.test(trimmed)) {
+    if (type === "instagram") return `https://instagram.com/${trimmed}`;
+    if (type === "twitter") return `https://twitter.com/${trimmed}`;
+    if (type === "facebook") return `https://facebook.com/${trimmed}`;
+    if (type === "linkedin") return `https://linkedin.com/in/${trimmed}`;
+    if (type === "medium") return `https://medium.com/@${trimmed}`;
+    if (type === "website") return `https://${trimmed}`;
+  }
+  return trimmed;
+}
+
 // Blog Author Schema
 export const blogAuthorSchema = z.object({
   name: z.string().min(1, "Name is required").max(100, "Name cannot exceed 100 characters"),
   email: z.string().email("Invalid email format"),
   avatarUrl: z.string().url("Invalid avatar URL").optional().or(z.literal("")),
-  instagram: z.string().optional().or(z.literal("")),
-  twitter: z.string().optional().or(z.literal("")),
-  facebook: z.string().optional().or(z.literal("")),
-  linkedin: z.string().optional().or(z.literal("")),
-  medium: z.string().optional().or(z.literal("")),
-  website: z.string().url("Invalid website URL").optional().or(z.literal("")),
+  instagram: z.string().max(100, "Instagram URL too long").optional().or(z.literal(""))
+    .transform((val) => normalizeUrl(val ?? "", "instagram"))
+    .refine((val) => !val || /^https?:\/\/(www\.)?instagram\.com\//.test(val), { message: "Must be a valid Instagram URL" }),
+  twitter: z.string().max(100, "Twitter URL too long").optional().or(z.literal(""))
+    .transform((val) => normalizeUrl(val ?? "", "twitter"))
+    .refine((val) => !val || /^https?:\/\/(www\.)?twitter\.com\//.test(val), { message: "Must be a valid Twitter URL" }),
+  facebook: z.string().max(100, "Facebook URL too long").optional().or(z.literal(""))
+    .transform((val) => normalizeUrl(val ?? "", "facebook"))
+    .refine((val) => !val || /^https?:\/\/(www\.)?facebook\.com\//.test(val), { message: "Must be a valid Facebook URL" }),
+  linkedin: z.string().max(100, "LinkedIn URL too long").optional().or(z.literal(""))
+    .transform((val) => normalizeUrl(val ?? "", "linkedin"))
+    .refine((val) => !val || /^https?:\/\/(www\.)?linkedin\.com\//.test(val), { message: "Must be a valid LinkedIn URL" }),
+  medium: z.string().max(100, "Medium URL too long").optional().or(z.literal(""))
+    .transform((val) => normalizeUrl(val ?? "", "medium"))
+    .refine((val) => !val || /^https?:\/\/(www\.)?medium\.com\//.test(val), { message: "Must be a valid Medium URL" }),
+  website: z.string().max(100, "Website URL too long").optional().or(z.literal(""))
+    .transform((val) => normalizeUrl(val ?? "", "website"))
+    .refine((val) => !val || /^https?:\/\//.test(val), { message: "Must be a valid website URL" }),
 });
 
 // Blog Post Schema
