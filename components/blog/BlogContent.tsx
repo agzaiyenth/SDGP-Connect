@@ -48,7 +48,7 @@ export function BlogContent({ initialPosts = [], featuredPosts: initialFeaturedP
     category: formattedCategory,
     search: searchQuery || undefined,
     limit: 9,
-    excludeFeatured: !searchQuery && activeCategory === "All" // Exclude featured only on main page
+  
   });
 
   // Filter posts based on search and category
@@ -129,7 +129,7 @@ export function BlogContent({ initialPosts = [], featuredPosts: initialFeaturedP
                 {searchQuery && ` for "${searchQuery}"`}
               </p>
             </div>          )}          {/* Featured Posts Section */}
-          {!searchQuery && activeCategory === "All" && (isFeaturedLoading || featuredPosts.length > 0) && (
+          {!searchQuery && activeCategory === "All" && (
             <div className="mb-16">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
                 {/* Left Side - Title Section */}
@@ -146,7 +146,8 @@ export function BlogContent({ initialPosts = [], featuredPosts: initialFeaturedP
                     <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
                   </button>
                     </Link>
-                </div>                  {/* Right Side - Featured Project Cards */}
+                </div>
+                {/* Right Side - Featured Project Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
                   {isFeaturedLoading ? (
                     <>
@@ -155,7 +156,9 @@ export function BlogContent({ initialPosts = [], featuredPosts: initialFeaturedP
                     </>
                   ) : (
                     featuredPosts.slice(0, 2).map((post: BlogPost) => (
-                      <FeaturedBlogCard key={post.id} post={post} />
+                      <Link key={post.id} href={`/blog/${post.id}`} className="block h-full">
+                        <FeaturedBlogCard post={post} />
+                      </Link>
                     ))
                   )}
                 </div>
