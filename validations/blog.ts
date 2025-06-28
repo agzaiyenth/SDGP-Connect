@@ -50,9 +50,6 @@ export const blogPostSchema = z.object({
   excerpt: z.string().min(1, "Excerpt is required").max(500, "Excerpt cannot exceed 500 characters"),
   content: z.string().min(1, "Content is required"),
   imageUrl: z.string().url("Invalid image URL").optional().or(z.literal("")),
-  publishedAt: z.string().refine((date) => !isNaN(Date.parse(date)), {
-    message: "Invalid date format",
-  }),
   category: z.nativeEnum(ProjectDomainEnum, {
     errorMap: () => ({ message: "Please select a valid category" }),
   }),

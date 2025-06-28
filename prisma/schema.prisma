@@ -413,7 +413,7 @@ model BlogPost {
   excerpt        String
   content        String             @db.LongText
   imageUrl       String?
-  publishedAt    DateTime
+  publishedAt    DateTime           @default(now())
 
   // Author relation (standalone table)
   authorId       String

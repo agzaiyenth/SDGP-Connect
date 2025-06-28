@@ -22,7 +22,7 @@ CREATE TABLE `BlogPost` (
   `excerpt`      VARCHAR(512) NOT NULL,
   `content`      LONGTEXT      NOT NULL,
   `imageUrl`     VARCHAR(191),
-  `publishedAt`  DATETIME      NOT NULL,
+  `publishedAt`  DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `authorId`     VARCHAR(191)  NOT NULL,
   `category`     ENUM(
     'AI','ML','AR_VR','BLOCKCHAIN','IOT','HEALTHTECH','FINTECH','EDTECH',

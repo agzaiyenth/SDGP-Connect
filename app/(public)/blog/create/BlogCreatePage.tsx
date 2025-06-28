@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { ArrowLeft, ArrowRight, User, FileText, Edit, CheckCircle, Upload, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, User, FileText, Edit, CheckCircle, Upload, X, Newspaper, User2, Rocket } from "lucide-react";
 import React from "react";
 import { ProjectDomainEnum } from "@prisma/client";
 import { useCheckAuthor } from "@/hooks/blogs/useCheckAuthor";
@@ -17,14 +17,14 @@ import { BlogFormData } from "@/types/blog";
 import { blogAuthorSchema, blogPostSchema } from "@/validations/blog";
 import MarkdownPreview from "@/components/blog/MarkdownPreview";
 import MarkdownEditor from "@/components/blog/MarkdownEditor";
+import { useRouter } from "next/navigation";
 
 // Convert ProjectDomainEnum to array for dropdown
 const ProjectDomainEnumArray = Object.values(ProjectDomainEnum);
 
-const today = new Date().toISOString().slice(0, 10);
-
 export default function BlogCreatePage() {
-  const [step, setStep] = useState(0);  const [formData, setFormData] = useState<BlogFormData>({
+  const [step, setStep] = useState(0);
+  const router = useRouter();const [formData, setFormData] = useState<BlogFormData>({
     author: {
       email: "",
       name: "",
@@ -37,13 +37,11 @@ export default function BlogCreatePage() {
       website: "",
       found: false,
       verified: false, // Add verification status
-    },
-    meta: {
+    },    meta: {
       title: "",
       excerpt: "",
       category: "",
       imageUrl: "",
-      publishedAt: today,
     },
     content: "",
     featured: false,
@@ -53,12 +51,22 @@ export default function BlogCreatePage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
-
   // Hooks
   const { checkAuthor, author: foundAuthor, isLoading: checkingAuthor, error: hookError } = useCheckAuthor();
   const { createAuthor, isLoading: creatingAuthor } = useCreateAuthor();
   const { createBlog, isLoading: creatingBlog, success, error: submitError } = useCreateBlog();
   const { uploadImage, isLoading: uploadingImage } = useUploadImageToBlob();
+
+  // Auto redirect to blogs page after successful submission
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        router.push('/blog');
+      }, 3000); // Redirect after 3 seconds
+
+      return () => clearTimeout(timer);
+    }
+  }, [success, router]);
   // Helper functions
   const updateAuthor = (updates: Partial<BlogFormData['author']>) => {
     setFormData(prev => ({
@@ -73,13 +81,8 @@ export default function BlogCreatePage() {
       meta: { ...prev.meta, ...updates }
     }));
   };
-
   const updateContent = (content: string) => {
     setFormData(prev => ({ ...prev, content }));
-  };
-
-  const updateFeatured = (featured: boolean) => {
-    setFormData(prev => ({ ...prev, featured }));
   };
 
   // Image upload handlers
@@ -246,15 +249,13 @@ export default function BlogCreatePage() {
           linkedin: formData.author.linkedin || "",
           medium: formData.author.medium || "",
           website: formData.author.website || "",
-        },
-        post: {
+        },        post: {
           title: formData.meta.title,
           excerpt: formData.meta.excerpt,
           content: formData.content,
           imageUrl: formData.meta.imageUrl || "",
-          publishedAt: formData.meta.publishedAt,
           category: formData.meta.category as any, // Type cast for enum
-          featured: formData.featured,
+          featured: false, // Always false, admin will feature later
         },
       };
 
@@ -283,9 +284,67 @@ export default function BlogCreatePage() {
               </div>
             ) : (
               <>
-                {step === 0 && <User className="h-32 w-32 text-primary" />}
-                {step === 1 && <FileText className="h-32 w-32 text-primary" />}
-                {step === 3 && <CheckCircle className="h-32 w-32 text-primary" />}
+                {step === 0 && ((
+        <div className="flex h-full items-center justify-center">
+          <div className="relative">
+            <div className="absolute -right-12 -top-12 h-28 w-28 rounded-full bg-primary/15"></div>
+            <div className="absolute -bottom-4 -left-4 h-20 w-20 rounded-full bg-primary/10"></div>
+            <div className="relative grid h-64 w-64 grid-cols-2 gap-4 rounded-xl bg-primary/5 p-6">
+              {[1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="flex flex-col items-center justify-center rounded-lg bg-background p-4 shadow-sm"
+                >
+                  <div className="h-12 w-12 rounded-full bg-muted flex justify-center items-center"><User2 className="text-white/30" /></div>
+                  <div className="mt-2 h-2 w-12 rounded bg-muted"></div>
+                  <div className="mt-1 h-2 w-8 rounded bg-muted"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+                {step === 1 && (
+        <div className="flex h-full items-center justify-center">
+          <div className="relative">
+            <div className="absolute -left-10 top-10 h-24 w-24 rounded-full bg-primary/10"></div>
+            <div className="absolute -right-6 bottom-6 h-16 w-16 rounded-full bg-primary/20"></div>
+            <div className="relative flex h-64 w-64 flex-col rounded-xl bg-primary/5 p-6">
+              <Newspaper className="h-10 w-10 text-primary" />
+              <div className="mt-4 h-4 w-2/3 rounded bg-primary/20"></div>
+              <div className="mt-6 flex-1 rounded-lg bg-background p-4">
+                <div className="space-y-2">
+                  <div className="h-2 w-full rounded bg-muted"></div>
+                  <div className="h-2 w-5/6 rounded bg-muted"></div>
+                  <div className="h-2 w-4/6 rounded bg-muted"></div>
+                </div>
+                <div className="mt-4 grid grid-cols-2 gap-2">
+                  <div className="h-8 rounded bg-muted"></div>
+                  <div className="h-8 rounded bg-muted"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+                {step === 3 && (
+        <div className="flex h-full items-center justify-center">
+          <div className="relative">
+            <div className="absolute -left-16 -top-16 h-32 w-32 animate-pulse rounded-full bg-primary/10"></div>
+            <div className="absolute -bottom-8 -right-8 h-24 w-24 animate-pulse rounded-full bg-primary/20"></div>
+            <div className="relative flex h-64 w-64 flex-col items-center justify-center rounded-xl bg-primary/5 p-6">
+              <div className="rounded-full bg-primary/10 p-4">
+                <Rocket className="h-12 w-12 text-primary" />
+              </div>
+              <div className="mt-6 text-center">
+                <div className="mx-auto h-5 w-32 rounded bg-primary/20"></div>
+                <div className="mx-auto mt-2 h-4 w-48 rounded bg-primary/15"></div>
+                <div className="mx-auto mt-4 h-10 w-32 rounded-full bg-primary"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
               </>
             )}
           </div>
@@ -581,17 +640,9 @@ export default function BlogCreatePage() {
                     />
                     {uploadingImage && <p className="text-sm">Uploading... {uploadProgress}%</p>}
                   </div>
-                  {formData.meta.imageUrl && (
-                    <img src={formData.meta.imageUrl} alt="Feature image preview" className="h-32 rounded" />
+                  {formData.meta.imageUrl && (                    <img src={formData.meta.imageUrl} alt="Feature image preview" className="h-32 rounded" />
                   )}
                 </div>
-                  <Label htmlFor="blog-date">Publish Date</Label>
-                <Input
-                  id="blog-date"
-                  type="date"
-                  value={formData.meta.publishedAt}
-                  onChange={(e) => updateMeta({ publishedAt: e.target.value })}
-                />
               </div>
             </div>
           )}{step === 2 && (
@@ -613,11 +664,14 @@ export default function BlogCreatePage() {
             <div className="space-y-6">
               <h1 className="text-2xl font-bold">Review & Submit</h1>
               <p className="text-muted-foreground">Review your blog post before submitting</p>
-              
-              {success && (
+                {success && (
                 <div className="p-4 border border-green-200 bg-green-50 rounded-md">
-                  <p className="text-green-800 font-medium">Blog post submitted successfully!</p>
-                  <p className="text-green-600 text-sm">Your blog post has been submitted for review and will be published after approval.</p>
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    <p className="text-green-800 font-medium">Blog post submitted successfully!</p>
+                  </div>
+                  <p className="text-green-600 text-sm mt-2">Your blog post has been submitted for review and will be published after approval.</p>
+                  <p className="text-green-600 text-sm mt-1">Redirecting to blogs page in 3 seconds...</p>
                 </div>
               )}
               
@@ -672,30 +726,12 @@ export default function BlogCreatePage() {
                   <div className="font-semibold">Feature Image:</div>
                   {formData.meta.imageUrl && (
                     <img src={formData.meta.imageUrl} alt="feature" className="h-24 rounded mt-2" />
-                  )}
-                </div>
-                
-                <div>
-                  <div className="font-semibold">Publish Date:</div>
-                  <div>{new Date(formData.meta.publishedAt).toLocaleDateString()}</div>
-                </div>
+                  )}                </div>
                   <div>
                   <div className="font-semibold">Content:</div>
                   <div className="border rounded p-2 bg-background mt-2 max-h-40 overflow-y-auto">
                     <MarkdownPreview content={formData.content} />
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-2 mt-4">
-                  <input
-                    type="checkbox"
-                    id="featured"
-                    title="Mark as featured"
-                    checked={formData.featured}
-                    onChange={() => updateFeatured(!formData.featured)}
-                  />
-                  <Label htmlFor="featured">Mark as featured (admin will review)</Label>
-                </div>
+                  </div></div>
                 
                 <Button 
                   onClick={handleSubmit} 
@@ -708,8 +744,8 @@ export default function BlogCreatePage() {
             </div>
           )}          {/* Navigation */}
           <div className="flex justify-between pt-6">
-            {/* Remove Back button on first step */}
-            {step > 0 && (
+            {/* Remove Back button on first step or when successful */}
+            {step > 0 && !success && (
               <Button
                 variant="outline"
                 onClick={() => setStep((prev) => Math.max(0, prev - 1))}

@@ -28,16 +28,14 @@ export async function POST(request: Request) {
             website: validatedData.author.website || null,
           },
         });
-      }
-
-      // Create the blog post
+      }      // Create the blog post
       const blogPost = await tx.blogPost.create({
         data: {
           title: validatedData.post.title,
           excerpt: validatedData.post.excerpt,
           content: validatedData.post.content,
           imageUrl: validatedData.post.imageUrl || null,
-          publishedAt: new Date(validatedData.post.publishedAt),
+          // publishedAt will use default value from Prisma schema (now())
           category: validatedData.post.category,
           featured: validatedData.post.featured,
           authorId: author.id,

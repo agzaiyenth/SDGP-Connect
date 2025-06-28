@@ -45,13 +45,11 @@ export type BlogFormData = {
     website?: string;
     found: boolean;
     verified: boolean; // Add verification status
-  };
-  meta: {
+  };  meta: {
     title: string;
     excerpt: string;
     category: string;
     imageUrl?: string;
-    publishedAt: string;
   };
   content: string;
   featured: boolean;
