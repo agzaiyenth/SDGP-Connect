@@ -101,7 +101,7 @@ const CookieBanner = () => {
             
             <button
               onClick={handleAccept}
-              className="bg-blue-600 hover:bg-blue-500 text-white text-xs md:text-sm font-medium px-3 md:px-4 py-1 rounded-md transition-all duration-200 transform hover:scale-105 active:scale-95"
+              className="bg-blue-600 bg-secondary text-secondary-foreground hover:bg-secondary/80 text-white text-xs md:text-sm font-medium px-3 md:px-4 py-1 rounded-md transition-all duration-200 transform hover:scale-105 active:scale-95"
             >
               Accept
             </button>
