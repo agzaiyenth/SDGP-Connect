@@ -8,6 +8,7 @@ import { BlogCard } from "@/components/blog/BlogCard";
 import { BlogFilter } from "@/components/blog/BlogFilter";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { FeaturedBlogCard } from "@/components/blog/FeaturedBlogCard";
 
 interface BlogContentProps {
   initialPosts: BlogPost[];
@@ -52,10 +53,10 @@ export function BlogContent({ initialPosts, featuredPosts }: BlogContentProps) {
   return (
     <>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary/10 via-background to-secondary/10 py-20">
+      <section className=" py-20">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-primary">
               Our Blog
             </h1>
             <p className="text-xl text-muted-foreground mb-8">
@@ -93,17 +94,28 @@ export function BlogContent({ initialPosts, featuredPosts }: BlogContentProps) {
                 Found {searchFilteredPosts.length} article{searchFilteredPosts.length !== 1 ? 's' : ''} 
                 {searchQuery && ` for "${searchQuery}"`}
               </p>
-            </div>
-          )}
-
-          {/* Featured Posts Section */}
+            </div>          )}          {/* Featured Posts Section */}
           {!searchQuery && activeCategory === "All" && featuredPosts.length > 0 && (
             <div className="mb-16">
-              <h2 className="text-3xl font-bold mb-8 text-center">Featured Articles</h2>
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {featuredPosts.map((post) => (
-                  <BlogCard key={post.id} post={post} featured />
-                ))}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+                {/* Left Side - Title Section */}
+                <div className="flex flex-col justify-center lg:pr-12 mb-8 lg:mb-0">
+                  <h2 className="text-5xl font-extrabold mb-6 leading-tight text-white text-left">
+                    AI Frontiers
+                  </h2>
+                  <p className="text-lg text-muted-foreground mb-8 text-left">
+                    Discover breakthroughs in AI and TensorFlow applications.
+                  </p>
+                  <button className="inline-flex items-center px-6 py-3 bg-white text-black rounded-lg hover:bg-gray-100 transition-colors font-semibold text-base shadow text-left w-fit">
+                    Explore All Articles
+                    <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                  </button>
+                </div>                {/* Right Side - Featured Project Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+                  {featuredPosts.slice(0, 2).map((post) => (
+                    <FeaturedBlogCard key={post.id} post={post} />
+                  ))}
+                </div>
               </div>
             </div>
           )}
