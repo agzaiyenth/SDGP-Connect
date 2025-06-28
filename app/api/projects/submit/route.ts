@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
 import { prisma } from '@/prisma/prismaClient';
 import { projectSubmissionSchema } from '@/validations/submit_project';
 import { AssociationType, ProjectApprovalStatus } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
+import { NextResponse } from 'next/server';
 
 // Handle OPTIONS requests for CORS preflight
 export async function OPTIONS() {
@@ -25,6 +25,17 @@ export async function POST(request: Request) {
 
     // Validate the submission data
     const validatedData = projectSubmissionSchema.parse(body);
+
+    // Validate website field to prevent unsafe schemes
+    const website = validatedData?.metadata?.website?.trim();
+
+if (
+  website &&
+  !/^https?:\/\/(localhost|127\.0\.0\.1|[a-zA-Z0-9.-]+\.[a-z]{2,})(:\d+)?(\/\S*)?$/.test(website)
+) {
+  return NextResponse.json({ error: "Invalid website URL" }, { status: 400 });
+}
+
 
     // Start a transaction to ensure all database operations succeed or fail together
     const result = await prisma.$transaction(async (tx) => {
