@@ -15,7 +15,7 @@ import {
   sdgGoals,
   techStackOptions,
   yearOptions
-} from "@/types/project/mapping";
+} from "@/lib/types/mapping";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
 

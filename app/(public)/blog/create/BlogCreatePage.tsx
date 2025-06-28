@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, ArrowRight, User, FileText, Edit, CheckCircle, Upload, X, Newspaper, User2, Rocket } from "lucide-react";
 import React from "react";
-import { ProjectDomainEnum } from "@prisma/client";
+import { ProjectDomainEnum } from "@/types/prisma-types";
 import { useCheckAuthor } from "@/hooks/blogs/useCheckAuthor";
 import { useCreateAuthor } from "@/hooks/blogs/useCreateAuthor";
 import { useCreateBlog } from "@/hooks/blogs/useCreateBlog";

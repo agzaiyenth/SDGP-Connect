@@ -138,7 +138,7 @@ const LoginForm: React.FC = () => {
 
     try {
       if (process.env.NODE_ENV === 'development') {
-        console.log("Attempting to sign in with:", { name: username, password }); // LOG
+      
       }
       // Attempt to sign in using NextAuth credentials provider
       const result = await signIn("credentials", {

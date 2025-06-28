@@ -5,7 +5,7 @@ import { ExternalLink, Linkedin } from 'lucide-react'
 import Link from 'next/link'
 import { IProjectSocialLink, IProjectTeam } from '@/types/project/type'
 import Image from 'next/image'
-import { socialPlatformMap } from '@/types/project/mapping'
+import { socialPlatformMap } from '@/lib/types/mapping'
 
 interface Props {
     teamEmail?: string

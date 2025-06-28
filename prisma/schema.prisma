@@ -183,6 +183,7 @@ model ProjectMetadata {
   logo               String?
   featured           Boolean         @default(false)
   awards             Award[]        @relation("ProjectAwards")
+    votes            ProjectVote[]
 
 
 
@@ -461,4 +462,16 @@ model BlogAuthor {
   updatedAt  DateTime    @updatedAt
 }
 
+model ProjectVote {
+  id               String   @id @default(uuid())
+  voterIp          String   @unique                    
+  projectId        String
+
+  // Vote change tracking
+  voteChangeCount  Int      @default(0)
+  createdAt        DateTime @default(now())             // first time they voted
+  updatedAt        DateTime @updatedAt                  // last time they changed vote
+
+  project          ProjectMetadata @relation(fields: [projectId], references: [project_id], onDelete: Cascade)
+}
 
