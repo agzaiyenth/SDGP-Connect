@@ -9,6 +9,7 @@ import Image from "next/image";
 import { NumberTicker } from "@/components/ui/number-ticker";
 import { useVoteProjects, useVoteStats, useCastVote, useVoteStatus } from "@/hooks/project";
 import { useDebounce } from "@/hooks/use-debounce";
+import Preloader from "./preloader";
 
 // Contest end date and time
 const CONTEST_END_DATE = new Date("2025-12-31T23:59:59");
@@ -21,6 +22,7 @@ export default function VoteProjectsPage() {
 		minutes: 0,
 		seconds: 0
 	});
+	const [isInitialDataLoaded, setIsInitialDataLoaded] = useState(false);
 
 	// Debounce search input
 	const debouncedSearch = useDebounce(search, 500);
@@ -40,6 +42,14 @@ export default function VoteProjectsPage() {
 		title: debouncedSearch || undefined,
 		limit: 10
 	});
+
+	// Check if initial data is loaded
+	useEffect(() => {
+		// Only check for initial load when there's no search (initial page load)
+		if (!debouncedSearch && !statsLoading && !projectsLoading && stats && projects.length > 0) {
+			setIsInitialDataLoaded(true);
+		}
+	}, [statsLoading, projectsLoading, stats, projects, debouncedSearch]);
 
 	// Countdown timer effect
 	useEffect(() => {
@@ -99,8 +109,13 @@ export default function VoteProjectsPage() {
 			if (!timeout) {
 				timeout = setTimeout(later, wait);
 			}
-		};
+		};	}
+	
+	// Show preloader during initial data loading
+	if (!isInitialDataLoaded) {
+		return <Preloader onComplete={() => setIsInitialDataLoaded(true)} />;
 	}
+
 	return (
 		<div className="min-h-screen bg-background py-10 px-2">
 			<div className="max-w-7xl flex justify-between items-center mx-auto rounded-2xl p-6 md:p-4">				
@@ -117,15 +132,10 @@ export default function VoteProjectsPage() {
 					</div>
 
 					{/* Stats and Countdown Row */}
-					<div className="flex flex-col md:flex-row justify-center items-center gap-8 mb-8">
-						{/* Total Votes */}
+					<div className="flex flex-col md:flex-row justify-center items-center gap-8 mb-8">						{/* Total Votes */}
 						<div className="text-center">
 							<div className="text-5xl md:text-6xl font-bold text-primary mb-2">
-								{statsLoading ? (
-									<Loader2 className="w-12 h-12 animate-spin mx-auto" />
-								) : (
-									<NumberTicker value={stats?.totalVotes || 0} />
-								)}
+								<NumberTicker value={stats?.totalVotes || 0} />
 							</div>
 							<div className="text-sm text-muted-foreground font-medium">
 								Total Votes Cast
@@ -237,13 +247,11 @@ export default function VoteProjectsPage() {
 							Try Again
 						</Button>
 					</div>
-				)}
-
-				{/* Loading State */}
-				{projectsLoading && projects.length === 0 && (
+				)}				{/* Loading State for subsequent searches */}
+				{projectsLoading && projects.length === 0 && debouncedSearch && (
 					<div className="text-center py-8">
 						<Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" />
-						<p className="text-muted-foreground">Loading projects...</p>
+						<p className="text-muted-foreground">Searching projects...</p>
 					</div>
 				)}
 
