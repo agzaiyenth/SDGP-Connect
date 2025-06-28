@@ -4,7 +4,7 @@ import { ProjectSubmissionSchema } from "@/validations/submit_project";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2, AlertTriangle, CheckCircle } from "lucide-react";
-import { SocialTypeEnum } from "@prisma/client";
+import { SocialTypeEnum } from "@/prisma/prisma-types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import React from "react";
 

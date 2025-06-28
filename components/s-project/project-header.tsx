@@ -5,7 +5,7 @@ import { Globe2Icon, Share2Icon } from "lucide-react";
 import Link from "next/link";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { AvatarFallback } from "@radix-ui/react-avatar";
-import { ProjectDomainEnum, ProjectStatusEnum } from "@prisma/client";
+import { ProjectDomainEnum, ProjectStatusEnum } from "@/prisma/prisma-types";
 
 interface ProjectHeaderProps {
   title: string;

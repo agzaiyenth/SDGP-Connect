@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { ApprovalStatus } from "@prisma/client";
+import { ApprovalStatus } from "@/prisma/prisma-types";
 
 export function useGetCompetitionsByApprovalStatus(
   status: ApprovalStatus,

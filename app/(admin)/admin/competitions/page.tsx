@@ -16,7 +16,8 @@ import ApprovedCompetitionsTableSkeleton from "@/components/tables/skeletons/App
 import ApprovedCompetitionsTable from "@/components/tables/ApprovedCompetitionsTable";
 import RejectedCompetitionsTableSkeleton from "@/components/tables/skeletons/RejectedCompetitionsTableSkeleton";
 import RejectedCompetitionsTable from "@/components/tables/RejectedCompetitionsTable";
-import { ApprovalStatus } from "@prisma/client";
+import { ApprovalStatus } from "@/prisma/prisma-types";
+
 
 // Type definitions
 type TabType = "pending" | "approved" | "rejected";

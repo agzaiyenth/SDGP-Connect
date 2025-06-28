@@ -1,4 +1,4 @@
-import { ProjectStatusEnum, ProjectTypeEnum, SDGGoalEnum, TechStackEnum } from "@prisma/client";
+import { ProjectStatusEnum, ProjectTypeEnum, SDGGoalEnum, TechStackEnum } from "@/prisma/prisma-types";
 import { TbBrandCSharp } from "react-icons/tb";
 
 import {

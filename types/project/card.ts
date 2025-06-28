@@ -1,4 +1,4 @@
-import { ProjectDomainEnum, ProjectStatusEnum, ProjectTypeEnum } from "@prisma/client";
+import { ProjectDomainEnum, ProjectStatusEnum, ProjectTypeEnum } from "@/prisma/prisma-types";
 
 export interface ProjectCardType {
   id: string;
