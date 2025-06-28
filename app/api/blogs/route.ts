@@ -36,9 +36,9 @@ export async function GET(request: NextRequest) {
     // Add search filter
     if (search) {
       where.OR = [
-        { title: { contains: search, mode: 'insensitive' } },
-        { excerpt: { contains: search, mode: 'insensitive' } },
-        { author: { name: { contains: search, mode: 'insensitive' } } }
+        { title: { contains: search }},
+        { excerpt: { contains: search }},
+        { author: { name: { contains: search} } }
       ];
     }    const posts = await prisma.blogPost.findMany({
       where,

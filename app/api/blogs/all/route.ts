@@ -35,10 +35,10 @@ export async function GET(request: NextRequest) {
     // Add search filter
     if (search && search.trim()) {
       where.OR = [
-        { title: { contains: search.trim(), mode: 'insensitive' } },
-        { excerpt: { contains: search.trim(), mode: 'insensitive' } },
-        { content: { contains: search.trim(), mode: 'insensitive' } },
-        { author: { name: { contains: search.trim(), mode: 'insensitive' } } }
+        { title: { contains: search.trim()} },
+        { excerpt: { contains: search.trim()} },
+        { content: { contains: search.trim()} },
+        { author: { name: { contains: search.trim()}} }
       ];
     }
 
