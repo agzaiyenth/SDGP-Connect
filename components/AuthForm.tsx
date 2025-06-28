@@ -68,8 +68,8 @@ const Logo: React.FC = () => (
   >
     <div className="relative">
       <Image
-        src="/iconw.png"
-        alt="Logoipsum"
+        src="/iconw.svg"
+        alt="Logo "
         className="h-48 w-48 -mb-12"
         width={88}
         height={88}

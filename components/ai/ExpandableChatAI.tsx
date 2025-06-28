@@ -60,7 +60,7 @@ export function ExpandableChatAI() {
                 src={
                   message.sender === "user"
                     ? "/user.png"
-                    : "/iconw.png"
+                    : "/iconw.svg"
                 }
                 fallback={message.sender === "user" ? "US" : "AI"}
                 aria-label={message.sender === "user" ? "User avatar" : "AI avatar"}
@@ -76,7 +76,7 @@ export function ExpandableChatAI() {
           ))}
           {isLoading && (
             <ChatBubble variant="received">
-              <ChatBubbleAvatar className="h-8 w-8 shrink-0" src="/iconw.png" fallback="AI" aria-label="AI avatar" />
+              <ChatBubbleAvatar className="h-8 w-8 shrink-0" src="/iconw.svg" fallback="AI" aria-label="AI avatar" />
               <ChatBubbleMessage isLoading />
             </ChatBubble>
           )}
