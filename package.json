@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "node --loader ts-node/esm ./prisma/seed.ts",
-    "vercel-build": "prisma migrate deploy && prisma generate && yarn build"
+    "seed": "node --loader ts-node/esm ./prisma/seed.ts"
   },
   "dependencies": {
     "@azure/storage-blob": "^12.27.0",
