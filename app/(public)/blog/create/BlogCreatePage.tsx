@@ -16,6 +16,7 @@ import useUploadImageToBlob from "@/hooks/azure/useUploadImageToBlob";
 import { BlogFormData } from "@/types/blog";
 import { blogAuthorSchema, blogPostSchema } from "@/validations/blog";
 import MarkdownPreview from "@/components/blog/MarkdownPreview";
+import MarkdownEditor from "@/components/blog/MarkdownEditor";
 
 // Convert ProjectDomainEnum to array for dropdown
 const ProjectDomainEnumArray = Object.values(ProjectDomainEnum);
@@ -163,10 +164,20 @@ export default function BlogCreatePage() {
     if (!formData.author.name) {
       setErrors({ authorName: "Name is required" });
       return;
-    }
-    // Create author and update state with id
+    }    // Create author and update state with id
     try {
-      const created = await createAuthor(formData.author);
+      const authorData = {
+        email: formData.author.email,
+        name: formData.author.name,
+        instagram: formData.author.instagram || "",
+        twitter: formData.author.twitter || "",
+        facebook: formData.author.facebook || "",
+        linkedin: formData.author.linkedin || "",
+        medium: formData.author.medium || "",
+        website: formData.author.website || "",
+        avatarUrl: formData.author.avatarUrl || "",
+      };
+      const created = await createAuthor(authorData);
       if (created && created.id) {
         updateAuthor({ found: true, verified: true, ...created });
         setStep(1);
@@ -263,10 +274,20 @@ export default function BlogCreatePage() {
             <div className="ml-3 font-semibold">Blog Creator</div>
           </div>
           <div className="flex flex-1 items-center justify-center p-8">
-            {step === 0 && <User className="h-32 w-32 text-primary" />}
-            {step === 1 && <FileText className="h-32 w-32 text-primary" />}
-            {step === 2 && <Edit className="h-32 w-32 text-primary" />}
-            {step === 3 && <CheckCircle className="h-32 w-32 text-primary" />}
+            {step === 2 ? (
+              <div className="w-full h-full overflow-auto">
+                <div className="font-semibold mb-2">Live Preview</div>
+                <div className="border rounded-md bg-background p-4 min-h-[300px] max-h-[600px] overflow-auto">
+                  <MarkdownPreview content={formData.content} />
+                </div>
+              </div>
+            ) : (
+              <>
+                {step === 0 && <User className="h-32 w-32 text-primary" />}
+                {step === 1 && <FileText className="h-32 w-32 text-primary" />}
+                {step === 3 && <CheckCircle className="h-32 w-32 text-primary" />}
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -560,55 +581,35 @@ export default function BlogCreatePage() {
                     />
                     {uploadingImage && <p className="text-sm">Uploading... {uploadProgress}%</p>}
                   </div>
-                  <Input
-                    id="blog-image"
-                    placeholder="Or paste image URL"
-                    value={formData.meta.imageUrl}
-                    onChange={(e) => updateMeta({ imageUrl: e.target.value })}
-                  />
                   {formData.meta.imageUrl && (
                     <img src={formData.meta.imageUrl} alt="Feature image preview" className="h-32 rounded" />
                   )}
                 </div>
-                
-                <Label htmlFor="blog-date">Publish Date</Label>
+                  <Label htmlFor="blog-date">Publish Date</Label>
                 <Input
                   id="blog-date"
                   type="date"
                   value={formData.meta.publishedAt}
                   onChange={(e) => updateMeta({ publishedAt: e.target.value })}
                 />
-                
-                <Button onClick={handleMetaContinue} className="w-full">
-                  Continue
-                </Button>
               </div>
             </div>
-          )}          {step === 2 && (
+          )}{step === 2 && (
             <div className="space-y-6">
               <h1 className="text-2xl font-bold">Write Your Blog</h1>
-              <p className="text-muted-foreground">Write your content below using Markdown</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="blog-content">Content (Markdown supported) *</Label>
-                  <Textarea
-                    id="blog-content"
-                    placeholder="Write your blog content here... You can use Markdown syntax."
-                    value={formData.content}
-                    onChange={(e) => updateContent(e.target.value)}
-                    className="min-h-[300px] font-mono"
-                  />
-                  {errors.content && <p className="text-sm text-red-500">{errors.content}</p>}
-                </div>                <div className="border rounded-md bg-background p-4 overflow-auto min-h-[300px]">
-                  <div className="font-semibold mb-2">Live Preview</div>
-                  <MarkdownPreview content={formData.content} />
-                </div>
+              <p className="text-muted-foreground">Write your content below using the formatting toolbar</p>
+              <div className="space-y-2">
+                <Label htmlFor="blog-content">Content (Markdown supported) *</Label>
+                <MarkdownEditor
+                  value={formData.content}
+                  onChange={updateContent}
+                  placeholder="Write your blog content here... Use the toolbar above for formatting."
+                  className="min-h-[300px]"
+                />
+                {errors.content && <p className="text-sm text-red-500">{errors.content}</p>}
               </div>
-              <Button onClick={handleContentContinue} className="w-full mt-4">
-                Save & Continue
-              </Button>
             </div>
-          )}          {step === 3 && (
+          )}{step === 3 && (
             <div className="space-y-6">
               <h1 className="text-2xl font-bold">Review & Submit</h1>
               <p className="text-muted-foreground">Review your blog post before submitting</p>

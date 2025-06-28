@@ -46,7 +46,7 @@ export const blogAuthorSchema = z.object({
 
 // Blog Post Schema
 export const blogPostSchema = z.object({
-  title: z.string().min(1, "Title is required").max(200, "Title cannot exceed 200 characters"),
+  title: z.string().min(1, "Title is required").max(180, "Title cannot exceed 180 characters"),
   excerpt: z.string().min(1, "Excerpt is required").max(500, "Excerpt cannot exceed 500 characters"),
   content: z.string().min(1, "Content is required"),
   imageUrl: z.string().url("Invalid image URL").optional().or(z.literal("")),
