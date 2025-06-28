@@ -132,10 +132,3 @@
 
   
 }
-
-img[src="/iconw.svg"] {
-  -webkit-transform: translateZ(0); /* Forces hardware acceleration */
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-  image-rendering: pixelated;
-}

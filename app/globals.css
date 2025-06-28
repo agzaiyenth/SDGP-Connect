@@ -207,12 +207,6 @@
   transition: width 0.3s ease;
 }
 
-img[src="/iconw.svg"] {
-  -webkit-transform: translateZ(0);
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-  image-rendering: pixelated;
-}
 
 /* 
 .hover-slide:hover::after {
