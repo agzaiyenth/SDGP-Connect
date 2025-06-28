@@ -29,6 +29,7 @@ import { useGetRecentPosts } from "@/hooks/blogs/useGetRecentPosts";
 import { useGetPostsByCategory } from "@/hooks/blogs/useGetPostsByCategory";
 import { getDisplayFromEnum, formatDateForDisplay, calculateReadTime } from "@/lib/blog-utils";
 import ReactMarkdown from "react-markdown";
+import BlogPostSkeleton from "@/components/blog/BlogPostSkeleton";
 
 export default function BlogPostPage({ params }: { params: { id: string } }) {
   const { post, isLoading, error } = useGetPostById(params.id);
@@ -44,11 +45,7 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
   };
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
+    return <BlogPostSkeleton />;
   }
 
   if (error || !post) {
