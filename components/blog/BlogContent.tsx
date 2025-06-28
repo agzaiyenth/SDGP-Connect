@@ -9,6 +9,7 @@ import { BlogFilter } from "@/components/blog/BlogFilter";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { FeaturedBlogCard } from "@/components/blog/FeaturedBlogCard";
+import Link from "next/link";
 
 interface BlogContentProps {
   initialPosts: BlogPost[];
@@ -106,10 +107,12 @@ export function BlogContent({ initialPosts, featuredPosts }: BlogContentProps) {
                   <p className="text-lg text-muted-foreground mb-8 text-left">
                     Discover breakthroughs in AI and TensorFlow applications.
                   </p>
+                  <Link href="/create" className="inline-flex items-center text-primary font-semibold hover:underline">
                   <button className="inline-flex items-center px-6 py-3 bg-white text-black rounded-lg hover:bg-gray-100 transition-colors font-semibold text-base shadow text-left w-fit">
-                    Explore All Articles
+                    Add your Articles
                     <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
                   </button>
+                    </Link>
                 </div>                {/* Right Side - Featured Project Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
                   {featuredPosts.slice(0, 2).map((post) => (
