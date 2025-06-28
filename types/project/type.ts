@@ -1,4 +1,4 @@
-import { AssociationType, ProjectApprovalStatus, ProjectDomainEnum, ProjectStatusEnum, ProjectTypeEnum, SDGGoalEnum, SocialTypeEnum, TechStackEnum } from "@/prisma/prisma-types";
+import { AssociationType, ProjectApprovalStatus, ProjectDomainEnum, ProjectStatusEnum, ProjectTypeEnum, SDGGoalEnum, SocialTypeEnum, TechStackEnum } from "@/types/prisma-types";
 import { IconType } from "react-icons/lib";
 import { User } from "../user/type";
 

@@ -5,7 +5,7 @@ import {
   SDGGoalEnum,
   TechStackEnum,
   SocialTypeEnum
-} from "@/prisma/prisma-types";
+} from "@/types/prisma-types";
 import { z } from "zod";
 
 const teamMemberSchema = z.object({

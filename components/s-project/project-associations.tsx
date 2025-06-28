@@ -2,7 +2,7 @@ import { IProjectAssociation } from "@/types/project/type";
 import React from "react";
 import { Card } from "../ui/card";
 import { sdgGoals, projectTypeOptions } from "@/types/project/mapping";
-import { AssociationType } from "@/prisma/prisma-types";
+import { AssociationType } from "@/types/prisma-types";
 import ProjectTypeCard from "../project-type-card";
 import TechCard from "../techcard";
 import Image from "next/image";

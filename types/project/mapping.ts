@@ -1,4 +1,4 @@
-import { ProjectStatusEnum, ProjectTypeEnum, SDGGoalEnum, TechStackEnum } from "@/prisma/prisma-types";
+
 import { TbBrandCSharp } from "react-icons/tb";
 
 import {
@@ -52,6 +52,7 @@ import {
   SiCplusplus,
   SiC
 } from "react-icons/si";
+import { ProjectStatusEnum, ProjectTypeEnum, SDGGoalEnum, TechStackEnum } from "@/types/prisma-types";
 
 export const projectTypeOptions = [
   { value: ProjectTypeEnum.MOBILE, label: "Mobile App", icon: FaMobileAlt },
