@@ -27,6 +27,7 @@ import { useState } from "react";
 import { useGetPostById } from "@/hooks/blogs/useGetPostById";
 import { useGetRecentPosts } from "@/hooks/blogs/useGetRecentPosts";
 import { getDisplayFromEnum, formatDateForDisplay, calculateReadTime } from "@/lib/blog-utils";
+import ReactMarkdown from "react-markdown";
 
 export default function BlogPostPage({ params }: { params: { id: string } }) {
   const { post, isLoading, error } = useGetPostById(params.id);
@@ -100,58 +101,11 @@ export default function BlogPostPage({ params }: { params: { id: string } }) {
         </div>
         <div className="grid gap-12 md:grid-cols-12 md:gap-8">
           <div className="md:col-span-8 lg:col-span-9">
-            <article
-              className="prose prose-lg max-w-none dark:prose-invert"
-              dangerouslySetInnerHTML={{ __html: post.content && post.content.trim() !== '' ? `
-                <h2>The Evolution of Frameworks</h2>
-                <h3>Chapter 1: The Web Development Renaissance</h3>
-                <p>The landscape of web development has undergone a remarkable transformation in recent years. What started as simple HTML pages has evolved into complex, interactive applications that push the boundaries of what's possible in the browser. Modern frameworks have become the cornerstone of this evolution, enabling developers to build sophisticated applications with unprecedented efficiency.</p>
-                <p>Among these innovations, <strong>Next.js</strong> has emerged as a game-changing framework, revolutionizing how we approach React applications. Its server-side rendering capabilities and intuitive routing system have set new standards for performance and developer experience.</p>
-                <h3>Chapter 2: The Rise of Component-Based Architecture</h3>
-                <p>Component-based architecture has fundamentally changed how we structure web applications. By breaking down interfaces into reusable, modular components, developers can now build more maintainable and scalable applications. This approach has not only improved code organization but has also fostered better collaboration between design and development teams.</p>
-                <h3>Chapter 3: The Performance Revolution</h3>
-                <p>Performance optimization has become a critical focus in modern web development. With users expecting near-instant load times and smooth interactions, developers have embraced techniques like code splitting, lazy loading, and advanced caching strategies. These optimizations ensure that applications remain fast and responsive, even as they grow in complexity.</p>
-                <h3>Chapter 4: Emerging Trends and Technologies</h3>
-                <p>The web development landscape continues to evolve at a rapid pace. New tools and technologies emerge regularly, each promising to solve complex problems in innovative ways. From WebAssembly to Edge Computing, these advancements are shaping the future of how we build and deploy web applications.</p>
-                <blockquote><p>"The most exciting aspect of modern web development is how it empowers developers to focus on creating exceptional user experiences rather than wrestling with technical limitations."</p></blockquote>
-                <p>As we look to the future, it's clear that web development will continue to evolve. The frameworks and tools we use today are just the beginning of what's possible. With each new innovation, we move closer to a web that's more powerful, accessible, and user-friendly than ever before.</p>
-                <table>
-                  <thead>
-                    <tr><th>King's Treasury</th><th>People's happiness</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>Empty</td><td>Overflowing</td></tr>
-                    <tr><td>Modest</td><td>Satisfied</td></tr>
-                    <tr><td>Full</td><td>Ecstatic</td></tr>
-                  </tbody>
-                </table>
-                <p>As the designers continued to push the boundaries of their craft, they became revered throughout the kingdom for their innovative approach and the seamless user experiences they created. Their success inspired other teams to follow in their footsteps, and soon the entire digital realm was abuzz with the transformative power of Tailwind CSS.</p>
-              ` : `
-                <h2>The Evolution of Frameworks</h2>
-                <h3>Chapter 1: The Web Development Renaissance</h3>
-                <p>The landscape of web development has undergone a remarkable transformation in recent years. What started as simple HTML pages has evolved into complex, interactive applications that push the boundaries of what's possible in the browser. Modern frameworks have become the cornerstone of this evolution, enabling developers to build sophisticated applications with unprecedented efficiency.</p>
-                <p>Among these innovations, <strong>Next.js</strong> has emerged as a game-changing framework, revolutionizing how we approach React applications. Its server-side rendering capabilities and intuitive routing system have set new standards for performance and developer experience.</p>
-                <h3>Chapter 2: The Rise of Component-Based Architecture</h3>
-                <p>Component-based architecture has fundamentally changed how we structure web applications. By breaking down interfaces into reusable, modular components, developers can now build more maintainable and scalable applications. This approach has not only improved code organization but has also fostered better collaboration between design and development teams.</p>
-                <h3>Chapter 3: The Performance Revolution</h3>
-                <p>Performance optimization has become a critical focus in modern web development. With users expecting near-instant load times and smooth interactions, developers have embraced techniques like code splitting, lazy loading, and advanced caching strategies. These optimizations ensure that applications remain fast and responsive, even as they grow in complexity.</p>
-                <h3>Chapter 4: Emerging Trends and Technologies</h3>
-                <p>The web development landscape continues to evolve at a rapid pace. New tools and technologies emerge regularly, each promising to solve complex problems in innovative ways. From WebAssembly to Edge Computing, these advancements are shaping the future of how we build and deploy web applications.</p>
-                <blockquote><p>"The most exciting aspect of modern web development is how it empowers developers to focus on creating exceptional user experiences rather than wrestling with technical limitations."</p></blockquote>
-                <p>As we look to the future, it's clear that web development will continue to evolve. The frameworks and tools we use today are just the beginning of what's possible. With each new innovation, we move closer to a web that's more powerful, accessible, and user-friendly than ever before.</p>
-                <table>
-                  <thead>
-                    <tr><th>King's Treasury</th><th>People's happiness</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>Empty</td><td>Overflowing</td></tr>
-                    <tr><td>Modest</td><td>Satisfied</td></tr>
-                    <tr><td>Full</td><td>Ecstatic</td></tr>
-                  </tbody>
-                </table>
-                <p>As the designers continued to push the boundaries of their craft, they became revered throughout the kingdom for their innovative approach and the seamless user experiences they created. Their success inspired other teams to follow in their footsteps, and soon the entire digital realm was abuzz with the transformative power of Tailwind CSS.</p>
-              ` }}
-            />
+            <article className="prose prose-lg max-w-none dark:prose-invert">
+              <ReactMarkdown>
+                {post.content || "No content available."}
+              </ReactMarkdown>
+            </article>
           </div>
           <aside className="md:col-span-4 lg:col-span-3">
             <div className="sticky top-20 space-y-6">
