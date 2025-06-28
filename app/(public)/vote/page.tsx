@@ -35,13 +35,14 @@ export default function VoteProjectsPage() {
 	const { stats, isLoading: statsLoading } = useVoteStats();
 	const { status: voteStatus, refetch: refetchVoteStatus } = useVoteStatus();
 	const { castVote, isLoading: castingVote, error: voteError, clearError } = useCastVote();
-	const { 
-		projects, 
-		isLoading: projectsLoading, 
-		error, 
-		hasMore, 
+	const {
+		projects,
+		isLoading: projectsLoading,
+		error,
+		hasMore,
 		loadMore,
-		refresh 
+		refresh,
+		podium
 	} = useVoteProjects({
 		title: debouncedSearch || undefined,
 		limit: 10
@@ -132,9 +133,8 @@ export default function VoteProjectsPage() {
 				timeout = setTimeout(later, wait);
 			}
 		};	}
-		// Show preloader during initial data loading
-	// Keep showing preloader until we have both stats and initial projects loaded
-	if (!isInitialDataLoaded || statsLoading || (projectsLoading && projects.length === 0)) {
+		// Show preloader only during initial data loading (no search, not after initial load)
+	if (!isInitialDataLoaded && !debouncedSearch) {
 		return <Preloader onComplete={() => setIsInitialDataLoaded(true)} />;
 	}
 
@@ -193,11 +193,11 @@ export default function VoteProjectsPage() {
 				</div>
 
 				{/* Podium - Show top 3 projects */}
-				{projects.length >= 3 && (
+				{podium && podium.length === 3 && (
 					<div className="flex items-center justify-center gap-4 md:gap-6">
 						{[1, 0, 2].map((idx, i) => (
 							<div
-								key={projects[idx].id}
+								key={podium[idx].id}
 								className={`flex flex-col items-center justify-end transition-transform hover:scale-105 ${
 									i === 1 ? "scale-110 z-10" : "opacity-90"
 								}`}
@@ -209,8 +209,8 @@ export default function VoteProjectsPage() {
 									}`}
 								>
 									<Image
-										src={projects[idx].coverImage || "/placeholder.svg"}
-										alt={projects[idx].title}
+										src={podium[idx].coverImage || "/placeholder.svg"}
+										alt={podium[idx].title}
 										width={112}
 										height={112}
 										className="object-cover w-full h-full"
@@ -233,12 +233,12 @@ export default function VoteProjectsPage() {
 								{/* Project Info */}
 								<div className="text-center">
 									<div className="font-semibold text-sm md:text-base text-foreground mb-1 max-w-[100px] truncate">
-										{projects[idx].title}
+										{podium[idx].title}
 									</div>
 									<div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
 										<Star className="w-3 h-3 text-blue-500" />
 										<span className="font-medium">
-											{projects[idx].voteCount.toLocaleString()}
+											{podium[idx].voteCount.toLocaleString()}
 										</span>
 									</div>
 								</div>
@@ -291,12 +291,12 @@ export default function VoteProjectsPage() {
 							>
 								{/* Rank */}
 								<div className="flex flex-col items-center w-8">
-									{idx === 0 && <span className="text-2xl">🥇</span>}
-									{idx === 1 && <span className="text-2xl">🥈</span>}
-									{idx === 2 && <span className="text-2xl">🥉</span>}
-									{idx > 2 && (
+									{project.globalRank === 1 && <span className="text-2xl">🥇</span>}
+									{project.globalRank === 2 && <span className="text-2xl">🥈</span>}
+									{project.globalRank === 3 && <span className="text-2xl">🥉</span>}
+									{project.globalRank > 3 && (
 										<span className="font-bold text-lg text-muted-foreground">
-											{idx + 1}
+											{project.globalRank}
 										</span>
 									)}
 								</div>

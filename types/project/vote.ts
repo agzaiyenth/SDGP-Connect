@@ -10,6 +10,7 @@ export interface ProjectVoteCard {
   domains: ProjectDomainEnum[];
   voteCount: number;
   hasVoted?: boolean;
+  globalRank?: number;
 }
 
 export interface VoteStats {

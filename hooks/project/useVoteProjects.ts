@@ -5,6 +5,7 @@ import { PaginatedResponse } from "@/types/project/pagination";
 
 export function useVoteProjects(params: VoteQueryParams) {
   const [projects, setProjects] = useState<ProjectVoteCard[]>([]);
+  const [podium, setPodium] = useState<ProjectVoteCard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [meta, setMeta] = useState<PaginatedResponse<ProjectVoteCard>['meta'] | null>(null);
@@ -18,24 +19,20 @@ export function useVoteProjects(params: VoteQueryParams) {
       const queryParams = new URLSearchParams();
       queryParams.append('page', page.toString());
       queryParams.append('limit', String(params.limit || 10));
-      
       if (params.title) {
         queryParams.append('title', params.title);
       }
-
       const response = await axios.get(`/api/projects/vote?${queryParams.toString()}`);
-      const result = response.data as PaginatedResponse<ProjectVoteCard>;
-      
+      const result = response.data;
       if (shouldAppend) {
         setProjects(prev => [...prev, ...result.data]);
       } else {
         setProjects(result.data);
       }
-      
+      setPodium(result.podium || []);
       setMeta(result.meta);
       setHasMore(page < result.meta.totalPages);
       setCurrentPage(page);
-
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred while fetching projects');
       console.error('Error fetching vote projects:', err);
@@ -77,6 +74,7 @@ export function useVoteProjects(params: VoteQueryParams) {
     meta,
     hasMore,
     loadMore,
-    refresh
+    refresh,
+    podium
   };
 }

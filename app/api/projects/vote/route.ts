@@ -28,8 +28,7 @@ export const GET = async (req: NextRequest) => {
     // Title search
     if (title) {
       baseWhere.title = {
-        contains: title,
-        mode: 'insensitive'
+        contains: title
       };
     }
 
@@ -100,7 +99,67 @@ export const GET = async (req: NextRequest) => {
       return bVotes - aVotes;
     });
 
-    // --- Transform data ---
+    // --- Get ALL approved projects for global ranking ---
+    const allProjects = await prisma.projectMetadata.findMany({
+      where: {
+        projectContent: {
+          status: {
+            approved_status: ProjectApprovalStatus.APPROVED
+          }
+        }
+      },
+      include: {
+        projectContent: {
+          include: {
+            status: true,
+            associations: true
+          }
+        }
+      }
+    });
+
+    // --- Get vote counts for all projects ---
+    const allProjectIds = allProjects.map(p => p.project_id);
+    const allVoteCounts = await prisma.projectVote.groupBy({
+      by: ['projectId'],
+      where: {
+        projectId: {
+          in: allProjectIds
+        }
+      },
+      _count: {
+        id: true
+      }
+    });
+    const allVoteCountMap = new Map();
+    allVoteCounts.forEach(vote => {
+      allVoteCountMap.set(vote.projectId, vote._count.id);
+    });
+    // --- Sort all projects by vote count for global ranking ---
+    const allSortedProjects = allProjects.sort((a, b) => {
+      const aVotes = allVoteCountMap.get(a.project_id) || 0;
+      const bVotes = allVoteCountMap.get(b.project_id) || 0;
+      return bVotes - aVotes;
+    });
+    // --- Map projectId to global rank ---
+    const projectIdToRank = new Map();
+    allSortedProjects.forEach((proj, idx) => {
+      projectIdToRank.set(proj.project_id, idx + 1);
+    });
+    // --- Prepare global top 3 for podium ---
+    const globalTop3 = allSortedProjects.slice(0, 3).map(project => ({
+      id: project.project_id,
+      title: project.title,
+      subtitle: project.subtitle,
+      coverImage: project.cover_image,
+      status: project.projectContent?.status?.status || null,
+      projectTypes: project.projectContent?.associations?.filter((a: any) => a.type === "PROJECT_TYPE" && a.projectType)?.map((a: any) => a.projectType!) || [],
+      domains: project.projectContent?.associations?.filter((a: any) => a.type === "PROJECT_DOMAIN" && a.domain)?.map((a: any) => a.domain!) || [],
+      voteCount: allVoteCountMap.get(project.project_id) || 0,
+      globalRank: projectIdToRank.get(project.project_id)
+    }));
+
+    // --- Transform data for paginated/search result, include global rank ---
     const transformedProjects = sortedProjects.map(project => ({
       id: project.project_id,
       title: project.title,
@@ -113,7 +172,8 @@ export const GET = async (req: NextRequest) => {
       domains: project.projectContent?.associations
         ?.filter((a: any) => a.type === "PROJECT_DOMAIN" && a.domain)
         ?.map((a: any) => a.domain!) || [],
-      voteCount: voteCountMap.get(project.project_id) || 0
+      voteCount: voteCountMap.get(project.project_id) || 0,
+      globalRank: projectIdToRank.get(project.project_id)
     }));
 
     // --- Calculate pagination metadata ---
@@ -132,7 +192,8 @@ export const GET = async (req: NextRequest) => {
 
     return NextResponse.json({
       data: transformedProjects,
-      meta
+      meta,
+      podium: globalTop3
     });
 
   } catch (error) {
