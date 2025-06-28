@@ -1,3 +1,9 @@
+// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
+//
+// This software is the property of Psycode Lab's. and its suppliers, if any.
+// Dissemination of any information or reproduction of any material contained
+// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
+// You may not alter or remove any copyright or other notice from copies of this content.
 'use client';
 
 import { motion } from 'framer-motion';
@@ -38,7 +44,6 @@ function getNested(obj: any, path: string[], fallback: any = undefined) {
 
 export default function Hero() {
   const { t } = useLanguage();
-  // Defensive: t may be a flat object, or nested, or string map
   const homeHero = getNested(t, ['home', 'hero'], {});
   return (
     <section className="min-h-screen w-full flex flex-col items-center justify-center overflow-hidden perspective-1000 ">
@@ -113,7 +118,7 @@ export default function Hero() {
               rel="noopener noreferrer"
             >
               <Button className="w-full px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
-                {homeHero.campus_button || "Visit Our Campus"}
+                {homeHero.campus_button || "Visit IIT"}
               </Button>
             </a>
           </div>
