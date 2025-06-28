@@ -264,17 +264,15 @@ export default function BlogCreatePage() {
       setErrors({ submit: error.message || "Failed to submit blog post" });
     }
   };
-
   return (
     <div className="flex min-h-screen bg-muted/20">
-      {/* Side illustration panel */}
+      {/* Side illustration panel - only visible on large screens */}
       <div className="hidden w-1/2 bg-background lg:block">
         <div className="flex h-full flex-col">
-          <div className="flex h-16 items-center border-b px-8">
-            <div className="h-8 w-8 rounded-full bg-primary"></div>
-            <div className="ml-3 font-semibold">Blog Creator</div>
+          <div className="flex h-16 items-center px-8">
+            {/* Header removed for cleaner look */}
           </div>
-          <div className="flex flex-1 items-center justify-center p-8">
+          <div className="flex flex-1 items-center justify-center p-4 lg:p-8">
             {step === 2 ? (
               <div className="w-full h-full overflow-auto">
                 <div className="font-semibold mb-2">Live Preview</div>
@@ -349,32 +347,29 @@ export default function BlogCreatePage() {
             )}
           </div>
         </div>
-      </div>
-      {/* Content panel */}
+      </div>      {/* Content panel */}
       <div className="flex w-full flex-col lg:w-1/2">
-        <div className="flex h-16 items-center border-b px-6">
+        <div className="flex h-16 items-center border-b px-4 sm:px-6">
           <div className="flex space-x-1">
             {[0, 1, 2, 3].map((i) => (
               <div
                 key={i}
                 className={cn(
-                  "h-1.5 w-12 rounded-full",
+                  "h-1.5 w-8 sm:w-12 rounded-full",
                   i <= step ? "bg-primary" : "bg-muted"
                 )}
               />
             ))}
           </div>
-          <div className="ml-auto text-sm text-muted-foreground">
+          <div className="ml-auto text-xs sm:text-sm text-muted-foreground">
             Step {step + 1} of 4
           </div>
         </div>
-        <div className="flex flex-1 flex-col justify-between p-6 sm:p-8 md:p-12">          {/* Step content */}          {step === 0 && (
-            <div className="space-y-6">
-              <h1 className="text-2xl font-bold">Identify the Author</h1>
-              <p className="text-muted-foreground">Enter your email to get started</p>
-              <div className="space-y-4">
+        <div className="flex flex-1 flex-col justify-between p-4 sm:p-6 lg:p-8 xl:p-12">{/* Step content */}          {step === 0 && (            <div className="space-y-6">
+              <h1 className="text-xl sm:text-2xl font-bold">Identify the Author</h1>
+              <p className="text-muted-foreground text-sm sm:text-base">Enter your email to get started</p><div className="space-y-4">
                 <Label htmlFor="author-email">Email</Label>
-                <div className="flex space-x-2">                  <Input
+                <div className="flex flex-col sm:flex-row gap-2 sm:space-x-2 sm:gap-0">                  <Input
                     id="author-email"
                     type="email"
                     placeholder="you@example.com"
@@ -399,18 +394,19 @@ export default function BlogCreatePage() {
                     <Button 
                       onClick={handleEmailVerification} 
                       disabled={checkingAuthor || !formData.author.email}
+                      className="w-full sm:w-auto"
                     >
                       {checkingAuthor ? "Verifying..." : "Verify"}
-                    </Button>
-                  ) : (
-                    <div className="flex space-x-2">
-                      <Button variant="secondary" disabled>
+                    </Button>) : (
+                    <div className="flex flex-col sm:flex-row gap-2 sm:space-x-2 sm:gap-0">
+                      <Button variant="secondary" disabled className="w-full sm:w-auto">
                         <CheckCircle className="mr-2 h-4 w-4" />
                         Verified
                       </Button>
                       <Button 
                         variant="outline" 
                         size="sm"
+                        className="w-full sm:w-auto"
                         onClick={() => updateAuthor({ 
                           email: "",
                           verified: false, 
@@ -449,8 +445,7 @@ export default function BlogCreatePage() {
                       <p className="text-green-800 font-medium">Author Found!</p>
                       <p className="text-green-600 text-sm">We found your existing author profile.</p>
                     </div>
-                  </div>
-                  <div className="mt-4 flex items-center space-x-4">
+                  </div>                  <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
                     {foundAuthor.avatarUrl && (
                       <img
                         src={foundAuthor.avatarUrl}
@@ -460,7 +455,7 @@ export default function BlogCreatePage() {
                     )}
                     <div>
                       <div className="font-semibold text-black">{foundAuthor.name}</div>
-                      <div className="text-sm text-gray-900">{foundAuthor.email}</div>
+                      <div className="text-sm text-gray-900 break-all">{foundAuthor.email}</div>
                     </div>
                   </div>
                 </div>
@@ -481,9 +476,8 @@ export default function BlogCreatePage() {
               )}
 
               {/* Author registration form - only show if verified and not found */}
-              {formData.author.verified && !formData.author.found && (
-                <div className="mt-6 space-y-4">
-                  <h2 className="text-lg font-semibold">Create Author Profile</h2>
+              {formData.author.verified && !formData.author.found && (                <div className="mt-6 space-y-4">
+                  <h2 className="text-lg sm:text-xl font-semibold">Create Author Profile</h2>
                   
                   <Label htmlFor="author-name">Name *</Label>
                   <Input
@@ -498,9 +492,8 @@ export default function BlogCreatePage() {
                   {errors.name && (
                     <p className="text-sm text-red-500">{errors.name}</p>
                   )}
-                  
-                  <Label htmlFor="author-avatar">Avatar Image (optional)</Label>
-                  <div className="flex items-center space-x-2">
+                    <Label htmlFor="author-avatar">Avatar Image (optional)</Label>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:space-x-2 sm:gap-0">
                     <Input
                       type="file"
                       accept="image/*"
@@ -512,8 +505,9 @@ export default function BlogCreatePage() {
                         }
                       }}
                       disabled={uploadingImage}
+                      className="w-full sm:flex-1"
                     />
-                    {uploadingImage && <p className="text-sm">Uploading... {uploadProgress}%</p>}
+                    {uploadingImage && <p className="text-sm w-full sm:w-auto">Uploading... {uploadProgress}%</p>}
                   </div>
                   {formData.author.avatarUrl && (
                     <img src={formData.author.avatarUrl} alt="Avatar preview" className="h-16 w-16 rounded-full" />
@@ -582,10 +576,9 @@ export default function BlogCreatePage() {
                 </div>
               )}
             </div>
-          )}{step === 1 && (
-            <div className="space-y-6">
-              <h1 className="text-2xl font-bold">Blog Metadata</h1>
-              <p className="text-muted-foreground">Fill in the details for your blog post</p>
+          )}{step === 1 && (            <div className="space-y-6">
+              <h1 className="text-xl sm:text-2xl font-bold">Blog Metadata</h1>
+              <p className="text-muted-foreground text-sm sm:text-base">Fill in the details for your blog post</p>
               <div className="space-y-4">
                 <Label htmlFor="blog-title">Title *</Label>
                 <Input
@@ -622,10 +615,9 @@ export default function BlogCreatePage() {
                   ))}
                 </select>
                 {errors.category && <p className="text-sm text-red-500">{errors.category}</p>}
-                
-                <Label htmlFor="blog-image">Feature Image</Label>
+                  <Label htmlFor="blog-image">Feature Image</Label>
                 <div className="space-y-2">
-                  <div className="flex items-center space-x-2">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:space-x-2 sm:gap-0">
                     <Input
                       type="file"
                       accept="image/*"
@@ -637,33 +629,31 @@ export default function BlogCreatePage() {
                         }
                       }}
                       disabled={uploadingImage}
+                      className="w-full sm:flex-1"
                     />
-                    {uploadingImage && <p className="text-sm">Uploading... {uploadProgress}%</p>}
+                    {uploadingImage && <p className="text-sm w-full sm:w-auto">Uploading... {uploadProgress}%</p>}
                   </div>
-                  {formData.meta.imageUrl && (                    <img src={formData.meta.imageUrl} alt="Feature image preview" className="h-32 rounded" />
+                  {formData.meta.imageUrl && (                    <img src={formData.meta.imageUrl} alt="Feature image preview" className="h-32 w-full sm:w-auto rounded object-cover" />
                   )}
                 </div>
               </div>
             </div>
-          )}{step === 2 && (
-            <div className="space-y-6">
-              <h1 className="text-2xl font-bold">Write Your Blog</h1>
-              <p className="text-muted-foreground">Write your content below using the formatting toolbar</p>
-              <div className="space-y-2">
-                <Label htmlFor="blog-content">Content (Markdown supported) *</Label>
+          )}{step === 2 && (            <div className="space-y-6">
+              <h1 className="text-xl sm:text-2xl font-bold">Write Your Blog</h1>
+              <p className="text-muted-foreground text-sm sm:text-base">Write your content below using the formatting toolbar</p>
+              <div className="space-y-2">                <Label htmlFor="blog-content">Content (Markdown supported) *</Label>
                 <MarkdownEditor
                   value={formData.content}
                   onChange={updateContent}
                   placeholder="Write your blog content here... Use the toolbar above for formatting."
-                  className="min-h-[300px]"
+                  className="min-h-[250px] sm:min-h-[300px]"
                 />
                 {errors.content && <p className="text-sm text-red-500">{errors.content}</p>}
               </div>
             </div>
-          )}{step === 3 && (
-            <div className="space-y-6">
-              <h1 className="text-2xl font-bold">Review & Submit</h1>
-              <p className="text-muted-foreground">Review your blog post before submitting</p>
+          )}{step === 3 && (            <div className="space-y-6">
+              <h1 className="text-xl sm:text-2xl font-bold">Review & Submit</h1>
+              <p className="text-muted-foreground text-sm sm:text-base">Review your blog post before submitting</p>
                 {success && (
                 <div className="p-4 border border-green-200 bg-green-50 rounded-md">
                   <div className="flex items-center space-x-2">
@@ -688,9 +678,8 @@ export default function BlogCreatePage() {
                   <p className="text-red-600 text-sm">{errors.submit}</p>
                 </div>
               )}
-              
-              <div className="space-y-4">
-                <div className="flex items-center space-x-4">
+                <div className="space-y-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:space-x-4 sm:gap-0">
                   {(formData.author.avatarUrl || foundAuthor?.avatarUrl) && (
                     <img 
                       src={formData.author.avatarUrl || foundAuthor?.avatarUrl || ""} 
@@ -698,40 +687,39 @@ export default function BlogCreatePage() {
                       className="h-12 w-12 rounded-full border" 
                     />
                   )}
-                  <div>
-                    <div className="font-semibold">{formData.author.name || foundAuthor?.name || "(No name)"}</div>
-                    <div className="text-sm text-muted-foreground">{formData.author.email}</div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-semibold truncate">{formData.author.name || foundAuthor?.name || "(No name)"}</div>
+                    <div className="text-sm text-muted-foreground break-all">{formData.author.email}</div>
                     {formData.author.website && (
-                      <div className="text-sm text-muted-foreground">Website: {formData.author.website}</div>
+                      <div className="text-sm text-muted-foreground break-all">Website: {formData.author.website}</div>
                     )}
                   </div>
                 </div>
-                
-                <div>
+                  <div>
                   <div className="font-semibold">Title:</div>
-                  <div>{formData.meta.title}</div>
+                  <div className="break-words">{formData.meta.title}</div>
                 </div>
                 
                 <div>
                   <div className="font-semibold">Excerpt:</div>
-                  <div>{formData.meta.excerpt}</div>
+                  <div className="break-words">{formData.meta.excerpt}</div>
                 </div>
                 
                 <div>
                   <div className="font-semibold">Category:</div>
-                  <div>{formData.meta.category.replace(/_/g, ' ')}</div>
+                  <div className="break-words">{formData.meta.category.replace(/_/g, ' ')}</div>
                 </div>
-                
-                <div>
+                  <div>
                   <div className="font-semibold">Feature Image:</div>
                   {formData.meta.imageUrl && (
-                    <img src={formData.meta.imageUrl} alt="feature" className="h-24 rounded mt-2" />
+                    <img src={formData.meta.imageUrl} alt="feature" className="h-24 w-full sm:w-auto rounded mt-2 object-cover" />
                   )}                </div>
-                  <div>
+                <div>
                   <div className="font-semibold">Content:</div>
                   <div className="border rounded p-2 bg-background mt-2 max-h-40 overflow-y-auto">
                     <MarkdownPreview content={formData.content} />
-                  </div></div>
+                  </div>
+                </div>
                 
                 <Button 
                   onClick={handleSubmit} 
@@ -743,13 +731,13 @@ export default function BlogCreatePage() {
               </div>
             </div>
           )}          {/* Navigation */}
-          <div className="flex justify-between pt-6">
+          <div className="flex flex-col sm:flex-row justify-between gap-4 sm:gap-0 pt-6">
             {/* Remove Back button on first step or when successful */}
             {step > 0 && !success && (
               <Button
                 variant="outline"
                 onClick={() => setStep((prev) => Math.max(0, prev - 1))}
-                className="flex items-center"
+                className="flex items-center w-full sm:w-auto"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" /> Back
               </Button>
@@ -765,7 +753,7 @@ export default function BlogCreatePage() {
                     handleAuthorRegister(); // Create author and proceed
                   }
                 }}
-                className="flex items-center"
+                className="flex items-center w-full sm:w-auto sm:ml-auto"
                 disabled={!isAuthorFormComplete() || creatingAuthor || uploadingImage}
               >
                 {creatingAuthor ? (
@@ -786,7 +774,7 @@ export default function BlogCreatePage() {
                     handleContentContinue();
                   }
                 }}
-                className="flex items-center"
+                className="flex items-center w-full sm:w-auto sm:ml-auto"
                 disabled={uploadingImage}
               >
                 Next <ArrowRight className="ml-2 h-4 w-4" />
