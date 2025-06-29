@@ -1,4 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!--// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
+//
+// This software is the property of Psycode Lab's. and its suppliers, if any.
+// Dissemination of any information or reproduction of any material contained
+// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.-->
+// You may not alter or remove any copyright or other notice from copies of this content.<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sitemap="http://www.sitemaps.org/schemas/sitemap/0.9">
 <xsl:output method="html" version="1.0" encoding="UTF-8" indent="yes"/>
 
