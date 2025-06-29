@@ -17,7 +17,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import { ExpandableChatAI } from "@/components/ai/ExpandableChatAI";
 import { LanguageProvider } from "@/hooks/LanguageProvider";
 import LanguageToggle from "@/components/LanguageToggle";
-import CookieBanner from '@/components/CookieBanner'
+import CookieBanner from "@/components/CookieBanner"
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
