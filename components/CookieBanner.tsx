@@ -100,6 +100,7 @@ const CookieBanner = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 className="text-secondary-foreground"
+                aria-hidden="true"
               >
                 <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5" />
                 <path d="M8.5 8.5a2.5 2.5 0 0 1 5 0" />
