@@ -1,25 +1,25 @@
-'use client';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { useGetProjectDetailsByID } from '@/hooks/project/useGetProjectDetailsByID';
-import { IProjectAssociation } from '@/types/project/type';
-import { ProjectDomainEnum } from '@prisma/client';
-import { AlertCircle } from 'lucide-react';
-import { HeroSection } from './s-project/hero-section';
-import { ProjectAssociation } from './s-project/project-associations';
-import { ProjectHeader } from './s-project/project-header';
-import { ProjectOverview } from './s-project/project-overview';
-import { SlideDeck } from './s-project/slide-deck';
-import Teamandsocial from './s-project/team-social';
-import { Spinner } from './ui/spinner';
+"use client";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { useGetProjectDetailsByID } from "@/hooks/project/useGetProjectDetailsByID";
+import { IProjectAssociation } from "@/types/project/type";
+import { ProjectDomainEnum } from "@prisma/client";
+import { AlertCircle } from "lucide-react";
+import { HeroSection } from "./s-project/hero-section";
+import { ProjectAssociation } from "./s-project/project-associations";
+import { ProjectHeader } from "./s-project/project-header";
+import { ProjectOverview } from "./s-project/project-overview";
+import { SlideDeck } from "./s-project/slide-deck";
+import Teamandsocial from "./s-project/team-social";
+import { Spinner } from "./ui/spinner";
 
 const ProjectDetails = ({ projectID }: { projectID: string }) => {
   const { project, isLoading, error } = useGetProjectDetailsByID(projectID);
 
   if (isLoading) {
     return (
-      <div className='flex justify-center items-center min-h-screen'>
-        <Spinner variant="ring" className='size-24' />
+      <div className="flex justify-center items-center min-h-screen">
+        <Spinner variant="ring" className="size-24" />
       </div>
     );
   }
@@ -39,36 +39,34 @@ const ProjectDetails = ({ projectID }: { projectID: string }) => {
       <Alert className="mb-4">
         <AlertCircle className="h-4 w-4" />
         <AlertTitle>Project Not Found</AlertTitle>
-        <AlertDescription>The requested project could not be found.</AlertDescription>
+        <AlertDescription>
+          The requested project could not be found.
+        </AlertDescription>
       </Alert>
     );
   }
 
   return (
-
     <div className="min-h-screen ">
-      <HeroSection
-        coverImage={project.metadata.cover_image}
-      />
-
+      <HeroSection coverImage={project.metadata.cover_image} />
       <div className="container mx-auto px-4 pb-16">
         <ProjectHeader
           title={project.metadata.title}
           subtitle={project.metadata.subtitle}
-          domains={
-            (project.content?.associations || [])
-              .filter(
-                (association: IProjectAssociation): association is IProjectAssociation & { domain: ProjectDomainEnum } =>
-                  association.domain != null
-              )
-              .map((association) => association.domain)
-          }
+          domains={(project.content?.associations || [])
+            .filter(
+              (
+                association
+              ): association is IProjectAssociation & {
+                domain: NonNullable<IProjectAssociation["domain"]>;
+              } => association.domain != null
+            )
+            .map((association) => association.domain)}
           status={project.content?.status?.status}
           logo={project.metadata.logo}
           website={project.metadata.website}
           projectId={project.metadata.project_id}
         />
-
         <ProjectOverview
           problemStatement={project.content?.projectDetails?.problem_statement}
           solution={project.content?.projectDetails?.solution}
@@ -82,8 +80,6 @@ const ProjectDetails = ({ projectID }: { projectID: string }) => {
         <ProjectAssociation
           associations={project.content?.associations || []}
         />
-
-
         <Teamandsocial
           teamMembers={project.content?.team || []}
           teamSocials={project.content?.socialLinks || []}
@@ -91,9 +87,6 @@ const ProjectDetails = ({ projectID }: { projectID: string }) => {
           teamEmail={project.content?.projectDetails?.team_email}
           projectTitle={project.metadata.title}
         />
-
-
-
       </div>
     </div>
   );
