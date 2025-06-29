@@ -13,7 +13,7 @@ export interface CompetitionAward {
 
 export const useGetCompetitionAwards = (competitionId?: string) => {
   const [awards, setAwards] = useState<CompetitionAward[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

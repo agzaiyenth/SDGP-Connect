@@ -17,14 +17,14 @@ export default function AwardCard({ winner }: AwardCardProps) {
   const router = useRouter();
   return (
     <div
-      className="group relative bg-gray-900 backdrop-blur-sm rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-800 hover:border-gray-700 transition-all duration-500 hover:scale-[1.03] hover:shadow-2xl hover:shadow-blue-950/30 h-[380px] sm:h-[420px] md:h-[450px] flex flex-col cursor-pointer"
+      className="group h-full relative bg-secondary rounded-2xl overflow-hidden border border-black hover:border-gray-700 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-black/20 min-h-[380px] flex flex-col cursor-pointer"
       onClick={() => router.push(`/project/${winner.id}`)}
     >
-      {/* Subtle Blue Glow on Hover */}
-      <div className="absolute inset-0 bg-blue-950 opacity-0 group-hover:opacity-15 transition-opacity duration-500 rounded-2xl sm:rounded-3xl"></div>
+      {/* Subtle Glow on Hover */}
+      <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-2xl"></div>
 
       {/* Team Image */}
-      <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden flex-shrink-0">
+      <div className="relative h-48 sm:h-56 md:h-64 w-full overflow-hidden flex-shrink-0">
         <Image
           src={winner.cover}
           alt={winner.projectName}
@@ -32,37 +32,41 @@ export default function AwardCard({ winner }: AwardCardProps) {
           className="object-cover group-hover:scale-110 transition-transform duration-700"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
         />
-        {/* Base gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-30 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
         {/* Award Badge */}
-        <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-10">
-          <div className="bg-gray-800/90 backdrop-blur-sm border border-gray-700 px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 rounded-full shadow-lg">
-            <span className="font-bold text-xs sm:text-sm text-white">{winner.award}</span>
-          </div>
-        </div>
-        {/* Enhanced Hover Overlay - positioned at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-6 bg-gradient-to-t from-black/95 via-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
-          <div className="text-white">
-            <h4 className="text-sm sm:text-base md:text-lg font-bold mb-1 sm:mb-2">{winner.projectName}</h4>
-            <p className="text-xs sm:text-sm text-gray-200 leading-relaxed line-clamp-3 sm:line-clamp-4">
-              {winner.description}
-            </p>
-          </div>
-        </div>
-        {/* Mobile-friendly tap indicator */}
-        <div className="sm:hidden absolute bottom-2 right-2 bg-gray-800/80 backdrop-blur-sm px-2 py-1 rounded-full opacity-70">
-          <span className="text-xs text-gray-300">Tap for details</span>
+        <div className="absolute top-3 left-3">
+          <span className="bg-black/80 backdrop-blur-sm border border-gray-800 px-2.5 py-1.5 rounded-full text-xs font-medium text-white">
+            {winner.award}
+          </span>
         </div>
       </div>
       {/* Team Details */}
-      <div className="p-4 sm:p-5 md:p-6 flex flex-col flex-grow justify-center">
-        <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-1 sm:mb-2 group-hover:text-gray-200 transition-colors duration-300 line-clamp-1">
-          {winner.projectName}
-        </h3>
-        <p className="text-xs sm:text-sm md:text-base text-gray-400 font-medium line-clamp-2 leading-relaxed">
-          Team {winner.team} | SDGP {winner.sdgpYear}
-        </p>
+      <div className="p-4 pb-6 flex flex-col flex-grow justify-between">
+        <div className="space-y-2.5">
+          <h3 className="text-lg font-bold text-white group-hover:text-gray-200 transition-colors duration-300 line-clamp-2 min-h-[3.5rem]">
+            {winner.projectName}
+          </h3>
+          <p className="text-gray-200 leading-relaxed text-sm line-clamp-3 min-h-[3.75rem]">
+            {winner.description}
+          </p>
+        </div>
+        <div className="space-y-2.5 mt-3">
+          <p className="text-xs sm:text-sm md:text-base text-gray-400 font-medium line-clamp-2 leading-relaxed">
+            Team {winner.team} | SDGP {winner.sdgpYear}
+          </p>
+        </div>
       </div>
+      {/* Bottom-right Arrow Link */}
+      <a
+        href={`/project/${winner.id}`}
+        onClick={e => { e.stopPropagation(); }}
+        className="absolute bottom-4 right-4 z-20  border border-white rounded-full w-10 h-10 flex items-center justify-center group-hover:bg-gray-800 transition-colors duration-300 shadow-lg"
+        title="View Project"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-white">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M7 7h10v10" />
+        </svg>
+      </a>
     </div>
   )
 }

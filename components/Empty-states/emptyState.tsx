@@ -8,7 +8,8 @@ import {
   Mail, 
   Image,
   FileQuestion,
-  Settings
+  Settings,
+  Trophy
 } from "lucide-react"
 
 function EmptyStateDefault() {
@@ -86,6 +87,16 @@ function EmptyStateSettings() {
     />
   )
 }
+function EmptyStateWinners() {
+  return (
+    <EmptyState
+      title="No Winners Yet"
+      description="No participants or winning projects have been recorded for this competition yet."
+      icons={[Trophy]}
+      className="bg-muted/50"
+    />
+  )
+}
 
 export {
   EmptyStateDefault,
@@ -93,5 +104,6 @@ export {
   EmptyStateSearch,
   EmptyStateMedia,
   EmptyStateSettings,
-  NoMedia
+  NoMedia,
+  EmptyStateWinners
 }
