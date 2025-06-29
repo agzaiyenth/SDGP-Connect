@@ -1,4 +1,4 @@
-import { Contact, FolderGit2, Home, Info, Upload, HelpCircle } from "lucide-react";
+import { Contact, FolderGit2, Home, Info, Upload, Trophy } from "lucide-react";
 
 export const sidebarItems = [
     { icon: Home, href: '/', label: 'Home' },
@@ -6,5 +6,5 @@ export const sidebarItems = [
     { icon: Info, href: '/about', label: 'About Us' },
     { icon: Contact, href: '/contact', label: 'Contact Us' },
     { icon: Upload, href: '/submit', label: 'Submit Details' },
-    { icon: HelpCircle, href: '/faq', label: 'FAQ' },
+    { icon: Trophy, href: '/competition', label: 'Competition Winners' },
   ];
