@@ -79,15 +79,19 @@ export default function CompetitionCard({
                 <span className="truncate">{formattedStart} - {formattedEnd}</span>
               </div>
             </div>
-
-            <div className="flex items-center justify-between">
-              <span className="text-gray-400 group-hover:text-white transition-colors duration-300 flex items-center gap-1.5 text-xs">
-                View
-                <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-              </span>
-            </div>
           </div>
         </div>
+        {/* Bottom-right Arrow Link */}
+        <a
+          href={viewLink}
+          onClick={e => { e.stopPropagation(); }}
+          className="absolute bottom-4 right-4 z-20 border border-white rounded-full w-10 h-10 flex items-center justify-center group-hover:bg-gray-800 transition-colors duration-300 shadow-lg"
+          title="View Competition"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-white">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M7 7h10v10" />
+          </svg>
+        </a>
       </div>
     </Link>
   )
