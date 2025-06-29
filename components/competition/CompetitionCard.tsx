@@ -50,7 +50,7 @@ export default function CompetitionCard({
 
           {/* Type Badge */}
           <div className="absolute top-3 left-3">
-            <span className="bg-black/80 backdrop-blur-sm border border-gray-800 px-2.5 py-1.5 rounded-full text-xs font-medium text-gray-300">
+            <span className="bg-black/80 backdrop-blur-sm border border-gray-800 px-2.5 py-1.5 rounded-full text-xs font-medium text-white">
               {type}
             </span>
           </div>
@@ -68,12 +68,12 @@ export default function CompetitionCard({
             <h3 className="text-lg font-bold text-white group-hover:text-gray-200 transition-colors duration-300 line-clamp-2 min-h-[3.5rem]">
               {title}
             </h3>
-            <p className="text-gray-400 leading-relaxed text-sm line-clamp-3 min-h-[3.75rem]">
+            <p className="text-gray-200 leading-relaxed text-sm line-clamp-3 min-h-[3.75rem]">
               {description}
             </p>
           </div>
           <div className="space-y-2.5 mt-3">
-            <div className="flex items-center justify-between text-xs text-gray-500">
+            <div className="flex items-center justify-between text-xs text-gray-200">
               <div className="flex items-center gap-1.5">
                 <Calendar className="w-3 h-3" />
                 <span className="truncate">{formattedStart} - {formattedEnd}</span>

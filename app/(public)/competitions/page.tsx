@@ -10,8 +10,9 @@ import CompetitionCard from "@/components/competition/CompetitionCard"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { useApprovedCompetitions } from "@/hooks/competition/useApprovedCompetitions"
-import { ArrowRight, Play } from "lucide-react"
+import { ArrowRight, Award, Pen, Play, Target } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useRef, useState } from "react"
 
@@ -53,7 +54,7 @@ export default function AwardsPage() {
               <div className="space-y-4 sm:space-y-6 lg:space-y-8">
                 {/* Badge */}
                 <div className="inline-flex items-center gap-2 rounded-full bg-gray-800 border border-gray-700 px-4 py-2">
-                  <span className="text-sm font-medium text-white">Competition Awards</span>
+                  <span className="text-sm font-medium text-white">International & Local Competition</span>
                 </div>
 
                 {/* Heading */}
@@ -66,10 +67,30 @@ export default function AwardsPage() {
                   Discover the innovative teams and groundbreaking projects that have shaped our competitive landscape
                   through creativity, technology, and determination.
                 </p>
+                <div className="flex flex-wrap  gap-4 sm:gap-6 lg:gap-8">
 
+                  <div className="rounded-xl p-6">
+                    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full border-2 border-primary/30 bg-primary/10 text-primary">
+                      <Target className="h-6 w-6" />
+                    </div>
+                    <h3 className="text-4xl font-bold tracking-tight text-foreground">
+                      20 +
+                    </h3>
+                    <p className="mt-2 text-sm text-muted-foreground">Competitions</p>
+                  </div>
+                  <div className="rounded-xl p-6">
+                    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full border-2 border-primary/30 bg-primary/10 text-primary">
+                      <Award className="h-6 w-6" />
+                    </div>
+                    <h3 className="text-4xl font-bold tracking-tight text-foreground">
+                      100 +
+                    </h3>
+                    <p className="mt-2 text-sm text-muted-foreground">Competition Winners</p>
+                  </div>
+                </div>
                 {/* Buttons */}
-                <div className="flex w-full flex-col gap-4 sm:flex-row sm:gap-4 lg:justify-start pt-6">
-                  {/* Video Dialog */}
+                {/* <div className="flex w-full flex-col gap-4 sm:flex-row sm:gap-4 lg:justify-start pt-6">
+              
                   <Dialog open={videoOpen} onOpenChange={setVideoOpen}>
                     <DialogTrigger asChild>
                       <Button
@@ -95,7 +116,7 @@ export default function AwardsPage() {
                     </DialogContent>
                   </Dialog>
 
-                  {/* Contact Button */}
+             
                   <Button
                     size="lg"
                     className="group w-full sm:w-auto bg-white text-black hover:bg-gray-200"
@@ -104,31 +125,53 @@ export default function AwardsPage() {
                     View All Winners
                     <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
                   </Button>
-                </div>
+                </div> */}
               </div>
             </div>
 
             {/* Image Section */}
             <div className="relative order-1 lg:order-2">
               <div className="absolute -inset-4 -z-10 rounded-2xl bg-blue-950/10 blur-sm" />
-              <div className="relative overflow-hidden rounded-xl h-[280px] sm:h-[320px] lg:h-[400px]">
+
+              <div className="grid gap-4 rounded-xl bg-accent/50 p-6 md:gap-6">
+
                 <Image
-                  src='/assets/1.webp'
-                  alt="Competition winners celebrating their achievements"
-                  fill
-                  className="object-cover shadow-lg transition-transform hover:scale-[1.02] border border-gray-700"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 45vw"
-                  priority
+                  src={"/assets/Dialog.webp"}
+                  alt={"Mission 1"}
+                  width={600}
+                  height={400}
+                  className={"rounded-xl"}
                 />
 
-                {/* Overlay Badge */}
-                <div className="absolute bottom-4 left-4 rounded-lg bg-gray-900/95 backdrop-blur-sm p-3 shadow-lg border border-gray-700">
-                  <p className="font-semibold text-sm text-white">Latest Competition</p>
-                  <p className="text-xs text-gray-400">18 Winners Announced</p>
+                <div className="grid grid-cols-2 gap-4 md:gap-6">
+
+                    <div className="overflow-hidden rounded-xl shadow-md transition-transform hover:scale-[1.02]">
+                    <Image
+                      src={"/assets/1.webp"}
+                      alt={"Mission 2"}
+                      width={280}
+                      height={200}
+                      className={"rounded-xl object-cover"}
+                      style={{ height: "200px", width: "auto" }}
+                    />
+                    </div>
+
+                    <div className="overflow-hidden rounded-xl shadow-md transition-transform hover:scale-[1.02]">
+                    <Image
+                      src={"/assets/2.webp"}
+                      alt={"Mission 3"}
+                      width={280}
+                      height={200}
+                      className={"rounded-xl object-cover"}
+                      style={{ height: "200px", width: "auto" }}
+                    />
+                    </div>
+
                 </div>
               </div>
             </div>
           </div>
+
         </div>
       </section>
 
@@ -140,28 +183,69 @@ export default function AwardsPage() {
         </div>
         {/* Responsive Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 lg:gap-8">
-          {competitions.map((competition) => (
-            <CompetitionCard
-              key={competition.id}
-              id={competition.id}
-              title={competition.name}
-              cover={competition.cover || "/assets/placeholder.svg"}
-              type={competition.type || ""}
-              startDate={competition.startDate}
-              endDate={competition.endDate}
-              logo={competition.logo || "/assets/placeholder.svg"}
-              viewLink={`/competitions/${competition.id}`}
-              description={competition.description}
-              winnersCount={competition.winnersCount}
-            />
-          ))}
+          {isLoading && competitions.length === 0
+            ? Array.from({ length: 6 }).map((_, idx) => (
+              <div
+                key={idx}
+                className="animate-pulse rounded-xl border border-gray-700 bg-gray-800 p-6 flex flex-col gap-4 shadow-lg"
+              >
+                <div className="h-40 bg-gray-700 rounded-md mb-4" />
+                <div className="h-6 bg-gray-700 rounded w-3/4 mb-2" />
+                <div className="h-4 bg-gray-700 rounded w-1/2 mb-2" />
+                <div className="h-4 bg-gray-700 rounded w-1/3" />
+              </div>
+            ))
+            : competitions.map((competition) => (
+              <CompetitionCard
+                key={competition.id}
+                id={competition.id}
+                title={competition.name}
+                cover={competition.cover || "/assets/placeholder.svg"}
+                type={competition.type || ""}
+                startDate={competition.startDate}
+                endDate={competition.endDate}
+                logo={competition.logo || "/assets/placeholder.svg"}
+                viewLink={`/competitions/${competition.id}`}
+                description={competition.description}
+                winnersCount={competition.winnersCount}
+              />
+            ))}
         </div>
         <div ref={loaderRef} className="flex justify-center py-8">
           {isLoading && <span className="text-gray-400">Loading...</span>}
-          {!hasMore && !isLoading && <span className="text-gray-500">No more competitions</span>}
+          {!hasMore && !isLoading && <span className="text-gray-500"></span>}
           {error && <span className="text-red-500">{error}</span>}
         </div>
       </div>
+
+      {/* CTA section */}
+      <section className="relative m-16 overflow-hidden rounded-2xl bg-gradient-to-br from-accent via-accent/80 to-accent/60 p-8 md:p-12 border border-accent/20 shadow-2xl">
+        <div className="mx-auto max-w-4xl text-center relative z-10">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+        Want to share your winning project with the community?
+          </h2>
+          <p className="mt-4 text-lg text-muted-foreground">
+        If you have participated in a competition and won an award, we would love to feature your project.
+        share your achievement with us and inspire others in the community.
+        </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
+          
+          <Link href="/submit/competition">
+          <Button size="lg" variant="default">
+          
+           Enter a missing Competition
+          </Button>
+        </Link>
+        <Link href="/submit/award">
+          <Button size="lg" variant="outline" >
+           Submit your Award Win
+          </Button>
+        </Link>
+          </div>
+        </div>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 opacity-50" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.2)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.2)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:linear-gradient(135deg,black_0%,black_20%,transparent_80%,transparent_100%)] opacity-40" />
+      </section>
     </div>
   )
 }
