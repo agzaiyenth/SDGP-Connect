@@ -40,14 +40,14 @@ export default function CompetitionPage({
           fill="none"
           viewBox="0 0 24 24"
         >
-          <circle
+          {/* <circle
             className="opacity-25"
             cx="12"
             cy="12"
             r="10"
             stroke="currentColor"
             strokeWidth="4"
-          ></circle>
+          ></circle> */}
           <path
             className="opacity-75"
             fill="currentColor"
@@ -67,8 +67,8 @@ export default function CompetitionPage({
 
   return (
     <div className="min-h-screen bg-#0c0a09 ">
-      {/* Darker Animated Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      {/* Darker Animated Background  removed this by commenting */}
+      {/* <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-60 sm:w-80 h-60 sm:h-80 bg-blue-900 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse"></div>
         <div
           className="absolute -bottom-40 -left-40 w-60 sm:w-80 h-60 sm:h-80 bg-blue-800 rounded-full mix-blend-multiply filter blur-xl opacity-15 animate-pulse"
@@ -78,7 +78,7 @@ export default function CompetitionPage({
           className="absolute top-1/2 left-1/2 w-60 sm:w-80 h-60 sm:h-80 bg-blue-900 rounded-full mix-blend-multiply filter blur-xl opacity-8 animate-pulse"
           style={{ animationDelay: "4s" }}
         ></div>
-      </div>
+      </div> */}
 
       {/* Header */}
       <div className="relative bg-#0c0a09 backdrop-blur-sm border-b border-gray-800">
@@ -97,7 +97,7 @@ export default function CompetitionPage({
             </h1>
 
             <p
-              className={`text-sm sm:text-base md:text-lg lg:text-xl text-gray-400 mb-2 max-w-7xl mx-auto text-justify px-0.5 sm:px-1 ${
+              className={`text-sm sm:text-base md:text-lg lg:text-xl text-gray-400 mb-2 max-w-5xl mx-auto text-justify px-0.5 sm:px-1 ${
                 showFull ? "" : "line-clamp-5"
               }`}
             >
@@ -114,8 +114,8 @@ export default function CompetitionPage({
             </button>
 
             <p className="text-xs sm:text-sm md:text-base text-gray-500">
-              {competition?.startDate && competition?.endDate
-                ? `Date: ${competition.startDate} - ${competition.endDate}`
+                {competition?.startDate && competition?.endDate
+                ? `Date: ${new Date(competition.startDate).toLocaleDateString("en-GB").replace(/\//g, ".")} - ${new Date(competition.endDate).toLocaleDateString("en-GB").replace(/\//g, ".")}`
                 : ""}
             </p>
           </div>
@@ -129,7 +129,8 @@ export default function CompetitionPage({
             Competition Winners
           </h2>
           <p className="text-sm sm:text-base text-gray-400">
-            Hover over each team to see their project details
+
+            {/* change this line  :- Hover over each team to see their project details */}
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-7xl mx-auto">
