@@ -111,7 +111,7 @@ export default function BlogPostContent({ id }: { id: string }) {
             <article className="prose prose-lg max-w-none dark:prose-invert">
               <MarkdownPreview 
                 content={post.content || "No content available."} 
-                className="text-foreground"
+                className="text-foreground px-8"
               />
             </article>
           </div>

@@ -62,7 +62,7 @@ export function AboutSection() {
                   <HeartHandshake size={18} className="text-white" />
                   <span className="text-sm bg-zinc-800 px-3 py-1 rounded-full">{values.title || "Our Core Values"}</span>
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-center">{values.sub_title || "Driven by purpose"}</h3>
+                <p className="text-xl font-bold mb-3 text-center">{values.sub_title || "Driven by purpose"}</p>
                 <p className="text-zinc-400 text-center flex-grow leading-relaxed">
                   {values.description || "We believe in innovation, collaboration, and meaningful impact. Our community thrives on solving real-world problems, learning continuously, and developing technology that serves humanity and the planet."}
                 </p>

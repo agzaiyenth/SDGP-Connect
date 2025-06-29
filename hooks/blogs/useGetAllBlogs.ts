@@ -29,7 +29,7 @@ export const useGetAllBlogs = (options: UseGetAllBlogsOptions = {}): UseGetAllBl
   const [totalCount, setTotalCount] = useState(0);
   const fetchPosts = useCallback(async (page: number = 1, shouldAppend: boolean = false) => {
     try {
-      console.log('Fetching posts...', { page, shouldAppend, options });
+  
       if (!shouldAppend) {
         setIsLoading(true);
       } else {

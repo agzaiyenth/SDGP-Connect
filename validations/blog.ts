@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ProjectDomainEnum } from "@prisma/client";
+import { ProjectDomainEnum } from "@/types/prisma-types";
 
 // Helper to normalize social URLs
 function normalizeUrl(url: string, type: string): string {
