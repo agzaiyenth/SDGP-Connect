@@ -48,8 +48,8 @@ const Logo: React.FC = () => (
           imageRendering: "crisp-edges",
           shapeRendering: "crispEdges",
         }}
-        width={88}
-        height={88}
+        width={48}
+        height={48}
         priority
       />
     </div>
@@ -129,7 +129,7 @@ export default function Hero() {
           <div className="flex-1">
             <Link href="/about">
               <Button className="w-full px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-primary/30">
-                {homeHero.learn_more_button || "Learn more"}
+                {homeHero.learn_more_button || "About Us"}
               </Button>
             </Link>
           </div>
