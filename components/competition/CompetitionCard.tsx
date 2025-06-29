@@ -33,7 +33,7 @@ export default function CompetitionCard({
   const formattedEnd = endDate ? format(new Date(endDate), "MMM d yyyy") : ""
   return (
     <Link href={viewLink} className="group block h-full">
-      <div className="relative bg-secondary rounded-2xl overflow-hidden border border-gray-800 hover:border-gray-700 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-950/20 min-h-[450px] flex flex-col">
+      <div className="relative bg-secondary rounded-2xl overflow-hidden border border-black hover:border-gray-700 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-950/20 min-h-[450px] flex flex-col">
         {/* Subtle Blue Glow on Hover */}
         <div className=" bg-blue-950 absolute inset-0  opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-2xl"></div>
 
