@@ -33,9 +33,9 @@ export default function CompetitionCard({
   const formattedEnd = endDate ? format(new Date(endDate), "MMM d yyyy") : ""
   return (
     <Link href={viewLink} className="group block h-full">
-      <div className="relative bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 hover:border-gray-700 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-950/20 min-h-[450px] flex flex-col">
+      <div className="relative bg-secondary rounded-2xl overflow-hidden border border-gray-800 hover:border-gray-700 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-950/20 min-h-[450px] flex flex-col">
         {/* Subtle Blue Glow on Hover */}
-        <div className="absolute inset-0 bg-blue-950 opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-2xl"></div>
+        <div className=" bg-blue-950 absolute inset-0  opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-2xl"></div>
 
         {/* Competition Image */}
         <div className="relative h-48 w-full overflow-hidden flex-shrink-0">
@@ -57,7 +57,7 @@ export default function CompetitionCard({
 
           {/* Winners Count */}
           <div className="absolute bottom-3 right-3">
-            <div className="bg-gray-800 text-white px-2.5 py-1.5 rounded-full text-xs font-bold shadow-lg border border-gray-700">
+            <div className="bg-secondary text-white px-2.5 py-1.5 rounded-full text-xs font-bold shadow-lg border border-gray-700">
               {winnersCount} Winners
             </div>
           </div>
