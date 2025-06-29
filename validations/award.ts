@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const awardSubmissionSchema = z.object({
   projectId: z.string().min(1, 'Project is required'),
   competitionId: z.string().min(1, 'Competition is required'),
-  awardName: z.string().min(1, 'Award name is required'),
+  awardName: z.string().min(1, 'Award name is required').max(25, 'Award name must be 25 words or less'),
   imageFile: z
     .instanceof(File)
     .refine((file) => ['image/jpeg', 'image/png'].includes(file.type), {
