@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { compressImageFile } from "./utils/compressImageFile";
-
 import FormStepper from "./FormStepper";
 import { Button } from "@/components/ui/button";
 import { FormProvider, useForm, SubmitHandler } from "react-hook-form";
@@ -19,6 +18,7 @@ import { useSubmitProject } from "@/hooks/project/useSubmitProject";
 import { Loader2 } from "lucide-react";
 import useUploadImageToBlob from "@/hooks/azure/useUploadImageToBlob";
 import { UploadingSequence } from "@/components/ui/UploadingSequence";
+import { ProjectStatusEnum } from "@/types/prisma-types";
 
 const TOTAL_STEPS = 5;
 
@@ -61,7 +61,7 @@ const ProjectSubmissionForm = () => {
         team_phone: "",
       },
       status: {
-        status: "IDEA",
+        status: ProjectStatusEnum.IDEA,
       },
       domains: [],
       projectTypes: [],
