@@ -14,7 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
 import { validateImageFile } from "./utils/validateImageFile";
 import { compressImageFile } from "./utils/compressImageFile";
-import { yearOptions } from "@/types/project/mapping";
+import { yearOptions } from "@/lib/types/mapping";
 
 interface FormStep1Props {
   logoFile: File | null;

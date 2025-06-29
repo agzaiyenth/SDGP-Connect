@@ -1,5 +1,5 @@
 import React from "react";
-import { projectTypeOptions } from "../types/project/mapping";
+import { projectTypeOptions } from "../lib/types/mapping";
 import { IconType } from "react-icons";
 
 interface Props {

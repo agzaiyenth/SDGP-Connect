@@ -10,7 +10,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import { projectDomainsOptions } from "@/types/project/mapping";
+import { projectDomainsOptions } from "@/lib/types/mapping";
 import Link from "next/link";
 import React from "react";
 import { useLanguage } from "@/hooks/LanguageProvider";

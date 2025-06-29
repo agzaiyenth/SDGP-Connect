@@ -36,8 +36,9 @@ export default function Carousel() {
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
               width={400}
               height={225}
-              loading="lazy"
-              // priority={index < 3} 
+              loading={index < 3 ? "eager" : "lazy"}                // load first 3 immediately
+              priority={index < 3}                                   // Next.js preloads first 3
+              fetchPriority={index < 3 ? "high" : undefined}  
             />
             </div>
         ))}
