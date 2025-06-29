@@ -123,6 +123,7 @@ const CookieBanner = () => {
 
           <div className="flex items-center gap-2 md:gap-3 flex-shrink-0 w-full sm:w-auto justify-end sm:justify-start">
             <button
+              type="button"
               onClick={handleDecline}
               className="text-gray-400 hover:text-gray-200 text-xs sm:text-sm md:text-base font-medium transition-colors duration-200 px-3 sm:px-4 py-2 rounded-md hover:bg-gray-800/50"
             >
