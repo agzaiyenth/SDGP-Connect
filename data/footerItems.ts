@@ -13,6 +13,8 @@ export const footerItem = {
         { label: "About", href: "/about" },
         { label: "Contact", href: "/contact" },
         { label: "Projects", href: "/project" },
+        { label: "Competition Winner's", href: "/competitions" },
+        { label: "Blogs", href: "/blog" },
         { label: "Submit", href: "/submit" },
         // { label: "Testimonials", href: "#" },
         // { label: "Competitions", href: "#" },
@@ -24,6 +26,7 @@ export const footerItem = {
         { label: "Submit Project", href: "/submit/project" },
         { label: "Submit Competition", href: "/submit/competition" },
         { label: "Submit Award", href: "/submit/award" },
+        { label: "Submit Blog", href: "/blog/create" },
       ],
     },
     {
