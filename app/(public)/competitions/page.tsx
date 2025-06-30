@@ -74,7 +74,7 @@ export default function AwardsPage() {
                       <Target className="h-6 w-6" />
                     </div>
                     <h3 className="text-4xl font-bold tracking-tight text-foreground">
-                      20 +
+                      50 +
                     </h3>
                     <p className="mt-2 text-sm text-muted-foreground">Competitions</p>
                   </div>
