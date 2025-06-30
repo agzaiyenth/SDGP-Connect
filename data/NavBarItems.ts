@@ -8,3 +8,5 @@ export const sidebarItems = [
     { icon: Upload, href: '/submit', label: 'Submit Details' },
     { icon: HelpCircle, href: '/faq', label: 'FAQ' },
   ];
+
+  
