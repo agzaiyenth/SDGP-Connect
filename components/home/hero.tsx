@@ -119,21 +119,21 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
         >
-          <div className="flex-1">
+          <div className="flex-1 z-10">
             <Link href="/project">
               <Button className="w-full px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-primary text-primary-foreground hover:bg-primary/90">
                 {homeHero.explore_button || "Explore projects"}
               </Button>
             </Link>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 z-10">
             <Link href="/about">
               <Button className="w-full px-8 py-3 rounded-full text-sm font-medium transition-all duration-200 bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-primary/30">
                 {homeHero.learn_more_button || "About Us"}
               </Button>
             </Link>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 -10">
             <a
               href="https://www.iit.ac.lk/"
               target="_blank"
