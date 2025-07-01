@@ -70,7 +70,7 @@ export default function Hero() {
  ;  return (
     <section className="min-h-screen w-full flex flex-col overflow-hidden perspective-1000">
       {/* Banner at the top */}
-      <div className="w-full z-20 container mx-auto px-4 pt-4 pb-2 flex-shrink-0">
+      <div className="w-full z-20 px-4 sm:px-6 pt-4 pb-2 flex-shrink-0 flex justify-center">
         <Banner3 
           badgeText="Latest Blogs"
           message="Read insightful articles and stay updated with the latest news from changemakers around the world!"

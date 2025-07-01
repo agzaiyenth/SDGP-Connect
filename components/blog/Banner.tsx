@@ -25,35 +25,35 @@ function Banner3({
   }
 
   return (
-    <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 rounded-xl border border-gray-200 dark:border-gray-700 p-3 sm:p-4 bg-gradient-to-r from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm max-w-sm sm:max-w-5xl mx-auto">
-      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 pr-12 sm:pr-12">
-        <div className="flex items-center gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
-          <Badge className="bg-gradient-to-r from-black to-gray-800 dark:from-white dark:to-gray-200 text-white dark:text-black px-2 py-1 text-xs font-semibold rounded-full shadow-md hover:scale-105 transition-transform duration-200 shrink-0">
-            {badgeText}
-          </Badge>
-          <span className="text-gray-800 dark:text-gray-200 font-medium text-xs sm:text-sm leading-relaxed break-words sm:whitespace-nowrap truncate sm:truncate-none">{message}</span>
-        </div>
-        <a
-          href={linkHref}
-          className="inline-flex items-center text-xs sm:text-sm font-semibold text-black dark:text-white hover:text-gray-700 dark:hover:text-gray-300 hover:underline transition-colors duration-200 group w-fit shrink-0 mt-1 sm:mt-0"
-        >
-          {linkText}
-          <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4 text-black dark:text-white group-hover:translate-x-1 transition-transform duration-200" />
-        </a>
+    <div className="relative inline-flex flex-row items-center justify-between gap-2 bg-gradient-to-r from-black/90 via-gray-900/90 to-black/90 backdrop-blur-md rounded-xl shadow-2xl border border-gray-800/50 px-3 py-2 sm:px-4 sm:py-3 md:py-4 w-fit max-w-[calc(100vw-2rem)] sm:max-w-none transition-all duration-300 hover:from-black/95 hover:via-gray-900/95 hover:to-black/95">
+      <div className="flex flex-row items-center gap-2 sm:gap-4 pr-8 sm:pr-12 min-w-0 flex-1">
+        <Badge className="px-1.5 py-0.5 sm:px-2 sm:py-1 rounded text-xs font-medium bg-white/20 text-white border border-white/30 shrink-0">
+          {badgeText}
+        </Badge>
+        <span className="text-white/90 font-medium text-xs sm:text-sm leading-tight truncate min-w-0 flex-1">{message}</span>
+        {linkHref && linkText && (
+          <a
+            href={linkHref}
+            className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-blue-400 hover:text-blue-300 hover:underline transition-colors duration-200 group shrink-0 bg-white/10 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded whitespace-nowrap"
+          >
+            {linkText}
+            <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 text-blue-300 group-hover:translate-x-1 transition-transform duration-200" />
+          </a>
+        )}
       </div>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="absolute right-2 top-2 z-30 shrink-0 bg-white/90 hover:bg-white dark:bg-gray-700/90 dark:hover:bg-gray-700 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-full shadow-sm hover:shadow-md transition-all duration-200 backdrop-blur-sm group h-7 w-7 sm:h-8 sm:w-8 flex items-center justify-center cursor-pointer"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setIsVisible(false);
-        }}
-        aria-label="Close banner"
-      >
-        <X className="h-3.5 w-3.5 sm:h-4 sm:w-4 group-hover:rotate-90 transition-transform duration-200" />
-      </Button>
+    <Button
+      variant="ghost"
+      size="icon"
+      className="absolute right-1 top-1 sm:right-2 sm:top-2 p-0.5 sm:p-1.5 rounded-full transition-all duration-200 bg-white/20 text-white hover:bg-white/30 border border-white/30 hover:border-white/50 h-4 w-4 sm:h-auto sm:w-auto"
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsVisible(false);
+      }}
+      aria-label="Close banner"
+    >
+      <X className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 group-hover:rotate-90 transition-transform duration-200" />
+    </Button>
     </div>
   );
 }
