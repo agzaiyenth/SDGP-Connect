@@ -6,6 +6,7 @@
 // You may not alter or remove any copyright or other notice from copies of this content.
 import { footerItem } from "@/data/footerItems";
 import Link from "next/link";
+import { Facebook, Instagram, Linkedin, Mail } from "lucide-react";
 
 interface NavLink {
   label: string;
@@ -19,9 +20,17 @@ const {
   logoClassName,
   companyUrl,
   sections,
+  socials,
 } = footerItem;
+
+const iconMap = {
+  Facebook,
+  Instagram,
+  Linkedin,
+  Mail,
+};
 export default function Footer() {
-  const currentYear = new Date().getFullYear()
+  const currentYear = new Date().getFullYear();
   return (
     <>
       <footer className="border-t flex justify-center w-full">
@@ -44,40 +53,79 @@ export default function Footer() {
             
             </a> */}
               <a href="https://ebadge.bestweb.lk/api/v1/clicked/sdgp.lk/BestWeb/2025/Rate_Us">
-                <img src="https://ebadge.bestweb.lk/eBadgeSystem/domainNames/sdgp.lk/BestWeb/2025/Rate_Us/image.png" alt="logo" width="150" height="150" />
+                <img
+                  src="https://ebadge.bestweb.lk/eBadgeSystem/domainNames/sdgp.lk/BestWeb/2025/Rate_Us/image.png"
+                  alt="logo"
+                  width="150"
+                  height="150"
+                />
               </a>
             </div>
-            {sections.map((section, index) => (
-              <div key={index}>
-                <h3 className="mb-3 font-semibold">{section.title}</h3>
-                <ul className="space-y-2">
-                  {section.links.map((link, linkIndex) => (
-                    <li key={linkIndex}>
-                      <Link
-                        href={link.href}
-                        className="text-sm text-muted-foreground hover:text-foreground"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+
+          {sections.map((section, index) => (
+            <div key={index}>
+              <h3 className="mb-3 font-semibold">{section.title}</h3>
+              <ul className="space-y-2">
+                {section.links.map((link, linkIndex) => (
+                  <li key={linkIndex}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-muted-foreground hover:text-foreground"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+
+              {section.title === "Legal" && (
+                <div className="mt-4">
+                  <h3 className="mb-3 font-semibold">Social Media</h3>
+                  <div className="flex gap-3">
+                    {footerItem.socials.map(({ name, href, icon }, index) => {
+                      const IconComponent = iconMap[icon as keyof typeof iconMap];
+                      return (
+                        <a
+                          key={index}
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={name}
+                          className="rounded-full bg-zinc-700 hover:bg-zinc-600 p-2.5 transition"
+                        >
+                          <IconComponent className="h-3.5 w-3.5 text-white" strokeWidth={1.5} />
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+
           </div>
+
           <div className="mt-8 border-t border-secondary-foreground/10 pt-8 text-center flex md:gap-4 gap-2 flex-col md:flex-row justify-center items-center">
+
             <p className="text-center text-sm text-gray-200 pb-4"> Copyright © {currentYear} - <strong><a href="http://IIT.ac.lk" className="text-center text-sm text-gray-200 pb-4">Informatics Institute of Technology </a></strong></p>
             <p className="text-center text-sm text-gray-200 pb-4 md:block hidden">|</p>
             <p className="text-center text-sm text-gray-200 pb-4">Mentored By - <strong><a href="http://skillverse.lk" className="text-center text-sm text-gray-200 pb-4">SkillVerse (PVT) LTD</a></strong></p>
+
           </div>
         </div>
       </footer>
       {/* !Do not remove this , @zionashirwada Want's it this way and do not , do not change this ,.............................. */}
-      <footer id="xy47_beta" className="text-center text-sm text-gray-200 md:pb-4 pb-24">
-        Built by <strong><a href="https://www.psycodelabs.lk" className="hover:text-gray-400">Psycode Lab's</a></strong>
+      <footer
+        id="xy47_beta"
+        className="text-center text-sm text-gray-200 md:pb-4 pb-24"
+      >
+        Built by{" "}
+        <strong>
+          <a href="https://www.psycodelabs.lk" className="hover:text-gray-400">
+            Psycode Lab's
+          </a>
+        </strong>
       </footer>
     </>
   );
-};
-
-
+}
