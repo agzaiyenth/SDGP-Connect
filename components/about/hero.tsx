@@ -98,7 +98,7 @@ export default function Hero() {
             <div className="relative overflow-hidden rounded-xl">
               {/* YouTube Video */}
               <div
-                className="relative rounded-xl border border-gray-600 shadow-lg overflow-hidden cursor-pointer h-[400px] max-h-[400px] sm:max-h-[350px]"
+                className="relative rounded-xl border border-gray-600 shadow-lg overflow-hidden cursor-pointer h-[400px] max-h-[400px]"
 
                 onClick={handleVideoClick}
               >
