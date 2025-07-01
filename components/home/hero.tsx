@@ -14,6 +14,7 @@ import Carousel from "./carousel";
 import MorphingText from "./Morphing";
 import { useLanguage } from "@/hooks/LanguageProvider";
 import dynamic from "next/dynamic";
+import { Banner3 } from "@/components/blog/Banner";
 
 // Lazy-load motion components
 const MotionDiv = dynamic(() =>
@@ -67,18 +68,29 @@ export default function Hero() {
   const { t } = useLanguage();
   const homeHero = getNested(t, ["home", "hero"], {});
  ;  return (
-    <section className="min-h-screen w-full flex flex-col items-center justify-center overflow-hidden perspective-1000 ">
-      <ThreeScene />
-      <BadgeComponent />
+    <section className="min-h-screen w-full flex flex-col overflow-hidden perspective-1000">
+      {/* Banner at the top */}
+      <div className="w-full z-20 container mx-auto px-4 pt-4 pb-2 flex-shrink-0">
+        <Banner3 
+          badgeText="Latest Blogs"
+          message="Read insightful articles and stay updated with the latest news from changemakers around the world!"
+          linkText="Read Blogs"
+          linkHref="/blog"
+        />
+      </div>
+      
+      <div className="flex-1 flex flex-col items-center justify-center relative">
+        <ThreeScene />
+        <BadgeComponent />
 
-      <MotionDiv
-        className="relative z-10 text-center max-w-7xl px-6 flex-1 flex flex-col gap-5 items-center justify-center"
+        <MotionDiv
+          className="relative z-10 text-center max-w-7xl px-6 flex flex-col gap-3 sm:gap-5 items-center justify-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
         <MotionDiv
-          className="inline-block px-6 py-2 mb-2 text-sm font-medium tracking-wider text-white bg-[#2a5298]/20 rounded-full border border-[#2a5298]/30"
+          className="inline-block px-4 sm:px-6 py-2 mb-2 text-xs sm:text-sm font-medium tracking-wider text-white bg-[#2a5298]/20 rounded-full border border-[#2a5298]/30"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -148,6 +160,7 @@ export default function Hero() {
 
         <Carousel />
       </MotionDiv>
+      </div>
     </section>
   );
 }
