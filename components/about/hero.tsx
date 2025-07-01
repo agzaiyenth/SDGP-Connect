@@ -25,15 +25,15 @@ export default function Hero() {
 
       <div className="container relative max-w-7xl 2xl:max-w-screen-2xl mx-auto">
         <div className="grid items-center gap-8 md:gap-12 lg:gap-16 xl:gap-20 2xl:gap-24 lg:grid-cols-2">
-          
           {/* Content Section */}
           <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
             <div className="mt-8 space-y-4 lg:space-y-6 xl:space-y-8">
-              
               {/* Badge */}
               <div className="inline-flex items-center gap-3 rounded-full bg-primary/10 px-4 py-2 lg:px-5 lg:py-2.5">
                 <Zap className="size-4 lg:size-5 text-primary" />
-                <span className="text-sm lg:text-base font-medium">About Us</span>
+                <span className="text-sm lg:text-base font-medium">
+                  About Us
+                </span>
               </div>
 
               {/* Heading */}
@@ -43,13 +43,13 @@ export default function Hero() {
 
               {/* Description */}
               <p className="text-sm sm:text-base lg:text-lg xl:text-xl 2xl:text-2xl text-muted-foreground max-w-2xl leading-relaxed">
-                Explore student-led software solutions addressing real-world challenges aligned with the UN Sustainable Development Goals.
+                Explore student-led software solutions addressing real-world
+                challenges aligned with the UN Sustainable Development Goals.
               </p>
             </div>
 
             {/* Buttons */}
             <div className="mt-8 lg:mt-10 xl:mt-12 flex w-full flex-col justify-center gap-3 sm:gap-4 sm:flex-row lg:justify-start">
-              
               {/* Video Dialog */}
               <Dialog open={videoOpen} onOpenChange={setVideoOpen}>
                 <DialogTrigger asChild>
@@ -77,58 +77,45 @@ export default function Hero() {
               </Dialog>
 
               {/* Contact Button */}
-              <Button 
-                size="lg" 
-                className="group w-full sm:w-auto lg:text-base xl:text-lg" 
+              <Button
+                size="lg"
+                className="group w-full sm:w-auto lg:text-base xl:text-lg"
                 onClick={handleClick}
               >
                 Contact Us
                 <ArrowRight className="ml-2 size-4 lg:size-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </div>
-          </div>          {/* Image Section */}
+          </div>
+          {/* Video Section */}
           <div className="relative order-first lg:order-last">
             <div className="absolute -inset-4 -z-10 rounded-2xl bg-dark/10 blur-sm" />
-            <div className="relative overflow-hidden rounded-xl">              {/* Skeleton */}
-              <div 
-                className={cn(
-                  "absolute inset-0 bg-gradient-to-r from-muted via-muted/50 to-muted animate-pulse rounded-xl h-[400px]",
-                  imageLoaded && "opacity-0"
-                )}
-              />
-              
-              <Image
-                src="/assets/3.webp"
-                alt="Students who won dialog Innovative challenge"
-                className={cn(
-                  "w-full object-cover shadow-lg transition-all duration-500 hover:scale-[1.02] border border-gray-600",
-                  imageLoaded ? "opacity-100" : "opacity-0"
-                )}
-                height={800}
-                width={800}
-                style={{ 
-                  maxHeight: "400px",
-                  height: "400px"
-                }}
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 45vw, 40vw"
-                loading="lazy"
-                onLoad={() => setImageLoaded(true)}
-                onError={() => setImageLoaded(true)}
-              />
-              
-              {/* Overlay Badge - only show when image is loaded */}
-              <div className={cn(
-                "absolute bottom-3 left-3 lg:bottom-4 lg:left-4 xl:bottom-6 xl:left-6 rounded-lg bg-background/95 backdrop-blur-sm p-3 lg:p-4 xl:p-5 shadow-lg border transition-opacity duration-500",
-                imageLoaded ? "opacity-100" : "opacity-0"
-              )}>
-                <p className="font-semibold text-sm lg:text-base xl:text-lg">Dialog Innovation</p>
+            <div className="relative overflow-hidden rounded-xl">
+              {/* YouTube Video */}
+              <div
+                className="relative rounded-xl border border-gray-600 shadow-lg overflow-hidden"
+                style={{ maxHeight: "400px", height: "400px" }}
+              >
+                <iframe
+                  src="https://www.youtube.com/embed/4sECecnNtY0?rel=0"
+                  title="YouTube video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full rounded-xl z-10"
+                />
+              </div>
+
+              {/* Overlay Badge */}
+              <div className="absolute bottom-3 left-3 lg:bottom-4 lg:left-4 xl:bottom-6 xl:left-6 rounded-lg bg-background/95 backdrop-blur-sm p-3 lg:p-4 xl:p-5 shadow-lg border">
+                <p className="font-semibold text-sm lg:text-base xl:text-lg">
+                  Dialog Innovation
+                </p>
                 <p className="text-xs lg:text-sm xl:text-base text-muted-foreground">
                   Winner 2024
                 </p>
               </div>
             </div>
           </div>
-
         </div>
       </div>
 
