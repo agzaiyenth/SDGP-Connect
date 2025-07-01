@@ -42,5 +42,11 @@ export const footerItem = {
         { label: "Cookie policy", href: "/cookies" },
       ],
     },
+
   ],
+  socials: [
+    { name: "Instagram", href: "https://www.instagram.com/sdgp.iit", icon: "Instagram" },
+    { name: "LinkedIn",  href: "https://www.linkedin.com/company/sdgp-iit/", icon: "Linkedin" },
+  ],
+
 }

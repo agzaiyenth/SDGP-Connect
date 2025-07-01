@@ -42,14 +42,9 @@ const Logo: React.FC = () => (
   >
     <div className="relative">
       <Image
-        src="/iconw.svg"
+        src="/test.svg"
         alt="SDGP Logo"
         className="lg:pl-2 pl-1 h-24 w-24 sm:h-52 sm:w-42 md:h-48 md:w-48 -mb-6 sm:-mb-8 md:-mb-17 -mt-4 sm:-mt-6 md:-mt-12"
-        style={{
-          WebkitTransform: "translateZ(0)",
-          imageRendering: "crisp-edges",
-          shapeRendering: "crispEdges",
-        }}
         width={48}
         height={48}
         priority
