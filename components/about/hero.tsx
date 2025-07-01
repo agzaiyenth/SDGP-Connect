@@ -122,16 +122,6 @@ export default function Hero() {
                   </div>
                 )}
               </div>
-
-              {/* Overlay Badge */}
-              <div className="absolute bottom-3 left-3 lg:bottom-4 lg:left-4 xl:bottom-6 xl:left-6 rounded-lg bg-background/95 backdrop-blur-sm p-3 lg:p-4 xl:p-5 shadow-lg border">
-                <p className="font-semibold text-sm lg:text-base xl:text-lg">
-                  Dialog Innovation
-                </p>
-                <p className="text-xs lg:text-sm xl:text-base text-muted-foreground">
-                  Winner 2024
-                </p>
-              </div>
             </div>
           </div>
         </div>
