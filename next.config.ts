@@ -1,13 +1,25 @@
 import type { NextConfig } from "next";
-/** @type {import('next').NextConfig} */
 
+/** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  modern: true, 
+  modern: true,
   productionBrowserSourceMaps: true,
   images: {
     unoptimized: true,
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.youtube.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.vimeo.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'player.vimeo.com',
+      },
       {
         protocol: 'https',
         hostname: 'picsum.photos',
@@ -32,7 +44,6 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'sdgpblob.blob.core.windows.net',
       },
-      
     ],
   },
   env: {
@@ -46,13 +57,12 @@ const nextConfig: NextConfig = {
         source: '/(.*)',
         headers: [
           {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; frame-src 'self' https://www.youtube.com https://player.vimeo.com https://vimeo.com; frame-ancestors 'none';"
           },
           {
-            key: 'Content-Security-Policy',
-            value:
-              "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; frame-ancestors 'none';",
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
           },
           {
             key: 'Permissions-Policy',

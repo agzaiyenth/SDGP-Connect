@@ -12,10 +12,15 @@ import { cn } from "@/lib/utils";
 export default function Hero() {
   const [videoOpen, setVideoOpen] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const router = useRouter();
 
   const handleClick = () => {
     router.push("/contact");
+  };
+
+  const handleVideoClick = () => {
+    setIsMuted(!isMuted);
   };
 
   return (
@@ -66,7 +71,7 @@ export default function Hero() {
                 <DialogContent className="sm:max-w-[600px] md:max-w-[700px] lg:max-w-[800px] xl:max-w-[900px] 2xl:max-w-[1000px]">
                   <div className="relative aspect-video rounded-lg border shadow-lg">
                     <iframe
-                      src="https://www.youtube.com/embed/qgQh2O1nbi8?end=2537&rel=0"
+                      src="https://www.youtube.com/embed/qgQh2O1nbi8?end=2537&rel=0&autoplay=1&mute=0&cc_load_policy=1&controls=0&showinfo=0&modestbranding=1&disablekb=1&fs=0"
                       title="YouTube video"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
@@ -93,16 +98,29 @@ export default function Hero() {
             <div className="relative overflow-hidden rounded-xl">
               {/* YouTube Video */}
               <div
-                className="relative rounded-xl border border-gray-600 shadow-lg overflow-hidden"
+                className="relative rounded-xl border border-gray-600 shadow-lg overflow-hidden cursor-pointer"
                 style={{ maxHeight: "400px", height: "400px" }}
+                onClick={handleVideoClick}
               >
                 <iframe
-                  src="https://www.youtube.com/embed/4sECecnNtY0?rel=0"
+                  src={`https://www.youtube.com/embed/4sECecnNtY0?rel=0&autoplay=1&mute=${isMuted ? 1 : 0}&loop=1&playlist=4sECecnNtY0&cc_load_policy=1&controls=0&showinfo=0&modestbranding=1&disablekb=1&fs=0&iv_load_policy=3`}
                   title="YouTube video"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="absolute inset-0 w-full h-full rounded-xl z-10"
+                  allowFullScreen={false}
+                  className="absolute inset-0 w-full h-full rounded-xl z-10 pointer-events-none"
                 />
+                
+                {/* Invisible overlay to handle clicks */}
+                <div className="absolute inset-0 z-20" />
+                
+                {/* Mute indicator */}
+                {isMuted && (
+                  <div className="absolute top-3 right-3 lg:top-4 lg:right-4 rounded-full bg-black/50 backdrop-blur-sm p-2 z-30">
+                    <svg className="w-4 h-4 lg:w-5 lg:h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.617.793L4.828 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.828l3.555-3.793A1 1 0 019.383 3.076zM12.293 7.293a1 1 0 011.414 0L15 8.586l1.293-1.293a1 1 0 111.414 1.414L16.414 10l1.293 1.293a1 1 0 01-1.414 1.414L15 11.414l-1.293 1.293a1 1 0 01-1.414-1.414L13.586 10l-1.293-1.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                )}
               </div>
 
               {/* Overlay Badge */}
