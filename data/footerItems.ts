@@ -42,5 +42,13 @@ export const footerItem = {
         { label: "Cookie policy", href: "/cookies" },
       ],
     },
+
   ],
+  socials: [
+    { name: "Facebook",  href: "https://www.facebook.com/sdgp.lk",  icon: "Facebook" },
+    { name: "Instagram", href: "https://www.instagram.com/sdgp.iit", icon: "Instagram" },
+    { name: "LinkedIn",  href: "https://www.linkedin.com/company/sdgp-iit/", icon: "Linkedin" },
+    { name: "Mail", href: "mailto:info@sdgp.lk", icon: "Mail" },
+  ],
+
 }
