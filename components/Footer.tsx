@@ -79,7 +79,7 @@ export default function Footer() {
               </ul>
 
               {section.title === "Legal" && (
-                <div className="mt-6">
+                <div className="mt-4">
                   <h3 className="mb-3 font-semibold">Social Media</h3>
                   <div className="flex gap-3">
                     {footerItem.socials.map(({ name, href, icon }, index) => {
@@ -91,9 +91,9 @@ export default function Footer() {
                           target="_blank"
                           rel="noopener noreferrer"
                           aria-label={name}
-                          className="rounded-full bg-zinc-700 hover:bg-zinc-600 p-3 transition"
+                          className="rounded-full bg-zinc-700 hover:bg-zinc-600 p-2.5 transition"
                         >
-                          <IconComponent className="h-4 w-4 text-white" strokeWidth={1.5} />
+                          <IconComponent className="h-3.5 w-3.5 text-white" strokeWidth={1.5} />
                         </a>
                       );
                     })}
