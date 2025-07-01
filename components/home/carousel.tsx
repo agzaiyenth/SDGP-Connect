@@ -12,6 +12,7 @@ const images = [
   '/assets/innovex.webp',
   '/assets/movemate1.webp',
   '/assets/win.webp',
+  '/assets/3.webp',
   '/assets/dialog-ino.webp',
 ];
 
