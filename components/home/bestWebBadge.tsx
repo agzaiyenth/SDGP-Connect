@@ -10,11 +10,12 @@ const BadgeComponent: React.FC = () => (
       rel="noopener noreferrer"
       className="block"
     >
-      <img
+      <Image
         src="https://ebadge.bestweb.lk/eBadgeSystem/domainNames/sdgp.lk/BestWeb/2025/Rate_Us/image.png"
         alt="logo"
-        width="150"
-        className="transition-transform hover:scale-105 w-19 h-19 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-36 lg:h-36"
+        height={450}
+        width="450"
+        className="transition-transform hover:scale-105 w-24  sm:w-32  sm:h-24 md:w-38 lg:w-38 "
       />
     </Link>
   </div>
