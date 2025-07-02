@@ -116,7 +116,7 @@ export default function Hero() {
                 homeHero.morphing_text3 || "Building Tomorrow's Solutions",
                 homeHero.morphing_text4 || "Creating Innovative Designs",
               ]}
-              className="text-xl md:text-2xl text-foreground/80  w-120 "
+              className="text-xl md:text-2xl text-foreground/80  w-140 "
             />
           </MotionDiv>
 
