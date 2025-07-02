@@ -13,7 +13,7 @@ const BadgeComponent: React.FC = () => (
       <Image
         src="https://ebadge.bestweb.lk/eBadgeSystem/domainNames/sdgp.lk/BestWeb/2025/Rate_Us/image.png"
         alt="BestWeb Badge"
-        width={144}
+        width={216}
         height={144}
         sizes="(max-width: 640px) 76px, (max-width: 768px) 96px, 144px"
         className="transition-transform hover:scale-105 w-19 h-19 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-36 lg:h-36"
