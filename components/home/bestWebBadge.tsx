@@ -14,8 +14,8 @@ const BadgeComponent: React.FC = () => (
         src="https://ebadge.bestweb.lk/eBadgeSystem/domainNames/sdgp.lk/BestWeb/2025/Rate_Us/image.png"
         alt="logo"
         height={450}
-        width="450"
-        className="transition-transform hover:scale-105 w-24  sm:w-32  sm:h-24 md:w-38 lg:w-38 "
+        width="650"
+        className="transition-transform hover:scale-105 w-48  sm:w-32  sm:h-24 md:w-38 lg:w-38 "
       />
     </Link>
   </div>
