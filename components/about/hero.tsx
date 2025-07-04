@@ -71,7 +71,7 @@ export default function Hero() {
                 <DialogContent className="sm:max-w-[600px] md:max-w-[700px] lg:max-w-[800px] xl:max-w-[900px] 2xl:max-w-[1000px]">
                   <div className="relative aspect-video rounded-lg border shadow-lg">
                     <iframe
-                      src="https://www.youtube.com/embed/qgQh2O1nbi8?end=2537&rel=0&autoplay=1&mute=0&cc_load_policy=1&controls=0&showinfo=0&modestbranding=1&disablekb=1&fs=0"
+                      src="https://www.youtube.com/embed/7uZvGxbC-wA?end=2537&rel=0&autoplay=1&mute=0&cc_load_policy=1&controls=0&showinfo=0&modestbranding=1&disablekb=1&fs=0"
                       title="YouTube video"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
