@@ -6,7 +6,7 @@
 // You may not alter or remove any copyright or other notice from copies of this content.
 import { footerItem } from "@/data/footerItems";
 import Link from "next/link";
-import { Facebook, Instagram, Linkedin, Mail } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Mail,Youtube } from "lucide-react";
 
 interface NavLink {
   label: string;
@@ -27,6 +27,7 @@ const iconMap = {
   Facebook,
   Instagram,
   Linkedin,
+  Youtube,
   Mail,
 };
 export default function Footer() {

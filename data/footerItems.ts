@@ -47,6 +47,7 @@ export const footerItem = {
   socials: [
     { name: "Instagram", href: "https://www.instagram.com/sdgp.iit", icon: "Instagram" },
     { name: "LinkedIn",  href: "https://www.linkedin.com/company/sdgp-iit/", icon: "Linkedin" },
+    { name: "Youtube",  href: "https://www.youtube.com/@SDGPIIT", icon: "Youtube" },
   ],
 
 }
