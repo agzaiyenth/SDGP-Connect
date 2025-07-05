@@ -88,44 +88,6 @@ export default function AwardsPage() {
                     <p className="mt-2 text-sm text-muted-foreground">Competition Winners</p>
                   </div>
                 </div>
-                {/* Buttons */}
-                {/* <div className="flex w-full flex-col gap-4 sm:flex-row sm:gap-4 lg:justify-start pt-6">
-              
-                  <Dialog open={videoOpen} onOpenChange={setVideoOpen}>
-                    <DialogTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className="group relative w-full sm:w-auto overflow-hidden bg-gray-900 border-gray-700 text-white hover:bg-gray-800"
-                        size="lg"
-                      >
-                        <div className="absolute inset-0 bg-blue-950/20 transition-transform group-hover:translate-y-full" />
-                        <Play className="mr-2 size-4" />
-                        Watch Highlights
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="w-[95vw] max-w-4xl bg-gray-900 border-gray-700">
-                      <div className="relative aspect-video rounded-lg border border-gray-700 shadow-lg">
-                        <iframe
-                          src="https://www.youtube.com/embed/qgQh2O1nbi8?end=2537&rel=0"
-                          title="Competition Highlights"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          className="absolute inset-0 h-full w-full rounded-md"
-                        />
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-
-             
-                  <Button
-                    size="lg"
-                    className="group w-full sm:w-auto bg-white text-black hover:bg-gray-200"
-                    onClick={handleClick}
-                  >
-                    View All Winners
-                    <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
-                  </Button>
-                </div> */}
               </div>
             </div>
 
