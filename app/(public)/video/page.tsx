@@ -7,8 +7,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { VideoGrid } from "@/components/video-grid"
-import videosData from "@/data/videos.json"
+import { VideoGrid } from "@/components/video/video-grid"
+import videosData from "@/data/video.json"
 
 interface Video {
   id: string
