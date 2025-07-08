@@ -144,7 +144,6 @@ export default function Home() {
       `}</style>
 
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-white text-3xl font-bold text-center mb-8">YouTube Shorts</h1>
         <VideoGrid videos={videosData} />
       </div>
     </div>
