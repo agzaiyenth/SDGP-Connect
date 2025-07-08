@@ -1,30 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
-
-const VideoSkeleton = () => (
-  <div className="w-full aspect-video bg-gray-800 rounded-lg animate-pulse flex items-center justify-center">
-    <div className="w-16 h-16 border-4 border-gray-600 border-t-white rounded-full animate-spin"></div>
-  </div>
-)
-
 export default function Hero() {
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false)
-  const [shouldLoadVideo, setShouldLoadVideo] = useState(false)
-
-  useEffect(() => {
-    // Delay video loading slightly to improve initial page load
-    const timer = setTimeout(() => {
-      setShouldLoadVideo(true)
-    }, 500)
-
-    return () => clearTimeout(timer)
-  }, [])
-
-  const handleVideoLoad = () => {
-    setIsVideoLoaded(true)
-  }
-
   return (
     <section className="min-h-screen bg-black text-white py-12 px-4">
       <div className="container mx-auto max-w-7xl">
@@ -73,21 +49,14 @@ export default function Hero() {
           {/* Right Video */}
           <div className="flex items-center justify-center">
             <div className="w-full max-w-2xl">
-              {!isVideoLoaded && <VideoSkeleton />}
-
-              {shouldLoadVideo && (
-                <div className={`w-full ${!isVideoLoaded ? "hidden" : ""}`}>
-                  <iframe
-                    src="https://www.youtube.com/embed/7uZvGxbC-wA?autoplay=1&mute=1&cc_load_policy=1&modestbranding=1&rel=0&showinfo=0&controls=1&iv_load_policy=3&fs=1&playsinline=1"
-                    title="What is SDGPA"
-                    className="w-full aspect-video rounded-lg shadow-2xl"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    loading="lazy"
-                    onLoad={handleVideoLoad}
-                  />
-                </div>
-              )}
+              <iframe
+                src="https://www.youtube.com/embed/7uZvGxbC-wA?autoplay=1&mute=1&cc_load_policy=1&modestbranding=1&rel=0&controls=1&playsinline=1&enablejsapi=1"
+                title="What is SDGPA"
+                className="w-full aspect-video rounded-lg shadow-2xl"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                loading="lazy"
+              />
             </div>
           </div>
         </div>

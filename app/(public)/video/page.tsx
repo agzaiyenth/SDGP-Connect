@@ -9,6 +9,7 @@
 import { useState, useEffect } from "react"
 import { VideoGrid } from "@/components/video/video-grid"
 import videosData from "@/data/video.json"
+import  Hero  from "@/components/video/hero-section"
 
 interface Video {
   id: string
@@ -142,7 +143,7 @@ export default function Home() {
           background: #606060;
         }
       `}</style>
-
+        <Hero />
       <div className="max-w-6xl mx-auto">
         <VideoGrid videos={videosData} />
       </div>
