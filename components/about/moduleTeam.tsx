@@ -72,7 +72,7 @@ const teamMembers = [
 		linkedin: "https://www.linkedin.com/in/mithushan-jalangan/",
 		description:
 			"I help founders build better software | Product Engineer | Full stack Web/AI | asyncdot & shopbook.lk - Co-founder",
-		category: "Primary",
+		category: "Former",
 		image: "/assets/Mithushan sir.webp",
 	},
 	{
@@ -92,7 +92,7 @@ const teamMembers = [
 		linkedin: "https://www.linkedin.com/in/pubudu-mihiranga/",
 		description:
 			"Brings industry experience in software architecture and system design.",
-		category: "Primary",
+		category: "Former",
 		image: "/assets/pubudu.webp",
 	},
 	{
@@ -102,7 +102,7 @@ const teamMembers = [
 		linkedin: "https://www.linkedin.com/in/mohanadas-jananie/",
 		description:
 			"Focuses on software testing practices and quality assurance in group projects.",
-		category: "Primary",
+		category: "Former",
 		image: "/assets/janani miss.webp",
 	},
 	{
@@ -139,7 +139,7 @@ const teamMembers = [
 		email: "ayeshka.j@iit.ac.lk",
 		linkedin: "https://www.linkedin.com/in/imashaayeshka-jayasundara/",
 		description: "IIT lecturer",
-		category: "Primary",
+		category: "Former",
 		image: "/assets/imasha.webp",
 	},
 	{
@@ -148,7 +148,7 @@ const teamMembers = [
 		email: "thashin.r@iit.ac.lk",
 		linkedin: "https://www.linkedin.com/in/thashin-rahuman/",
 		description: "Software Engineer | Blockchain | React JS/ NodeJS | GO",
-		category: "Former",
+		category: "Primary",
 		image: "/assets/thashin sir.webp",
 	},
 	{
@@ -158,7 +158,7 @@ const teamMembers = [
 		linkedin: "https://www.linkedin.com/in/ahtshayan-udayasanthiran/",
 		description:
 			"Focuses on software development lifecycle and project documentation.",
-		category: "Primary",
+		category: "Former",
 		image: "/assets/ahtshayan sir.webp",
 	},
 	//former members
