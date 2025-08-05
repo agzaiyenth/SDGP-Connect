@@ -1,6 +1,33 @@
-# SDGP Connect - Project Setup Guide
+# SDGP Connect
+[![License: Non-Commercial](https://img.shields.io/badge/License-Non--Commercial-red)](https://github.com/agzaiyenth/SDGP-Connect/blob/main/LICENSE.md)
+[![Join our WhatsApp Community](https://img.shields.io/badge/Join%20our%20WhatsApp%20Community-Click%20Here-brightgreen)](https://chat.whatsapp.com/IFJH9D1sbiT7OsNsBT4neT)
+---
+## What is SDGP Connect?
 
-Welcome to the SDGP Connect project! Follow these instructions to set up the project on your local machine. This guide is intended to help newcomers get started quickly.
+**[sdgp.lk](https://sdgp.lk)** is a platform built for the **Informatics Institute of Technology (IIT)** as part of the SDGP (Software Development Group Project) module. Its core mission is to **showcase student-led tech projects** and **connect them with real-world investors, mentors, and industry partners**.
+
+This platform acts as a digital bridge between innovation and opportunity—allowing students to go beyond academic recognition and **attract funding, incubation, or partnerships** that help bring their projects to life.
+
+> Developed by [Psycode Labs](https://psycodelabs.lk) in collaboration with IIT for commercial use.
+
+
+## Reporting Website issues
+
+All known issues of SDGP Connect are filed at: https://github.com/agzaiyenth/sdgp-connect/issues. Please check this list before opening a new issue.
+
+### Opening an issue
+
+Help us make our software better! Submit any bug reports or feature requests through GitHub:  https://github.com/agzaiyenth/sdgp-connect/issues.
+
+### Reporting security issues
+
+Please **do not** report security issues via GitHub issues. Instead, Email [SDGP Security Vulnerability Reports](security@sdgp.lk).
+
+## Contributing
+
+If you are planning on contributing to the development efforts of SDGP Connect, you can do so by checking out the latest development version. The master branch holds the latest released source code.
+
+Follow these instructions to set up the project on your local machine. This guide is intended to help newcomers get started quickly.
 
 ## Cloning the Project
 
@@ -23,7 +50,7 @@ We use **Yarn** instead of npm. Install all the required packages with:
 ## Setting Up Environment Variables
 
 1. Create a `.env` file at the root of the project.
-2. Add environment variables. (Ask @zionashirwada for the `.env` file).
+2. Add environment variables. (Ask @agzaiyenth / @zionashirwada for the `.env` file).
 
 ---
 
@@ -100,7 +127,6 @@ improvement/home-page
 ## Core Pages
 
 - **Home Page (`/`)**
-  - Hero banner with tagline and CTA buttons: “Browse Projects”, “Become an Investor”
   - Brief description of the SDGP module
   - Carousel showcasing featured projects
   - Impact stats (e.g., "240+ Projects", "3 Startups Funded")
