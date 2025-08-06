@@ -17,7 +17,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 
 interface FilterState {
-    featured: boolean; // Add featured filter
+    featured: boolean;
     status: string[];
     years: string[];
     projectTypes: string[];
@@ -36,7 +36,7 @@ function ProjectsPageContent() {
         page: parseInt(searchParams.get('page') || '1', 10),
         limit: parseInt(searchParams.get('limit') || '9', 10),
         title: searchParams.get('title') || undefined,
-        featured: searchParams.get('featured') === 'true', // Add featured parameter
+        featured: searchParams.get('featured') === 'true',
         status: searchParams.getAll('status'),
         years: searchParams.getAll('years'),
         projectTypes: searchParams.getAll('projectTypes'),
@@ -56,7 +56,7 @@ function ProjectsPageContent() {
     }, [isLoading, projects, isInitialLoad]);
 
     const initialFilters = useMemo((): FilterState => ({
-        featured: currentParams.featured || false, // Add featured to initial filters
+        featured: currentParams.featured || false,
         status: currentParams.status || [],
         years: currentParams.years || [],
         projectTypes: currentParams.projectTypes || [],
@@ -65,9 +65,13 @@ function ProjectsPageContent() {
         techStack: currentParams.techStack || [],
     }), [currentParams]);
 
-    const toggleFilters = () => {
-        setShowMobileFilters(!showMobileFilters);
-    };
+    const toggleFilters = useCallback(() => {
+        console.log('toggleFilters called, current state:', showMobileFilters);
+        setShowMobileFilters(prev => {
+            console.log('Setting showMobileFilters from', prev, 'to', !prev);
+            return !prev;
+        });
+    }, [showMobileFilters]);
 
     const handleFilterChange = useCallback((newFilters: FilterState) => {
         const params = new URLSearchParams();
@@ -94,7 +98,9 @@ function ProjectsPageContent() {
 
         const newUrl = `${window.location.pathname}?${params.toString()}`;
         router.push(newUrl, { scroll: false });
-        setShowMobileFilters(false);
+        
+        // Close mobile filters after applying changes
+        //setShowMobileFilters(false);
     }, [router, currentParams.limit, currentParams.title]);
 
     const handleSearch = useCallback((value: string) => {
@@ -108,54 +114,121 @@ function ProjectsPageContent() {
         router.push(`${window.location.pathname}?${params.toString()}`, { scroll: false });
     }, [router, searchParams]);
 
+    // Handle mobile filter close with escape key
+    useEffect(() => {
+        const handleEscape = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && showMobileFilters) {
+                //setShowMobileFilters(false);
+            }
+        };
+
+        if (showMobileFilters) {
+            document.addEventListener('keydown', handleEscape);
+            // Prevent body scroll when mobile filters are open
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+
+        return () => {
+            document.removeEventListener('keydown', handleEscape);
+            document.body.style.overflow = 'unset';
+        };
+    }, [showMobileFilters]);
+
     // Show full page skeleton only on initial load
     if (isInitialLoad && isLoading && (!projects || projects.length === 0)) {
         return <LoadingSkeleton />;
     }
 
-    return (
-        <div className="container mx-auto py-8 px-4">
-            <SearchHeader
-                toggleFilters={toggleFilters}
-                defaultTitle={currentParams.title ?? ""}
-                onSearch={handleSearch}
-            />
+    console.log('Rendering with showMobileFilters:', showMobileFilters); // Debug log
 
-            <div className="flex flex-col md:flex-row gap-6 mt-8">
-                {/* Mobile Filter Overlay */}
-                {showMobileFilters && (
-                    <div className="md:hidden fixed inset-0 bg-background/95 z-40 overflow-y-auto p-4">
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="font-bold text-lg">Filters</h2>
-                            <Button variant="ghost" size="icon" onClick={toggleFilters}>
-                                <X className="h-5 w-5" />
-                            </Button>
-                        </div>
-                        <div className="mb-6">
+    return (
+        <div className="relative">
+            <div className="container mx-auto py-8 px-4">
+                <SearchHeader
+                    toggleFilters={toggleFilters}
+                    defaultTitle={currentParams.title ?? ""}
+                    onSearch={handleSearch}
+                />
+                
+                
+
+                <div className="flex flex-col md:flex-row gap-6 mt-8">
+                    {/* Desktop Filter Sidebar */}
+                    <div className="hidden md:block w-64 lg:w-72 flex-shrink-0">
+                        <div className="sticky top-0">
                             <FilterSidebar onFilterChange={handleFilterChange} initialFilters={initialFilters} />
                         </div>
                     </div>
-                )}
 
-                {/* Desktop Filter Sidebar */}
-                <div className="hidden md:block w-64 lg:w-72 flex-shrink-0">
-                    <div className="sticky top-0">
-                        <FilterSidebar onFilterChange={handleFilterChange} initialFilters={initialFilters} />
+                    <div className="flex-1">
+                        <ProjectExplorer
+                            currentParams={currentParams}
+                            projects={projects || []}
+                            isLoading={isLoading}
+                            error={error}
+                            meta={meta}
+                            hasMore={hasMore}
+                            loadMore={loadMore}
+                        />
                     </div>
                 </div>
-
-                <div className="flex-1">
-                    <ProjectExplorer
-                        currentParams={currentParams}
-                        projects={projects}
-                        isLoading={isLoading}
-                        error={error}
-                        meta={meta}
-                        hasMore={hasMore}
-                        loadMore={loadMore}
-                    />
-                </div>
             </div>
+
+            {/* Mobile Filter Overlay */}
+            {showMobileFilters && (
+                <div 
+                    className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] md:hidden"
+                    style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}
+                >
+                    <div className="fixed inset-0 bg-background flex flex-col">
+                        {/* Header */}
+                        <div className="flex justify-between items-center p-4 border-b bg-background shrink-0">
+                            <h2 className="font-bold text-lg">Filters</h2>
+                            <Button 
+                                variant="ghost" 
+                                size="icon" 
+                                onClick={() => {
+                                    console.log('Close button clicked');
+                                    setShowMobileFilters(false);
+                                }}
+                                className="h-8 w-8 z-[10000]"
+                                type="button"
+                            >
+                                <X className="h-5 w-5" />
+                            </Button>
+                        </div>
+                        
+                        {/* Filter Content - Scrollable */}
+                        <div className="flex-1 overflow-y-auto p-4">
+                            <FilterSidebar 
+                                onFilterChange={handleFilterChange} 
+                                initialFilters={initialFilters} 
+                            />
+                        </div>
+                        
+                        {/* Action buttons */}
+                        <div className="p-4 border-t bg-background shrink-0 flex gap-2">
+                            <Button 
+                                variant="outline" 
+                                className="flex-1"
+                                onClick={() => setShowMobileFilters(false)}
+                                type="button"
+                            >
+                                Cancel
+                            </Button>
+                            <Button 
+                                className="flex-1"
+                                onClick={() => setShowMobileFilters(false)}
+                                type="button"
+                            >
+                                Apply Filters
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
@@ -172,10 +245,10 @@ const Page = () => {
 // Define a skeleton component for the fallback
 const LoadingSkeleton = () => (
     <div className="container mx-auto py-8 px-4">
-        <Skeleton className="h-12 w-full mb-8" /> {/* Placeholder for SearchHeader */}
+        <Skeleton className="h-12 w-full mb-8" />
         <div className="flex flex-col md:flex-row gap-6 mt-8">
             <div className="hidden md:block w-64 lg:w-72 flex-shrink-0">
-                <Skeleton className="h-64 w-full" /> {/* Placeholder for FilterSidebar */}
+                <Skeleton className="h-64 w-full" />
             </div>
             <div className="flex-1">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
