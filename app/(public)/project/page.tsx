@@ -17,6 +17,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 
 interface FilterState {
+    featured: boolean; // Add featured filter
     status: string[];
     years: string[];
     projectTypes: string[];
@@ -35,6 +36,7 @@ function ProjectsPageContent() {
         page: parseInt(searchParams.get('page') || '1', 10),
         limit: parseInt(searchParams.get('limit') || '9', 10),
         title: searchParams.get('title') || undefined,
+        featured: searchParams.get('featured') === 'true', // Add featured parameter
         status: searchParams.getAll('status'),
         years: searchParams.getAll('years'),
         projectTypes: searchParams.getAll('projectTypes'),
@@ -54,6 +56,7 @@ function ProjectsPageContent() {
     }, [isLoading, projects, isInitialLoad]);
 
     const initialFilters = useMemo((): FilterState => ({
+        featured: currentParams.featured || false, // Add featured to initial filters
         status: currentParams.status || [],
         years: currentParams.years || [],
         projectTypes: currentParams.projectTypes || [],
@@ -72,8 +75,17 @@ function ProjectsPageContent() {
         params.append('limit', String(currentParams.limit || 15));
         if (currentParams.title) params.append('title', currentParams.title);
 
+        // Handle featured filter
+        if (newFilters.featured) {
+            params.append('featured', 'true');
+        }
+
+        // Handle array filters
         Object.entries(newFilters).forEach(([key, values]) => {
-            if (values && values.length > 0) {
+            // Skip featured as it's already handled above
+            if (key === 'featured') return;
+            
+            if (Array.isArray(values) && values.length > 0) {
                 values.forEach((value: string) => {
                     params.append(key, value);
                 });
@@ -130,8 +142,6 @@ function ProjectsPageContent() {
                     <div className="sticky top-0">
                         <FilterSidebar onFilterChange={handleFilterChange} initialFilters={initialFilters} />
                     </div>
-
-
                 </div>
 
                 <div className="flex-1">

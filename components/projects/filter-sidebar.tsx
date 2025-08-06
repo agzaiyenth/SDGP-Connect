@@ -1,12 +1,17 @@
+// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
+//
+// This software is the property of Psycode Lab's. and its suppliers, if any.
+// Dissemination of any information or reproduction of any material contained
+// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
+// You may not alter or remove any copyright or other notice from copies of this content.
 "use client"
 
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { Check, ChevronDown, X as ClearIcon } from "lucide-react";
+import { Check, ChevronDown, X as ClearIcon, Star } from "lucide-react";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
 import { cn } from "@/lib/utils";
-
 
 import {
   projectStatusOptions,
@@ -29,12 +34,59 @@ type Option = {
 
 // Define the structure for the entire filter state
 export interface FilterState {
+  featured: boolean; // Add featured filter
   status: string[];
   years: string[];
   projectTypes: string[];
   domains: string[];
   sdgGoals: string[];
   techStack: string[];
+}
+
+// --- FeaturedFilterSection Component ---
+type FeaturedSectionProps = {
+  selection: boolean;
+  setSelection: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+function FeaturedFilterSection({
+  selection,
+  setSelection
+}: FeaturedSectionProps) {
+  const [isOpen, setIsOpen] = useState(true);
+
+  const toggleFeatured = useCallback(() => {
+    setSelection(prev => !prev);
+  }, [setSelection]);
+
+  return (
+    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">
+      <CollapsibleTrigger asChild>
+        <Button
+          variant="ghost"
+          className="flex w-full justify-between p-2 font-medium hover:bg-muted/50"
+        >
+          Featured Projects
+          <ChevronDown className={cn("h-4 w-4 transition-transform", isOpen && "rotate-180")} />
+        </Button>
+      </CollapsibleTrigger>
+      <CollapsibleContent className="px-2 data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up overflow-hidden">
+        <div className="pt-1 pb-2 space-y-1">
+          <div className="flex items-center gap-2 px-1 py-1">
+            <Checkbox
+              id="featured"
+              checked={selection}
+              onCheckedChange={toggleFeatured}
+              className="flex-shrink-0"
+            />
+            <Label htmlFor="featured" className="flex-grow truncate text-sm cursor-pointer">
+              Featured 
+            </Label>
+          </div>
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
+  );
 }
 
 // --- GenericFilterSection Component ---
@@ -102,7 +154,6 @@ function GenericFilterSection({
             );
           })}
 
-
           {hasMore && (
             <Button
               variant="link"
@@ -162,7 +213,6 @@ function TechStackSection({
       return acc;
     }, {} as Record<string, Option[]>); // Type the accumulator
   }, []); // Dependency array is empty as techStackOptions is imported
-
 
   const initialOptionsCount = 5;
 
@@ -244,6 +294,7 @@ export default function FilterSidebar({
   initialFilters
 }: FilterSidebarProps) {
   // Internal state for each filter category, initialized from props
+  const [featuredOnly, setFeaturedOnly] = useState<boolean>(() => initialFilters.featured || false);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>(() => initialFilters.status || []);
   const [selectedYears, setSelectedYears] = useState<string[]>(() => initialFilters.years || []);
   const [selectedProjectTypes, setSelectedProjectTypes] = useState<string[]>(() => initialFilters.projectTypes || []);
@@ -254,6 +305,7 @@ export default function FilterSidebar({
   // Memoized callback to notify the parent component of filter changes
   const notifyFilterChange = useCallback(() => {
     onFilterChange({
+      featured: featuredOnly,
       status: selectedStatuses,
       years: selectedYears,
       projectTypes: selectedProjectTypes,
@@ -262,6 +314,7 @@ export default function FilterSidebar({
       techStack: selectedTechStack
     });
   }, [
+    featuredOnly,
     selectedStatuses,
     selectedYears,
     selectedProjectTypes,
@@ -282,6 +335,9 @@ export default function FilterSidebar({
     const arraysAreEqual = (a: string[] | undefined, b: string[] | undefined): boolean =>
       JSON.stringify(a?.sort() || []) === JSON.stringify(b?.sort() || []);
 
+    if (initialFilters.featured !== featuredOnly) {
+      setFeaturedOnly(initialFilters.featured || false);
+    }
     if (!arraysAreEqual(initialFilters.status, selectedStatuses)) {
       setSelectedStatuses(initialFilters.status || []);
     }
@@ -336,14 +392,26 @@ export default function FilterSidebar({
   }, [yearOptions, sdgOptions]); // Recalculate if dynamic options change
 
   // Create a list of active filters with their labels for display, memoized
-  const activeFiltersList = useMemo(() => [
-    ...selectedStatuses.map(value => ({ type: 'status' as keyof FilterState, value, label: labelMap.get(value) ?? value })),
-    ...selectedYears.map(value => ({ type: 'years' as keyof FilterState, value, label: value })), // Year value is the label
-    ...selectedProjectTypes.map(value => ({ type: 'projectTypes' as keyof FilterState, value, label: labelMap.get(value) ?? value })),
-    ...selectedDomains.map(value => ({ type: 'domains' as keyof FilterState, value, label: labelMap.get(value) ?? value })),
-    ...selectedSDGs.map(value => ({ type: 'sdgGoals' as keyof FilterState, value, label: labelMap.get(value) ?? value })), // Use sdgOptions label
-    ...selectedTechStack.map(value => ({ type: 'techStack' as keyof FilterState, value, label: labelMap.get(value) ?? value })),
-  ], [selectedStatuses, selectedYears, selectedProjectTypes, selectedDomains, selectedSDGs, selectedTechStack, labelMap]);
+  const activeFiltersList = useMemo(() => {
+    const filters = [];
+    
+    // Add featured filter if active
+    if (featuredOnly) {
+      filters.push({ type: 'featured' as keyof FilterState, value: 'true', label: 'Featured Only' });
+    }
+    
+    // Add other filters
+    filters.push(
+      ...selectedStatuses.map(value => ({ type: 'status' as keyof FilterState, value, label: labelMap.get(value) ?? value })),
+      ...selectedYears.map(value => ({ type: 'years' as keyof FilterState, value, label: value })), // Year value is the label
+      ...selectedProjectTypes.map(value => ({ type: 'projectTypes' as keyof FilterState, value, label: labelMap.get(value) ?? value })),
+      ...selectedDomains.map(value => ({ type: 'domains' as keyof FilterState, value, label: labelMap.get(value) ?? value })),
+      ...selectedSDGs.map(value => ({ type: 'sdgGoals' as keyof FilterState, value, label: labelMap.get(value) ?? value })), // Use sdgOptions label
+      ...selectedTechStack.map(value => ({ type: 'techStack' as keyof FilterState, value, label: labelMap.get(value) ?? value })),
+    );
+    
+    return filters;
+  }, [featuredOnly, selectedStatuses, selectedYears, selectedProjectTypes, selectedDomains, selectedSDGs, selectedTechStack, labelMap]);
 
   const hasActiveFilters = activeFiltersList.length > 0;
 
@@ -351,6 +419,7 @@ export default function FilterSidebar({
 
   // Callback to clear all filters internally
   const clearFilters = useCallback(() => {
+    setFeaturedOnly(false);
     setSelectedStatuses([]);
     setSelectedYears([]);
     setSelectedProjectTypes([]);
@@ -362,6 +431,11 @@ export default function FilterSidebar({
 
   // Callback to remove a single specific filter internally
   const removeFilter = useCallback((filterType: keyof FilterState, filterValue: string) => {
+    if (filterType === 'featured') {
+      setFeaturedOnly(false);
+      return;
+    }
+
     const setterMap = {
       status: setSelectedStatuses,
       years: setSelectedYears,
@@ -370,7 +444,7 @@ export default function FilterSidebar({
       sdgGoals: setSelectedSDGs,
       techStack: setSelectedTechStack,
     };
-    const setter = setterMap[filterType];
+    const setter = setterMap[filterType as Exclude<keyof FilterState, 'featured'>];
     if (setter) {
       setter(prev => prev.filter(f => f !== filterValue));
     }
@@ -412,6 +486,10 @@ export default function FilterSidebar({
 
       {/* Scrollable Filter Sections */}
       <div className="space-y-1 divide-y divide-border/50 overflow-y-auto flex-grow">
+        <FeaturedFilterSection
+          selection={featuredOnly}
+          setSelection={setFeaturedOnly}
+        />
         <GenericFilterSection
           title="Project Status"
           options={projectStatusOptions}
