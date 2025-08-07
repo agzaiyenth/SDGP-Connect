@@ -1,3 +1,9 @@
+// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
+//
+// This software is the property of Psycode Lab's. and its suppliers, if any.
+// Dissemination of any information or reproduction of any material contained
+// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
+// You may not alter or remove any copyright or other notice from copies of this content.
 "use client"
 
 import { motion } from "framer-motion"
@@ -25,9 +31,6 @@ export default function WhatIsSdgp({ cardVariants }: { cardVariants: any }) {
             <p className="mt-4 text-lg text-white/70 leading-relaxed">
               This platform acts as a digital bridge between innovation and opportunity—allowing students to go beyond academic recognition and{" "}
               <strong>attract funding, incubation, or partnerships</strong> that help bring their projects to life.
-            </p>
-            <p className="mt-4 text-sm text-white/50 italic">
-              Developed by <a href="https://psycodelabs.lk" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">Psycode Labs</a> in collaboration with IIT for commercial use.
             </p>
           </CardContent>
         </Card>

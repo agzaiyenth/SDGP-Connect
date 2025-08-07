@@ -39,6 +39,7 @@ export const footerItem = {
         { label: "Contact", href: "/contact" },
         { label: "FAQ", href: "/faq" },
         { label: "Sitemap", href: "/sitemap.xml" },
+        { label: "Contribute", href: "/contribute" },
       ],
     },
     {

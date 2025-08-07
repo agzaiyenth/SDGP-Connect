@@ -1,12 +1,16 @@
+// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
+//
+// This software is the property of Psycode Lab's. and its suppliers, if any.
+// Dissemination of any information or reproduction of any material contained
+// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
+// You may not alter or remove any copyright or other notice from copies of this content.
 "use client"
 
 import { motion } from "framer-motion"
-import ElegantShape from "@/components/contribute/elegant-shape" // Import ElegantShape
-import PageIntro from "@/components/contribute/page-intro"
+import ElegantShape from "@/components/contribute/elegant-shape" 
 import WhatIsSdgp from "@/components/contribute/what-is-sdgp"
 import ReportingIssues from "@/components/contribute/reporting-issues"
 import ContributingGuideSections from "@/components/contribute/contributing-guide-sections"
-import CodingStandards from "@/components/contribute/coding-standards"
 
 /**
  * ElegantShape component for background geometric animations.
@@ -80,6 +84,7 @@ import CodingStandards from "@/components/contribute/coding-standards"
 
 export default function ContributePage() {
   // Variants for cards to animate into view as user scrolls
+  
   const cardVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -144,13 +149,11 @@ export default function ContributePage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="relative z-10 container mx-auto px-4 md:px-6 max-w-5xl"
+        className="relative z-10 px-4 md:px-6 max-w-5xl"
       >
-        <PageIntro />
         <WhatIsSdgp cardVariants={cardVariants} />
         <ReportingIssues cardVariants={cardVariants} />
         <ContributingGuideSections cardVariants={cardVariants} />
-        <CodingStandards cardVariants={cardVariants} />
       </motion.div>
 
       {/* Bottom gradient overlay */}
