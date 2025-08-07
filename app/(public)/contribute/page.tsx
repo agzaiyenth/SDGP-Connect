@@ -4,9 +4,16 @@
 // Dissemination of any information or reproduction of any material contained
 // herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
 // You may not alter or remove any copyright or other notice from copies of this content.
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import HeroGeometric from "@/components/contribute/hero-geometric";
+import ContributePage from "@/components/contribute/contribute-page";
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+export default function Page() {
+  return (
+    <div className="override-md-mx-0">
+  <HeroGeometric />
+  <ContributePage />
+</div>
+
+
+  );
 }

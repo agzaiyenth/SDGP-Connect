@@ -18,15 +18,21 @@ import { ExpandableChatAI } from "@/components/ai/ExpandableChatAI";
 import { LanguageProvider } from "@/hooks/LanguageProvider";
 import LanguageToggle from "@/components/LanguageToggle";
 import CookieBanner from "@/components/CookieBanner"
+import { usePathname } from "next/navigation";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
+  const pathname = usePathname();
+  
+  // Pages that should not have horizontal margins
+  const fullWidthPages = ['/contribute'];
+  const shouldHaveMargins = !fullWidthPages.includes(pathname);
 
   return (
     <LanguageProvider>
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
         <NavBar />
-        <div className="md:mx-24">{children}</div>
+        <div className={shouldHaveMargins ? "md:mx-24" : ""}>{children}</div>
         {!isMobile && <CustomCursor />}
         <Footer />
         <CookieBanner />
