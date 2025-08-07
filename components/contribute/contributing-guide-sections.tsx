@@ -51,7 +51,7 @@ export default function ContributingGuideSections({ cardVariants }: { cardVarian
             <CardContent className="p-6 pt-0 md:p-8 md:pt-0">
               <p className="text-white/70 mb-4">Access the full project repository on GitHub for detailed documentation and code.</p>
               <Button asChild variant="outline" className="bg-white/[0.05] text-white border-white/[0.1] hover:bg-white/[0.1]">
-                <a href="https://github.com/agzaiyenth/SDGP-Connect" target="_blank" rel="noopener noreferrer">
+                <a href="https://github.com/agzaiyenth/sdgp-connect" target="_blank" rel="noopener noreferrer">
                   Visit GitHub Repository <ExternalLink className="ml-2 h-4 w-4" />
                 </a>
               </Button>
