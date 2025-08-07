@@ -6,7 +6,7 @@
 // You may not alter or remove any copyright or other notice from copies of this content.
 "use client";
 
-import { motion, type CubicBezier } from "framer-motion"; // Import CubicBezier
+import { motion } from "framer-motion";
 import { Pacifico } from "next/font/google";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -28,16 +28,14 @@ export default function HeroGeometric({
   title2?: string;
 }) {
   const fadeUpVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 1,
-        delay: 0.5 + i * 0.2,
-        ease: [0.25, 0.4, 0.25, 1],
-      },
-    }),
+    hidden: { 
+      opacity: 0, 
+      y: 30 
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0
+    },
   };
 
   return (
@@ -98,6 +96,11 @@ export default function HeroGeometric({
             variants={fadeUpVariants}
             initial="hidden"
             animate="visible"
+            transition={{
+              duration: 1,
+              delay: 0.5,
+              ease: [0.25, 0.4, 0.25, 1],
+            }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8 md:mb-12"
           >
             <div className="inline-flex items-center space-x-2 px-2 py-0.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
@@ -116,6 +119,11 @@ export default function HeroGeometric({
             variants={fadeUpVariants}
             initial="hidden"
             animate="visible"
+            transition={{
+              duration: 1,
+              delay: 0.7,
+              ease: [0.25, 0.4, 0.25, 1],
+            }}
           >
             <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold mb-6 md:mb-8 tracking-tight">
               <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
@@ -138,6 +146,11 @@ export default function HeroGeometric({
             variants={fadeUpVariants}
             initial="hidden"
             animate="visible"
+            transition={{
+              duration: 1,
+              delay: 0.9,
+              ease: [0.25, 0.4, 0.25, 1],
+            }}
           >
             <p className="text-base sm:text-lg md:text-xl text-white/40 mb-8 leading-relaxed font-light tracking-wide max-w-xl mx-auto px-4">
               Join us in building the future of student-led tech projects. Your
