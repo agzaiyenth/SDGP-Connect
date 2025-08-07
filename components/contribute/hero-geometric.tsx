@@ -13,9 +13,9 @@ const pacifico = Pacifico({
 })
 
 export default function HeroGeometric({
-  badge = "Kokonut UI",
-  title1 = "Elevate Your",
-  title2 = "Digital Vision",
+  badge = "contribute",
+  title1 = "SDGP.LK",
+  title2 = "Open Source Contributions",
 }: {
   badge?: string
   title1?: string
