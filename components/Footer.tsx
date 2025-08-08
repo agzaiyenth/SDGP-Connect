@@ -122,10 +122,9 @@ export default function Footer() {
         className="text-center text-sm text-gray-200 md:pb-4 pb-24"
       >
         Built by{" "}
-        <strong>
-          <a href="https://www.psycodelabs.lk" className="hover:text-gray-400">
-            Psycode Lab's
-          </a>
+        <strong className="hover:text-gray-400">
+         
+            SDGP.lk Contributors · Licensed under Custom Non-Commercial License
         </strong>
       </footer>
     </>

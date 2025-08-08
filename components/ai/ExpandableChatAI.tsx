@@ -104,18 +104,6 @@ export function ExpandableChatAI() {
             </Button>
           </div>
         </form>
-        <div className="mt-2 text-center text-xs text-muted-foreground">
-          Built by{" "}
-          <a
-            href="https://psycodelabs.lk"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-primary"
-            aria-label="Visit Psycode Labs website"
-          >
-            Psycode Labs
-          </a>
-        </div>
       </ExpandableChatFooter>
     </ExpandableChat>
   );

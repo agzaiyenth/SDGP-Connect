@@ -22,7 +22,7 @@ const sanitizeInput = (input: string): { isValid: boolean; sanitized: string } =
   if (sanitized.length === 0) {
     return {
       isValid: false,
-      sanitized: "Good try, better luck next time! 😎 Psycode Lab's products don't break so easily. For genuine support, contact support@sdgp.lk",
+      sanitized: "Good try, better luck next time! 😎 Our products don't break so easily. For genuine support, contact support@sdgp.lk",
     };
   }
 
