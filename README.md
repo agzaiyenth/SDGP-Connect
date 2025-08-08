@@ -147,6 +147,20 @@ improvement/home-page
 ```
 
 ---
+##  Tech Stack
+
+<p align="left">
+  <img src="https://img.shields.io/badge/Next.js-000?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js" />
+  <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white" alt="Prisma" />
+  <img src="https://img.shields.io/badge/MySQL-00758F?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL" />
+  <img src="https://img.shields.io/badge/NextAuth-000000?style=for-the-badge&logo=next.js&logoColor=green" alt="NextAuth" />
+  <img src="https://img.shields.io/badge/Framer--Motion-EF008F?style=for-the-badge&logo=framer&logoColor=white" alt="Framer Motion" />
+  <img src="https://img.shields.io/badge/Vercel-000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" />
+  <img src="https://img.shields.io/badge/Yarn-2C8EBB?style=for-the-badge&logo=yarn&logoColor=white" alt="Yarn" />
+</p>
+
+---
 ## Contributors
 
 We thank all individuals who contributed to the development of SDGP Connect.
@@ -155,3 +169,5 @@ We thank all individuals who contributed to the development of SDGP Connect.
 <a href="https://github.com/agzaiyenth/SDGP-Connect/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=agzaiyenth/SDGP-Connect" />
 </a>
+
+---
