@@ -5,13 +5,12 @@ import StatCard from '@/components/dashboard/StatCard';
 import StatusPieChart from '@/components/dashboard/StatusPieChart';
 import SubmissionsLineChart from '@/components/dashboard/SubmissionsLineChart';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import useGetTotalProjectsCount from '@/hooks/dashboard/useGetTotalProjectsCount';
-import useGetFeaturedProjectsCount from '@/hooks/dashboard/useGetFeaturedProjectsCount';
-import useGetPendingProjectsCount from '@/hooks/dashboard/useGetPendingProjectsCount';
-import { Clock, Folder, Star, Laptop } from 'lucide-react';
 import useGetActivity from '@/hooks/dashboard/useGetActivity';
-import useIsMobile from '@/hooks/useIsMobile';
 import useGetCountByStatus from '@/hooks/dashboard/useGetCountByStatus';
+import useGetPendingProjectsCount from '@/hooks/dashboard/useGetPendingProjectsCount';
+import useGetTotalProjectsCount from '@/hooks/dashboard/useGetTotalProjectsCount';
+import useIsMobile from '@/hooks/useIsMobile';
+import { Clock, Folder, Laptop, Star } from 'lucide-react';
 
 export default function DashboardPage() {
   // Use the mobile detection hook
@@ -20,8 +19,8 @@ export default function DashboardPage() {
   // Fetch real data using custom hooks
   const { count: totalCount, isLoading: isTotalLoading } = useGetTotalProjectsCount();
   const { count: pendingCount, isLoading: isPendingLoading } = useGetPendingProjectsCount();
-  const { statusCounts, isLoading:isApprovedLoading, error } = useGetCountByStatus();
-  
+  const { statusCounts, isLoading: isApprovedLoading, error } = useGetCountByStatus();
+
   // Stats card data
   const stats = [
     {
@@ -70,7 +69,7 @@ export default function DashboardPage() {
         <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
         <p className="text-muted-foreground mt-2">Welcome back! Here's an overview of your platform.</p>
       </div>
-      
+
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {stats.map((stat, index) => (
@@ -84,13 +83,13 @@ export default function DashboardPage() {
           />
         ))}
       </div>
-      
+
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <StatusPieChart/>
+        <StatusPieChart />
         <SubmissionsLineChart />
       </div>
-      
+
       {/* Recent Activity Table */}
       <RecentActivityTable activities={recentActivities} />
     </>
