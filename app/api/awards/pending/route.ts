@@ -1,5 +1,5 @@
+import { prisma } from '@/prisma/prismaClient';
 import { NextResponse } from 'next/server';
-import {prisma} from '@/prisma/prismaClient';
 
 export async function GET() {
   const awards = await prisma.award.findMany({

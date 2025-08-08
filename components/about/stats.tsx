@@ -1,20 +1,21 @@
-// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
-//
-// This software is the property of Psycode Lab's. and its suppliers, if any.
-// Dissemination of any information or reproduction of any material contained
-// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
-// You may not alter or remove any copyright or other notice from copies of this content.
+/* Copyright (c) 2025, the contributors of the SDGP Connect project. All Rights Reserved.
+
+This software is the joint property of the contributors to the SDGP Connect project.
+Unauthorized distribution, commercial use, or reproduction of any part of this material
+in any form is strictly prohibited without the explicit written consent of all contributors.
+You may not alter or remove any copyright or attribution notice from this content. */
+
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { User, Users, Projector } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Projector, User, Users } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 const StatsSection = () => {
   return (
     <section className="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 bg-background py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 2xl:py-32 text-foreground">
       <div className="container max-w-7xl 2xl:max-w-screen-2xl mx-auto">
         <div className="flex flex-col items-center justify-between gap-8 lg:gap-12 xl:gap-16 2xl:gap-20 lg:flex-row lg:items-start">
-          
+
           {/* Title Section */}
           <div className="max-w-2xl xl:max-w-3xl 2xl:max-w-4xl space-y-4 lg:space-y-6 xl:space-y-8 text-center lg:text-left">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold tracking-tighter leading-tight">
@@ -107,15 +108,15 @@ const StatItem = ({
     const duration = 1500; // Slightly longer animation for better effect
     const frameDuration = 1000 / 60;
     const totalFrames = Math.round(duration / frameDuration);
-    
+
     const incrementPerFrame = finalValue / totalFrames;
-    
+
     let frame = 0;
     const counter = setInterval(() => {
       frame++;
       const newValue = Math.min(Math.round(incrementPerFrame * frame), finalValue);
       setValue(newValue);
-      
+
       if (frame === totalFrames) {
         clearInterval(counter);
       }
@@ -126,12 +127,12 @@ const StatItem = ({
 
   return (
     <div ref={ref} className="flex flex-col items-center gap-2 lg:gap-3 xl:gap-4 text-center group hover:scale-105 transition-transform duration-300">
-      
+
       {/* Number Display */}
       <div className="flex items-center gap-1 text-xl sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-bold pb-2 lg:pb-3 text-primary">
         <span className="tabular-nums">{formatNumber(value)}{suffix}</span>
       </div>
-      
+
       {/* Icon and Label */}
       <div className="flex flex-col items-center gap-1 lg:gap-2">
         <div className="text-muted-foreground group-hover:text-primary transition-colors duration-300">

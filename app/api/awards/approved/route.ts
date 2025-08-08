@@ -1,5 +1,4 @@
-import { NextResponse } from 'next/server';
-import {prisma} from '@/prisma/prismaClient';
+import { prisma } from '@/prisma/prismaClient';
 
 const awards = await prisma.award.findMany({
   where: { approval_status: 'APPROVED' },

@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
 import { prisma } from '@/prisma/prismaClient';
 import { blogAuthorSchema } from '@/validations/blog';
+import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
