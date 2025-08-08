@@ -1,8 +1,8 @@
 // app/api/admin/dashboard/activity/route.ts
 
-import { NextResponse } from "next/server";
 import { prisma } from "@/prisma/prismaClient";
 import { ProjectApprovalStatus } from "@prisma/client";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   try {

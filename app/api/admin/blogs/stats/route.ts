@@ -1,7 +1,7 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth/next";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../../prisma/prismaClient";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export const GET = async (req: NextRequest) => {
   // Authentication check

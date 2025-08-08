@@ -1,4 +1,10 @@
-// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
+/* Copyright (c) 2025, the contributors of the SDGP Connect project. All Rights Reserved.
+
+This software is the joint property of the contributors to the SDGP Connect project.
+Unauthorized distribution, commercial use, or reproduction of any part of this material
+in any form is strictly prohibited without the explicit written consent of all contributors.
+You may not alter or remove any copyright or attribution notice from this content. */
+
 
 import type { Metadata } from "next";
 
@@ -35,7 +41,7 @@ import { BlogContent } from "@/components/blog/BlogContent";
 export default async function BlogPage() {
   // The BlogContent component now handles all data fetching via hooks
   // No need to fetch data here since we're using client-side hooks for real-time updates
-  
+
   return (
     <div className="min-h-screen bg-background">
       <BlogContent />

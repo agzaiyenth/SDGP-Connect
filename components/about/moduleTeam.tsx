@@ -1,14 +1,15 @@
-// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
-//
-// This software is the property of Psycode Lab's. and its suppliers, if any.
-// Dissemination of any information or reproduction of any material contained
-// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
-// You may not alter or remove any copyright or other notice from copies of this content.
+/* Copyright (c) 2025, the contributors of the SDGP Connect project. All Rights Reserved.
+
+This software is the joint property of the contributors to the SDGP Connect project.
+Unauthorized distribution, commercial use, or reproduction of any part of this material
+in any form is strictly prohibited without the explicit written consent of all contributors.
+You may not alter or remove any copyright or attribution notice from this content. */
+
 "use client";
 
-import React, { useState, useRef } from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
+import Image from "next/image";
+import React from "react";
 
 const teamMembers = [
 	{
@@ -252,20 +253,18 @@ const ModuleTeam: React.FC = () => {
 					</motion.h2>
 				)}
 				<div
-					className={`grid gap-6 md:gap-8 ${
-						members.length === 1
+					className={`grid gap-6 md:gap-8 ${members.length === 1
 							? "grid-cols-1 justify-items-center"
 							: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-					} ${isModuleLeader ? "module-leader-grid" : ""}`}
+						} ${isModuleLeader ? "module-leader-grid" : ""}`}
 				>
 					{members.map((member, index) => {
 						const isLeader = member.category === "Module Leader";
 						return (
 							<motion.div
 								key={index}
-								className={`relative bg-gradient-to-b from-zinc-900 to-black p-6 rounded-2xl flex flex-col items-center group overflow-visible transform transition-all duration-500 hover:-translate-y-1 h-full ${
-									isLeader ? "module-leader-card" : ""
-								}`}
+								className={`relative bg-gradient-to-b from-zinc-900 to-black p-6 rounded-2xl flex flex-col items-center group overflow-visible transform transition-all duration-500 hover:-translate-y-1 h-full ${isLeader ? "module-leader-card" : ""
+									}`}
 								initial={{ opacity: 0, y: 30 }}
 								whileInView={{ opacity: 1, y: 0 }}
 								viewport={{ once: true }}
@@ -358,9 +357,8 @@ const ModuleTeam: React.FC = () => {
 								</div>
 
 								<div
-									className={`absolute inset-0 bg-gradient-to-br from-black/95 via-zinc-900/98 to-gray-800/95 backdrop-blur-sm p-6 flex flex-col opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-0 ${
-										isLeader ? "overflow-visible" : "overflow-auto"
-									}`}
+									className={`absolute inset-0 bg-gradient-to-br from-black/95 via-zinc-900/98 to-gray-800/95 backdrop-blur-sm p-6 flex flex-col opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-0 ${isLeader ? "overflow-visible" : "overflow-auto"
+										}`}
 									style={
 										isLeader
 											? { minHeight: "100%", position: "absolute", inset: 0 }

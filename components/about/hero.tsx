@@ -1,19 +1,17 @@
-// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
-//
-// This software is the property of Psycode Lab's. and its suppliers, if any.
-// Dissemination of any information or reproduction of any material contained
-// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
-// You may not alter or remove any copyright or other notice from copies of this content.
+/* Copyright (c) 2025, the contributors of the SDGP Connect project. All Rights Reserved.
+
+This software is the joint property of the contributors to the SDGP Connect project.
+Unauthorized distribution, commercial use, or reproduction of any part of this material
+in any form is strictly prohibited without the explicit written consent of all contributors.
+You may not alter or remove any copyright or attribution notice from this content. */
+
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Play, ArrowRight } from "lucide-react";
-import Image from "next/image";
-import { Zap } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ArrowRight, Play, Zap } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Hero() {
   const [videoOpen, setVideoOpen] = useState(false);
@@ -115,10 +113,10 @@ export default function Hero() {
                   allowFullScreen={false}
                   className="absolute inset-0 w-full h-full rounded-xl z-10 pointer-events-none"
                 />
-                
+
                 {/* Invisible overlay to handle clicks */}
                 <div className="absolute inset-0 z-20" />
-                
+
                 {/* Mute indicator */}
                 {isMuted && (
                   <div className="absolute top-3 right-3 lg:top-4 lg:right-4 rounded-full bg-black/50 backdrop-blur-sm p-2 z-30">

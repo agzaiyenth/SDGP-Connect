@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { BlobServiceClient } from '@azure/storage-blob';
-import { v4 as uuidv4 } from 'uuid';
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
-import * as os from 'os';
 import * as fs from 'fs';
+import { writeFile } from 'fs/promises';
+import { NextRequest, NextResponse } from 'next/server';
+import * as os from 'os';
+import { join } from 'path';
+import { v4 as uuidv4 } from 'uuid';
 
-// ✅ Allow only these MIME types
+// Allow only these MIME types
 const ALLOWED_MIME_TYPES = [
   "image/jpeg",
   "image/png",
@@ -19,7 +19,7 @@ const MAX_SIZE_BYTES = 5 * 1024 * 1024;
 
 export async function POST(request: NextRequest) {
   try {
-    // ✅ Upload key validation
+    // Upload key validation
     const clientKey = request.headers.get("x-upload-key");
     const expectedKey = process.env.NEXT_PUBLIC_UPLOAD_API_KEY;
 

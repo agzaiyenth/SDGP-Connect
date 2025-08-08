@@ -1,20 +1,27 @@
 // Admin Awards Management Page
+/* Copyright (c) 2025, the contributors of the SDGP Connect project. All Rights Reserved.
+
+This software is the joint property of the contributors to the SDGP Connect project.
+Unauthorized distribution, commercial use, or reproduction of any part of this material
+in any form is strictly prohibited without the explicit written consent of all contributors.
+You may not alter or remove any copyright or attribution notice from this content. */
+
 'use client';
-import React, { useState, useEffect } from 'react';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import PendingAwardsTable from '@/components/tables/PendingAwardsTable';
 import ApprovedAwardsTable from '@/components/tables/ApprovedAwardsTable';
+import PendingAwardsTable from '@/components/tables/PendingAwardsTable';
 import RejectedAwardsTable from '@/components/tables/RejectedAwardsTable';
-import PendingAwardsTableSkeleton from '@/components/tables/skeletons/PendingAwardsTableSkeleton';
 import ApprovedAwardsTableSkeleton from '@/components/tables/skeletons/ApprovedAwardsTableSkeleton';
+import PendingAwardsTableSkeleton from '@/components/tables/skeletons/PendingAwardsTableSkeleton';
 import RejectedAwardsTableSkeleton from '@/components/tables/skeletons/RejectedAwardsTableSkeleton';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { RefreshCcw, AlertCircle, FileX2, Inbox } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGetAwardsByApprovalStatus } from '@/hooks/awards/useGetAwardsByApprovalStatus';
 import { useDebounce } from '@/hooks/use-debounce';
+import { AlertCircle, FileX2, Inbox, RefreshCcw } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function AdminAwardsPage() {
   const [currentTab, setCurrentTab] = useState<'pending' | 'approved' | 'rejected'>('pending');

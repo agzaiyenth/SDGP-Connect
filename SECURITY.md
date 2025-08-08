@@ -25,7 +25,7 @@ Do not exploit or test vulnerabilities in production without permission. Doing s
 
 Any unauthorized access attempts, tampering, or exploitation of this platform will be treated as a **criminal offense** and may be prosecuted under **Sri Lankan ICT and Cybersecurity Laws**.
 
-**SDGP.lk** is a platform developed to **Informatics Institute of Technology (IIT)** for commercial and academic purposes. All rights are reserved by the creators, and security abuses will not be tolerated.
+**SDGP.lk** is a platform developed to **Informatics Institute of Technology (IIT)** for commercial and academic purposes. All rights are reserved by the contributors, and security abuses will not be tolerated.
 
 We reserve the right to take **legal action** and notify relevant authorities in case of malicious behavior.
 

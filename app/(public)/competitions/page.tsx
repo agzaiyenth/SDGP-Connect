@@ -1,16 +1,16 @@
-// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
-//
-// This software is the property of Psycode Lab's. and its suppliers, if any.
-// Dissemination of any information or reproduction of any material contained
-// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
-// You may not alter or remove any copyright or other notice from copies of this content.
+/* Copyright (c) 2025, the contributors of the SDGP Connect project. All Rights Reserved.
+
+This software is the joint property of the contributors to the SDGP Connect project.
+Unauthorized distribution, commercial use, or reproduction of any part of this material
+in any form is strictly prohibited without the explicit written consent of all contributors.
+You may not alter or remove any copyright or attribution notice from this content. */
+
 "use client"
 
 import CompetitionCard from "@/components/competition/CompetitionCard"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { useApprovedCompetitions } from "@/hooks/competition/useApprovedCompetitions"
-import { ArrowRight, Award, Pen, Play, Target } from "lucide-react"
+import { Award, Target } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -107,7 +107,7 @@ export default function AwardsPage() {
 
                 <div className="grid grid-cols-2 gap-4 md:gap-6">
 
-                    <div className="overflow-hidden rounded-xl shadow-md transition-transform hover:scale-[1.02]">
+                  <div className="overflow-hidden rounded-xl shadow-md transition-transform hover:scale-[1.02]">
                     <Image
                       src={"/assets/1.webp"}
                       alt={"Mission 2"}
@@ -116,9 +116,9 @@ export default function AwardsPage() {
                       className={"rounded-xl object-cover"}
                       style={{ height: "200px", width: "auto" }}
                     />
-                    </div>
+                  </div>
 
-                    <div className="overflow-hidden rounded-xl shadow-md transition-transform hover:scale-[1.02]">
+                  <div className="overflow-hidden rounded-xl shadow-md transition-transform hover:scale-[1.02]">
                     <Image
                       src={"/assets/2.webp"}
                       alt={"Mission 3"}
@@ -127,7 +127,7 @@ export default function AwardsPage() {
                       className={"rounded-xl object-cover"}
                       style={{ height: "200px", width: "auto" }}
                     />
-                    </div>
+                  </div>
 
                 </div>
               </div>
@@ -184,25 +184,25 @@ export default function AwardsPage() {
       <section className="relative m-16 overflow-hidden rounded-2xl bg-gradient-to-br from-accent via-accent/80 to-accent/60 p-8 md:p-12 border border-accent/20 shadow-2xl">
         <div className="mx-auto max-w-4xl text-center relative z-10">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-        Want to share your winning project with the community?
+            Want to share your winning project with the community?
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-        If you have participated in a competition and won an award, we would love to feature your project.
-        share your achievement with us and inspire others in the community.
-        </p>
+            If you have participated in a competition and won an award, we would love to feature your project.
+            share your achievement with us and inspire others in the community.
+          </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-          
-          <Link href="/submit/competition">
-          <Button size="lg" variant="default">
-          
-           Enter a missing Competition
-          </Button>
-        </Link>
-        <Link href="/submit/award">
-          <Button size="lg" variant="outline" >
-           Submit your Award Win
-          </Button>
-        </Link>
+
+            <Link href="/submit/competition">
+              <Button size="lg" variant="default">
+
+                Enter a missing Competition
+              </Button>
+            </Link>
+            <Link href="/submit/award">
+              <Button size="lg" variant="outline" >
+                Submit your Award Win
+              </Button>
+            </Link>
           </div>
         </div>
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 opacity-50" />

@@ -1,8 +1,8 @@
-import { prisma } from "@/prisma/prismaClient";
-import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { prisma } from "@/prisma/prismaClient";
 import { Role } from "@prisma/client";
+import { getServerSession } from "next-auth";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(req: NextRequest, context: { params: { id: string } }) {
   const { id } = context.params;

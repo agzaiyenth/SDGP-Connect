@@ -2,10 +2,10 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../../auth/[...nextauth]/route";
 
-import { ProjectApprovalStatus } from "@prisma/client";
-import { prisma } from "@/prisma/prismaClient";
 import { sendEmail } from "@/lib/email";
 import { approvedTemplate } from "@/lib/email/templates/approved";
+import { prisma } from "@/prisma/prismaClient";
+import { ProjectApprovalStatus } from "@prisma/client";
 
 export async function POST(req: NextRequest) {
   try {

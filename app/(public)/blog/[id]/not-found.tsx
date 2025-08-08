@@ -1,8 +1,14 @@
-// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
+/* Copyright (c) 2025, the contributors of the SDGP Connect project. All Rights Reserved.
 
-import Link from "next/link";
+This software is the joint property of the contributors to the SDGP Connect project.
+Unauthorized distribution, commercial use, or reproduction of any part of this material
+in any form is strictly prohibited without the explicit written consent of all contributors.
+You may not alter or remove any copyright or attribution notice from this content. */
+
+
 import { Button } from "@/components/ui/button";
-import { FileQuestion, ArrowLeft, Home } from "lucide-react";
+import { ArrowLeft, FileQuestion, Home } from "lucide-react";
+import Link from "next/link";
 
 export default function NotFound() {
   return (
@@ -21,7 +27,7 @@ export default function NotFound() {
 
           {/* Description */}
           <p className="text-xl text-muted-foreground mb-8">
-            The blog post you're looking for doesn't exist or has been removed. 
+            The blog post you're looking for doesn't exist or has been removed.
             Please check the URL or browse our other articles.
           </p>
 
