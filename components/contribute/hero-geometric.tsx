@@ -7,16 +7,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Pacifico } from "next/font/google";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
 import ElegantShape from "@/components/contribute/elegant-shape";
-
-const pacifico = Pacifico({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-pacifico",
-});
 
 export default function HeroGeometric({
   badge = "CONTRIBUTE",
@@ -130,12 +122,7 @@ export default function HeroGeometric({
                 {title1}
               </span>
               <br />
-              <span
-                className={cn(
-                  "bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300 ",
-                  pacifico.className
-                )}
-              >
+              <span className="text-gray-200">
                 {title2}
               </span>
             </h1>

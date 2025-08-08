@@ -7,9 +7,8 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { ExternalLink } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import CodeBlockWithCopy from "@/components/contribute/code-block-with-copy"
 
 export default function ContributingGuideSections({ cardVariants }: { cardVariants: any }) {
   return (
@@ -20,45 +19,10 @@ export default function ContributingGuideSections({ cardVariants }: { cardVarian
       variants={cardVariants}
       className="mb-16"
     >
-      <h2 className="text-3xl font-bold text-center mb-8">Contributing Guide</h2>
-      <p className="text-center text-white/70 mb-8 max-w-2xl mx-auto">
-        If you are planning on contributing to the development efforts of SDGP Connect, follow these instructions to set up the project on your local machine. It's as easy as 3 steps, and you can also contribute to an open-source project!
+      <h2 className="text-3xl font-bold text-center mb-8">How to Make Your Mark</h2>
+      <p className="text-center text-white/70 mb-12 max-w-3xl mx-auto">
+        Ready to impact thousands of students and developers? Your code doesn't just sit in a repository—it powers the platform that showcases amazing projects and connects the next generation of innovators. Here's how you can contribute and see your changes live for everyone to experience.
       </p>
-
-      <div className="grid md:grid-cols-2 gap-8 mb-12 items-stretch">
-        <motion.div whileHover={{ scale: 1.02, y: -5 }} transition={{ duration: 0.2 }} className="h-full">
-          <Card className="h-full bg-white/[0.05] backdrop-blur-lg border border-white/[0.15] shadow-lg text-white">
-            <CardHeader>
-              <CardTitle className="text-xl">Join Our Community</CardTitle>
-              <CardDescription className="text-white/60">Help us on other aspects of the project.</CardDescription>
-            </CardHeader>
-            <CardContent className="p-6 pt-0 md:p-8 md:pt-0">
-              <p className="text-white/70 mb-4">Connect with us on WhatsApp to discuss ideas, get support, and collaborate.</p>
-              <Button asChild variant="outline" className="bg-white/[0.05] text-white border-white/[0.1] hover:bg-white/[0.1]">
-                <a href="https://chat.whatsapp.com/IFJH9D1sbiT7OsNsBT4neT" target="_blank" rel="noopener noreferrer">
-                  Join WhatsApp Community <ExternalLink className="ml-2 h-4 w-4" />
-                </a>
-              </Button>
-            </CardContent>
-          </Card>
-        </motion.div>
-        <motion.div whileHover={{ scale: 1.02, y: -5 }} transition={{ duration: 0.2 }} className="h-full">
-          <Card className="h-full bg-white/[0.05] backdrop-blur-lg border border-white/[0.15] shadow-lg text-white">
-            <CardHeader>
-              <CardTitle className="text-xl">Explore Our Code</CardTitle>
-              <CardDescription className="text-white/60">Dive into the codebase and see how you can contribute.</CardDescription>
-            </CardHeader>
-            <CardContent className="p-6 pt-0 md:p-8 md:pt-0">
-              <p className="text-white/70 mb-4">Access the full project repository on GitHub for detailed documentation and code.</p>
-              <Button asChild variant="outline" className="bg-white/[0.05] text-white border-white/[0.1] hover:bg-white/[0.1]">
-                <a href="https://github.com/agzaiyenth/sdgp-connect" target="_blank" rel="noopener noreferrer">
-                  Visit GitHub Repository <ExternalLink className="ml-2 h-4 w-4" />
-                </a>
-              </Button>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
         {/* Cloning */}
@@ -69,13 +33,9 @@ export default function ContributingGuideSections({ cardVariants }: { cardVarian
             </CardHeader>
             <CardContent className="p-6 pt-0 md:p-8 md:pt-0">
               <p className="text-white/70 mb-4">Clone the project repository:</p>
-              <div className="bg-gray-900 p-3 rounded-md text-sm font-mono text-green-400 overflow-x-auto">
-                git clone https://github.com/agzaiyenth/SDGP-Connect.git
-              </div>
-              <p className="text-white/70 mt-4">Navigate into the project directory:</p>
-              <div className="bg-gray-900 p-3 rounded-md text-sm font-mono text-green-400 overflow-x-auto">
-                cd SDGP-Connect
-              </div>
+              <CodeBlockWithCopy code="git clone https://github.com/agzaiyenth/SDGP-Connect.git" className="mb-4" />
+              <p className="text-white/70 mb-4">Navigate into the project directory:</p>
+              <CodeBlockWithCopy code="cd SDGP-Connect" />
             </CardContent>
           </Card>
         </motion.div>
@@ -88,10 +48,8 @@ export default function ContributingGuideSections({ cardVariants }: { cardVarian
             </CardHeader>
             <CardContent className="p-6 pt-0 md:p-8 md:pt-0">
               <p className="text-white/70 mb-4">We use <strong>Yarn</strong> instead of npm. Install all required packages:</p>
-              <div className="bg-gray-900 p-3 rounded-md text-sm font-mono text-green-400 overflow-x-auto">
-                yarn install
-              </div>
-              <p className="text-sm text-white/50 mt-4">Note: Do not use npm. Stick to Yarn for dependency management.</p>
+              <CodeBlockWithCopy code="yarn install" className="mb-4" />
+              <p className="text-sm text-white/50">Note: Do not use npm. Stick to Yarn for dependency management.</p>
             </CardContent>
           </Card>
         </motion.div>
@@ -104,10 +62,8 @@ export default function ContributingGuideSections({ cardVariants }: { cardVarian
             </CardHeader>
             <CardContent className="p-6 pt-0 md:p-8 md:pt-0">
               <p className="text-white/70 mb-4">To start the development server:</p>
-              <div className="bg-gray-900 p-3 rounded-md text-sm font-mono text-green-400 overflow-x-auto">
-                yarn run dev
-              </div>
-              <p className="text-white/70 mt-4">This will launch your application on the local server.</p>
+              <CodeBlockWithCopy code="yarn run dev" className="mb-4" />
+              <p className="text-white/70">This will launch your application on the local server & you can make the site look better</p>
             </CardContent>
           </Card>
         </motion.div>

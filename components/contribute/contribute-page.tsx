@@ -9,6 +9,7 @@
 import { motion } from "framer-motion"
 import ElegantShape from "@/components/contribute/elegant-shape" 
 import WhatIsSdgp from "@/components/contribute/what-is-sdgp"
+import CommunityCards from "@/components/contribute/community-cards"
 import ReportingIssues from "@/components/contribute/reporting-issues"
 import ContributingGuideSections from "@/components/contribute/contributing-guide-sections"
 
@@ -152,6 +153,7 @@ export default function ContributePage() {
         className="relative z-10 px-4 md:px-6 max-w-5xl"
       >
         <WhatIsSdgp cardVariants={cardVariants} />
+        <CommunityCards cardVariants={cardVariants} />
         <ReportingIssues cardVariants={cardVariants} />
         <ContributingGuideSections cardVariants={cardVariants} />
       </motion.div>
