@@ -1,11 +1,10 @@
 "use client"
 
 import AddMemberDialog from "@/components/team/add-member-dialog"
-import { TeamFilter } from "@/components/team/team-filter"
 import TeamMemberCard from "@/components/team/team-member-card"
 import TeamMemberRow from "@/components/team/team-member-row"
 import { Button } from "@/components/ui/button"
-import { PlusIcon, GridIcon, ListIcon } from "lucide-react"
+import { GridIcon, ListIcon, PlusIcon } from "lucide-react"
 
 interface TeamMember {
   id: string
@@ -106,7 +105,7 @@ export default function TeamPage() {
 function ViewToggle() {
   return (
     <div className="flex items-center justify-between">
-   
+
 
       <div className="flex items-center space-x-2">
         <div className="bg-muted rounded-full p-1 flex">
