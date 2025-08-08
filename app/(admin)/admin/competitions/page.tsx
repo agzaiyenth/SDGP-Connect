@@ -1,22 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RefreshCcw } from "lucide-react";
+import { useEffect, useState } from "react";
 
+import ApprovedCompetitionsTable from "@/components/tables/ApprovedCompetitionsTable";
+import PendingCompetitionsTable from "@/components/tables/PendingCompetitionsTable";
+import RejectedCompetitionsTable from "@/components/tables/RejectedCompetitionsTable";
+import ApprovedCompetitionsTableSkeleton from "@/components/tables/skeletons/ApprovedCompetitionsTableSkeleton";
+import PendingCompetitionsTableSkeleton from "@/components/tables/skeletons/PendingCompetitionsTableSkeleton";
+import RejectedCompetitionsTableSkeleton from "@/components/tables/skeletons/RejectedCompetitionsTableSkeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { EmptyState } from "@/components/ui/empty-state";
-import { AlertCircle, FileX2, Inbox } from "lucide-react";
 import { useGetCompetitionsByApprovalStatus } from "@/hooks/competition/useGetCompetitionsByApprovalStatus";
-import PendingCompetitionsTableSkeleton from "@/components/tables/skeletons/PendingCompetitionsTableSkeleton";
-import PendingCompetitionsTable from "@/components/tables/PendingCompetitionsTable";
-import ApprovedCompetitionsTableSkeleton from "@/components/tables/skeletons/ApprovedCompetitionsTableSkeleton";
-import ApprovedCompetitionsTable from "@/components/tables/ApprovedCompetitionsTable";
-import RejectedCompetitionsTableSkeleton from "@/components/tables/skeletons/RejectedCompetitionsTableSkeleton";
-import RejectedCompetitionsTable from "@/components/tables/RejectedCompetitionsTable";
-import  { ApprovalStatus } from "@/types/prisma-types";
+import { ApprovalStatus } from "@/types/prisma-types";
+import { AlertCircle, FileX2, Inbox } from "lucide-react";
 
 
 // Type definitions
