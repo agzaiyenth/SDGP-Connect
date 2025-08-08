@@ -6,8 +6,8 @@ import RejectDialog from '@/components/dialogs/RejectDialog';
 import { ApprovedProjectsTable } from '@/components/tables/ApprovedProjectsTable';
 import { PendingProjectsTable } from '@/components/tables/PendingProjectsTable';
 import { RejectedProjectsTable } from '@/components/tables/RejectedProjectsTable';
-import PendingProjectsTableSkeleton from '@/components/tables/skeletons/PendingProjectsTableSkeleton';
 import ApprovedProjectsTableSkeleton from '@/components/tables/skeletons/ApprovedProjectsTableSkeleton';
+import PendingProjectsTableSkeleton from '@/components/tables/skeletons/PendingProjectsTableSkeleton';
 import RejectedProjectsTableSkeleton from '@/components/tables/skeletons/RejectedProjectsTableSkeleton';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -15,13 +15,13 @@ import { useGetProjectsByApprovalStatus } from '@/hooks/project/useGetProjectsBy
 import { useToggleProjectFeature } from '@/hooks/project/useToggleProjectFeature';
 import { ApprovedProject, PendingProject, RejectedProject } from '@/types/project/response';
 import { ProjectApprovalStatus } from '@prisma/client';
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
+import BulkApproveDialog from '@/components/dialogs/BulkApproveDialog';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/ui/empty-state';
 import { AlertCircle, FileX2, Inbox, RefreshCcw } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import BulkApproveDialog from '@/components/dialogs/BulkApproveDialog';
 
 const projectStatuses = ['IDEA', 'RESEARCH', 'MVP', 'DEPLOYED', 'STARTUP'];
 
@@ -141,7 +141,7 @@ export default function ProjectManagement() {
     // Clear search when switching tabs to avoid confusion
     setSearchQuery('');
     setDebouncedSearchQuery('');
-    
+
     if (value === 'pending') refreshPending();
     if (value === 'approved') refreshApproved();
     if (value === 'rejected') refreshRejected();
@@ -169,21 +169,21 @@ export default function ProjectManagement() {
     const config = {
       pending: {
         title: searchQuery ? 'No Matching Pending Projects' : 'No Pending Projects',
-        description: searchQuery 
+        description: searchQuery
           ? `No pending projects found matching "${searchQuery}"`
           : 'There are no projects waiting for review.',
         icon: searchQuery ? FileX2 : Inbox,
       },
       approved: {
         title: searchQuery ? 'No Matching Approved Projects' : 'No Approved Projects',
-        description: searchQuery 
+        description: searchQuery
           ? `No approved projects found matching "${searchQuery}"`
           : 'No projects have been approved yet.',
         icon: FileX2,
       },
       rejected: {
         title: searchQuery ? 'No Matching Rejected Projects' : 'No Rejected Projects',
-        description: searchQuery 
+        description: searchQuery
           ? `No rejected projects found matching "${searchQuery}"`
           : 'No projects have been rejected.',
         icon: FileX2,
@@ -271,7 +271,7 @@ export default function ProjectManagement() {
           <TabsTrigger value="approved">Approved</TabsTrigger>
           <TabsTrigger value="rejected">Rejected</TabsTrigger>
         </TabsList>
-        
+
         <div className="my-4 flex flex-wrap gap-4 justify-between">
           <div className="flex items-center gap-2">
             <Input
