@@ -1,30 +1,29 @@
 'use client';
 
 import ApproveBlogDialog from '@/components/dialogs/ApproveBlogDialog';
-import RejectBlogDialog from '@/components/dialogs/RejectBlogDialog';
-import BulkApproveBlogDialog from '@/components/dialogs/BulkApproveBlogDialog';
 import BlogDetailsDialog from '@/components/dialogs/BlogDetailsDialog';
-import { PendingBlogsTable } from '@/components/tables/PendingBlogsTable';
+import BulkApproveBlogDialog from '@/components/dialogs/BulkApproveBlogDialog';
+import RejectBlogDialog from '@/components/dialogs/RejectBlogDialog';
+import { EmptyApprovedBlogs, EmptyBlogSearch, EmptyPendingBlogs, EmptyRejectedBlogs } from '@/components/Empty-states/blogEmptyStates';
 import { ApprovedBlogsTable } from '@/components/tables/ApprovedBlogsTable';
+import { PendingBlogsTable } from '@/components/tables/PendingBlogsTable';
 import { RejectedBlogsTable } from '@/components/tables/RejectedBlogsTable';
-import PendingBlogsTableSkeleton from '@/components/tables/skeletons/PendingBlogsTableSkeleton';
 import ApprovedBlogsTableSkeleton from '@/components/tables/skeletons/ApprovedBlogsTableSkeleton';
+import PendingBlogsTableSkeleton from '@/components/tables/skeletons/PendingBlogsTableSkeleton';
 import RejectedBlogsTableSkeleton from '@/components/tables/skeletons/RejectedBlogsTableSkeleton';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useBlogActions } from '@/hooks/blogs/useBlogActions';
 import { useGetBlogsByStatus } from '@/hooks/blogs/useGetBlogsByStatus';
 import { useGetBlogStats } from '@/hooks/blogs/useGetBlogStats';
-import { useBlogActions } from '@/hooks/blogs/useBlogActions';
-import { AdminBlogPost, PendingBlogPost, ApprovedBlogPost, RejectedBlogPost, BlogStatus } from '@/types/blog/admin';
-import { useEffect, useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { EmptyPendingBlogs, EmptyApprovedBlogs, EmptyRejectedBlogs, EmptyBlogSearch } from '@/components/Empty-states/blogEmptyStates';
-import { AlertCircle, BookOpen, RefreshCcw, Users, Clock, CheckCircle, XCircle, Star } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useDebounce } from '@/hooks/use-debounce';
+import { AdminBlogPost, ApprovedBlogPost, BlogStatus, PendingBlogPost, RejectedBlogPost } from '@/types/blog/admin';
+import { AlertCircle, BookOpen, CheckCircle, Clock, RefreshCcw, Star } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 export default function BlogManagement() {
@@ -105,7 +104,7 @@ export default function BlogManagement() {
   const handleBulkApprove = () => {
     if (selectedBlogs.length === 0) return;
     setBulkApproveDialog(true);
-  };  const handleToggleFeature = async (blog: ApprovedBlogPost) => {
+  }; const handleToggleFeature = async (blog: ApprovedBlogPost) => {
     try {
       if (blog.featured) {
         await unfeatureBlog(blog.id);
@@ -219,7 +218,7 @@ export default function BlogManagement() {
         default:
           return <PendingBlogsTableSkeleton />;
       }
-    }    if (blogs.length === 0) {
+    } if (blogs.length === 0) {
       return (
         <div className="flex justify-center items-center min-h-[400px] p-8">
           {renderEmptyState()}
