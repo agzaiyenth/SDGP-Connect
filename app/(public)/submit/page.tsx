@@ -1,9 +1,10 @@
-// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
-//
-// This software is the property of Psycode Lab's. and its suppliers, if any.
-// Dissemination of any information or reproduction of any material contained
-// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
-// You may not alter or remove any copyright or other notice from copies of this content.
+/* Copyright (c) 2025, the contributors of the SDGP Connect project. All Rights Reserved.
+
+This software is the joint property of the contributors to the SDGP Connect project.
+Unauthorized distribution, commercial use, or reproduction of any part of this material
+in any form is strictly prohibited without the explicit written consent of all contributors.
+You may not alter or remove any copyright or attribution notice from this content. */
+
 'use client'
 
 import { ShimmerButton } from '@/components/magicui/shimmer-button';
@@ -15,16 +16,16 @@ import { useEffect } from 'react';
 
 const Page = () => {
   useEffect(() => {
-      document.querySelectorAll('.line-animation-path').forEach((element) => {
-        if (element instanceof SVGPathElement) {
-          const len = element.getTotalLength();
-          element.style.setProperty('--path-length', `${len}`);
-        }
-      });
-    }, []);
+    document.querySelectorAll('.line-animation-path').forEach((element) => {
+      if (element instanceof SVGPathElement) {
+        const len = element.getTotalLength();
+        element.style.setProperty('--path-length', `${len}`);
+      }
+    });
+  }, []);
   return (
-   <div className="relative text-white font-sans overflow-x-hidden flex items-center justify-center min-h-screen py-20 px-5">
-      
+    <div className="relative text-white font-sans overflow-x-hidden flex items-center justify-center min-h-screen py-20 px-5">
+
       <div className="absolute inset-0 z-10 pointer-events-none">
         {/* Corner Animations */}
         <div className="absolute top-1/2 left-0 right-0 transform -translate-y-1/2 h-[80px]">
@@ -223,7 +224,7 @@ const Page = () => {
         </div>
       </div>
 
-       <div className="relative z-20 max-w-screen-xl w-full text-center">
+      <div className="relative z-20 max-w-screen-xl w-full text-center">
         <h2 className="text-[clamp(3rem,8vw,6rem)] font-bold leading-tight mb-12">
           Ready to share<br />
           <span className="bg-gradient-to-r from-[#061bd4] via-[#266fbe] to-[#a8c8eb] bg-clip-text text-transparent">

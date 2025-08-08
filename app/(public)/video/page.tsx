@@ -1,15 +1,16 @@
-// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
-//
-// This software is the property of Psycode Lab's. and its suppliers, if any.
-// Dissemination of any information or reproduction of any material contained
-// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
-// You may not alter or remove any copyright or other notice from copies of this content.
+/* Copyright (c) 2025, the contributors of the SDGP Connect project. All Rights Reserved.
+
+This software is the joint property of the contributors to the SDGP Connect project.
+Unauthorized distribution, commercial use, or reproduction of any part of this material
+in any form is strictly prohibited without the explicit written consent of all contributors.
+You may not alter or remove any copyright or attribution notice from this content. */
+
 "use client"
 
-import { useState, useEffect } from "react"
+import Hero from "@/components/video/hero-section"
 import { VideoGrid } from "@/components/video/video-grid"
 import videosData from "@/data/video.json"
-import  Hero  from "@/components/video/hero-section"
+import { useEffect, useState } from "react"
 
 interface Video {
   id: string
@@ -143,7 +144,7 @@ export default function Home() {
           background: #606060;
         }
       `}</style>
-        <Hero />
+      <Hero />
       <div className="max-w-6xl mx-auto">
         <VideoGrid videos={videosData} />
       </div>
