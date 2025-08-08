@@ -1,43 +1,42 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import BlogPostSkeleton from "@/components/blog/BlogPostSkeleton";
+import MarkdownPreview from "@/components/blog/MarkdownPreview";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import {
-  CalendarIcon,
-  ClockIcon,
-  TwitterIcon,
-  FacebookIcon,
-  LinkedinIcon,
-  CopyIcon,
-  CheckIcon,
-  InstagramIcon,
-  XIcon,
-  SunMediumIcon,
-  BluetoothSearchingIcon,
-} from "lucide-react";
-import { useState, useMemo } from "react";
 import { useGetPostById } from "@/hooks/blogs/useGetPostById";
-import { useGetRecentPosts } from "@/hooks/blogs/useGetRecentPosts";
 import { useGetPostsByCategory } from "@/hooks/blogs/useGetPostsByCategory";
-import { getDisplayFromEnum, formatDateForDisplay, calculateReadTime } from "@/lib/blog-utils";
-import MarkdownPreview from "@/components/blog/MarkdownPreview";
-import BlogPostSkeleton from "@/components/blog/BlogPostSkeleton";
+import { useGetRecentPosts } from "@/hooks/blogs/useGetRecentPosts";
+import { calculateReadTime, formatDateForDisplay, getDisplayFromEnum } from "@/lib/blog-utils";
+import {
+  BluetoothSearchingIcon,
+  CalendarIcon,
+  CheckIcon,
+  CopyIcon,
+  FacebookIcon,
+  InstagramIcon,
+  LinkedinIcon,
+  SunMediumIcon,
+  TwitterIcon,
+  XIcon
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useMemo, useState } from "react";
 
 export default function BlogPostContent({ id }: { id: string }) {
   const { post, isLoading, error } = useGetPostById(id);
-  
+
   // Memoize the options to prevent infinite re-renders
   const recentPostsOptions = useMemo(() => ({ limit: 3 }), []);
-  const relatedPostsOptions = useMemo(() => ({ 
-    category: post?.category, 
-    limit: 10 
+  const relatedPostsOptions = useMemo(() => ({
+    category: post?.category,
+    limit: 10
   }), [post?.category]);
-  
+
   const { posts: recentPosts } = useGetRecentPosts(recentPostsOptions);
   const { posts: relatedPosts } = useGetPostsByCategory(relatedPostsOptions);
   const [copySuccess, setCopySuccess] = useState(false);
@@ -75,7 +74,7 @@ export default function BlogPostContent({ id }: { id: string }) {
     <section className="py-16 flex justify-center items-center">
       <div className="container sm:px-8 md:px-8 lg:px-16 xl:px-24">
         <div className="relative mb-12 h-[600px] overflow-hidden">
-          <Image            src={post.imageUrl || '/placeholder.svg'}
+          <Image src={post.imageUrl || '/placeholder.svg'}
             alt="Blog post cover image"
             width={1200}
             height={600}
@@ -84,16 +83,16 @@ export default function BlogPostContent({ id }: { id: string }) {
           <div className="absolute inset-0 flex flex-col justify-end rounded-lg bg-gradient-to-r from-black/70 to-black/30 p-8 text-white">
             <h1 className="mb-4 text-5xl font-bold leading-tight">{post.title}</h1>
             <div className="mb-4 flex items-center  space-x-4">              <Avatar className="size-12 ring-2 ring-primary ring-offset-2 ring-offset-background">
-                <AvatarImage src={post.author?.avatarUrl || '/default-avatar.png'} alt={post.author?.name || 'Author'} />
-                <AvatarFallback>{post.author?.name?.[0] || 'A'}</AvatarFallback>
-              </Avatar>
+              <AvatarImage src={post.author?.avatarUrl || '/default-avatar.png'} alt={post.author?.name || 'Author'} />
+              <AvatarFallback>{post.author?.name?.[0] || 'A'}</AvatarFallback>
+            </Avatar>
               <div className="">
                 <p className="text-xl font-semibold">{post.author?.name || 'Anonymous'}</p>
                 <p className="text-sm opacity-75"> {post.author?.createdAt ? (
-                          <>since {formatDateForDisplay(post.author.createdAt)}</>
-                        ) : (
-                          'Contributor'
-                        )}</p>
+                  <>since {formatDateForDisplay(post.author.createdAt)}</>
+                ) : (
+                  'Contributor'
+                )}</p>
               </div>
             </div>
             <div className="mb-4 flex items-center text-sm">
@@ -108,13 +107,13 @@ export default function BlogPostContent({ id }: { id: string }) {
           </div>
         </div>
         <div className="grid gap-12 md:grid-cols-12 md:gap-8">          <div className="md:col-span-8 lg:col-span-9">
-            <article className="prose prose-lg max-w-none dark:prose-invert">
-              <MarkdownPreview 
-                content={post.content || "No content available."} 
-                className="text-foreground px-8"
-              />
-            </article>
-          </div>
+          <article className="prose prose-lg max-w-none dark:prose-invert">
+            <MarkdownPreview
+              content={post.content || "No content available."}
+              className="text-foreground px-8"
+            />
+          </article>
+        </div>
           <aside className="md:col-span-4 lg:col-span-3">
             <div className="sticky top-20 space-y-6">
               <Card>
@@ -146,21 +145,21 @@ export default function BlogPostContent({ id }: { id: string }) {
                   <CardTitle>About the Author</CardTitle>
                 </CardHeader>
                 <CardContent>                  <div className="flex items-center space-x-4">
-                    <Avatar className="size-10 ring-2 ring-primary ring-offset-2 ring-offset-background">
-                      <AvatarImage src={post.author?.avatarUrl|| ""} alt={post.author?.name || 'Author'} />
-                      <AvatarFallback>{post.author?.name?.[0] || 'A'}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="text-sm font-medium">{post.author?.name || 'Anonymous'}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {post.author?.createdAt ? (
-                          <>since {formatDateForDisplay(post.author.createdAt)}</>
-                        ) : (
-                          'Contributor'
-                        )}
-                      </p>
-                    </div>
-                  </div>                  <Separator className="my-4" />
+                  <Avatar className="size-10 ring-2 ring-primary ring-offset-2 ring-offset-background">
+                    <AvatarImage src={post.author?.avatarUrl || ""} alt={post.author?.name || 'Author'} />
+                    <AvatarFallback>{post.author?.name?.[0] || 'A'}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="text-sm font-medium">{post.author?.name || 'Anonymous'}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {post.author?.createdAt ? (
+                        <>since {formatDateForDisplay(post.author.createdAt)}</>
+                      ) : (
+                        'Contributor'
+                      )}
+                    </p>
+                  </div>
+                </div>                  <Separator className="my-4" />
                   <ul className="space-y-2">
                     {post.author?.instagram && (
                       <li className="flex items-center space-x-2">
