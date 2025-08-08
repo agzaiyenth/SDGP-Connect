@@ -1,8 +1,8 @@
-import { prisma } from "@/prisma/prismaClient";
-import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/prisma/prismaClient";
 import { ApprovalStatus } from "@prisma/client";
+import { getServerSession } from "next-auth";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest, context: { params: { id: string } }) {
   const { params } = await context;

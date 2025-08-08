@@ -1,13 +1,12 @@
 // app/api/projects/reject/route.ts
 
-import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { prisma } from "@/prisma/prismaClient";
-import { ProjectStatusEnum } from "@prisma/client";
-import { ProjectApprovalStatus } from "@prisma/client";
 import { sendEmail } from "@/lib/email";
 import { rejectedTemplate } from "@/lib/email/templates/rejected";
+import { prisma } from "@/prisma/prismaClient";
+import { ProjectApprovalStatus } from "@prisma/client";
+import { getServerSession } from "next-auth/next";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   // 1) Get real session & enforce login
