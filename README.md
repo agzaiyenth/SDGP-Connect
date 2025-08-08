@@ -1,162 +1,157 @@
 # SDGP Connect
-[![License: Non-Commercial](https://img.shields.io/badge/License-Non--Commercial-red)](https://github.com/agzaiyenth/SDGP-Connect/blob/main/LICENSE.md)
+
+[![License: Non-Commercial](https://img.shields.io/badge/License-Non--Commercial-red)](https://github.com/agzaiyenth/SDGP-Connect/blob/main/LICENSE)
 [![Join our WhatsApp Community](https://img.shields.io/badge/Join%20our%20WhatsApp%20Community-Click%20Here-brightgreen)](https://chat.whatsapp.com/IFJH9D1sbiT7OsNsBT4neT)
+
 ---
+
 ## What is SDGP Connect?
 
 **[sdgp.lk](https://sdgp.lk)** is a platform built for the **Informatics Institute of Technology (IIT)** as part of the SDGP (Software Development Group Project) module. Its core mission is to **showcase student-led tech projects** and **connect them with real-world investors, mentors, and industry partners**.
 
 This platform acts as a digital bridge between innovation and opportunity—allowing students to go beyond academic recognition and **attract funding, incubation, or partnerships** that help bring their projects to life.
 
-> Developed by [Psycode Labs](https://psycodelabs.lk) in collaboration with IIT for commercial use.
+> SDGP Connect was collaboratively designed and developed by a team of contributors in partnership with IIT. All rights are reserved by the contributors. Redistribution or commercial use outside this repository is not permitted.
 
+---
 
-## Reporting Website issues
+## License
 
-All known issues of SDGP Connect are filed at: https://github.com/agzaiyenth/sdgp-connect/issues. Please check this list before opening a new issue.
+This project is licensed under a **Custom Non-Commercial Collaboration License**.
 
-### Opening an issue
+-  Redistribution outside this repository is prohibited  
+-  Not for resale or commercial use  
+-  Contributions are welcome via pull requests  
+-  All contributors retain their rights and must be credited  
 
-Help us make our software better! Submit any bug reports or feature requests through GitHub:  https://github.com/agzaiyenth/sdgp-connect/issues.
+See [`LICENSE`](./LICENSE.md) for full terms.
 
-### Reporting security issues
+---
 
-Please **do not** report security issues via GitHub issues. Instead, Email [SDGP Security Vulnerability Reports](security@sdgp.lk).
+## Reporting Website Issues
+
+All known issues of SDGP Connect are filed at:  
+https://github.com/agzaiyenth/sdgp-connect/issues  
+Please check the list before opening a new issue.
+
+### Opening an Issue
+
+Help us make our software better!  
+Submit bug reports or feature requests via GitHub:  
+https://github.com/agzaiyenth/sdgp-connect/issues
+
+### Reporting Security Issues
+
+Please **do not** report security issues via GitHub.  
+Instead, email: **[security@sdgp.lk](mailto:security@sdgp.lk)**
+
+---
 
 ## Contributing
 
-If you are planning on contributing to the development efforts of SDGP Connect, you can do so by checking out the latest development version. The master branch holds the latest released source code.
+If you plan to contribute, please work on the latest development version. The `main` branch holds the latest released source code.
 
-Follow these instructions to set up the project on your local machine. This guide is intended to help newcomers get started quickly.
+Follow the instructions below to set up the project on your local machine.
+
+---
 
 ## Cloning the Project
 
-1. Clone the project repository using:
-2. Navigate into the project directory:
+```bash
+git clone https://github.com/agzaiyenth/sdgp-connect.git
+cd sdgp-connect
+````
 
 ---
 
 ## Installing Dependencies
 
-We use **Yarn** instead of npm. Install all the required packages with:
+We use **Yarn** for dependency management:
+
 ```bash
-    yarn install
+yarn install
 ```
 
-> **Note:** Do not use npm. Stick to Yarn for dependency management.
+> ⚠️ Do not use npm. Always use Yarn.
 
 ---
 
 ## Setting Up Environment Variables
 
 1. Create a `.env` file at the root of the project.
-2. Add environment variables. (Ask @agzaiyenth / @zionashirwada for the `.env` file).
+2. Add the required environment variables. (Request from @agzaiyenth or @zionashirwada)
 
 ---
 
 ## Running MySQL Server
 
-You will need to have a MySQL server running. (You can use **XAMPP**).
-- If using XAMPP, make sure MySQL is running.
-- Make sure your `.env` file matches your MySQL credentials.
+You need a MySQL server running (e.g., via **XAMPP**):
+
+* Ensure MySQL is active.
+* Verify that `.env` credentials match your setup.
 
 ---
 
 ## Generating Prisma Client
 
-Generate the Prisma Client so that it can be used within the project:
 ```bash
-    yarn prisma generate
+yarn prisma generate
 ```
 
 ---
 
 ## Running the Project
 
-To start the development server:
 ```bash
-    yarn run dev
+yarn run dev
 ```
 
-This will launch your application on the local server.
+This will start the development server.
 
 ---
 
-## Migrating & Generating Client After Schema Changes
+## Migrating & Generating Prisma Client After Schema Changes
 
-Whenever you update the `schema.prisma` file, you need to apply migrations and regenerate the client:
+After editing `schema.prisma`, run:
 
-1. Apply Migrations:
 ```bash
-    npx prisma migrate dev --name <your-migration-name>
-```
-
-2. Generate Prisma Client:
-```bash
-    yarn prisma generate
+npx prisma migrate dev --name <your-migration-name>
+yarn prisma generate
 ```
 
 ---
 
 ## Additional Tips
-- Always pull the latest changes from the repository before starting work
-- Always run migrations and generate the Prisma client if you see database-related errors.
 
+* Always pull the latest changes before development
+* Run migrations + regenerate Prisma client after DB changes
+
+---
 
 # Coding Standards
 
 ## Branch Naming Convention
-When creating a new branch, follow this pattern:
+
 ```
 type/location/name
 
 Types:
-- feature    (new additions)
-- fix        (fixing issues)
-- improvement (enhancing existing features)
+- feature
+- fix
+- improvement
 
-
-Example:
-feature/product-showcase
-bug/login-form
+Examples:
+feature/project-showcase
+fix/login-form
 improvement/home-page
 ```
 
-# Features
+---
+## Contributors
 
-## Core Pages
+We thank all individuals who contributed to the development of SDGP Connect.
 
-- **Home Page (`/`)**
-  - Brief description of the SDGP module
-  - Carousel showcasing featured projects
-  - Impact stats (e.g., "240+ Projects", "3 Startups Funded")
-  - Horizontal scrollable chips for domain-based exploration
-
-- **Project Explorer Page (`/projects`)**
-  - Smart search bar (placeholder for AI search)
-  - Sidebar filters: Domain, Year, Status, Tags
-  - Sorting: Trending, Newest, Startup Potential
-  - Grid layout displaying project cards
-
-- **Project Detail Page (`/projects/:id`)**
-  - Large cover image or embedded video
-  - Title, subtitle, problem statement, solution, features
-  - Tech stack tags
-  - Project type and status
-  - Slide deck viewer (gallery of up to 10 images)
-  - SDG Goals and Domains (multi-select chips)
-  - Similar project recommendations (placeholder)
-
-- **About Page (`/about`)**
-  - Overview of the SDGP module
-  - Team section with module lecturers’ bios and images
-
-- **Contact Page (`/contact`)**
-  - Static page listing module team contact details (emails/roles)
-
-## UI & UX
-
-- Floating left-side vertical navbar for navigation
-- Dark theme with smooth transitions
-- Responsive design for mobile, tablet, and desktop
-- UI components powered by `@shadcn/ui`
+<!-- You can use contrib.rocks or list manually -->
+<a href="https://github.com/agzaiyenth/SDGP-Connect/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=agzaiyenth/SDGP-Connect" />
+</a>
