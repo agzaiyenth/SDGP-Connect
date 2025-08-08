@@ -1,35 +1,7 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { format } from 'date-fns';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { useAddUser, useEditUser, useDeleteUser, useFetchUsers, User } from '@/hooks/user';
-import { useCurrentUser } from '@/hooks/auth/useCurrentUser';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -38,16 +10,43 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Badge } from '@/components/ui/badge';
-import { toast } from 'sonner';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { Copy } from "lucide-react";
 import { Label } from "@/components/ui/label";
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { Textarea } from "@/components/ui/textarea";
+import { useCurrentUser } from '@/hooks/auth/useCurrentUser';
+import { useAddUser, useDeleteUser, useEditUser, useFetchUsers, User } from '@/hooks/user';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { format } from 'date-fns';
+import { Copy } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import * as z from 'zod';
 
 // Form validation schema for creating/editing users
 // Update userFormSchema to allow empty string in edit mode
@@ -118,7 +117,7 @@ export default function UserManagement() {
       toast.error('Password is required');
       return;
     }
-    
+
     const result = await addUser(data as any);
     if (result) {
       setCreateDialog(false);
@@ -233,7 +232,7 @@ export default function UserManagement() {
 
     setSelectedUsers([]);
     refetch(); // Refresh the users list
-  };  const filteredUsers = users
+  }; const filteredUsers = users
     .filter(user =>
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.role.toLowerCase().includes(searchTerm.toLowerCase())
@@ -250,12 +249,12 @@ export default function UserManagement() {
   // Function to copy credentials to clipboard
   const copyCredentials = () => {
     if (!newUserCredentials || !session?.user?.name) return;
-    
+
     const message = `Hi ${newUserCredentials.name}!
 Your Credentials for SDGP-Connect is as below
 username: ${newUserCredentials.name}
 password: ${newUserCredentials.password}`;
-    
+
     navigator.clipboard.writeText(message)
       .then(() => {
         toast.success('Credentials copied to clipboard');
@@ -290,86 +289,87 @@ password: ${newUserCredentials.password}`;
       <div className="rounded-md border">
         <Table>
           <TableHeader><TableRow><TableHead
-                className="cursor-pointer"
-                onClick={() => handleSort('name')}
-              >
-                Name {sortColumn === 'name' && (sortDirection === 'asc' ? '↑' : '↓')}
-              </TableHead>
-              <TableHead
-                className="cursor-pointer"
-                onClick={() => handleSort('role')}
-              >
-                Role {sortColumn === 'role' && (sortDirection === 'asc' ? '↑' : '↓')}
-              </TableHead>
-              <TableHead
-                className="cursor-pointer"
-                onClick={() => handleSort('createdAt')}
-              >
-                Created At {sortColumn === 'createdAt' && (sortDirection === 'asc' ? '↑' : '↓')}
-              </TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow></TableHeader>
+            className="cursor-pointer"
+            onClick={() => handleSort('name')}
+          >
+            Name {sortColumn === 'name' && (sortDirection === 'asc' ? '↑' : '↓')}
+          </TableHead>
+            <TableHead
+              className="cursor-pointer"
+              onClick={() => handleSort('role')}
+            >
+              Role {sortColumn === 'role' && (sortDirection === 'asc' ? '↑' : '↓')}
+            </TableHead>
+            <TableHead
+              className="cursor-pointer"
+              onClick={() => handleSort('createdAt')}
+            >
+              Created At {sortColumn === 'createdAt' && (sortDirection === 'asc' ? '↑' : '↓')}
+            </TableHead>
+            <TableHead>Actions</TableHead>
+          </TableRow></TableHeader>
           <TableBody>
             {loadingUsers ? (
-            <TableRow>
-              <TableCell colSpan={5} className="text-center py-4">
-                <LoadingSpinner/>
-              </TableCell>
-            </TableRow>
-          ) : filteredUsers.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={5} className="text-center py-4">
-                No users found
-              </TableCell>
-            </TableRow>
-          ) : (
-            filteredUsers.map((user) => (
-              <TableRow key={user.user_id}>                  <TableCell>{user.name}</TableCell>
-                  <TableCell>
-                    <Badge variant={
-                    user.role === 'ADMIN'
-                        ? 'default'
-                        : 'secondary'
-                  }>
-                    {user.role}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  {format(new Date(user.createdAt), 'd MMM yyyy')}
-                </TableCell>
-                <TableCell>
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      disabled={!isAdmin}
-                      onClick={() => {                        setCurrentUser(user);
-                        form.reset({
-                          name: user.name,
-                          password: '',
-                          role: user.role as any,
-                        });
-                        setEditDialog(true);
-                      }}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      disabled={!isAdmin}
-                      onClick={() => {
-                        setPendingDeleteUserId(user.user_id);
-                        setDeleteUserDialog(true);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </div>
+              <TableRow>
+                <TableCell colSpan={5} className="text-center py-4">
+                  <LoadingSpinner />
                 </TableCell>
               </TableRow>
-            ))
-          )}
+            ) : filteredUsers.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={5} className="text-center py-4">
+                  No users found
+                </TableCell>
+              </TableRow>
+            ) : (
+              filteredUsers.map((user) => (
+                <TableRow key={user.user_id}>                  <TableCell>{user.name}</TableCell>
+                  <TableCell>
+                    <Badge variant={
+                      user.role === 'ADMIN'
+                        ? 'default'
+                        : 'secondary'
+                    }>
+                      {user.role}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    {format(new Date(user.createdAt), 'd MMM yyyy')}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        disabled={!isAdmin}
+                        onClick={() => {
+                          setCurrentUser(user);
+                          form.reset({
+                            name: user.name,
+                            password: '',
+                            role: user.role as any,
+                          });
+                          setEditDialog(true);
+                        }}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        disabled={!isAdmin}
+                        onClick={() => {
+                          setPendingDeleteUserId(user.user_id);
+                          setDeleteUserDialog(true);
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </div>
@@ -384,72 +384,72 @@ password: ${newUserCredentials.password}`;
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>            <form onSubmit={form.handleSubmit(handleCreate)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="role"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Role</FormLabel>
+                  <Select
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
                     <FormControl>
-                      <Input {...field} />
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="role"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Role</FormLabel>
-                    <Select
-                      value={field.value}
-                      onValueChange={field.onChange}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {roles.map((role) => (
-                          <SelectItem key={role} value={role}>
-                            {role}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <DialogFooter>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setCreateDialog(false)}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit" >
-                  Create User
-                </Button>
-              </DialogFooter>
-            </form>
+                    <SelectContent>
+                      {roles.map((role) => (
+                        <SelectItem key={role} value={role}>
+                          {role}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setCreateDialog(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" >
+                Create User
+              </Button>
+            </DialogFooter>
+          </form>
           </Form>
         </DialogContent>
       </Dialog>
