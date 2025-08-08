@@ -1,11 +1,11 @@
-import "./globals.css";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { ClientProviders } from "@/components/Providers/ClientProvider";
+import type { Metadata } from "next";
 import { getServerSession } from "next-auth/next";
+import { Inter } from "next/font/google";
 import { redirect } from "next/navigation";
 import { authOptions } from "../api/auth/[...nextauth]/route";
-import { ClientProviders } from "@/components/Providers/ClientProvider";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
