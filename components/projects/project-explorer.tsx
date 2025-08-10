@@ -19,13 +19,14 @@ interface ProjectExplorerProps {
     currentParams: ProjectQueryParams; 
     projects: any[];
     isLoading: boolean;
+    isInitialLoading?: boolean;
     error: string | null;
     meta: any;
     hasMore: boolean;
     loadMore: () => void;
 }
 
-export default function ProjectExplorer({ currentParams, projects, isLoading, error, meta, hasMore, loadMore }: ProjectExplorerProps) {
+export default function ProjectExplorer({ currentParams, projects, isLoading, isInitialLoading, error, meta, hasMore, loadMore }: ProjectExplorerProps) {
     // Create a ref for the loader element (at bottom of list)
     const observerRef = useRef<IntersectionObserver | null>(null);
     const loadingRef = useRef<HTMLDivElement | null>(null);
@@ -69,7 +70,7 @@ export default function ProjectExplorer({ currentParams, projects, isLoading, er
     }
 
     // Initial loading state (when no projects are loaded yet)
-    if (isLoading && (!projects || projects.length === 0)) {
+    if (isInitialLoading || (isLoading && (!projects || projects.length === 0))) {
         return (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {Array(currentParams.limit || 9)

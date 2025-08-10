@@ -12,6 +12,7 @@ import { ProjectCardType } from "../../types/project/card";
 function useProjects(currentParams: ProjectQueryParams) {
   const [projects, setProjects] = useState<ProjectCardType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [meta, setMeta] = useState<
     PaginatedResponse<ProjectCardType>["meta"] | null
@@ -21,7 +22,9 @@ function useProjects(currentParams: ProjectQueryParams) {
 
   const fetchProjects = useCallback(
     async (page: number, shouldAppend: boolean = false) => {
-      setIsLoading(true);
+      if (!shouldAppend) {
+        setIsLoading(true);
+      }
       setError(null);
 
       try {
@@ -130,7 +133,10 @@ function useProjects(currentParams: ProjectQueryParams) {
         if (shouldAppend && !currentParams.featured) {
           setProjects((prev) => [...prev, ...projectsData]);
         } else {
-          setProjects(projectsData);
+          // Only clear projects if we have new data to replace with
+          if (projectsData.length > 0 || isInitialLoading) {
+            setProjects(projectsData);
+          }
         }
 
         setMeta(metaData);
@@ -156,14 +162,14 @@ function useProjects(currentParams: ProjectQueryParams) {
         }
       } finally {
         setIsLoading(false);
+        setIsInitialLoading(false);
       }
     },
     [currentParams]
   );
 
-  // Initial load of projects - reset everything
+  // Initial load of projects - only clear projects after new data loads
   useEffect(() => {
-    setProjects([]);
     setCurrentPage(1);
     setHasMore(true);
     fetchProjects(1, false);
@@ -191,6 +197,7 @@ function useProjects(currentParams: ProjectQueryParams) {
   return {
     projects,
     isLoading,
+    isInitialLoading,
     error,
     meta,
     hasMore,
