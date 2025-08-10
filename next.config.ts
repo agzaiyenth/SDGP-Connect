@@ -9,10 +9,20 @@ import type { NextConfig } from "next";
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  modern: true,
-  productionBrowserSourceMaps: true,
+  productionBrowserSourceMaps: false, // Disable in production for better performance
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ['framer-motion', 'lucide-react', '@radix-ui/react-icons'],
+    webVitalsAttribution: ['CLS', 'LCP']
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production'
+  },
   images: {
-    unoptimized: true,
+    unoptimized: false, // Enable Next.js image optimization
+    formats: ['image/webp', 'image/avif'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     remotePatterns: [
       {
         protocol: 'https',
@@ -81,6 +91,26 @@ const nextConfig: NextConfig = {
           {
             key: 'X-Content-Type-Options',
             value: 'nosniff',
+          },
+        ],
+      },
+      // Static assets caching
+      {
+        source: '/public/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // API route caching
+      {
+        source: '/api/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, s-maxage=60, stale-while-revalidate=300',
           },
         ],
       },

@@ -12,11 +12,15 @@ import ClientLayout from "@/components/Clientlayout";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap", // Improve font loading performance
+  preload: true,
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap", // Improve font loading performance
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -56,22 +60,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/iconw.svg" type="image/png" sizes="128x128" />
-        <link
-          rel="preload"
-          href="/iconw.svg"
-          as="image"
-          type="image/svg+xml"
-        />
-        <link
-          rel="preload"
-          href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700&display=swap"
-          as="style"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700&display=swap"
-        />
+        <link rel="icon" href="/iconw.svg" type="image/svg+xml" />
+        <link rel="preload" href="/iconw.svg" as="image" type="image/svg+xml" />
+        {/* Remove external font loading - using Next.js font optimization instead */}
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        {/* Preload critical resources */}
+        <link rel="preload" href="/test.svg" as="image" type="image/svg+xml" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ClientLayout>{children}</ClientLayout>

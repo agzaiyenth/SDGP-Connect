@@ -6,6 +6,7 @@
 // You may not alter or remove any copyright or other notice from copies of this content.
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import { ArrowUpRight } from "lucide-react"
 
 interface AwardCardProps {
   winner: {
@@ -62,17 +63,18 @@ export default function AwardCard({ winner }: AwardCardProps) {
           </p>
         </div>
       </div>
-      {/* Bottom-right Arrow Link */}
-      <a
-        href={`/project/${winner.id}`}
-        onClick={e => { e.stopPropagation(); }}
-        className="absolute bottom-4 right-4 z-20  border border-white rounded-full w-10 h-10 flex items-center justify-center group-hover:bg-gray-800 transition-colors duration-300 shadow-lg"
+      {/* Bottom-right Arrow Button - Using button instead of nested anchor */}
+      <button
+        onClick={(e) => { 
+          e.stopPropagation(); 
+          router.push(`/project/${winner.id}`);
+        }}
+        className="absolute bottom-4 right-4 z-20 border border-white rounded-full w-10 h-10 flex items-center justify-center group-hover:bg-gray-800 transition-colors duration-300 shadow-lg cursor-pointer"
         title="View Project"
+        aria-label="View project details"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-white">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M7 7h10v10" />
-        </svg>
-      </a>
+        <ArrowUpRight className="w-5 h-5 text-white" />
+      </button>
     </div>
   )
 }

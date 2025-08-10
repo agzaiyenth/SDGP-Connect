@@ -4,9 +4,8 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { NextRequest, NextResponse } from "next/server";
 import { ApprovalStatus } from "@prisma/client";
 
-export async function POST(req: NextRequest, context: { params: { id: string } }) {
-  const { params } = await context;
-  const id = params.id;
+export async function POST(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

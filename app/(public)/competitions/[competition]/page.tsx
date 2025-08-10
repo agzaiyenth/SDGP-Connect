@@ -7,7 +7,7 @@
 // You may not alter or remove any copyright or other notice from copies of this content.
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, use } from "react";
 import Link from "next/link";
 import { ArrowLeft, Clock1 } from "lucide-react";
 import AwardCard from "@/components/competition/AwardCard";
@@ -21,9 +21,10 @@ import { AwardsHeroSkeleton } from "@/components/competition/AwardsHeroSkeleton"
 export default function CompetitionPage({
   params,
 }: {
-  params: { competition: string };
+  params: Promise<{ competition: string }>;
 }) {
-  const competitionId = params.competition;
+  const resolvedParams = use(params);
+  const competitionId = resolvedParams.competition;
   const [showFull, setShowFull] = useState(false);
   const {
     awards,

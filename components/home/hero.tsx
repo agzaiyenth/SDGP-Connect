@@ -15,11 +15,12 @@ import { useLanguage } from "@/hooks/LanguageProvider";
 import dynamic from "next/dynamic";
 import { Banner3 } from "@/components/blog/Banner";
 
-// Lazy-load motion components
+// Lazy-load motion components with better loading
 const MotionDiv = dynamic(
   () => import("framer-motion").then((mod) => mod.motion.div),
   {
     ssr: false,
+    loading: () => <div className="min-h-[50px]" /> // Prevent layout shift
   }
 );
 
@@ -27,10 +28,15 @@ const MotionH1 = dynamic(
   () => import("framer-motion").then((mod) => mod.motion.h1),
   {
     ssr: false,
+    loading: () => <h1 className="min-h-[40px]" /> // Prevent layout shift
   }
 );
 
-const ThreeScene = dynamic(() => import("./three-scene"), { ssr: false });
+// Optimize Three.js scene loading
+const ThreeScene = dynamic(() => import("./three-scene"), { 
+  ssr: false,
+  loading: () => <div className="min-h-[300px] bg-gradient-to-b from-transparent to-background/50" />
+});
 
 const Logo: React.FC = () => (
   <MotionDiv

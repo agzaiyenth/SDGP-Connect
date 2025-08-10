@@ -8,7 +8,13 @@
 
 import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import CodeBlockWithCopy from "@/components/contribute/code-block-with-copy"
+import dynamic from "next/dynamic"
+import { Suspense } from "react"
+
+// Lazy load the code block component for better performance
+const CodeBlockWithCopy = dynamic(() => import("@/components/contribute/code-block-with-copy"), {
+  loading: () => <div className="bg-muted/50 rounded-md h-10 animate-pulse" />
+});
 
 export default function ContributingGuideSections({ cardVariants }: { cardVariants: any }) {
   return (
@@ -33,9 +39,13 @@ export default function ContributingGuideSections({ cardVariants }: { cardVarian
             </CardHeader>
             <CardContent className="p-6 pt-0 md:p-8 md:pt-0">
               <p className="text-white/70 mb-4">Clone the project repository:</p>
-              <CodeBlockWithCopy code="git clone https://github.com/agzaiyenth/SDGP-Connect.git" className="mb-4" />
+              <Suspense fallback={<div className="bg-muted/50 rounded-md h-10 animate-pulse" />}>
+                <CodeBlockWithCopy code="git clone https://github.com/agzaiyenth/SDGP-Connect.git" className="mb-4" />
+              </Suspense>
               <p className="text-white/70 mb-4">Navigate into the project directory:</p>
-              <CodeBlockWithCopy code="cd SDGP-Connect" />
+              <Suspense fallback={<div className="bg-muted/50 rounded-md h-10 animate-pulse" />}>
+                <CodeBlockWithCopy code="cd SDGP-Connect" />
+              </Suspense>
             </CardContent>
           </Card>
         </motion.div>

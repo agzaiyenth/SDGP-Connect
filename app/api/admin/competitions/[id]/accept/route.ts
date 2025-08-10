@@ -6,9 +6,9 @@ import { ApprovalStatus } from "@prisma/client";
 
 export async function POST(
   req: NextRequest,
-  context: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
-  const id = context.params.id;
+  const { id } = await context.params;
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.id) {
