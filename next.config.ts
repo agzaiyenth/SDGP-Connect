@@ -68,13 +68,17 @@ const nextConfig: NextConfig = {
     AZURE_STORAGE_CONTAINER_NAME: process.env.AZURE_STORAGE_CONTAINER_NAME,
   },
   async headers() {
+    const isDev = process.env.NODE_ENV === 'development';
+    
     return [
       {
         source: '/(.*)',
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; frame-src 'self' https://www.youtube.com https://player.vimeo.com https://vimeo.com; frame-ancestors 'none';"
+            value: isDev 
+              ? "default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' data: https: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; font-src 'self' https:; connect-src 'self' https: ws: wss:; frame-src 'self' https:; frame-ancestors 'none';"
+              : "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; frame-src 'self' https://www.youtube.com https://player.vimeo.com https://vimeo.com; frame-ancestors 'none';"
           },
           {
             key: 'Referrer-Policy',

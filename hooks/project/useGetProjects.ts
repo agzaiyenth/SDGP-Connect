@@ -165,26 +165,15 @@ function useProjects(currentParams: ProjectQueryParams) {
         setIsInitialLoading(false);
       }
     },
-    [currentParams]
+    [currentParams] // Include currentParams so function has access to latest values
   );
 
-  // Initial load of projects - only clear projects after new data loads
+  // Initial load of projects
   useEffect(() => {
     setCurrentPage(1);
     setHasMore(true);
     fetchProjects(1, false);
-  }, [
-    currentParams.featured, // Add featured to dependency array
-    currentParams.title,
-    currentParams.limit,
-    currentParams.projectTypes?.join(","),
-    currentParams.domains?.join(","),
-    currentParams.status?.join(","),
-    currentParams.sdgGoals?.join(","),
-    currentParams.techStack?.join(","),
-    currentParams.years?.join(","),
-    fetchProjects,
-  ]);
+  }, [fetchProjects]); // Only depend on fetchProjects since it now includes currentParams
 
   // Function to load more projects (called when user scrolls to bottom)
   const loadMore = useCallback(() => {
