@@ -15,8 +15,6 @@ import { ThemeProvider } from "@/components/Providers/ThemeProvider";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { ExpandableChatAI } from "@/components/ai/ExpandableChatAI";
-import { LanguageProvider } from "@/hooks/LanguageProvider";
-import LanguageToggle from "@/components/LanguageToggle";
 import CookieBanner from "@/components/CookieBanner"
 import { usePathname } from "next/navigation";
 
@@ -29,19 +27,16 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const shouldHaveMargins = !fullWidthPages.includes(pathname);
 
   return (
-    <LanguageProvider>
-      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-        <NavBar />
-        <div className={shouldHaveMargins ? "md:mx-24" : ""}>{children}</div>
-        {!isMobile && <CustomCursor />}
-        <Footer />
-        <CookieBanner />
-        <Analytics />
-        <SpeedInsights />
-        <Toaster />
-        <ExpandableChatAI />
-        <LanguageToggle />
-      </ThemeProvider>
-    </LanguageProvider>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+      <NavBar />
+      <div className={shouldHaveMargins ? "md:mx-24" : ""}>{children}</div>
+      {!isMobile && <CustomCursor />}
+      <Footer />
+      <CookieBanner />
+      <Analytics />
+      <SpeedInsights />
+      <Toaster />
+      <ExpandableChatAI />
+    </ThemeProvider>
   );
 }
