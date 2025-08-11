@@ -1,8 +1,8 @@
 # GNU Affero General Public License v3.0 (AGPL-3.0) – Community Use Only
 
-© 2025 SDGP.lk
+© 2025 SDGP.LK
 
-This file is part of SDGP-Connect.
+This file is part of SDGP.LK .
 
 SDGP-Connect/SDGP.lk is OpenSource software: you can use, modify, and contribute to it 
 under the terms of the GNU Affero General Public License as published by 
