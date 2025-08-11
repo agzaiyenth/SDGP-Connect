@@ -167,7 +167,7 @@ export default function Contact() {
                 <div>
                   <label className="block text-sm font-medium mb-1">Company / Organization</label>
                   <Input 
-                    placeholder="Company Name" 
+                    placeholder="Organization (optional)" 
                     value={formData.company}
                     onChange={(e) => handleInputChange('company', e.target.value)}
                   />
