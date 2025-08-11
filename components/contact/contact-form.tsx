@@ -157,7 +157,7 @@ export default function Contact() {
                   <label className="block text-sm font-medium mb-1">Email Address</label>
                   <Input 
                     type="email" 
-                    placeholder="sdgp@iit.ac.lk" 
+                    placeholder="your.email@example.com" 
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
                   />
