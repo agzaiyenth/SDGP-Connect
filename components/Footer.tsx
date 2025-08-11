@@ -123,8 +123,10 @@ export default function Footer() {
       >
         Built by{" "}
         <strong className="hover:text-gray-400">
-         
-            SDGP.lk Contributors · Licensed under Custom Non-Commercial License
+          SDGP.lk Contributors ·{" "}
+          <Link href="/license" className="underline hover:text-gray-300" target="_blank" rel="noopener noreferrer">
+            Licensed under Custom Non-Commercial License
+          </Link>
         </strong>
       </footer>
     </>
