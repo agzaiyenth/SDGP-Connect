@@ -1,9 +1,7 @@
-// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
-//
-// This software is the property of Psycode Lab's. and its suppliers, if any.
-// Dissemination of any information or reproduction of any material contained
-// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
-// You may not alter or remove any copyright or other notice from copies of this content.
+// © 2025 SDGP.lk
+// Licensed under the GNU Affero General Public License v3.0 or later,
+// with an additional restriction: Non-commercial use only.
+// See <https://www.gnu.org/licenses/agpl-3.0.html> for details.
 import { useState } from "react";
 
 export interface ChatMessage {
@@ -21,7 +19,7 @@ const sanitizeInput = (input: string): { isValid: boolean; sanitized: string } =
   if (sanitized.length === 0) {
     return {
       isValid: false,
-      sanitized: "Good try, better luck next time! 😎 Psycode Lab's products don't break so easily. For genuine support, contact support@sdgp.lk",
+      sanitized: "Invalid input detected. For assistance, please contact support@sdgp.lk",
     };
   }
 

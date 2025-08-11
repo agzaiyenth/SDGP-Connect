@@ -1,9 +1,7 @@
-// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
-//
-// This software is the property of Psycode Lab's. and its suppliers, if any.
-// Dissemination of any information or reproduction of any material contained
-// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
-// You may not alter or remove any copyright or other notice from copies of this content.
+// © 2025 SDGP.lk
+// Licensed under the GNU Affero General Public License v3.0 or later,
+// with an additional restriction: Non-commercial use only.
+// See <https://www.gnu.org/licenses/agpl-3.0.html> for details.
 import { footerItem } from "@/data/footerItems";
 import Link from "next/link";
 import { Facebook, Instagram, Linkedin, Mail,Youtube } from "lucide-react";
@@ -106,26 +104,12 @@ export default function Footer() {
 
           </div>
 
-          <div className="mt-8 border-t border-secondary-foreground/10 pt-8 text-center flex md:gap-4 gap-2 flex-col md:flex-row justify-center items-center">
+          <div className="mt-2 border-t border-secondary-foreground/10 pt-2 text-center flex md:gap-4 gap-2 flex-col md:flex-row justify-center items-center">
 
-            <p className="text-center text-sm text-gray-200 pb-4"> Copyright © {currentYear} - <strong><a href="http://IIT.ac.lk" className="text-center text-sm text-gray-200 pb-4">Informatics Institute of Technology </a></strong></p>
-            <p className="text-center text-sm text-gray-200 pb-4 md:block hidden">|</p>
-            <p className="text-center text-sm text-gray-200 pb-4">Mentored By - <strong><a href="http://skillverse.lk" className="text-center text-sm text-gray-200 pb-4">SkillVerse (PVT) LTD</a></strong></p>
+            <p className="text-center text-sm text-gray-200 pb-4"> Copyright © {currentYear} - <strong><a href="https://sdgp.lk" className="text-center text-sm text-gray-200 pb-4">SDGP.LK</a></strong></p>
 
           </div>
         </div>
-      </footer>
-      {/* !Do not remove this , @zionashirwada Want's it this way and do not , do not change this ,.............................. */}
-      <footer
-        id="xy47_beta"
-        className="text-center text-sm text-gray-200 md:pb-4 pb-24"
-      >
-        Built by{" "}
-        <strong>
-          <a href="https://www.psycodelabs.lk" className="hover:text-gray-400">
-            Psycode Lab's
-          </a>
-        </strong>
       </footer>
     </>
   );

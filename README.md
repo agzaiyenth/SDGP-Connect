@@ -8,7 +8,7 @@
 
 This platform acts as a digital bridge between innovation and opportunity—allowing students to go beyond academic recognition and **attract funding, incubation, or partnerships** that help bring their projects to life.
 
-> Developed by [Psycode Labs](https://psycodelabs.lk) in collaboration with IIT for commercial use.
+> SDGP Connect was collaboratively designed and developed by a team of contributors in partnership with IIT.
 
 
 ## Reporting Website issues
@@ -25,138 +25,125 @@ Please **do not** report security issues via GitHub issues. Instead, Email [SDGP
 
 ## Contributing
 
-If you are planning on contributing to the development efforts of SDGP Connect, you can do so by checking out the latest development version. The master branch holds the latest released source code.
+If you plan to contribute, please work on the latest development version. The `main` branch holds the latest released source code.
 
-Follow these instructions to set up the project on your local machine. This guide is intended to help newcomers get started quickly.
+Follow the instructions below to set up the project on your local machine.
+
+---
 
 ## Cloning the Project
 
-1. Clone the project repository using:
-2. Navigate into the project directory:
+```bash
+git clone https://github.com/agzaiyenth/sdgp-connect.git
+cd sdgp-connect
+````
 
 ---
 
 ## Installing Dependencies
 
-We use **Yarn** instead of npm. Install all the required packages with:
+We use **Yarn** for dependency management:
+
 ```bash
-    yarn install
+yarn install
 ```
 
-> **Note:** Do not use npm. Stick to Yarn for dependency management.
+> ⚠️ Do not use npm. Always use Yarn.
 
 ---
 
 ## Setting Up Environment Variables
 
 1. Create a `.env` file at the root of the project.
-2. Add environment variables. (Ask @agzaiyenth / @zionashirwada for the `.env` file).
+2. Add the required environment variables. (Request from Admins)
 
 ---
 
 ## Running MySQL Server
 
-You will need to have a MySQL server running. (You can use **XAMPP**).
-- If using XAMPP, make sure MySQL is running.
-- Make sure your `.env` file matches your MySQL credentials.
+You need a MySQL server running (e.g., via **XAMPP**):
+
+* Ensure MySQL is active.
+* Verify that `.env` credentials match your setup.
 
 ---
 
 ## Generating Prisma Client
 
-Generate the Prisma Client so that it can be used within the project:
 ```bash
-    yarn prisma generate
+yarn prisma generate
 ```
 
 ---
 
 ## Running the Project
 
-To start the development server:
 ```bash
-    yarn run dev
+yarn run dev
 ```
 
-This will launch your application on the local server.
+This will start the development server.
 
 ---
 
-## Migrating & Generating Client After Schema Changes
+## Migrating & Generating Prisma Client After Schema Changes
 
-Whenever you update the `schema.prisma` file, you need to apply migrations and regenerate the client:
+After editing `schema.prisma`, run:
 
-1. Apply Migrations:
 ```bash
-    npx prisma migrate dev --name <your-migration-name>
-```
-
-2. Generate Prisma Client:
-```bash
-    yarn prisma generate
+npx prisma migrate dev --name <your-migration-name>
+yarn prisma generate
 ```
 
 ---
 
 ## Additional Tips
-- Always pull the latest changes from the repository before starting work
-- Always run migrations and generate the Prisma client if you see database-related errors.
 
+* Always pull the latest changes before development
+* Run migrations + regenerate Prisma client after DB changes
+
+---
 
 # Coding Standards
 
 ## Branch Naming Convention
-When creating a new branch, follow this pattern:
+
 ```
 type/location/name
 
 Types:
-- feature    (new additions)
-- fix        (fixing issues)
-- improvement (enhancing existing features)
+- feature
+- fix
+- improvement
 
-
-Example:
-feature/product-showcase
-bug/login-form
+Examples:
+feature/project-showcase
+fix/login-form
 improvement/home-page
 ```
 
-# Features
+---
+##  Tech Stack
 
-## Core Pages
+<p align="left">
+  <img src="https://img.shields.io/badge/Next.js-000?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js" />
+  <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white" alt="Prisma" />
+  <img src="https://img.shields.io/badge/MySQL-00758F?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL" />
+  <img src="https://img.shields.io/badge/NextAuth-000000?style=for-the-badge&logo=next.js&logoColor=green" alt="NextAuth" />
+  <img src="https://img.shields.io/badge/Framer--Motion-EF008F?style=for-the-badge&logo=framer&logoColor=white" alt="Framer Motion" />
+  <img src="https://img.shields.io/badge/Vercel-000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" />
+  <img src="https://img.shields.io/badge/Yarn-2C8EBB?style=for-the-badge&logo=yarn&logoColor=white" alt="Yarn" />
+</p>
 
-- **Home Page (`/`)**
-  - Brief description of the SDGP module
-  - Carousel showcasing featured projects
-  - Impact stats (e.g., "240+ Projects", "3 Startups Funded")
-  - Horizontal scrollable chips for domain-based exploration
+---
+## Contributors
 
-- **Project Explorer Page (`/projects`)**
-  - Smart search bar (placeholder for AI search)
-  - Sidebar filters: Domain, Year, Status, Tags
-  - Sorting: Trending, Newest, Startup Potential
-  - Grid layout displaying project cards
+We thank all individuals who contributed to the development of SDGP Connect.
 
-- **Project Detail Page (`/projects/:id`)**
-  - Large cover image or embedded video
-  - Title, subtitle, problem statement, solution, features
-  - Tech stack tags
-  - Project type and status
-  - Slide deck viewer (gallery of up to 10 images)
-  - SDG Goals and Domains (multi-select chips)
-  - Similar project recommendations (placeholder)
+<!-- You can use contrib.rocks or list manually -->
+<a href="https://github.com/agzaiyenth/SDGP-Connect/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=agzaiyenth/SDGP-Connect" />
+</a>
 
-- **About Page (`/about`)**
-  - Overview of the SDGP module
-  - Team section with module lecturers’ bios and images
-
-- **Contact Page (`/contact`)**
-  - Static page listing module team contact details (emails/roles)
-
-## UI & UX
-
-- Floating left-side vertical navbar for navigation
-- Dark theme with smooth transitions
-- Responsive design for mobile, tablet, and desktop
-- UI components powered by `@shadcn/ui`
+---

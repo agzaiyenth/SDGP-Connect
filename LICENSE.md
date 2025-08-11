@@ -1,21 +1,39 @@
-# SDGP Connect License (Custom Non-Commercial License)
+# GNU Affero General Public License v3.0 (AGPL-3.0) – Community Use Only
 
-Copyright (c) 2025 Psycode Labs
+© 2025 SDGP.LK
 
-Permission is hereby granted to any person obtaining a copy of this software and associated documentation files (the "Software") to view, use, and contribute to the Software for **non-commercial**, **personal**, and **educational** purposes only, subject to the following conditions:
+This file is part of SDGP.LK .
 
-1. The Software shall not be sold, licensed, reused, or used in any commercial product or service without **explicit written permission** from the maintainers of this repository.
-2. You may not use the Software, in whole or in part, to offer competing or similar services.
-3. All contributions made to this repository become part of the project and fall under this same license.
-4. The intellectual property and copyright of this project remain with **Psycode Labs**.
-5. This software was originally developed and delivered by Psycode Labs to **IIT (Informatics Institute of Technology)** for commercial use as part of the SDGP Connect project.
+SDGP-Connect/SDGP.lk is OpenSource software: you can use, modify, and contribute to it 
+under the terms of the GNU Affero General Public License as published by 
+the Free Software Foundation, either version 3 of the License, or 
+(at your option) any later version.
 
-## Legal Enforcement
+**Additional Restriction: This software may only be used for non-commercial purposes.**  
+Any form of commercial use, resale, or inclusion in a for-profit product or service 
+is strictly prohibited unless explicit written permission is obtained from SDGP.lk.
 
-Any unauthorized reuse, resale, distribution, or commercial exploitation of this Software is strictly prohibited. **Psycode Labs and IIT reserve the right to pursue legal action under the laws of Sri Lanka** in the event of any breach of this license agreement.
+SDGP-Connect is distributed in the hope that it will be useful to the community,
+but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License 
+for more details.
 
----
+You should have received a copy of the GNU Affero General Public License 
+along with SDGP-Connect. If not, see <https://www.gnu.org/licenses/>.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.
+## License Reference
 
-For commercial inquiries, licensing, or permissions, contact: [hello@sdgp.lk]
+Full text of the GNU Affero General Public License v3.0:  
+https://www.gnu.org/licenses/agpl-3.0.html
+
+## Community Contributions
+
+You are encouraged to:
+- Use this software for personal or educational purpose only.
+- Modify and improve the code.
+- Contribute your changes back to the community under the same license.
+
+## Commercial Use Prohibition
+
+Commercial use in any form requires prior **written permission** from SDGP.lk.  
+For inquiries, contact: [hello@sdgp.lk]

@@ -1,9 +1,7 @@
-// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
-//
-// This software is the property of Psycode Lab's. and its suppliers, if any.
-// Dissemination of any information or reproduction of any material contained
-// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
-// You may not alter or remove any copyright or other notice from copies of this content.
+// © 2025 SDGP.lk
+// Licensed under the GNU Affero General Public License v3.0 or later,
+// with an additional restriction: Non-commercial use only.
+// See <https://www.gnu.org/licenses/agpl-3.0.html> for details.
 "use client";
 
 import { Badge } from '@/components/ui/badge';
@@ -153,7 +151,7 @@ const FAQPage = () => {
       category: "General",
       icon: Info,
       question: "Who created SDGP.LK?",
-      answer: "SDGP.LK was designed and developed by Psycode Lab's, a creative technology studio known for crafting innovative digital experiences. From user experience to visual identity, the entire platform was thoughtfully built to support meaningful collaboration around sustainable development goals.",
+      answer: "SDGP.LK was collaboratively designed and developed by a group of dedicated contributors passionate about digital innovation and social impact. From user experience to visual identity, the platform was thoughtfully built to support meaningful collaboration around sustainable development goals.",
       tags: ["creators", "design", "development", "psycodLab's", "team", "zion", "Agzaiyenth"]
     },
     {
