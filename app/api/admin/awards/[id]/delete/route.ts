@@ -5,9 +5,8 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 
-export async function DELETE(req: NextRequest, context: { params: { id: string } }) {
-  const { params } = context;
-  const { id } = params;
+export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
   if (!id) {
     return NextResponse.json({ error: "Award id is required" }, { status: 400 });
   }

@@ -28,7 +28,14 @@ export const useApprovedCompetitions = (initialLimit = 9) => {
       if (cursor) params.cursor = cursor;
       const res = await axios.get("/api/competition/approved", { params });
       const { competitions: newComps, nextCursor: newCursor } = res.data;
-      setCompetitions((prev) => [...prev, ...newComps]);
+      
+      // Filter out any duplicates by ID before adding to state
+      setCompetitions((prev) => {
+        const existingIds = new Set(prev.map(comp => comp.id));
+        const uniqueNewComps = newComps.filter((comp: ApprovedCompetition) => !existingIds.has(comp.id));
+        return [...prev, ...uniqueNewComps];
+      });
+      
       setNextCursor(newCursor);
       setHasMore(!!newCursor);
     } catch (err) {

@@ -9,13 +9,13 @@ import ProjectDetails from '@/components/ProjectDetails'
 import React from 'react'
 
 interface Props {
-    params: {
+    params: Promise<{
         projectId: string
-    }
+    }>
 }
 
 const ProjectPage = async ({ params }: Props) => {
-    const projectId = params.projectId;
+    const { projectId } = await params;
     
     return (
         <div>

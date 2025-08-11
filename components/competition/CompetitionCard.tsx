@@ -1,14 +1,15 @@
-/* Copyright (c) 2025, the contributors of the SDGP Connect project. All Rights Reserved.
-
-This software is the joint property of the contributors to the SDGP Connect project.
-Unauthorized distribution, commercial use, or reproduction of any part of this material
-in any form is strictly prohibited without the explicit written consent of all contributors.
-You may not alter or remove any copyright or attribution notice from this content. */
+// Copyright (c) 2025, Psycode Lab's (https://www.psycodelabs.lk). All Rights Reserved.
+//
+// This software is the property of Psycode Lab's. and its suppliers, if any.
+// Dissemination of any information or reproduction of any material contained
+// herein in any form is strictly forbidden, unless permitted by Psycode Lab's expressly.
+// You may not alter or remove any copyright or other notice from copies of this content.
+"use client"
 
 import Image from "next/image"
-import Link from "next/link"
-import { Calendar } from "lucide-react"
+import { Calendar, ArrowUpRight } from "lucide-react"
 import { format } from "date-fns"
+import { useRouter } from "next/navigation"
 
 interface CompetitionCardProps {
   id: string
@@ -35,11 +36,35 @@ export default function CompetitionCard({
   description,
   winnersCount
 }: CompetitionCardProps) {
+  const router = useRouter()
+  
   // Format dates
   const formattedStart = startDate ? format(new Date(startDate), "MMM d yyyy") : ""
   const formattedEnd = endDate ? format(new Date(endDate), "MMM d yyyy") : ""
+  
+  const handleCardClick = () => {
+    router.push(viewLink)
+  }
+  
+  const handleArrowClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    router.push(viewLink)
+  }
+  
   return (
-    <Link href={viewLink} className="group block h-full">
+    <div 
+      className="group block h-full cursor-pointer"
+      onClick={handleCardClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          handleCardClick()
+        }
+      }}
+      aria-label={`View competition: ${title}`}
+    >
       <div className="relative bg-secondary rounded-2xl overflow-hidden border border-black hover:border-gray-700 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-950/20 min-h-[450px] flex flex-col">
         {/* Subtle Blue Glow on Hover */}
         <div className=" bg-blue-950 absolute inset-0  opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-2xl"></div>
@@ -88,18 +113,16 @@ export default function CompetitionCard({
             </div>
           </div>
         </div>
-        {/* Bottom-right Arrow Link */}
-        <a
-          href={viewLink}
-          onClick={e => { e.stopPropagation(); }}
-          className="absolute bottom-4 right-4 z-20 border border-white rounded-full w-10 h-10 flex items-center justify-center group-hover:bg-gray-800 transition-colors duration-300 shadow-lg"
+        {/* Bottom-right Arrow Button - Using button instead of nested anchor */}
+        <button
+          onClick={handleArrowClick}
+          className="absolute bottom-4 right-4 z-20 border border-white rounded-full w-10 h-10 flex items-center justify-center group-hover:bg-gray-800 transition-colors duration-300 shadow-lg cursor-pointer"
           title="View Competition"
+          aria-label="View competition details"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 text-white">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M7 7h10v10" />
-          </svg>
-        </a>
+          <ArrowUpRight className="w-5 h-5 text-white" />
+        </button>
       </div>
-    </Link>
+    </div>
   )
 }

@@ -29,8 +29,10 @@ export const GET = async (req: NextRequest) => {
   orderBy: [
     // 1) Sort by number of related awards, descending
     { awards: { _count: 'desc' } },
-    // 2) Then by creation date, descending
+    // 2) Then by creation date, descending for stable ordering
     { createdAt: 'desc' },
+    // 3) Finally by ID for absolute uniqueness
+    { id: 'asc' },
   ],
   take: limit,
   ...(cursor && { skip: 1, cursor: { id: cursor } }),
