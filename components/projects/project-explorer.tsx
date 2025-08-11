@@ -19,14 +19,13 @@ interface ProjectExplorerProps {
     currentParams: ProjectQueryParams; 
     projects: any[];
     isLoading: boolean;
-    isInitialLoading?: boolean;
     error: string | null;
     meta: any;
     hasMore: boolean;
     loadMore: () => void;
 }
 
-export default function ProjectExplorer({ currentParams, projects, isLoading, isInitialLoading, error, meta, hasMore, loadMore }: ProjectExplorerProps) {
+export default function ProjectExplorer({ currentParams, projects, isLoading, error, meta, hasMore, loadMore }: ProjectExplorerProps) {
     // Create a ref for the loader element (at bottom of list)
     const observerRef = useRef<IntersectionObserver | null>(null);
     const loadingRef = useRef<HTMLDivElement | null>(null);
@@ -70,7 +69,7 @@ export default function ProjectExplorer({ currentParams, projects, isLoading, is
     }
 
     // Initial loading state (when no projects are loaded yet)
-    if (isInitialLoading || (isLoading && (!projects || projects.length === 0))) {
+    if (isLoading && (!projects || projects.length === 0)) {
         return (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {Array(currentParams.limit || 9)
@@ -93,8 +92,8 @@ export default function ProjectExplorer({ currentParams, projects, isLoading, is
 
     // Render projects with infinite scroll
     return (
-        <div className="flex flex-col gap-8 w-full">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+        <div className="flex flex-col gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* Map through loaded projects */}
                 {projects.map((project, index) => {
                     // Check if this is the last project
@@ -102,29 +101,21 @@ export default function ProjectExplorer({ currentParams, projects, isLoading, is
                     
                     return (
                         <div 
-                            key={`project-${project.id}-${index}`}
+                            key={project.id}
                             ref={isLastProject ? lastProjectElementRef : null}
-                            className="project-card-container w-full"
-                            style={{ contain: 'layout style' }}
+                            className="project-card-container"
                         >
                             <Link
                                 href={`/project/${project.id}`}
-                                className="project-card group block rounded-xl overflow-hidden border bg-card shadow-sm hover:shadow-lg transition-shadow duration-200 will-change-auto"
+                                className="project-card group block rounded-xl overflow-hidden border bg-card shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out"
                             >
-                                <div className="relative aspect-video overflow-hidden bg-muted">
+                                <div className="relative aspect-video overflow-hidden">
                                     <Image
                                         src={project.coverImage || "https://placehold.co/600x400?text=NO+IMAGE"}
                                         alt={project.title || "No title available"}
                                         fill
                                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                        className="object-cover transition-opacity duration-200 group-hover:scale-[1.02]"
-                                        style={{ 
-                                            transform: 'translateZ(0)',
-                                            backfaceVisibility: 'hidden',
-                                        }}
-                                        priority={index < 6}
-                                        placeholder="blur"
-                                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+                                        className="object-cover transition-transform duration-300 group-hover:scale-105"
                                     />
                                     {/* Display status badge if status exists */}
                                     {project.status && (
@@ -134,46 +125,42 @@ export default function ProjectExplorer({ currentParams, projects, isLoading, is
                                     )}
                                 </div>
 
-                                <div className="p-4 flex flex-col min-h-[200px]">
-                                    <h3 className="text-lg font-semibold mb-1 line-clamp-1 min-h-[28px]">{project.title}</h3>
-                                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2 flex-grow min-h-[40px]">
+                                <div className="p-4 flex flex-col h-[calc(100%-aspect-video)]">
+                                    <h3 className="text-lg font-semibold mb-1 line-clamp-1">{project.title}</h3>
+                                    <p className="text-sm text-muted-foreground mb-3 line-clamp-2 flex-grow">
                                         {project.subtitle || "No subtitle available."}
                                     </p>
 
                                     {/* Display Project Types */}
-                                    <div className="min-h-[32px] mb-3">
-                                        {(project.projectTypes?.length > 0) && (
-                                            <div className="flex flex-wrap gap-1">
-                                                {project.projectTypes.slice(0, 2).map((type: string, i: number) => (
-                                                    <Badge key={`${type}-${i}`} variant="outline" className="text-xs">
-                                                        {type}
-                                                    </Badge>
-                                                ))}
-                                                {project.projectTypes.length > 2 && (
-                                                    <Badge variant="outline" className="text-xs">+{project.projectTypes.length - 2}</Badge>
-                                                )}
-                                            </div>
-                                        )}
-                                    </div>
+                                    {(project.projectTypes?.length > 0) && (
+                                        <div className="flex flex-wrap gap-1 mb-3">
+                                            {project.projectTypes.slice(0, 2).map((type: string, i: number) => (
+                                                <Badge key={`${type}-${i}`} variant="outline" className="text-xs">
+                                                    {type}
+                                                </Badge>
+                                            ))}
+                                            {project.projectTypes.length > 2 && (
+                                                <Badge variant="outline" className="text-xs">+{project.projectTypes.length - 2}</Badge>
+                                            )}
+                                        </div>
+                                    )}
 
                                     {/* Display Domains and View Button */}
-                                    <div className="flex justify-between items-center mt-auto pt-2 border-t border-border/50 min-h-[36px]">
-                                        <div className="flex gap-1 flex-wrap min-w-0 flex-1 mr-2">
-                                            {(project.domains?.length > 0) ? (
-                                                <>
-                                                    {project.domains.slice(0, 1).map((domain: string, i: number) => (
-                                                        <Badge key={`${domain}-${i}`} variant="secondary" className="text-xs">
-                                                            {domain}
-                                                        </Badge>
-                                                    ))}
-                                                    {project.domains.length > 1 && (
-                                                        <Badge variant="secondary" className="text-xs">+{project.domains.length - 1}</Badge>
-                                                    )}
-                                                </>
-                                            ) : null}
-                                        </div>
+                                    <div className="flex justify-between items-center mt-auto pt-2 border-t border-border/50">
+                                        {(project.domains?.length > 0) ? (
+                                            <div className="flex gap-1 flex-wrap">
+                                                {project.domains.slice(0, 1).map((domain: string, i: number) => (
+                                                    <Badge key={`${domain}-${i}`} variant="secondary" className="text-xs">
+                                                        {domain}
+                                                    </Badge>
+                                                ))}
+                                                {project.domains.length > 1 && (
+                                                    <Badge variant="secondary" className="text-xs">+{project.domains.length - 1}</Badge>
+                                                )}
+                                            </div>
+                                        ) : <div />}
 
-                                        <Button size="sm" variant="ghost" className="text-xs h-7 px-2 flex-shrink-0">
+                                        <Button size="sm" variant="ghost" className="text-xs h-7 px-2">
                                             View Details
                                         </Button>
                                     </div>

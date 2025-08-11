@@ -12,7 +12,6 @@ import { ProjectCardType } from "../../types/project/card";
 function useProjects(currentParams: ProjectQueryParams) {
   const [projects, setProjects] = useState<ProjectCardType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [meta, setMeta] = useState<
     PaginatedResponse<ProjectCardType>["meta"] | null
@@ -22,9 +21,7 @@ function useProjects(currentParams: ProjectQueryParams) {
 
   const fetchProjects = useCallback(
     async (page: number, shouldAppend: boolean = false) => {
-      if (!shouldAppend) {
-        setIsLoading(true);
-      }
+      setIsLoading(true);
       setError(null);
 
       try {
@@ -133,10 +130,7 @@ function useProjects(currentParams: ProjectQueryParams) {
         if (shouldAppend && !currentParams.featured) {
           setProjects((prev) => [...prev, ...projectsData]);
         } else {
-          // Only clear projects if we have new data to replace with
-          if (projectsData.length > 0 || isInitialLoading) {
-            setProjects(projectsData);
-          }
+          setProjects(projectsData);
         }
 
         setMeta(metaData);
@@ -162,18 +156,29 @@ function useProjects(currentParams: ProjectQueryParams) {
         }
       } finally {
         setIsLoading(false);
-        setIsInitialLoading(false);
       }
     },
-    [currentParams] // Include currentParams so function has access to latest values
+    [currentParams]
   );
 
-  // Initial load of projects
+  // Initial load of projects - reset everything
   useEffect(() => {
+    setProjects([]);
     setCurrentPage(1);
     setHasMore(true);
     fetchProjects(1, false);
-  }, [fetchProjects]); // Only depend on fetchProjects since it now includes currentParams
+  }, [
+    currentParams.featured, // Add featured to dependency array
+    currentParams.title,
+    currentParams.limit,
+    currentParams.projectTypes?.join(","),
+    currentParams.domains?.join(","),
+    currentParams.status?.join(","),
+    currentParams.sdgGoals?.join(","),
+    currentParams.techStack?.join(","),
+    currentParams.years?.join(","),
+    fetchProjects,
+  ]);
 
   // Function to load more projects (called when user scrolls to bottom)
   const loadMore = useCallback(() => {
@@ -186,7 +191,6 @@ function useProjects(currentParams: ProjectQueryParams) {
   return {
     projects,
     isLoading,
-    isInitialLoading,
     error,
     meta,
     hasMore,

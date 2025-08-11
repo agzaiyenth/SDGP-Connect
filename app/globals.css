@@ -215,20 +215,11 @@
 
 /* Card hover effects */
 .project-card {
-  transition: box-shadow 0.2s ease, opacity 0.2s ease;
-  will-change: box-shadow;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  contain: layout style paint;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .project-card:hover {
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
-
-.project-card-container {
-  contain: layout style;
-  will-change: auto;
+  transform: translateY(-8px);
 }
 
 /* Custom scrollbar */

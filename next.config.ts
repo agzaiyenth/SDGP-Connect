@@ -9,20 +9,9 @@ import type { NextConfig } from "next";
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  productionBrowserSourceMaps: false, // Disable in production for better performance
-  experimental: {
-    optimizeCss: true,
-    optimizePackageImports: ['framer-motion', 'lucide-react', '@radix-ui/react-icons'],
-    webVitalsAttribution: ['CLS', 'LCP']
-  },
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production'
-  },
+  productionBrowserSourceMaps: true,
   images: {
-    unoptimized: false, // Enable Next.js image optimization
-    formats: ['image/webp', 'image/avif'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -68,17 +57,13 @@ const nextConfig: NextConfig = {
     AZURE_STORAGE_CONTAINER_NAME: process.env.AZURE_STORAGE_CONTAINER_NAME,
   },
   async headers() {
-    const isDev = process.env.NODE_ENV === 'development';
-    
     return [
       {
         source: '/(.*)',
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: isDev 
-              ? "default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' data: https: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; font-src 'self' https:; connect-src 'self' https: ws: wss:; frame-src 'self' https:; frame-ancestors 'none';"
-              : "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; frame-src 'self' https://www.youtube.com https://player.vimeo.com https://vimeo.com; frame-ancestors 'none';"
+            value: "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; frame-src 'self' https://www.youtube.com https://player.vimeo.com https://vimeo.com; frame-ancestors 'none';"
           },
           {
             key: 'Referrer-Policy',
@@ -95,26 +80,6 @@ const nextConfig: NextConfig = {
           {
             key: 'X-Content-Type-Options',
             value: 'nosniff',
-          },
-        ],
-      },
-      // Static assets caching
-      {
-        source: '/public/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      // API route caching
-      {
-        source: '/api/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, s-maxage=60, stale-while-revalidate=300',
           },
         ],
       },

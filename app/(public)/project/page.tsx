@@ -30,6 +30,7 @@ function ProjectsPageContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [showMobileFilters, setShowMobileFilters] = useState(false);
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
 
     const currentParams = useMemo((): ProjectQueryParams => ({
         page: parseInt(searchParams.get('page') || '1', 10),
@@ -45,7 +46,14 @@ function ProjectsPageContent() {
     }), [searchParams]);
 
     // Use the hook with added infinite scroll capabilities
-    const { projects, isLoading, isInitialLoading, error, meta, hasMore, loadMore } = useProjects(currentParams);
+    const { projects, isLoading, error, meta, hasMore, loadMore } = useProjects(currentParams);
+
+    // Set initial load to false after first load completes
+    useEffect(() => {
+        if (!isLoading && projects && isInitialLoad) {
+            setIsInitialLoad(false);
+        }
+    }, [isLoading, projects, isInitialLoad]);
 
     const initialFilters = useMemo((): FilterState => ({
         featured: currentParams.featured || false,
@@ -128,6 +136,11 @@ function ProjectsPageContent() {
         };
     }, [showMobileFilters]);
 
+    // Show full page skeleton only on initial load
+    if (isInitialLoad && isLoading && (!projects || projects.length === 0)) {
+        return <LoadingSkeleton />;
+    }
+
     console.log('Rendering with showMobileFilters:', showMobileFilters); // Debug log
 
     return (
@@ -154,7 +167,6 @@ function ProjectsPageContent() {
                             currentParams={currentParams}
                             projects={projects || []}
                             isLoading={isLoading}
-                            isInitialLoading={isInitialLoading}
                             error={error}
                             meta={meta}
                             hasMore={hasMore}
@@ -224,28 +236,13 @@ function ProjectsPageContent() {
 // Wrap the client component in Suspense for loading fallback
 const Page = () => {
     return (
-        <Suspense fallback={<SimpleSkeleton />}>
+        <Suspense fallback={<LoadingSkeleton />}>
             <ProjectsPageContent />
         </Suspense>
     );
 };
 
-// Define a simple skeleton component for the fallback (reduced to prevent double-skeleton effect)
-const SimpleSkeleton = () => (
-    <div className="container mx-auto py-8 px-4">
-        <Skeleton className="h-12 w-full mb-8" />
-        <div className="flex flex-col md:flex-row gap-6 mt-8">
-            <div className="hidden md:block w-64 lg:w-72 flex-shrink-0">
-                <Skeleton className="h-32 w-full" />
-            </div>
-            <div className="flex-1">
-                <Skeleton className="h-20 w-full" />
-            </div>
-        </div>
-    </div>
-);
-
-// Keep LoadingSkeleton for other uses if needed
+// Define a skeleton component for the fallback
 const LoadingSkeleton = () => (
     <div className="container mx-auto py-8 px-4">
         <Skeleton className="h-12 w-full mb-8" />
