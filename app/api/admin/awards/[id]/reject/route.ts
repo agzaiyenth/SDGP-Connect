@@ -4,9 +4,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { ApprovalStatus } from "@prisma/client";
 
-export async function POST(req: NextRequest, context: { params: { id: string } }) {
-  const { params } = await context;
-  const { id } = params;
+export async function POST(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
   if (!id) {
     return NextResponse.json({ error: "Award id is required" }, { status: 400 });
   }

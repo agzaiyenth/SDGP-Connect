@@ -7,19 +7,34 @@ You may not alter or remove any copyright or attribution notice from this conten
 
 "use client";
 
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
 import { Toaster } from "sonner";
-import { CustomCursor } from "@/components/Cursor";
 import { NavBar } from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import useIsMobile from "@/hooks/useIsMobile";
 import { ThemeProvider } from "@/components/Providers/ThemeProvider";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next"
-import { ExpandableChatAI } from "@/components/ai/ExpandableChatAI";
 import { LanguageProvider } from "@/hooks/LanguageProvider";
-import LanguageToggle from "@/components/LanguageToggle";
 import CookieBanner from "@/components/CookieBanner"
 import { usePathname } from "next/navigation";
+
+// Lazy load non-critical components for better performance
+const CustomCursor = dynamic(() => import("@/components/Cursor").then(mod => ({ default: mod.CustomCursor })), { 
+  ssr: false,
+  loading: () => null
+});
+
+const ExpandableChatAI = dynamic(() => import("@/components/ai/ExpandableChatAI").then(mod => ({ default: mod.ExpandableChatAI })), {
+  ssr: false,
+  loading: () => null
+});
+
+const LanguageToggle = dynamic(() => import("@/components/LanguageToggle"), {
+  ssr: false,
+  loading: () => null
+});
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
@@ -28,21 +43,30 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   // Pages that should not have horizontal margins
   const fullWidthPages = ['/contribute'];
   const shouldHaveMargins = !fullWidthPages.includes(pathname);
+  
+  // Only enable LanguageProvider for home page
+  const isHomePage = pathname === '/';
 
-  return (
+  const LayoutContent = () => (
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+      <NavBar />
+      <div className={shouldHaveMargins ? "md:mx-24" : ""}>{children}</div>
+      {!isMobile && <CustomCursor />}
+      <Footer />
+      <CookieBanner />
+      <Analytics />
+      <SpeedInsights />
+      <Toaster />
+      <ExpandableChatAI />
+      {isHomePage && <LanguageToggle />}
+    </ThemeProvider>
+  );
+
+  return isHomePage ? (
     <LanguageProvider>
-      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-        <NavBar />
-        <div className={shouldHaveMargins ? "md:mx-24" : ""}>{children}</div>
-        {!isMobile && <CustomCursor />}
-        <Footer />
-        <CookieBanner />
-        <Analytics />
-        <SpeedInsights />
-        <Toaster />
-        <ExpandableChatAI />
-        <LanguageToggle />
-      </ThemeProvider>
+      <LayoutContent />
     </LanguageProvider>
+  ) : (
+    <LayoutContent />
   );
 }

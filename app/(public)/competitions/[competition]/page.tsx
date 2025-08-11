@@ -7,21 +7,27 @@ You may not alter or remove any copyright or attribution notice from this conten
 
 "use client";
 
+import Image from "next/image";
+import { useState, use } from "react";
+import Link from "next/link";
+import { ArrowLeft, Clock1 } from "lucide-react";
+import { useGetCompetitionAwards } from "@/hooks/awards/useGetCompetitionAwards";
+import { useCompetitionInfo } from "@/hooks/competition/useCompetitionInfo";
+import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyStateWinners } from "@/components/Empty-states/emptyState";
 import AwardCard from "@/components/competition/AwardCard";
 import { AwardsHero } from "@/components/competition/AwardsHero";
 import { AwardsHeroSkeleton } from "@/components/competition/AwardsHeroSkeleton";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useGetCompetitionAwards } from "@/hooks/awards/useGetCompetitionAwards";
-import { useCompetitionInfo } from "@/hooks/competition/useCompetitionInfo";
-import { useState } from "react";
+
+
 
 export default function CompetitionPage({
   params,
 }: {
-  params: { competition: string };
+  params: Promise<{ competition: string }>;
 }) {
-  const competitionId = params.competition;
+  const resolvedParams = use(params);
+  const competitionId = resolvedParams.competition;
   const [showFull, setShowFull] = useState(false);
   const {
     awards,

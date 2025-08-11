@@ -1,0 +1,17 @@
+{
+  "name": "sdgp-connect",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "build:analyze": "ANALYZE=true next build",
+    "start": "next start",
+    "lint": "next lint",
+    "seed": "node --loader ts-node/esm ./prisma/seed.ts",
+    "vercel-build": "prisma generate && yarn build",
+    "performance:audit": "lighthouse http://localhost:3000 --output=html --output-path=./lighthouse-report.html --view",
+    "performance:dev": "yarn dev & sleep 10 && yarn performance:audit"
+  }
+}
