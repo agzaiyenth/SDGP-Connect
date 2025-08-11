@@ -151,7 +151,7 @@ const FAQPage = () => {
       category: "General",
       icon: Info,
       question: "Who created SDGP.LK?",
-      answer: "SDGP.LK was designed and developed by Psycode Lab's, a creative technology studio known for crafting innovative digital experiences. From user experience to visual identity, the entire platform was thoughtfully built to support meaningful collaboration around sustainable development goals.",
+      answer: "SDGP.LK was collaboratively designed and developed by a group of dedicated contributors passionate about digital innovation and social impact. From user experience to visual identity, the platform was thoughtfully built to support meaningful collaboration around sustainable development goals.",
       tags: ["creators", "design", "development", "psycodLab's", "team", "zion", "Agzaiyenth"]
     },
     {
