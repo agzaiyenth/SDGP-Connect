@@ -1,3 +1,8 @@
+// © 2025 SDGP.lk
+// Licensed under the GNU Affero General Public License v3.0 or later,
+// with an additional restriction: Non-commercial use only.
+// See <https://www.gnu.org/licenses/agpl-3.0.html> for details.
+
 import React from 'react'
 import { Card } from '../ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'

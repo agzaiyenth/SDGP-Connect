@@ -113,18 +113,6 @@ export default function Footer() {
           </div>
         </div>
       </footer>
-      {/* !Do not remove this , @zionashirwada Want's it this way and do not , do not change this ,.............................. */}
-      <footer
-        id="xy47_beta"
-        className="text-center text-sm text-gray-200 md:pb-4 pb-24"
-      >
-        Built by{" "}
-        <strong>
-          <a href="https://www.psycodelabs.lk" className="hover:text-gray-400">
-            Psycode Lab's
-          </a>
-        </strong>
-      </footer>
     </>
   );
 }

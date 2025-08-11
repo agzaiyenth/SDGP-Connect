@@ -8,7 +8,7 @@
 
 This platform acts as a digital bridge between innovation and opportunity—allowing students to go beyond academic recognition and **attract funding, incubation, or partnerships** that help bring their projects to life.
 
-> Developed by [Psycode Labs](https://psycodelabs.lk) in collaboration with IIT for commercial use.
+> Initally developed by [Psycode Labs](https://psycodelabs.lk) in collaboration with IIT for commercial use.
 
 
 ## Reporting Website issues
@@ -50,7 +50,7 @@ We use **Yarn** instead of npm. Install all the required packages with:
 ## Setting Up Environment Variables
 
 1. Create a `.env` file at the root of the project.
-2. Add environment variables. (Ask @agzaiyenth / @zionashirwada for the `.env` file).
+2. Add environment variables. (Ask Admin's for the `.env` file).
 
 ---
 

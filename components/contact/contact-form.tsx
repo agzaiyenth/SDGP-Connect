@@ -154,7 +154,7 @@ export default function Contact() {
                   <label className="block text-sm font-medium mb-1">Email Address</label>
                   <Input 
                     type="email" 
-                    placeholder="info@psycodelabs.lk" 
+                    placeholder="info@example.com" 
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
                   />
@@ -164,7 +164,7 @@ export default function Contact() {
                 <div>
                   <label className="block text-sm font-medium mb-1">Company / Organization</label>
                   <Input 
-                    placeholder="Psycode Lab's" 
+                    placeholder="Your Company Name" 
                     value={formData.company}
                     onChange={(e) => handleInputChange('company', e.target.value)}
                   />

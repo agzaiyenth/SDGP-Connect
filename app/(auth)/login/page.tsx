@@ -3,7 +3,7 @@
 // with an additional restriction: Non-commercial use only.
 // See <https://www.gnu.org/licenses/agpl-3.0.html> for details.
 
-// app/login/page.tsx
+
 import AuthForm from "@/components/AuthForm";
 
 export default function LoginPage() {
