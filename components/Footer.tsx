@@ -106,7 +106,7 @@ export default function Footer() {
 
           <div className="mt-2 border-t border-secondary-foreground/10 pt-2 text-center flex md:gap-4 gap-2 flex-col md:flex-row justify-center items-center">
 
-            <p className="text-center text-sm text-gray-200 pb-4"> Copyright © {currentYear} - <strong><a href="http://sdgp.lk" className="text-center text-sm text-gray-200 pb-4">SDGP.LK</a></strong></p>
+            <p className="text-center text-sm text-gray-200 pb-4"> Copyright © {currentYear} - <strong><a href="https://sdgp.lk" className="text-center text-sm text-gray-200 pb-4">SDGP.LK</a></strong></p>
 
           </div>
         </div>
